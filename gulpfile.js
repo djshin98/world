@@ -197,4 +197,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series( /*clean,*/ , md, md_src, libs, /*js, js_src_w,*/ jpg, png, gif, scss, css, models, html));
+exports.default = parallel(watchFiles, series( md, md_src, libs, jpg, png, gif, scss, css, models, html));
