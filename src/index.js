@@ -1,10 +1,15 @@
-var dom = {
-    $ : function (a){ return document.querySelector(a); }
+/*if (!global) {
+    window.global = window;
+}*/
+global.tx = require("./comm");
+
+global.dom = {
+    $: function(a) { return document.querySelector(a); }
 }
 
 // 객체를 만들때 고민
 // 1. singleton or not 
-window.onresize = function(){
+window.onresize = function() {
     var width = 200;
     var section = dom.$("section");
     var article = dom.$("article");

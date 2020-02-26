@@ -5,13 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
+    <link rel="stylesheet" type="text/css" href="libs/vanilla_semantic_ui/vanilla-semantic.css">
+    <script src="libs/vanilla_semantic_ui/vanilla-semantic.js"></script>
     <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
     <header></header>
-    <section id="section"><div class="A" >A</div><div>B</div><div>D</div></section>
-    <article><div id="map3d"></div><div id="map2d"></div></article>
+    <section id="section">
+        <div class="ui labeled button" tabindex="0">
+            <div class="ui red button">
+                <i class="heart icon"></i> Like
+            </div>
+            <a class="ui basic red left pointing label">
+              1,048
+            </a>
+        </div>
+        <div class="ui labeled button" tabindex="0">
+            <div class="ui basic blue button">
+                <i class="fork icon"></i> Forks
+            </div>
+            <a class="ui basic left pointing blue label">
+              1,048
+            </a>
+        </div>
+    </section>
+    <article>
+        <div id="map3d"></div>
+        <div id="map2d"></div>
+    </article>
     <footer></footer>
     <div id="popupZone"></div>
 </body>

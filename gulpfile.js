@@ -67,7 +67,7 @@ var paths = {
         dest: 'dist/'
     },
     libs: {
-        src: 'src/libs/*.*',
+        src: 'src/libs/**/*.*',
         dest: 'dist/libs/'
     }
 };
