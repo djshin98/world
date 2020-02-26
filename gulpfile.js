@@ -5,6 +5,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var imagemin = require('gulp-imagemin');
 var concat = require('gulp-concat');
+
+var markdown = require("gulp-markdown");
+var inject = require("gulp-inject-string");
+
 //var uglify = require('gulp-uglify');
 //var babelify = require("babelify");
 //var browserify = require("browserify");
@@ -16,6 +20,14 @@ var concat = require('gulp-concat');
 var del = require('del');
 
 var paths = {
+    md: {
+        src: './*.md',
+        dest: './dist/'
+    },
+    md_src: {
+        src: './**/*.md',
+        dest: './dist/'
+    },
     scss: {
         src: './src/scss/*.scss',
         dest: './src/css/'
@@ -63,6 +75,24 @@ var paths = {
 function clean() {
     return del(['dist']);
 }
+function cleanCSS() {
+    return del(['src/css']);
+}
+function md(){
+    return src(paths.md.src)
+    .pipe(markdown())
+    .pipe(inject.prepend("<html><head></head><body>"))
+    .pipe(inject.append("</body></html>"))
+    .pipe(dest(paths.md.dest) );
+}
+function md_src(){
+    return src(paths.md_src.src)
+    .pipe(markdown())
+    .pipe(inject.prepend("<html><head></head><body>"))
+    .pipe(inject.append("</body></html>"))
+    .pipe(dest(paths.md_src.src) );
+}
+
 /*
 function js_b() {
     return browserify({
@@ -151,6 +181,9 @@ function models() {
 
 function watchFiles() {
 
+    watch(paths.md.src, md);
+    watch(paths.md_src.src, md_src);
+
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
     //watch(paths.js.src, js);
@@ -164,4 +197,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series( /*clean,*/ libs, /*js, js_src_w,*/ jpg, png, gif, scss, css, models, html));
+exports.default = parallel(watchFiles, series( /*clean,*/ , md, md_src, libs, /*js, js_src_w,*/ jpg, png, gif, scss, css, models, html));
