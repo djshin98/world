@@ -25,7 +25,7 @@ var paths = {
         dest: './dist/'
     },
     md_src: {
-        src: './**/*.md',
+        src: './src/**/*.md',
         dest: './dist/'
     },
     scss: {
@@ -75,22 +75,25 @@ var paths = {
 function clean() {
     return del(['dist']);
 }
+
 function cleanCSS() {
     return del(['src/css']);
 }
-function md(){
+
+function md() {
     return src(paths.md.src)
-    .pipe(markdown())
-    .pipe(inject.prepend("<html><head></head><body>"))
-    .pipe(inject.append("</body></html>"))
-    .pipe(dest(paths.md.dest) );
+        .pipe(markdown())
+        .pipe(inject.prepend("<html><head></head><body>"))
+        .pipe(inject.append("</body></html>"))
+        .pipe(dest(paths.md.dest));
 }
-function md_src(){
+
+function md_src() {
     return src(paths.md_src.src)
-    .pipe(markdown())
-    .pipe(inject.prepend("<html><head></head><body>"))
-    .pipe(inject.append("</body></html>"))
-    .pipe(dest(paths.md_src.src) );
+        .pipe(markdown())
+        .pipe(inject.prepend("<html><head></head><body>"))
+        .pipe(inject.append("</body></html>"))
+        .pipe(dest(paths.md_src.src));
 }
 
 /*
@@ -197,4 +200,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series( md, md_src, libs, jpg, png, gif, scss, css, models, html));
+exports.default = parallel(watchFiles, series(md, md_src, libs, jpg, png, gif, scss, css, models, html));
