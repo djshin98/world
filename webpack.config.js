@@ -9,6 +9,7 @@ const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
 
 module.exports = {
+    mode:"production",
     context: __dirname,
     entry: {
         CesiumApp: './src/index.js'
@@ -54,6 +55,9 @@ module.exports = {
             CESIUM_BASE_URL: JSON.stringify('')
         })
     ],
+    optimization: {
+        minimize: false
+    },
     devServer: {
         contentBase: path.join(__dirname, "dist")
     }

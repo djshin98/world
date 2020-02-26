@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "src/index.js",
-    "dependencies": {},
+    "dependencies": {
+        "bootstrap": "^4.4.1"
+    },
     "devDependencies": {
         "cesium": "^1.66.0",
         "copy-webpack-plugin": "^5.1.1",

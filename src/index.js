@@ -1,3 +1,25 @@
+var dom = {
+    $ : function (a){ return document.querySelector(a); }
+}
+
+// 객체를 만들때 고민
+// 1. singleton or not 
+window.onresize = function(){
+    var width = 200;
+    var section = dom.$("section");
+    var article = dom.$("article");
+    var map = dom.$("#map3d");
+    var viewWidth = window.innerWidth;
+    var viewHeight = window.innerHeight;
+    section.style.width = width + "px";
+    section.style.height = viewHeight + "px";
+    article.style.width = (viewWidth - width) + "px";
+    article.style.height = viewHeight + "px";
+    article.style.left = width + "px";
+    map.style.height = viewHeight + "px";
+}
+
+window.onresize();
 global.Cesium = require('cesium/Cesium');
 /*require('./css/main.css');*/
 require('cesium/Widgets/widgets.css');
@@ -6,7 +28,7 @@ Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOi
 
 var { load, pos } = require('./sample.js');
 
-global.viewer = new Cesium.Viewer('map', {
+global.viewer = new Cesium.Viewer('map3d', {
     //디폴트 레이어로 World_TMS 설정
     /*
     imageryProvider: Cesium.createTileMapServiceImageryProvider({
@@ -14,7 +36,7 @@ global.viewer = new Cesium.Viewer('map', {
         proxy: new Cesium.DefaultProxy(proxyUrl)
     }),
 */
-    shadows: true,
+    shadows: false,
     scene3DOnly: true, //3차원 화면으로 구성 // ,
     //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
     animation: false, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
@@ -36,7 +58,7 @@ global.viewer = new Cesium.Viewer('map', {
     maximumRenderTimeChange: Infinity
 
 });
-var container = '<a href="http://www.bing.com"><img src="img/facility.png" title="Bing Imagery"/></a>';
+//var container = '<a href="http://www.bing.com"><img src="img/facility.png" title="Bing Imagery"/></a>';
 //var credit = new Cesium.CreditDisplay(container, ' • ');
 //var credit = new Cesium.Credit('Title', 'img/facility.png', 'http://www.cesiumjs.org');
 //viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
