@@ -10,16 +10,30 @@ class Section {
             get({
                 url: content.page,
                 success: function(status, statusText, data) {
-                    dom.$(".section-view").innerHTML += "<div data-content='" + content.name + "' class='tab'>" + data + "</div>";
-
+                     let tv = dom.$("section>div.sidebar")[0];
+                     tv.innerHTML += "<a class='item' onclick='section.select(this,\""+content.name+"\")'>"
+                        + "<i class='"+content.icon+" icon'></i>"+content.name+"</a>";
+                    let sv = dom.$(".section-view")[0];
+                    sv.innerHTML += "<div data-content='" + content.name + "' class='tab'>" + data + "</div>";
                 }
             });
         });
     }
-    select(name) {
-
+    select(tag,name) {
+        let c = this.options.contents.find(function(c){ return name == c.name ? true : false; });
+        !c || (function(){
+            dom.$("section>div.sidebar a.item").forEach(function(d){ d.classList.remove("active"); });
+            tag.classList.add("active");
+            dom.$("section .section-view>.tab").forEach(function(d){ d.classList.remove("active"); });
+            dom.$("section .section-view>.tab[data-content="+name+"]")[0].classList.add("active");
+        })();
     }
-
+    resize(w,h){
+        let tw = 75;
+        let sv = dom.$(".section-view")[0];
+        sv.style.width = (w-tw) + "px";
+        sv.style.height = h + "px";
+    }
 }
 /*
 function Section(options) {

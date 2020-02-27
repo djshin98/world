@@ -11,6 +11,31 @@ section {
     position: absolute;
     width: 200px;
     height: 600px;
+
+    .ui.sidebar {
+        position: unset;
+    }
+    
+    .sidebar.ui.inverted.pointing.menu {
+        font-size: 0.8em;
+        overflow: hidden;
+        .active.item:after {
+            background: #ffffff !important
+        }
+    }
+    
+    .section-view {
+        margin-left: 75px;
+        background-color: #fff;
+        position: absolute;
+        top: 0px;
+        div.tab{
+            display:none;
+        }
+        div.tab.active{
+            display:unset;
+        }
+    }
 }
 
 article {
@@ -44,21 +69,3 @@ header {
     }
 }
 
-.ui.sidebar {
-    position: unset;
-}
-
-.sidebar.ui.inverted.pointing.menu {
-    font-size: 0.8em;
-    overflow: hidden;
-    .active.item:after {
-        background: #ffffff !important
-    }
-}
-
-.section-view {
-    margin-left: 75px;
-    background-color: #ddd;
-    position: absolute;
-    top: 0px;
-}

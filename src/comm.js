@@ -1,5 +1,5 @@
 var dom = {
-    $: function(a) { return document.querySelector(a); }
+    $: function(a) { return document.querySelectorAll(a); }
 }
 var tx = {
     send: function(options) {

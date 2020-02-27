@@ -1,19 +1,48 @@
 <div class="paragraph column">
 	<div class="search_a">
-		<input type="text" id="juso_search_text" name="" class="src_in" style="width: 80%"
-			placeholder="검색어를 입력하세요" />
-		<button type="button" class="btn_search" id="juso_search_btn" style="float: right">검색</button>
-	</div>
+		<div class="ui search">
+			<div class="ui icon input">
+			  <input class="prompt" type="text" placeholder="Search countries...">
+			  <i class="search icon"></i>
+			</div>
+			<div class="results"></div>
+		  </div>
+		</div>
 	<div class="">
 		
 		<div id="juso_result" class="rest_lo">
-			<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#search-place" aria-expanded="true" >명칭<label></label></button>
-				<div id="search-place" class="collapse in" aria-expanded="true" ><div class="search-div"></div><div class="pagination"></div></div>
-			<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#search-parcel" aria-expanded="true" >지번<label></label></button>
-				<div id="search-parcel" class="collapse in"><div class="search-div"></div><div class="pagination"></div></div>
-			<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#search-road" aria-expanded="true" >도로명<label></label></button>
-				<div id="search-road" class="collapse in"><div class="search-div"></div><div class="pagination"></div></div>
+			<div class="ui styled accordion">
+				<div class="title">
+				  <i class="dropdown icon"></i>
+				  명칭
+				</div>
+				<div class="content">
+				  <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+				</div>
+				<div class="title">
+				  <i class="dropdown icon"></i>
+				  지명
+				</div>
+				<div class="content">
+				  <p class="transition hidden">There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed of dog that they find to be compatible with their own lifestyle and desires from a companion.</p>
+				</div>
+				<div class="title active">
+				  <i class="dropdown icon"></i>
+				  도로명
+				</div>
+				<div class="content active">
+				  <p class="transition visible">Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
+				  <p class="transition visible">A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you to assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding your dog from a shelter, helps give a good home to a dog who may not find one so readily.</p>
+				</div>
+			  </div>
 		</div>
 		<!-- paging start -->
 	</div>
+	<script>
+	$('.paragraph .accordion').accordion({
+    selector: {
+      trigger: '.title .icon'
+    }
+  });
+	</script>
 </div>

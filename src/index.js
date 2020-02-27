@@ -20,10 +20,11 @@ global.tx = { get: get, post: post };
 window.onresize = function() {
     var width = 300;
     var headerHeight = 40;
-    var section = dom.$("section");
-    var article = dom.$("article");
-    var header = dom.$("header");
-    var map = dom.$("#map3d");
+
+    var sectionView = dom.$("section")[0];
+    var article = dom.$("article")[0];
+    var header = dom.$("header")[0];
+    var map = dom.$("#map3d")[0];
     var viewWidth = window.innerWidth;
     var viewHeight = window.innerHeight;
     var bodyHeight = viewHeight - headerHeight;
@@ -32,9 +33,9 @@ window.onresize = function() {
     header.style.width = viewWidth + "px";
     header.style.height = headerHeight + "px";
 
-    section.style.top = headerHeight + "px";
-    section.style.width = width + "px";
-    section.style.height = bodyHeight + "px";
+    sectionView.style.top = headerHeight + "px";
+    sectionView.style.width = width + "px";
+    sectionView.style.height = bodyHeight + "px";
 
     article.style.top = headerHeight + "px";
     article.style.left = width + "px";
@@ -42,6 +43,8 @@ window.onresize = function() {
     article.style.height = bodyHeight + "px";
 
     map.style.height = bodyHeight + "px";
+
+    section.resize(width,bodyHeight);
 }
 
 window.onresize();
