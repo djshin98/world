@@ -1,6 +1,27 @@
-var {get, post } = require("./comm");
+var { post } = require("./comm");
 
-function Section(app, option, callback) {
+class Section {
+    constructor(options) {
+        this.options = Object.assign({}, options);
+        this.load();
+    }
+    load() {
+        this.options.contents.forEach(function(content) {
+            post({
+                url: content.page,
+                success: function(status, statusText, data) {
+
+                }
+            });
+        });
+    }
+    select(name) {
+
+    }
+
+}
+/*
+function Section(options) {
     this.app = app;
     this.option = option;
     this.onLoad = callback;
@@ -134,15 +155,7 @@ function Section(app, option, callback) {
                     }
                 });
             });
-            /*	
-            	selectContent.tabs.some(function(tab,itab){
-            		if(tab.active == true){
-            			section.activeContent(tab);
-            			return true;
-            		}
-            		return false;
-            	});
-            	*/
+           
         }
     }
     this.findTab = function(tabid) {
@@ -172,18 +185,7 @@ function Section(app, option, callback) {
         //var content = $(this).data("content");
         $("#" + this.option.id + " ." + this.option.tabContentClass).hide();
         $("#" + this.option.id + " [data-content=" + tab.id + "]").show();
-        /*
-        $allLi.each(function(i,d){
-        	var tabId = $(d).data("content");
-        	if( tabId == tab.id ){
-        		tab.active = true;
-        	}else{
-        		tab = _this.findTab(tabId);
-        		if( !qU(tab) ){
-        			tab.active = false;
-        		}
-        	}
-        });*/
+       
         if (!qU(tab.parent)) {
             tab.parent.tabs.forEach(function(d, i) {
                 d.active = false;
@@ -235,4 +237,8 @@ function Section(app, option, callback) {
             animateSidebar();
         });
     }
+}
+*/
+module.exports = {
+    Section: Section
 }

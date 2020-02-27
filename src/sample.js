@@ -46,6 +46,10 @@ function getPos(viewer) {
     //위도
     pos.camera.lat = Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.latitude).toFixed(10));
 
+    pos.camera.position = new Cesium.Cartesian3();
+    pos.camera.direction = Cesium.Cartesian3.negate(Cesium.Cartesian3.UNIT_Z, new Cesium.Cartesian3());
+    pos.camera.up = Cesium.Cartesian3.clone(Cesium.Cartesian3.UNIT_Y);
+
     pos.center = {};
     pos.center.lng = Number(Cesium.Math.toDegrees(cartographic.longitude)); //라디안을 경위도 단위로 변경
     pos.center.lat = Number(Cesium.Math.toDegrees(cartographic.latitude)); //라디안을 경위도 단위로 변경

@@ -2,7 +2,16 @@
     window.global = window;
 }*/
 global.tx = require("./comm");
-
+var { Section } = require("./section");
+global.section = new Section({
+    contents: [
+        { name: "Home", icon: "home", page: "section/home.html" },
+        { name: "위치검색", icon: "search", page: "section/search.html" },
+        { name: "3d Map", icon: "map", page: "section/map.html" },
+        { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
+        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
+    ]
+});
 global.dom = {
     $: function(a) { return document.querySelector(a); }
 }
@@ -10,7 +19,7 @@ global.dom = {
 // 객체를 만들때 고민
 // 1. singleton or not 
 window.onresize = function() {
-    var width = 200;
+    var width = 300;
     var section = dom.$("section");
     var article = dom.$("article");
     var map = dom.$("#map3d");
