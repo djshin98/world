@@ -1,7 +1,7 @@
 /*if (!global) {
     window.global = window;
 }*/
-global.tx = require("./comm");
+var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
 global.section = new Section({
     contents: [
@@ -12,25 +12,36 @@ global.section = new Section({
         { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
     ]
 });
-global.dom = {
-    $: function(a) { return document.querySelector(a); }
-}
+global.dom = dom;
+global.tx = { get: get, post: post };
 
 // 객체를 만들때 고민
 // 1. singleton or not 
 window.onresize = function() {
     var width = 300;
+    var headerHeight = 40;
     var section = dom.$("section");
     var article = dom.$("article");
+    var header = dom.$("header");
     var map = dom.$("#map3d");
     var viewWidth = window.innerWidth;
     var viewHeight = window.innerHeight;
+    var bodyHeight = viewHeight - headerHeight;
+
+    header.style.top = "0px";
+    header.style.width = viewWidth + "px";
+    header.style.height = headerHeight + "px";
+
+    section.style.top = headerHeight + "px";
     section.style.width = width + "px";
-    section.style.height = viewHeight + "px";
-    article.style.width = (viewWidth - width) + "px";
-    article.style.height = viewHeight + "px";
+    section.style.height = bodyHeight + "px";
+
+    article.style.top = headerHeight + "px";
     article.style.left = width + "px";
-    map.style.height = viewHeight + "px";
+    article.style.width = (viewWidth - width) + "px";
+    article.style.height = bodyHeight + "px";
+
+    map.style.height = bodyHeight + "px";
 }
 
 window.onresize();

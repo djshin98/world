@@ -1,4 +1,4 @@
-var { post } = require("./comm");
+var { dom, get, post } = require("./comm");
 
 class Section {
     constructor(options) {
@@ -7,9 +7,10 @@ class Section {
     }
     load() {
         this.options.contents.forEach(function(content) {
-            post({
+            get({
                 url: content.page,
                 success: function(status, statusText, data) {
+                    dom.$(".section-view").innerHTML += "<div data-content='" + content.name + "' class='tab'>" + data + "</div>";
 
                 }
             });

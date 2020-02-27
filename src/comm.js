@@ -1,3 +1,6 @@
+var dom = {
+    $: function(a) { return document.querySelector(a); }
+}
 var tx = {
     send: function(options) {
         var xhr = new XMLHttpRequest();
@@ -5,7 +8,7 @@ var tx = {
             type: options.type || 'POST',
             dataType: options.dataType || "text",
             async: options.async || true,
-            data: options.data || {}
+            data: options.data || null
         });
 
         if (_options.progress) {
@@ -37,11 +40,11 @@ var tx = {
             xhr.setRequestHeader(header, _options.headers[header]);
         });
         xhr.responseType = _options.dataType;
-        xhr.send(_options.data);
+        xhr.send(options.data);
         return 0;
     },
     post: function(options) { return tx.send(Object.assign({}, options, { type: 'POST' })); },
     get: function(options) { return tx.send(Object.assign({}, options, { type: 'GET' })); }
 }
 
-module.exports = { get: tx.get, post: tx.post };
+module.exports = { dom: dom, get: tx.get, post: tx.post };
