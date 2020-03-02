@@ -39,7 +39,6 @@ class Section {
             dom.$("section>div.sidebar>a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(1);
 
-
         this.options.oncomplete && this.options.oncomplete();
     }
     select(tag, name) {
