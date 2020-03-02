@@ -1,48 +1,44 @@
 <div class="paragraph column">
-	<div class="search_a">
-		<div class="ui search">
-			<div class="ui icon input">
-			  <input class="prompt" type="text" placeholder="Search countries...">
-			  <i class="search icon"></i>
-			</div>
-			<div class="results"></div>
-		  </div>
+	<div class="ui search">
+		<div class="ui icon input">
+		  <input id="juso_search_text" class="prompt" type="text" placeholder="지명, 시군구명, 지번, ...">
+		  <i id="juso_search_btn" class="search icon"></i>
 		</div>
-	<div class="">
-		
-		<div id="juso_result" class="rest_lo">
-			<div class="ui styled accordion">
-				<div class="title">
-				  <i class="dropdown icon"></i>
-				  명칭
-				</div>
-				<div class="content">
-				  <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
-				</div>
-				<div class="title">
-				  <i class="dropdown icon"></i>
-				  지명
-				</div>
-				<div class="content">
-				  <p class="transition hidden">There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed of dog that they find to be compatible with their own lifestyle and desires from a companion.</p>
-				</div>
-				<div class="title active">
-				  <i class="dropdown icon"></i>
-				  도로명
-				</div>
-				<div class="content active">
-				  <p class="transition visible">Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
-				  <p class="transition visible">A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you to assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding your dog from a shelter, helps give a good home to a dog who may not find one so readily.</p>
-				</div>
-			  </div>
-		</div>
-		<!-- paging start -->
+	  </div>
 	</div>
-	<script>
-	$('.paragraph .accordion').accordion({
-    selector: {
-      trigger: '.title .icon'
-    }
-  });
-	</script>
+
+	<div class="ui horizontal divider"></div>
+	<div class="ui styled accordion">
+			<div class="title">
+			  <i class="dropdown icon"></i>
+			  명칭
+			</div>
+			<div id="search-place" class="content">
+			  <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+			</div>
+			<div class="title">
+			  <i class="dropdown icon"></i>
+			  지명
+			</div>
+			<div id="search-road" class="content">
+			  <p class="transition hidden">There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed of dog that they find to be compatible with their own lifestyle and desires from a companion.</p>
+			</div>
+			<div class="title active">
+			  <i class="dropdown icon"></i>
+			  도로명
+			</div>
+			<div id="search-parcel" class="content active">
+			  <p class="transition visible">Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
+			  <p class="transition visible">A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you to assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding your dog from a shelter, helps give a good home to a dog who may not find one so readily.</p>
+			</div>  
+		</div>
+	</div>
+	
 </div>
+<script>
+	$('.accordion').accordion({
+            selector: {
+            trigger: '.title .icon'
+            }
+        });
+</script>

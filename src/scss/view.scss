@@ -29,11 +29,15 @@ section {
         background-color: #fff;
         position: absolute;
         top: 0px;
+        padding:5px 5px 5px 0px;
         div.tab{
             display:none;
         }
         div.tab.active{
             display:unset;
+            .search.icon{
+                cursor:pointer;
+            }
         }
     }
 }
@@ -49,7 +53,7 @@ article {
 header {
     position: absolute;
     padding: 3px;
-    background-color: #000;
+    background-color: #414141;
     color: #fff;
     img {
         width: 34px;

@@ -1,6 +1,8 @@
-/*if (!global) {
-    window.global = window;
-}*/
+
+import {IxDatabase} from "./db";
+global.mydb = new IxDatabase(1);
+
+
 var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
 global.section = new Section({
@@ -10,7 +12,10 @@ global.section = new Section({
         { name: "3d Map", icon: "map", page: "section/map.html" },
         { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
         { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
-    ]
+    ],
+    onload:function(parentNode,data){
+        $(parentNode).append(data);
+    }
 });
 global.dom = dom;
 global.tx = { get: get, post: post };

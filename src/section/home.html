@@ -1,21 +1,20 @@
 <div class="paragraph column">
 	
-	<select name="droughtYear" id="field-drought-year" class="search_type leftselect" style="width: 100%" data-control="select" data-set="field-drought-year" data-dependency="field-drought-date" ></select>
-	<select name="droughtDate" id="field-drought-date" class="search_type leftselect" style="width: 100%" data-control="select" data-set="field-drought-tuesday" ></select>
-	
-	<div data-target="field-drought" data-control="buttonlist">
+	<div class="ui labeled button" tabindex="0">
+		<div class="ui red button">
+			<i class="heart icon"></i> Like
+		</div>
+		<a class="ui basic red left pointing label">
+		  1,048
+		</a>
+	</div>
+	<div class="ui labeled button" tabindex="0">
+		<div class="ui basic blue button">
+			<i class="fork icon"></i> Forks
+		</div>
+		<a class="ui basic left pointing blue label">
+		  1,048
+		</a>
 	</div>
 	
-	<div id="drought_result" class="rest_lo">
-		<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#drought-attention" aria-expanded="true"><i class="fa fa-square" aria-hidden="true" style="color:blue;"></i><label>관심 (토양유효수분율 46~60%)</label></button>
-			<div id="drought-attention" class="collapse in" aria-expanded="true"><div class="search-div" data-onresponse="message.map.droughtInfo.attention" ></div></div>
-		<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#drought-caution" aria-expanded="true"><i class="fa fa-square" aria-hidden="true" style="color:yellow;"></i><label>주의 (토양유효수분율 31~45%)</label> </button>
-			<div id="drought-caution" class="collapse in" aria-expanded="true"><div class="search-div" data-onresponse="message.map.droughtInfo.caution" > </div></div>
-		
-			<!-- aria-expanded="true" 옵션들어가 -->
-		<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#drought-alertness" aria-expanded="true"><i class="fa fa-square" aria-hidden="true" style="color: orange;"></i><label>경계 (토양유효수분율 16~30%)</label></button>
-			<div id="drought-alertness" class="collapse in" aria-expanded="true"><div class="search-div" data-onresponse="message.map.droughtInfo.alertness" ></div></div>
-		<button class="btn btn-lg btn-info collapsed" data-toggle="collapse" data-target="#drought-serious" aria-expanded="true"><i class="fa fa-square" aria-hidden="true" style="color: red;"></i><label>심각 (토양유효수분율 0~15%)</label></button>
-			<div id="drought-serious" class="collapse in" aria-expanded="true"><div class="search-div" data-onresponse="message.map.droughtInfo.serious" ></div></div>
-	</div>
 </div>
