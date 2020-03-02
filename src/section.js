@@ -37,7 +37,7 @@ class Section {
             section.select(dom.$("section>div.sidebar>a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
             dom.$("section>div.sidebar>a").forEach(d => { d.classList.remove("active"); });
             dom.$("section>div.sidebar>a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
-        })(1);
+        })(0);
 
         this.options.oncomplete && this.options.oncomplete();
     }

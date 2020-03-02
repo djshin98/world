@@ -1,3 +1,5 @@
+$handleColor:#737373;
+$sectionBackgroundColor:#fff;
 html,
 body {
     width: 100%;
@@ -11,32 +13,29 @@ section {
     position: absolute;
     width: 200px;
     height: 600px;
-
     .ui.sidebar {
         position: unset;
     }
-    
     .sidebar.ui.inverted.pointing.menu {
         font-size: 0.8em;
         overflow: hidden;
         .active.item:after {
-            background: #ffffff !important
+            background: $sectionBackgroundColor !important
         }
     }
-    
     .section-view {
         margin-left: 75px;
-        background-color: #fff;
+        background-color: $sectionBackgroundColor;
         position: absolute;
         top: 0px;
-        padding:5px 5px 5px 0px;
-        div.tab{
-            display:none;
+        padding: 5px 5px 5px 0px;
+        div.tab {
+            display: none;
         }
-        div.tab.active{
-            display:unset;
-            .search.icon{
-                cursor:pointer;
+        div.tab.active {
+            display: unset;
+            .search.icon {
+                cursor: pointer;
             }
         }
     }
@@ -48,6 +47,24 @@ article {
     left: 200px;
     width: 400px;
     height: 400px;
+    #door-handle {
+        position: absolute;
+        width: 15px;
+        height: 50px;
+        left: 0px;
+        top: 100px;
+        border-top: 1px solid $handleColor;
+        border-right: 1px solid $handleColor;
+        border-bottom: 1px solid $handleColor;
+        background-color: $sectionBackgroundColor;
+        z-index: 1;
+        cursor: pointer;
+        overflow: hidden;
+        i {
+            margin-top: 15px;
+            font-size: 0.8em;
+        }
+    }
 }
 
 header {
@@ -72,4 +89,3 @@ header {
         }
     }
 }
-

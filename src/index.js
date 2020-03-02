@@ -1,9 +1,34 @@
 import { IxDatabase } from "./db";
 global.mydb = new IxDatabase(1);
 
-
 var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
+global.windowLayout = {
+    header: {
+        height: 40
+    },
+    section: {
+        getWidth: function() {
+            if (windowLayout.section.visible) {
+                if (windowLayout.section.view.visible) {
+                    return windowLayout.section.width;
+                }
+                return windowLayout.section.width - windowLayout.section.view.width;
+            } else {
+                return 0;
+            }
+        },
+        width: 300,
+        visible: true,
+        view: {
+            width: 225,
+            visible: true
+        },
+        handle: {
+            height: 50
+        }
+    }
+}
 global.section = new Section({
     contents: [
         { name: "Home", icon: "home", page: "section/home.html" },
@@ -25,10 +50,12 @@ global.tx = { get: get, post: post };
 // 객체를 만들때 고민
 // 1. singleton or not 
 window.onresize = function() {
-    var width = 300;
-    var headerHeight = 40;
+    var width = windowLayout.section.getWidth();
+    var headerHeight = windowLayout.header.height;
+    var handleHeight = windowLayout.section.handle.height;
 
     var sectionView = dom.$("section")[0];
+    var sectionHandle = dom.$("#door-handle")[0];
     var article = dom.$("article")[0];
     var header = dom.$("header")[0];
     var map = dom.$("#map3d")[0];
@@ -44,6 +71,8 @@ window.onresize = function() {
     sectionView.style.width = width + "px";
     sectionView.style.height = bodyHeight + "px";
 
+    sectionHandle.style.top = ((bodyHeight / 2) - (handleHeight / 2)) + "px";
+
     article.style.top = headerHeight + "px";
     article.style.left = width + "px";
     article.style.width = (viewWidth - width) + "px";
@@ -51,10 +80,18 @@ window.onresize = function() {
 
     map.style.height = bodyHeight + "px";
 
-    section.resize(width, bodyHeight);
+    if (windowLayout.section.view.visible) {
+        section.resize(width, bodyHeight);
+    }
 }
 
 window.onresize();
+
+dom.$("#door-handle")[0].onclick = function(e) {
+    windowLayout.section.view.visible = !$(".section-view").is(":visible");
+    $(".section-view").transition('fade right');
+    window.onresize();
+};
 global.Cesium = require('cesium/Cesium');
 /*require('./css/main.css');*/
 require('cesium/Widgets/widgets.css');
