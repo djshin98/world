@@ -133,6 +133,17 @@ global.viewer = new Cesium.Viewer('map3d', {
     skyAtmosphere: new Cesium.SkyAtmosphere(),
 
 });
+/*
+import CesiumNavigation from "cesium-navigation-es6";
+
+var options = {};
+options.defaultResetView = Rectangle.fromDegrees(80, 22, 130, 50);
+options.enableCompass = true;
+options.enableZoomControls = false;
+options.enableDistanceLegend = false;
+options.enableCompassOuterRing = true;
+CesiumNavigation(viewer, options);
+*/
 
 function addKeyboardShortcuts() {
     const zoomAmount = 15,
@@ -187,11 +198,13 @@ addKeyboardShortcuts();
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;
 //viewer.extend(Cesium.viewerCesiumNavigationMixin, commandOpts);
-//var container = '<a href="http://www.bing.com"><img src="img/facility.png" title="Bing Imagery"/></a>';
-//var credit = new Cesium.CreditDisplay(container, ' • ');
-//var credit = new Cesium.Credit('Title', 'img/facility.png', 'http://www.cesiumjs.org');
-//viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
-//viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my other credit text' }));
+/*
+var container = '<a href="http://www.bing.com"><img src="img/facility.png" title="Bing Imagery"/></a>';
+var credit = new Cesium.CreditDisplay(container, ' • ');
+var credit = new Cesium.Credit('Title', 'img/facility.png', 'http://www.cesiumjs.org');
+viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
+viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my other credit text' }));
+*/
 
 load(viewer);
 global.pos = pos;
