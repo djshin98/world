@@ -1,5 +1,4 @@
-
-import {IxDatabase} from "./db";
+import { IxDatabase } from "./db";
 global.mydb = new IxDatabase(1);
 
 
@@ -13,10 +12,13 @@ global.section = new Section({
         { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
         { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
     ],
-    onload:function(parentNode,data){
-        $(parentNode).append(data);
+    onload: function(parentNode, data) {
+        $(data).each(function(i, d) {
+            $(parentNode).append(d);
+        });
     }
 });
+
 global.dom = dom;
 global.tx = { get: get, post: post };
 
@@ -49,7 +51,7 @@ window.onresize = function() {
 
     map.style.height = bodyHeight + "px";
 
-    section.resize(width,bodyHeight);
+    section.resize(width, bodyHeight);
 }
 
 window.onresize();
