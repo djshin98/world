@@ -6,6 +6,10 @@ class Section {
     constructor(options) {
         this.options = Object.assign({}, options);
         this.plugin = [];
+        this.path = {
+            sidebar: "section>.section-body>div.sidebar",
+            view: "section>.section-body>.section-view"
+        }
         this.load();
     }
     load() {
@@ -14,10 +18,10 @@ class Section {
             get({
                 url: content.page,
                 success: function(status, statusText, data) {
-                    let tv = dom.$("section>div.sidebar")[0];
+                    let tv = dom.$(_this.path.sidebar)[0];
                     tv.innerHTML += "<a class='item' onclick='section.select(this,\"" + content.name + "\")'>" +
                         "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
-                    let sv = dom.$(".section-view")[0];
+                    let sv = dom.$(_this.path.view)[0];
                     let tabNode = document.createElement("div");
                     tabNode.setAttribute("data-content", content.name);
                     tabNode.classList.add("tab");
@@ -33,26 +37,28 @@ class Section {
         });
     }
     _loadComplete() {
+        let _this = this;
         !(this.options.contents.length > 0) || (i => {
-            section.select(dom.$("section>div.sidebar>a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
-            dom.$("section>div.sidebar>a").forEach(d => { d.classList.remove("active"); });
-            dom.$("section>div.sidebar>a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
+            section.select(dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
+            dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
+            dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
 
         this.options.oncomplete && this.options.oncomplete();
     }
     select(tag, name) {
+        let _this = this;
         let c = this.options.contents.find(function(c) { return name == c.name ? true : false; });
         !c || (function() {
-            dom.$("section>div.sidebar a.item").forEach(function(d) { d.classList.remove("active"); });
+            dom.$(_this.path.sidebar + " a.item").forEach(function(d) { d.classList.remove("active"); });
             tag.classList.add("active");
-            dom.$("section .section-view>.tab").forEach(function(d) { d.classList.remove("active"); });
-            dom.$("section .section-view>.tab[data-content='" + name + "']")[0].classList.add("active");
+            dom.$(_this.path.view + ">.tab").forEach(function(d) { d.classList.remove("active"); });
+            dom.$(_this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
         })();
     }
     resize(w, h) {
-        let tw = 75;
-        let sv = dom.$(".section-view")[0];
+        let tw = 80;
+        let sv = dom.$(this.path.view)[0];
         sv.style.width = (w - tw) + "px";
         sv.style.height = h + "px";
     }

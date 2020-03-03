@@ -52,21 +52,22 @@ global.tx = { get: get, post: post };
 window.onresize = function() {
     var width = windowLayout.section.getWidth();
     var headerHeight = windowLayout.header.height;
+    var sectionHeaderHeight = 40;
     var handleHeight = windowLayout.section.handle.height;
 
     var sectionView = dom.$("section")[0];
     var sectionHandle = dom.$("#door-handle")[0];
     var article = dom.$("article")[0];
-    var header = dom.$("header")[0];
+    //var header = dom.$("header")[0];
     var map = dom.$("#map3d")[0];
     var viewWidth = window.innerWidth;
     var viewHeight = window.innerHeight;
     var bodyHeight = viewHeight - headerHeight;
-
-    header.style.top = "0px";
-    header.style.width = viewWidth + "px";
-    header.style.height = headerHeight + "px";
-
+    /*
+        header.style.top = "0px";
+        header.style.width = viewWidth + "px";
+        header.style.height = headerHeight + "px";
+    */
     sectionView.style.top = headerHeight + "px";
     sectionView.style.width = width + "px";
     sectionView.style.height = bodyHeight + "px";
@@ -100,6 +101,10 @@ Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOi
 
 var { load, pos } = require('./sample.js');
 
+var clock = new Cesium.Clock({
+    shouldAnimate: true
+});
+
 global.viewer = new Cesium.Viewer('map3d', {
     //디폴트 레이어로 World_TMS 설정
     /*
@@ -112,9 +117,9 @@ global.viewer = new Cesium.Viewer('map3d', {
     scene3DOnly: true, //3차원 화면으로 구성 // ,
     //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
     animation: false, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-    baseLayerPicker: false,
-    geocoder: false,
-    vrButton: false,
+    baseLayerPicker: true,
+    geocoder: true,
+    vrButton: true,
     homeButton: false,
     infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
     sceneModePicker: false,
@@ -131,8 +136,16 @@ global.viewer = new Cesium.Viewer('map3d', {
     navigationInstructionsInitiallyVisible: false,
     skyBox: new Cesium.SkyBox({}),
     skyAtmosphere: new Cesium.SkyAtmosphere(),
-
+    clockViewModel: new Cesium.ClockViewModel(clock)
 });
+
+navigationInitialization('map3d', viewer);
+
+viewer.dataSources.add(Cesium.KmlDataSource.load('models/ROK-Airspace.kmz', {
+    camera: viewer.scene.camera,
+    canvas: viewer.scene.canvas
+}));
+
 /*
 import CesiumNavigation from "cesium-navigation-es6";
 

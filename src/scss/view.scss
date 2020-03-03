@@ -1,5 +1,6 @@
 $handleColor:#b7b7b7;
 $sectionBackgroundColor:#7c8198;
+$sectionHeadHeight:70px;
 html,
 body {
     width: 100%;
@@ -14,30 +15,53 @@ section {
     width: 200px;
     height: 600px;
     background-color: $sectionBackgroundColor;
-    .ui.sidebar {
-        position: unset;
-    }
-    .sidebar.ui.inverted.pointing.menu {
-        font-size: 0.8em;
-        overflow: hidden;
-        .active.item:after {
-            background: $sectionBackgroundColor !important
-        }
-    }
-    .section-view {
-        margin-left: 75px;
-        background-color: $sectionBackgroundColor;
+    .section-head {
+        background-color: #99a0bf;
         border-right: 1px solid $handleColor;
-        position: absolute;
-        top: 0px;
-        padding: 5px 5px 5px 0px;
-        div.tab {
-            display: none;
+        height: $sectionHeadHeight;
+        padding: 1em;
+        .logo.icon {
+            img {
+                width: 2em;
+            }
         }
-        div.tab.active {
-            display: unset;
-            .search.icon {
-                cursor: pointer;
+        a {
+            color: #fff;
+            font-size: 1.6em;
+            vertical-align: middle;
+            b {
+                margin-left: 1em;
+            }
+        }
+    }
+    .section-body {
+        position: relative;
+        .ui.sidebar {
+            position: fixed;
+            top: $sectionHeadHeight;
+        }
+        .sidebar.ui.inverted.pointing.menu {
+            font-size: 0.8em;
+            overflow: hidden;
+            background: #6a6e82;
+            .active.item:after {
+                background: $sectionBackgroundColor !important
+            }
+        }
+        .section-view {
+            margin-left: 80px;
+            background-color: $sectionBackgroundColor;
+            border-right: 1px solid $handleColor;
+            position: absolute;
+            padding: 5px 5px 5px 0px;
+            div.tab {
+                display: none;
+            }
+            div.tab.active {
+                display: unset;
+                .search.icon {
+                    cursor: pointer;
+                }
             }
         }
     }

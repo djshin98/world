@@ -49,7 +49,7 @@ var paths = {
         dest: 'dist/img/'
     },
     model: {
-        src: 'src/models/**/*.glb',
+        src: ['src/models/**/*.glb', 'src/models/**/*.kmz'],
         dest: 'dist/models/'
     },
     js: {
