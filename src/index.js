@@ -5,7 +5,7 @@ var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
 global.windowLayout = {
     header: {
-        height: 40
+        height: 0
     },
     section: {
         getWidth: function() {
@@ -137,7 +137,7 @@ global.viewer = new Cesium.Viewer('map3d', {
 import CesiumNavigation from "cesium-navigation-es6";
 
 var options = {};
-options.defaultResetView = Rectangle.fromDegrees(80, 22, 130, 50);
+options.defaultResetView = Cesium.Rectangle.fromDegrees(80, 22, 130, 50);
 options.enableCompass = true;
 options.enableZoomControls = false;
 options.enableDistanceLegend = false;
@@ -193,7 +193,7 @@ function addKeyboardShortcuts() {
         }
     });
 }
-addKeyboardShortcuts();
+//addKeyboardShortcuts();
 
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;

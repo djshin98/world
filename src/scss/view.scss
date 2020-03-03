@@ -1,5 +1,5 @@
-$handleColor:#737373;
-$sectionBackgroundColor:#fff;
+$handleColor:#b7b7b7;
+$sectionBackgroundColor:#7c8198;
 html,
 body {
     width: 100%;
@@ -13,6 +13,7 @@ section {
     position: absolute;
     width: 200px;
     height: 600px;
+    background-color: $sectionBackgroundColor;
     .ui.sidebar {
         position: unset;
     }
@@ -26,6 +27,7 @@ section {
     .section-view {
         margin-left: 75px;
         background-color: $sectionBackgroundColor;
+        border-right: 1px solid $handleColor;
         position: absolute;
         top: 0px;
         padding: 5px 5px 5px 0px;
@@ -51,12 +53,13 @@ article {
         position: absolute;
         width: 15px;
         height: 50px;
-        left: 0px;
+        left: -1px;
         top: 100px;
         border-top: 1px solid $handleColor;
         border-right: 1px solid $handleColor;
         border-bottom: 1px solid $handleColor;
         background-color: $sectionBackgroundColor;
+        color: #fff;
         z-index: 1;
         cursor: pointer;
         overflow: hidden;
