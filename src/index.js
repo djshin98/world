@@ -141,10 +141,15 @@ global.viewer = new Cesium.Viewer('map3d', {
 
 navigationInitialization('map3d', viewer);
 
-viewer.dataSources.add(Cesium.KmlDataSource.load('models/ROK-Airspace.kmz', {
-    camera: viewer.scene.camera,
-    canvas: viewer.scene.canvas
-}));
+
+
+/*
+var dataSourceKmz = new Cesium.KmlDataSource();
+dataSourceKmz.load('models/ROK-Airspace.kmz');
+
+
+viewer.dataSources.add();
+*/
 
 /*
 import CesiumNavigation from "cesium-navigation-es6";

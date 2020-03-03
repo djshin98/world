@@ -1,1 +1,30 @@
-<button>공역 출동 </button>
+<div class="ui small buttons">
+    <button class="ui button" onclick="kmzShow()">공역 보기</button>
+    <div class="or"></div>
+    <button class="ui button active" onclick="kmzHide()">공역 감추기</button>
+</div>
+
+<script>
+    var dataSourceKmz = Cesium.KmlDataSource.load('models/ROK-Airspace.kmz', {
+        camera: viewer.scene.camera,
+        canvas: viewer.scene.canvas
+    });
+
+    function kmzShow() {
+        let kmz = viewer.dataSources.getByName("ROK-Airspace.kmz");
+        if (kmz.length > 0) {
+            viewer.dataSources.remove(kmz[0]);
+        }
+        viewer.dataSources.add(dataSourceKmz);
+        viewer.scene.requestRender();
+    }
+
+    function kmzHide() {
+        let kmz = viewer.dataSources.getByName("ROK-Airspace.kmz");
+        if (kmz.length > 0) {
+            viewer.dataSources.remove(kmz[0]);
+            viewer.scene.requestRender();
+        }
+    }
+    //@sourceURL="flight-area.js"
+</script>
