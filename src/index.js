@@ -35,7 +35,8 @@ global.section = new Section({
         { name: "위치검색", icon: "search", page: "section/search.html" },
         { name: "3d Map", icon: "map", page: "section/map.html" },
         { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
-        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
+        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
+        { name: "인공위성", icon: "space shuttle", page: "section/sat.html" }
     ],
     onload: function(parentNode, data) {
         $(data).each(function(i, d) {
@@ -128,16 +129,17 @@ global.viewer = new Cesium.Viewer('map3d', {
     infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
     sceneModePicker: false,
     selectionIndicator: false,
-    creditsDisplay: false,
+    creditsDisplay: true,
     //creditContainer: false,
     fullscreenButton: false,
-    timeline: false,
+    timeline: true,
     navigationHelpButton: false,
     terrainExaggeration: 1.0, //고도 기복 비율 조정
     shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
     requestRenderMode: true, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨
     maximumRenderTimeChange: Infinity,
     navigationInstructionsInitiallyVisible: false,
+    /*
     skyBox: new Cesium.SkyBox({}),
     skyAtmosphere: new Cesium.SkyAtmosphere(),
     clockViewModel: new Cesium.ClockViewModel(clock),
@@ -146,7 +148,7 @@ global.viewer = new Cesium.Viewer('map3d', {
         webgl: {
             preserveDrawingBuffer: true
         }
-    }
+    }*/
 });
 
 navigationInitialization('map3d', viewer);
@@ -223,7 +225,7 @@ function addKeyboardShortcuts() {
         //e.preventDefault();
     });
 }
-addKeyboardShortcuts();
+//addKeyboardShortcuts();
 
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;
@@ -276,7 +278,7 @@ viewer.canvas.addEventListener('click', function(e) {
 
         //alert(longitudeString + ', ' + latitudeString);
     } else {
-        alert('Globe was not picked');
+        //alert('Globe was not picked');
     }
 
 }, false);

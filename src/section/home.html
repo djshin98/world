@@ -1,3 +1,8 @@
+<style>
+    #cesium-bloom td {
+        color: aliceblue;
+    }
+</style>
 <div class="paragraph column">
 
     <button class="ui basic button">
@@ -27,7 +32,7 @@
 		</a>
     </div>
 
-    <div id="toolbar">
+    <div id="cesium-bloom">
         <table>
             <tbody>
                 <tr>
@@ -77,7 +82,7 @@
 
     Cesium.knockout.track(viewModel);
 
-    var toolbar = document.getElementById('toolbar');
+    var toolbar = document.getElementById('cesium-bloom');
     Cesium.knockout.applyBindings(viewModel, toolbar);
     for (var name in viewModel) {
         if (viewModel.hasOwnProperty(name)) {
