@@ -1,6 +1,8 @@
 //name:"도로명주소 검색 API",
 var { IxDatabase } = require("./db");
 var { dom, get } = require("./comm");
+var axios = require('axios');
+var service = require('./service/posts.js');
 
 class JusoSearch {
     constructor(options) {
@@ -45,6 +47,7 @@ class JusoSearch {
     }
     call(option) {
         option.countPerPage = 10;
+        option.currentPage = 1;
         let _this = this;
         this.options.types.forEach(function(t) {
             var opt = Object.assign({}, option);
@@ -58,7 +61,7 @@ class JusoSearch {
                 _this._call(t, opt, function(keyword, type, response) {
                     if (keyword) {
                         var str1 = "";
-
+                        var response = response.obj.response;
                         $("#" + type.id).empty();
                         if (response.result) {
                             var crs = response.result.crs;
@@ -98,29 +101,24 @@ class JusoSearch {
         });
     }
     _call(searchType, option, callback) {
-        let keyword = encodeURIComponent(option.keyword); //.replace(/\s/g, '');
+        // let keyword = encodeURIComponent(option.keyword); //.replace(/\s/g, '');
         let str = "http://api.vworld.kr/req/search?" +
             "key=" + this.options.key + "&" +
             "page=" + (option.currentPage ? 1 : option.currentPage) + "&" +
             "size=" + (option.countPerPage ? 10 : option.countPerPage) + "&" +
-            "query=" + keyword + "&" +
+            "query=" + option.keyword + "&" +
             "request=search&" +
             "type=" + searchType.type + "&" +
             "category=" + searchType.category + "&" +
             "format=json";
-
-        let url = encodeURIComponent(str);
-
-        get({
-            url: "map/juso.do?url=" + url,
-            dataType: "json",
-            success: function(status, textStatus, data) {
-                !callback || callback(option.keyword, searchType, data);
-            },
-            error: function(status, textStatus, evt) {
-                !callback || callback();
+        // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
+        axios.get("http://localhost:8081/map/juso", {
+            params: {
+                url: str
             }
-        });
+        }).then(
+            res => callback(option.keyword, searchType, res.data)
+        );
     }
     searchPlace(option) {
         option.searchType = this.options.types[0];
@@ -134,7 +132,7 @@ class JusoSearch {
         option.searchType = this.options.types[2];
         this.call(option);
     }
-    page(response) {
+    page(keyword, type, response) {
         let total = response.record.total;
         let totalPage = response.page.total;
         let recordPerPage = parseInt(response.page.size);
@@ -144,10 +142,10 @@ class JusoSearch {
         let strTest = "";
         strTest += "<p id='page_wrap' class='pagination'>";
         if (currentPage > pageSize * 2) {
-            strTest += "<button type='button' class='btn_first' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ></button>";
+            strTest += "<button type='button' class='btn_first' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ></button>";
         }
         if (currentPage - pageSize > 0) {
-            strTest += "<button type='button' class='btn_pre' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_pre' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ></button>";
         }
 
         strTest += "<span id='page_count'>";
@@ -155,19 +153,19 @@ class JusoSearch {
         let endPage = startPage + pageSize;
         for (var c = startPage; c < totalPage && c < endPage; c++) {
             if (currentPage == c + 1) {
-                strTest += "<a href='javascript:void(0);' style='color:red;' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
+                strTest += "<a href='javascript:void(0);' style='color:red;' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
             } else {
-                strTest += "<a href='javascript:void(0);' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
+                strTest += "<a href='javascript:void(0);' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
             }
 
         }
         strTest += "</span>";
 
         if (endPage < totalPage) {
-            strTest += "<button type='button' class='btn_next' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_next' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ></button>";
         }
         if ((endPage + pageSize) < totalPage) {
-            strTest += "<button type='button' class='btn_last' onclick='juso.pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_last' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ></button>";
         }
         strTest += "</p>";
 
