@@ -9,7 +9,7 @@ const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     context: __dirname,
     entry: {
         CesiumApp: './src/index.js'
