@@ -113,18 +113,19 @@ global.viewer = new Cesium.Viewer('map3d', {
             proxy: new Cesium.DefaultProxy(proxyUrl)
         }),
     */
-    imageryProvider: Cesium.createWorldImagery({
-        style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-    }),
+    /*
+     imageryProvider: Cesium.createWorldImagery({
+         style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+     }),*/
     shadows: false,
     scene3DOnly: true, //3차원 화면으로 구성 // ,
     //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
     animation: false, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
     baseLayerPicker: true,
     geocoder: true,
-    vrButton: true,
+    vrButton: false,
     homeButton: false,
-    infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
+    infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
     sceneModePicker: false,
     selectionIndicator: false,
     creditsDisplay: false,
@@ -227,5 +228,30 @@ viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
 viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my other credit text' }));
 */
 
-load(viewer);
+//load(viewer);
 global.pos = pos;
+
+viewer.camera.moveEnd.addEventListener(function() {
+    let obj = viewer.scene.camera;
+    mydb.set("scene", "camera", {
+        position: obj.position,
+        heading: obj.heading,
+        pitch: obj.pitch,
+        roll: obj.roll
+    });
+    console.log("save position")
+});
+
+mydb.get("scene", "camera", function(result) {
+    if (result.value) {
+        let obj = result.value;
+        viewer.camera.flyTo({
+            destination: obj.position,
+            orientation: {
+                heading: obj.heading,
+                pitch: obj.pitch,
+                roll: obj.roll
+            }
+        });
+    }
+});

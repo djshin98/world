@@ -16,6 +16,12 @@
     <button class="ui button active" onclick="kmzHideForSouthKorea()">감추기</button>
 </div>
 
+<div class="ui small buttons">
+    <button class="ui button" onclick="kmzShowForNorthKorea()">보기(북)</button>
+    <div class="or"></div>
+    <button class="ui button active" onclick="kmzHideForNorthKorea()">감추기(북)</button>
+</div>
+
 <script>
     var dataSourceKmz = Cesium.KmlDataSource.load('models/ROK-Airspace.kmz', {
         camera: viewer.scene.camera,
@@ -28,6 +34,11 @@
     });
 
     var dataSourceKmzSouthKorea = Cesium.KmlDataSource.load('models/South_Korea.kmz', {
+        camera: viewer.scene.camera,
+        canvas: viewer.scene.canvas
+    });
+
+    var dataSourceKmzNorthKorea = Cesium.KmlDataSource.load('models/North_Korea.kmz', {
         camera: viewer.scene.camera,
         canvas: viewer.scene.canvas
     });
@@ -73,5 +84,20 @@
             viewer.scene.requestRender();
         }
     }
+
+    function kmzShowForNorthKorea() {
+        kmzHideForNorthKorea();
+        viewer.dataSources.add(dataSourceKmzNorthKorea);
+        viewer.scene.requestRender();
+    }
+
+    function kmzHideForNorthKorea() {
+        let kmz = viewer.dataSources.getByName("North-Korea-Uncovered-18.kmz");
+        if (kmz.length > 0) {
+            viewer.dataSources.remove(kmz[0]);
+            viewer.scene.requestRender();
+        }
+    }
+
     //@sourceURL="flight-area.js"
 </script>
