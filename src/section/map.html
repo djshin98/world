@@ -1,34 +1,31 @@
-<div class="paragraph column">
-	<p class="tit">통계 종류</p>
-	<div data-target="stat-agri" data-control="buttonlist" data-process="application.extend.statAgri" >
-	</div>
-
-	<p class="tit">검색조건</p>
-	<table class="board_none">
-		<colgroup>
-			<col width="10%" />
-			<col width="90%" />
-		</colgroup>
-		<tr>
-			<th>항목 :</th>
-			<td><select name="" id="stat-agri-item" class="list" style="width: 100%">
-			</select></td>
-		</tr>
-		<tr>
-			<th>주기 :</th>
-			<td><select name="" id="stat-agri-term" class="list" style="width: 100%">
-					<option value="">년</option>
-			</select></td>
-		</tr>
-		<tr>
-			<th>연도 :</th>
-			<td><select name="" id="stat-agri-year" class="list" style="width: 100%">
-					<option value="2018">2018</option>
-			</select></td>
-		</tr>
-	</table>
-	<p class="cen_btn">
-		<button type="button" class="btn_stat" onclick="application.refreshStatisticsMap()" >통계지도</button>
-		<button type="button" class="btn_stat" onclick="application.refreshStatisticsMap(true)" >통계보고서</button>
-	</p>
+<div class="section-content">
+    <table class="ui celled striped table">
+        <thead>
+            <tr>
+                <th colspan="3">
+                    기본 정보
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2" class="ui label-text">커서</td>
+                <td class="">경도</td>
+                <td class="" onload="map.onMoveEnd().lng"></td>
+            </tr>
+            <tr>
+                <td class="bl">위도</td>
+                <td class="">10 hours ago</td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="ui label-text">중심<br/>좌표</td>
+                <td class="">경도</td>
+                <td class="">10 hours ago</td>
+            </tr>
+            <tr>
+                <td class="bl">위도</td>
+                <td class="">10 hours ago</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

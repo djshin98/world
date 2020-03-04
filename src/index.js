@@ -140,7 +140,13 @@ global.viewer = new Cesium.Viewer('map3d', {
     navigationInstructionsInitiallyVisible: false,
     skyBox: new Cesium.SkyBox({}),
     skyAtmosphere: new Cesium.SkyAtmosphere(),
-    clockViewModel: new Cesium.ClockViewModel(clock)
+    clockViewModel: new Cesium.ClockViewModel(clock),
+    contextOptions: {
+        id: "cesiumCanvas", //must
+        webgl: {
+            preserveDrawingBuffer: true
+        }
+    }
 });
 
 navigationInitialization('map3d', viewer);
@@ -213,9 +219,11 @@ function addKeyboardShortcuts() {
                 viewer.camera.zoomOut(zoomAmount);
                 break;
         }
+
+        //e.preventDefault();
     });
 }
-//addKeyboardShortcuts();
+addKeyboardShortcuts();
 
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;
@@ -239,7 +247,7 @@ viewer.camera.moveEnd.addEventListener(function() {
         pitch: obj.pitch,
         roll: obj.roll
     });
-    console.log("save position")
+    console.log("save position");
 });
 
 mydb.get("scene", "camera", function(result) {
@@ -255,3 +263,20 @@ mydb.get("scene", "camera", function(result) {
         });
     }
 });
+
+viewer.canvas.addEventListener('click', function(e) {
+    var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
+
+    var ellipsoid = viewer.scene.globe.ellipsoid;
+    var cartesian = viewer.camera.pickEllipsoid(mousePosition, ellipsoid);
+    if (cartesian) {
+        var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+        var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+        var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+
+        //alert(longitudeString + ', ' + latitudeString);
+    } else {
+        alert('Globe was not picked');
+    }
+
+}, false);
