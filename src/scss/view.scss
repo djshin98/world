@@ -63,6 +63,14 @@ section {
                     cursor: pointer;
                 }
             }
+            .section-content {
+                font-size: 0.8em;
+                table {
+                    .bl {
+                        border-left: 1px solid #e8e9e9;
+                    }
+                }
+            }
         }
     }
 }

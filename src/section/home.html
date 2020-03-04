@@ -1,20 +1,105 @@
+<style>
+    #cesium-bloom td {
+        color: aliceblue;
+    }
+</style>
 <div class="paragraph column">
-	
-	<div class="ui labeled button" tabindex="0">
-		<div class="ui red button">
-			<i class="heart icon"></i> Like
-		</div>
-		<a class="ui basic red left pointing label">
+
+    <button class="ui basic button">
+		<i class="icon print"></i>
+		Print
+	  </button>
+
+    <button class="ui basic button">
+		<i class="icon file image"></i>
+		Copy Screen
+	  </button>
+
+    <div class="ui labeled button" tabindex="0">
+        <div class="ui red button">
+            <i class="heart icon"></i> Like
+        </div>
+        <a class="ui basic red left pointing label">
 		  1,048
 		</a>
-	</div>
-	<div class="ui labeled button" tabindex="0">
-		<div class="ui basic blue button">
-			<i class="fork icon"></i> Forks
-		</div>
-		<a class="ui basic left pointing blue label">
+    </div>
+    <div class="ui labeled button" tabindex="0">
+        <div class="ui basic blue button">
+            <i class="fork icon"></i> Forks
+        </div>
+        <a class="ui basic left pointing blue label">
 		  1,048
 		</a>
-	</div>
-	
+    </div>
+
+    <div id="cesium-bloom">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Bloom</td>
+                    <td><input type="checkbox" data-bind="checked: show"></td>
+                </tr>
+                <tr>
+                    <td>Glow only</td>
+                    <td><input type="checkbox" data-bind="checked: glowOnly"></td>
+                </tr>
+                <tr>
+                    <td>Contrast</td>
+                    <td><input type="range" min="-255.0" max="255.0" step="0.01" data-bind="value: contrast, valueUpdate: 'input'"></td>
+                </tr>
+                <tr>
+                    <td>Brightness</td>
+                    <td><input type="range" min="-1.0" max="1.0" step="0.01" data-bind="value: brightness, valueUpdate: 'input'"></td>
+                </tr>
+                <tr>
+                    <td>Delta</td>
+                    <td><input type="range" min="1" max="5" step="0.01" data-bind="value: delta, valueUpdate: 'input'"></td>
+                </tr>
+                <tr>
+                    <td>Sigma</td>
+                    <td><input type="range" min="1" max="10" step="0.01" data-bind="value: sigma, valueUpdate: 'input'"></td>
+                </tr>
+                <tr>
+                    <td>Step Size</td>
+                    <td><input type="range" min="0" max="7" step="0.01" data-bind="value: stepSize, valueUpdate: 'input'"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
+
+<script>
+    var viewModel = {
+        show: true,
+        glowOnly: false,
+        contrast: 128,
+        brightness: -0.3,
+        delta: 1.0,
+        sigma: 3.78,
+        stepSize: 5.0
+    };
+
+    Cesium.knockout.track(viewModel);
+
+    var toolbar = document.getElementById('cesium-bloom');
+    Cesium.knockout.applyBindings(viewModel, toolbar);
+    for (var name in viewModel) {
+        if (viewModel.hasOwnProperty(name)) {
+            Cesium.knockout.getObservable(viewModel, name).subscribe(updatePostProcess);
+        }
+    }
+
+    function updatePostProcess() {
+        var bloom = viewer.scene.postProcessStages.bloom;
+        bloom.enabled = Boolean(viewModel.show);
+        bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
+        bloom.uniforms.contrast = Number(viewModel.contrast);
+        bloom.uniforms.brightness = Number(viewModel.brightness);
+        bloom.uniforms.delta = Number(viewModel.delta);
+        bloom.uniforms.sigma = Number(viewModel.sigma);
+        bloom.uniforms.stepSize = Number(viewModel.stepSize);
+        viewer.scene.requestRender();
+    }
+    updatePostProcess();
+</script>

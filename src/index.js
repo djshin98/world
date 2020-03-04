@@ -35,7 +35,8 @@ global.section = new Section({
         { name: "위치검색", icon: "search", page: "section/search.html" },
         { name: "3d Map", icon: "map", page: "section/map.html" },
         { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
-        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" }
+        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
+        { name: "인공위성", icon: "space shuttle", page: "section/sat.html" }
     ],
     onload: function(parentNode, data) {
         $(data).each(function(i, d) {
@@ -108,35 +109,46 @@ var clock = new Cesium.Clock({
 global.viewer = new Cesium.Viewer('map3d', {
     //디폴트 레이어로 World_TMS 설정
     /*
-    imageryProvider: Cesium.createTileMapServiceImageryProvider({
-        url: wUrl + '/World_TMS/',
-        proxy: new Cesium.DefaultProxy(proxyUrl)
-    }),
-*/
+        imageryProvider: Cesium.createTileMapServiceImageryProvider({
+            url: wUrl + '/World_TMS/',
+            proxy: new Cesium.DefaultProxy(proxyUrl)
+        }),
+    */
+    /*
+     imageryProvider: Cesium.createWorldImagery({
+         style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+     }),*/
     shadows: false,
     scene3DOnly: true, //3차원 화면으로 구성 // ,
     //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
     animation: false, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
     baseLayerPicker: true,
     geocoder: true,
-    vrButton: true,
+    vrButton: false,
     homeButton: false,
-    infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
+    infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
     sceneModePicker: false,
     selectionIndicator: false,
-    creditsDisplay: false,
+    creditsDisplay: true,
     //creditContainer: false,
     fullscreenButton: false,
-    timeline: false,
+    timeline: true,
     navigationHelpButton: false,
     terrainExaggeration: 1.0, //고도 기복 비율 조정
     shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
     requestRenderMode: true, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨
     maximumRenderTimeChange: Infinity,
     navigationInstructionsInitiallyVisible: false,
+    /*
     skyBox: new Cesium.SkyBox({}),
     skyAtmosphere: new Cesium.SkyAtmosphere(),
-    clockViewModel: new Cesium.ClockViewModel(clock)
+    clockViewModel: new Cesium.ClockViewModel(clock),
+    contextOptions: {
+        id: "cesiumCanvas", //must
+        webgl: {
+            preserveDrawingBuffer: true
+        }
+    }*/
 });
 
 navigationInitialization('map3d', viewer);
@@ -209,6 +221,8 @@ function addKeyboardShortcuts() {
                 viewer.camera.zoomOut(zoomAmount);
                 break;
         }
+
+        //e.preventDefault();
     });
 }
 //addKeyboardShortcuts();
@@ -224,5 +238,47 @@ viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
 viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my other credit text' }));
 */
 
-load(viewer);
+//load(viewer);
 global.pos = pos;
+
+viewer.camera.moveEnd.addEventListener(function() {
+    let obj = viewer.scene.camera;
+    mydb.set("scene", "camera", {
+        position: obj.position,
+        heading: obj.heading,
+        pitch: obj.pitch,
+        roll: obj.roll
+    });
+    console.log("save position");
+});
+
+mydb.get("scene", "camera", function(result) {
+    if (result.value) {
+        let obj = result.value;
+        viewer.camera.flyTo({
+            destination: obj.position,
+            orientation: {
+                heading: obj.heading,
+                pitch: obj.pitch,
+                roll: obj.roll
+            }
+        });
+    }
+});
+
+viewer.canvas.addEventListener('click', function(e) {
+    var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
+
+    var ellipsoid = viewer.scene.globe.ellipsoid;
+    var cartesian = viewer.camera.pickEllipsoid(mousePosition, ellipsoid);
+    if (cartesian) {
+        var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+        var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+        var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+
+        //alert(longitudeString + ', ' + latitudeString);
+    } else {
+        //alert('Globe was not picked');
+    }
+
+}, false);
