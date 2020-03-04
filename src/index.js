@@ -108,11 +108,14 @@ var clock = new Cesium.Clock({
 global.viewer = new Cesium.Viewer('map3d', {
     //디폴트 레이어로 World_TMS 설정
     /*
-    imageryProvider: Cesium.createTileMapServiceImageryProvider({
-        url: wUrl + '/World_TMS/',
-        proxy: new Cesium.DefaultProxy(proxyUrl)
+        imageryProvider: Cesium.createTileMapServiceImageryProvider({
+            url: wUrl + '/World_TMS/',
+            proxy: new Cesium.DefaultProxy(proxyUrl)
+        }),
+    */
+    imageryProvider: Cesium.createWorldImagery({
+        style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
     }),
-*/
     shadows: false,
     scene3DOnly: true, //3차원 화면으로 구성 // ,
     //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성

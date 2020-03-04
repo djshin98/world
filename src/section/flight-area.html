@@ -4,23 +4,70 @@
     <button class="ui button active" onclick="kmzHide()">공역 감추기</button>
 </div>
 
+<div class="ui small buttons">
+    <button class="ui button" onclick="kmzShowForJapan()">공역 보기(일)</button>
+    <div class="or"></div>
+    <button class="ui button active" onclick="kmzHideForJapan()">공역 감추기(일)</button>
+</div>
+
+<div class="ui small buttons">
+    <button class="ui button" onclick="kmzShowForSouthKorea()">보기</button>
+    <div class="or"></div>
+    <button class="ui button active" onclick="kmzHideForSouthKorea()">감추기</button>
+</div>
+
 <script>
     var dataSourceKmz = Cesium.KmlDataSource.load('models/ROK-Airspace.kmz', {
         camera: viewer.scene.camera,
         canvas: viewer.scene.canvas
     });
 
+    var dataSourceKmzForJapan = Cesium.KmlDataSource.load('models/japan.kmz', {
+        camera: viewer.scene.camera,
+        canvas: viewer.scene.canvas
+    });
+
+    var dataSourceKmzSouthKorea = Cesium.KmlDataSource.load('models/South_Korea.kmz', {
+        camera: viewer.scene.camera,
+        canvas: viewer.scene.canvas
+    });
+
     function kmzShow() {
-        let kmz = viewer.dataSources.getByName("ROK-Airspace.kmz");
-        if (kmz.length > 0) {
-            viewer.dataSources.remove(kmz[0]);
-        }
+        kmzHide();
         viewer.dataSources.add(dataSourceKmz);
         viewer.scene.requestRender();
     }
 
     function kmzHide() {
         let kmz = viewer.dataSources.getByName("ROK-Airspace.kmz");
+        if (kmz.length > 0) {
+            viewer.dataSources.remove(kmz[0]);
+            viewer.scene.requestRender();
+        }
+    }
+
+    function kmzShowForJapan() {
+        kmzHideForJapan();
+        viewer.dataSources.add(dataSourceKmzForJapan);
+        viewer.scene.requestRender();
+    }
+
+    function kmzHideForJapan() {
+        let kmz = viewer.dataSources.getByName("japan.sua");
+        if (kmz.length > 0) {
+            viewer.dataSources.remove(kmz[0]);
+            viewer.scene.requestRender();
+        }
+    }
+
+    function kmzShowForSouthKorea() {
+        kmzHideForSouthKorea();
+        viewer.dataSources.add(dataSourceKmzSouthKorea);
+        viewer.scene.requestRender();
+    }
+
+    function kmzHideForSouthKorea() {
+        let kmz = viewer.dataSources.getByName("South_Korea");
         if (kmz.length > 0) {
             viewer.dataSources.remove(kmz[0]);
             viewer.scene.requestRender();
