@@ -3,7 +3,7 @@
         color: aliceblue;
     }
 </style>
-<div class="paragraph column">
+<div class="section-content">
 
     <button class="ui basic button">
 		<i class="icon print"></i>
@@ -70,7 +70,7 @@
 </div>
 
 <script>
-    var viewModel = {
+    map.connectViewModel('cesium-bloom', {
         show: true,
         glowOnly: false,
         contrast: 128,
@@ -78,19 +78,7 @@
         delta: 1.0,
         sigma: 3.78,
         stepSize: 5.0
-    };
-
-    Cesium.knockout.track(viewModel);
-
-    var toolbar = document.getElementById('cesium-bloom');
-    Cesium.knockout.applyBindings(viewModel, toolbar);
-    for (var name in viewModel) {
-        if (viewModel.hasOwnProperty(name)) {
-            Cesium.knockout.getObservable(viewModel, name).subscribe(updatePostProcess);
-        }
-    }
-
-    function updatePostProcess() {
+    }, function(viewer, viewModel) {
         var bloom = viewer.scene.postProcessStages.bloom;
         bloom.enabled = Boolean(viewModel.show);
         bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
@@ -100,6 +88,5 @@
         bloom.uniforms.sigma = Number(viewModel.sigma);
         bloom.uniforms.stepSize = Number(viewModel.stepSize);
         viewer.scene.requestRender();
-    }
-    updatePostProcess();
+    });
 </script>

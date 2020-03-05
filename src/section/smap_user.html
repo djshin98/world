@@ -1,52 +1,42 @@
 <style>
-	table input[type="text"] {
-		width: 100%;
-	}
-	.uploadform .btn_stat {
-		background: #ddd;
-		font-color: #fff;
-	}
+    table input[type="text"] {
+        width: 100%;
+    }
+    
+    .uploadform .btn_stat {
+        background: #ddd;
+        font-color: #fff;
+    }
 </style>
-<script src="js/map/xlsx.full.min.js"></script>
 
-<div class="paragraph column">
-	<div class="">
-		<p class="tit">지역  구분</p>
-		<select name="userStatClass1" id="user-stat-class1" class="search_type leftselect" data-control="select" data-set="user-stat-class1" data-type="user-stat" data-dependency="user-stat-class2"  >
+<div class="section-content">
+    <div class="">
+        <p class="tit">지역 구분</p>
+        <select name="userStatClass1" id="user-stat-class1" class="search_type leftselect" data-control="select" data-set="user-stat-class1" data-type="user-stat" data-dependency="user-stat-class2">
 		</select>
-		<select name="userStatClass2" id="user-stat-class2" class="search_type rightselect" data-control="select" data-set="user-stat-class2" data-type="user-stat">
+        <select name="userStatClass2" id="user-stat-class2" class="search_type rightselect" data-control="select" data-set="user-stat-class2" data-type="user-stat">
 		</select>
 
-		<button type="button" class="btn_stat" onclick="return fnExcelReport('사용자 통계', $('#user-stat-class2').val() )" style="float:right">양식 다운로드</button>
-		
-		<p class="tit tit2">등록 방법</p>
-		<div data-control="radio" data-target="reg_method"></div>
-		<!-- paging start -->
-		<input id="user-stat-title" type="text" name="" class="src_in textsearch" placeholder="제목을 입력하세요">
-		<input id="user-stat-unit" type="text" name="" class="src_in textsearch" placeholder="통계 단위를 입력하세요">
+        <button type="button" class="btn_stat" onclick="return fnExcelReport('사용자 통계', $('#user-stat-class2').val() )" style="float:right">양식 다운로드</button>
 
-		<div data-onresponse="reg_method2" data-select="directly">
-			<div data-control="table" data-subscribe="stat-user-section" data-target="agri-user-table" data-exceltable="true" data-editable="true" ></div>
-		</div>
+        <p class="tit tit2">등록 방법</p>
+        <div data-control="radio" data-target="reg_method"></div>
+        <!-- paging start -->
+        <input id="user-stat-title" type="text" name="" class="src_in textsearch" placeholder="제목을 입력하세요">
+        <input id="user-stat-unit" type="text" name="" class="src_in textsearch" placeholder="통계 단위를 입력하세요">
 
-		<input type="file" id="excelFile" style="display:none;"/>
+        <div data-onresponse="reg_method2" data-select="directly">
+            <div data-control="table" data-subscribe="stat-user-section" data-target="agri-user-table" data-exceltable="true" data-editable="true"></div>
+        </div>
 
-		<p class="cen_btn">
-			<button type="button" class="btn_stat" onclick="application.userStatMap({key:'statuser',title:'통계 보고서', icon:'fa fa-info-circle'});" >통계 지도</button>
-			<button type="button" class="btn_stat" onclick="application.userStatMap({key:'statuser',icon:'fa fa-info-circle',popup:true});" >통계 보고서</button>
-		</p>
+        <input type="file" id="excelFile" style="display:none;" />
 
-	</div>
+        <p class="cen_btn">
+            <button type="button" class="btn_stat" onclick="application.userStatMap({key:'statuser',title:'통계 보고서', icon:'fa fa-info-circle'});">통계 지도</button>
+            <button type="button" class="btn_stat" onclick="application.userStatMap({key:'statuser',icon:'fa fa-info-circle',popup:true});">통계 보고서</button>
+        </p>
+
+    </div>
 </div>
 <script>
-IADatabase.get("user-stat-title", function(v){
-	if( !qU(v) ){
-		$("#user-stat-title").val( v.value );
-	} 
-});
-IADatabase.get("user-stat-unit", function(v){
-	if( !qU(v) ){
-		$("#user-stat-unit").val( v.value );
-	} 
-});
 </script>

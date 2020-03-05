@@ -67,6 +67,9 @@ class Section {
             this.plugin[name] = new JusoSearch(options);
         }
     }
+    getPlugin(name) {
+        return this.plugin[name];
+    }
 }
 module.exports = {
     Section: Section

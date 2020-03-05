@@ -17,7 +17,8 @@ class JusoSearch {
                 { index: 0, id: "search-place", type: "place", category: "" },
                 { index: 1, id: "search-road", type: "address", category: "road" },
                 { index: 2, id: "search-parcel", type: "address", category: "parcel" }
-            ]
+            ],
+            countPerPage: 10
         }, options);
         this.db = new IxDatabase(1, "juso");
         this.init();
@@ -26,8 +27,9 @@ class JusoSearch {
         let _this = this;
         this.db.get("juso", this.options.name, function(result) {
             !result || !result.value || (function(result) {
-                dom.$("#" + _this.options.ctrl.input).value = result.value;
+                $("#" + _this.options.ctrl.input).val(result.value);
                 _this.call({ keyword: result.value });
+                $(".accordion>.title:first-child>i").trigger("click");
             })(result);
         });
         dom.$("#" + _this.options.ctrl.button)[0].onclick = function() {
@@ -36,6 +38,7 @@ class JusoSearch {
         dom.$("#" + _this.options.ctrl.input)[0].onkeypress = function(e) {
             !(e.which == 13) || _this._callByTrigger();
         }
+
     }
     _callByTrigger() {
         let _this = this;
@@ -46,13 +49,16 @@ class JusoSearch {
         })(txt.trim());
     }
     call(option) {
-        option.countPerPage = 10;
-        option.currentPage = 1;
+        option.countPerPage = option.countPerPage || this.options.countPerPage;
+        option.currentPage = option.currentPage || 1;
         let _this = this;
         this.options.types.forEach(function(t) {
             var opt = Object.assign({}, option);
 
             if (!opt.searchType || opt.searchType.id == t.id) {
+                if (!opt.searchType) {
+                    $(".accordion>.title:first-child>i").trigger("click");
+                }
                 /*
                 if (qU(opt.refreshPagination)) {
                     $("[data-target='#" + t.id + "']>label").html("<img src='img/wait.gif' height='20'/>");
@@ -65,31 +71,30 @@ class JusoSearch {
                         $("#" + type.id).empty();
                         if (response.result) {
                             var crs = response.result.crs;
+
                             response.result.items.forEach(function(d, i) {
-                                str1 += "<dl class='juso_result_item' data-cache='" + i + "' onclick='application.openedMaps(function(omap){ omap.move(17," + d.point.x + "," + d.point.y + ",\"" + crs + "\",true); });'>";
+                                str1 += "<div class='item'>";
+                                str1 += "<i class='map marker icon'></i>";
+                                str1 += "<div class='juso' onclick='map.flyTo(" + d.point.x + ", " + d.point.y + ")'>";
                                 if (t.type == "place") {
                                     var title = d.title ? d.title : (d.bldnm ? d.bldnm : "");
-                                    str1 += "<dt><i class='fa fa-map-marker' aria-hidden='true'></i>&nbsp;" + title + "</dt>";
-                                    str1 += "<dd>";
-                                    str1 += "<i class='fa fa-home' aria-hidden='true'></i>&nbsp;<span>" + d.address.parcel + "</span>";
-                                    str1 += "</dd>";
-                                    str1 += "<dd>";
-                                    str1 += "<i class='fa fa-road' aria-hidden='true'></i>&nbsp;<span>" + d.address.road + "</span>";
-                                    str1 += "</dd>";
-                                } else if (t.category == "road") {
-                                    str1 += "<dt><i class='fa fa-road' aria-hidden='true'></i>&nbsp;" + d.address.road + "</dt>";
+                                    str1 += "<a class='header'>" + title + "</a>";
+                                    str1 += "<div class='description'>" + d.address.parcel + "</div>";
+                                } else if (t.type == "road") {
+                                    str1 += "<a class='header'>" + d.address.road + "</a>";
                                 } else {
-                                    str1 += "<dt><i class='fa fa-home' aria-hidden='true'></i>&nbsp;" + d.address.parcel + "</dt>";
+                                    str1 += "<a class='header'>" + d.address.parcel + "</a>";
                                 }
-                                str1 += "</dl>";
-
+                                str1 += "</div>"
+                                str1 += "</div><br/>"
                             });
                             $("#" + type.id).append(str1);
+                            $("#" + type.id + "-count").html("(" + response.record.total + "&nbsp;건)");
                             _this.page(keyword, type, response);
                         }
-                        if (opt.refreshPagination) {
-                            $("[data-target='#" + type.id + "']>label").text("(" + response.record.total + ")");
-                        }
+                        //if (opt.refreshPagination) {
+                        //    $("[data-target='#" + type.id + "']>label").text("(" + response.record.total + ")");
+                        //}
 
                     } else {
                         $("#" + t.id).empty();
@@ -104,20 +109,24 @@ class JusoSearch {
         // let keyword = encodeURIComponent(option.keyword); //.replace(/\s/g, '');
         let str = "http://api.vworld.kr/req/search?" +
             "key=" + this.options.key + "&" +
-            "page=" + (option.currentPage ? 1 : option.currentPage) + "&" +
-            "size=" + (option.countPerPage ? 10 : option.countPerPage) + "&" +
+            "page=" + (option.currentPage ? option.currentPage : 1) + "&" +
+            "size=" + (option.countPerPage ? option.countPerPage : 10) + "&" +
             "query=" + option.keyword + "&" +
             "request=search&" +
             "type=" + searchType.type + "&" +
             "category=" + searchType.category + "&" +
             "format=json";
         // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
+        var _this = this;
         axios.get("http://localhost:8081/map/juso", {
             params: {
                 url: str
             }
         }).then(
-            res => callback(option.keyword, searchType, res.data)
+            res => {
+                callback(option.keyword, searchType, res.data);
+                _this.db.set("juso", _this.options.name, option.keyword);
+            }
         );
     }
     searchPlace(option) {
@@ -140,34 +149,35 @@ class JusoSearch {
         let currentPage = parseInt(response.page.current);
 
         let strTest = "";
-        strTest += "<p id='page_wrap' class='pagination'>";
+        strTest += "<div class='ui horizontal divider'></div>";
+        strTest += "<div id='page_wrap' class='pagination ui small basic icon buttons'>";
         if (currentPage > pageSize * 2) {
-            strTest += "<button type='button' class='btn_first' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ></button>";
+            strTest += "<button type='button' class='btn_first ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ><i class='ui angle double left icon'></i></button>";
         }
         if (currentPage - pageSize > 0) {
-            strTest += "<button type='button' class='btn_pre' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_pre ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ><i class='ui angle left icon'></i></button>";
         }
 
-        strTest += "<span id='page_count'>";
+        //strTest += "<span id='page_count'>";
         let startPage = parseInt((currentPage - 1) / pageSize) * pageSize;
         let endPage = startPage + pageSize;
         for (var c = startPage; c < totalPage && c < endPage; c++) {
             if (currentPage == c + 1) {
-                strTest += "<a href='javascript:void(0);' style='color:red;' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
+                strTest += "<button class='ui button' style='color:red;' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
             } else {
-                strTest += "<a href='javascript:void(0);' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</a>";
+                strTest += "<button class='ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
             }
 
         }
-        strTest += "</span>";
+        //strTest += "</span>";
 
         if (endPage < totalPage) {
-            strTest += "<button type='button' class='btn_next' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_next ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ><i class=' ui angle right icon'></i></button>";
         }
         if ((endPage + pageSize) < totalPage) {
-            strTest += "<button type='button' class='btn_last' onclick='JusoSearch.pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ></button>";
+            strTest += "<button type='button' class='btn_last ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ><i class=' ui angle double right icon'></i></button>";
         }
-        strTest += "</p>";
+        strTest += "</div>";
 
         $("#" + type.id).append(strTest);
         $("#" + type.id + ">label").text("(" + total + ")");
