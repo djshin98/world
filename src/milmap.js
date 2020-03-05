@@ -137,6 +137,7 @@ class MilMap {
         Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
         var _viewModel = viewModel;
         var _this = this;
+        
         for (var name in viewModel) {
             if (viewModel.hasOwnProperty(name)) {
                 Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
