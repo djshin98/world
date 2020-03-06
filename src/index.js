@@ -57,7 +57,7 @@ class Application {
                 { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
-                { name: "animation", icon: "space shuttle", page: "section/animation.html" }
+                { name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {
