@@ -3,7 +3,7 @@ var { dom, get, post } = require("./comm");
 var { JusoSearch } = require("./juso_search");
 
 class Section {
-    constructor(app,options) {
+    constructor(app, options) {
         this.app = app;
         this.options = Object.assign({}, options);
         this.plugin = [];
@@ -20,7 +20,7 @@ class Section {
                 url: content.page,
                 success: function(status, statusText, data) {
                     let tv = dom.$(_this.path.sidebar)[0];
-                    tv.innerHTML += "<a class='item' onclick='section.select(this,\"" + content.name + "\")'>" +
+                    tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
                         "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
                     let sv = dom.$(_this.path.view)[0];
                     let tabNode = document.createElement("div");
@@ -40,7 +40,7 @@ class Section {
     _loadComplete() {
         let _this = this;
         !(this.options.contents.length > 0) || (i => {
-            section.select(dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
+            this.app.section.select(dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
@@ -71,11 +71,11 @@ class Section {
     getPlugin(name) {
         return this.plugin[name];
     }
-    showView(bshow){
-        if( bshow ){
+    showView(bshow) {
+        if (bshow) {
             //$(".section-view").show();
             $(".section-head>a>b").show();
-        }else{
+        } else {
             //$(".section-view").hide();
             $(".section-head>a>b").hide();
         }
@@ -84,9 +84,9 @@ class Section {
         this.app.onResize();
         //_this.windowLayout.section.view.visible = !$(".section-view").is(":visible");
         //$(".section-view").transition('fade right');
-        
-            
-            
+
+
+
     }
 }
 module.exports = {
