@@ -149,6 +149,59 @@ class MilMap {
     }
 }
 
+
+function addKeyboardShortcuts() {
+    const zoomAmount = 15,
+        rotateAmount = 5;
+    document.addEventListener('keydown', e => {
+        // 87 -> W
+        // 65 -> A
+        // 83 -> S
+        // 68 -> D
+        // 38 -> up
+        // 37 -> left
+        // 40 -> down
+        // 39 -> right
+        // 81 -> Q
+        // 69 -> E
+        // 107 -> + (add)
+        // 109 -> - (sub)
+        switch (e.keyCode) {
+            case 87:
+            case 38:
+                viewer.camera.moveForward(rotateAmount);
+                break;
+            case 81:
+                viewer.camera.moveUp(rotateAmount);
+                break;
+            case 69:
+                viewer.camera.moveDown(rotateAmount);
+                break;
+            case 65:
+            case 37:
+                viewer.camera.moveLeft(rotateAmount);
+                break;
+            case 83:
+            case 40:
+                viewer.camera.moveBackward(rotateAmount);
+                break;
+            case 68:
+            case 39:
+                viewer.camera.moveRight(rotateAmount);
+                break;
+            case 107:
+                viewer.camera.zoomIn(zoomAmount);
+                break;
+            case 109:
+                viewer.camera.zoomOut(zoomAmount);
+                break;
+        }
+
+        //e.preventDefault();
+    });
+}
+//addKeyboardShortcuts();
+
 module.exports = {
     MilMap: MilMap
 };

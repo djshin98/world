@@ -3,181 +3,113 @@ var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
 var { MilMap } = require("./milmap");
 
-global.windowLayout = {
-    header: {
-        height: 0
-    },
-    section: {
-        getWidth: function() {
-            if (windowLayout.section.visible) {
-                if (windowLayout.section.view.visible) {
-                    return windowLayout.section.width;
-                }
-                return windowLayout.section.width - windowLayout.section.view.width;
-            } else {
-                return 0;
-            }
-        },
-        width: 300,
-        visible: true,
-        view: {
-            width: 225,
-            visible: true
-        },
-        handle: {
-            height: 50
-        }
-    }
-}
-global.section = new Section({
-    contents: [
-        { name: "Home", icon: "home", page: "section/home.html" },
-        { name: "위치검색", icon: "search", page: "section/search.html" },
-        { name: "3d Map", icon: "map", page: "section/map.html" },
-        { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
-        { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
-        { name: "인공위성", icon: "space shuttle", page: "section/sat.html" }
-    ],
-    onload: function(parentNode, data) {
-        $(data).each(function(i, d) {
-            $(parentNode).append(d);
-        });
-    }
-});
-
 global.dom = dom;
 global.tx = { get: get, post: post };
 
-// 객체를 만들때 고민
-// 1. singleton or not 
-window.onresize = function() {
-    var width = windowLayout.section.getWidth();
-    var headerHeight = windowLayout.header.height;
-    var sectionHeaderHeight = 40;
-    var handleHeight = windowLayout.section.handle.height;
-
-    var sectionView = dom.$("section")[0];
-    var sectionHandle = dom.$("#door-handle")[0];
-    var article = dom.$("article")[0];
-    //var header = dom.$("header")[0];
-    var map = dom.$("#map3d")[0];
-    var viewWidth = window.innerWidth;
-    var viewHeight = window.innerHeight;
-    var bodyHeight = viewHeight - headerHeight;
-    /*
-        header.style.top = "0px";
-        header.style.width = viewWidth + "px";
-        header.style.height = headerHeight + "px";
-    */
-    sectionView.style.top = headerHeight + "px";
-    sectionView.style.width = width + "px";
-    sectionView.style.height = bodyHeight + "px";
-
-    sectionHandle.style.top = ((bodyHeight / 2) - (handleHeight / 2)) + "px";
-
-    article.style.top = headerHeight + "px";
-    article.style.left = width + "px";
-    article.style.width = (viewWidth - width) + "px";
-    article.style.height = bodyHeight + "px";
-
-    map.style.height = bodyHeight + "px";
-
-    if (windowLayout.section.view.visible) {
-        section.resize(width, bodyHeight);
+class Application{
+    constructor(){
+        this.windowLayout = {
+            header: {
+                height: 0
+            },
+            section: {
+                getWidth: function() {
+                    if (windowLayout.section.visible) {
+                        if (windowLayout.section.view.visible) {
+                            return windowLayout.section.width;
+                        }
+                        return windowLayout.section.width - windowLayout.section.view.width;
+                    } else {
+                        return 0;
+                    }
+                },
+                width: 300,
+                visible: true,
+                view: {
+                    width: 225,
+                    visible: true
+                },
+                handle: {
+                    height: 50
+                }
+            }
+        }
+        this.section = this.createSection();
+        window.onresize = this.onResize;
+        window.onresize();
+        this.init();
+    }
+    init(){
+        var _this = this;
+        dom.$("#door-handle")[0].onclick = function(e) {
+            _this.section.showView(!_this.windowLayout.section.view.visible);
+        };
+    }
+    createSection(){
+        return new Section(this,{
+            contents: [
+                { name: "Home", icon: "home", page: "section/home.html" },
+                { name: "위치검색", icon: "search", page: "section/search.html" },
+                { name: "3d Map", icon: "map", page: "section/map.html" },
+                { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
+                { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
+                { name: "인공위성", icon: "space shuttle", page: "section/sat.html" }
+            ],
+            onload: function(parentNode, data) {
+                $(data).each(function(i, d) {
+                    $(parentNode).append(d);
+                });
+            }
+        });
+    }
+    onResize(){
+        var width = this.windowLayout.section.getWidth();
+        var headerHeight = this.windowLayout.header.height;
+        var sectionHeaderHeight = 40;
+        var handleHeight = this.windowLayout.section.handle.height;
+    
+        var sectionView = dom.$("section")[0];
+        var sectionHandle = dom.$("#door-handle")[0];
+        var article = dom.$("article")[0];
+        //var header = dom.$("header")[0];
+        var map = dom.$("#map3d")[0];
+        var viewWidth = window.innerWidth;
+        var viewHeight = window.innerHeight;
+        var bodyHeight = viewHeight - headerHeight;
+        /*
+            header.style.top = "0px";
+            header.style.width = viewWidth + "px";
+            header.style.height = headerHeight + "px";
+        */
+        sectionView.style.top = headerHeight + "px";
+        sectionView.style.width = width + "px";
+        sectionView.style.height = bodyHeight + "px";
+    
+        sectionHandle.style.top = ((bodyHeight / 2) - (handleHeight / 2)) + "px";
+    
+        article.style.top = headerHeight + "px";
+        article.style.left = width + "px";
+        article.style.width = (viewWidth - width) + "px";
+        article.style.height = bodyHeight + "px";
+    
+        map.style.height = bodyHeight + "px";
+    
+        if (this.windowLayout.section.view.visible) {
+            this.section.resize(width, bodyHeight);
+        }
     }
 }
 
-window.onresize();
-
-dom.$("#door-handle")[0].onclick = function(e) {
-    windowLayout.section.view.visible = !$(".section-view").is(":visible");
-    $(".section-view").transition('fade right');
-    window.onresize();
-};
-
-var { load, pos } = require('./sample.js');
+global.app = new Application();
 
 global.map = new MilMap({
     map3: {
         id: "map3d"
     }
 });
+//var { load, pos } = require('./sample.js');
+//global.pos = pos;
 
-
-
-
-
-/*
-var dataSourceKmz = new Cesium.KmlDataSource();
-dataSourceKmz.load('models/ROK-Airspace.kmz');
-
-
-viewer.dataSources.add();
-*/
-
-/*
-import CesiumNavigation from "cesium-navigation-es6";
-
-var options = {};
-options.defaultResetView = Cesium.Rectangle.fromDegrees(80, 22, 130, 50);
-options.enableCompass = true;
-options.enableZoomControls = false;
-options.enableDistanceLegend = false;
-options.enableCompassOuterRing = true;
-CesiumNavigation(viewer, options);
-*/
-
-function addKeyboardShortcuts() {
-    const zoomAmount = 15,
-        rotateAmount = 5;
-    document.addEventListener('keydown', e => {
-        // 87 -> W
-        // 65 -> A
-        // 83 -> S
-        // 68 -> D
-        // 38 -> up
-        // 37 -> left
-        // 40 -> down
-        // 39 -> right
-        // 81 -> Q
-        // 69 -> E
-        // 107 -> + (add)
-        // 109 -> - (sub)
-        switch (e.keyCode) {
-            case 87:
-            case 38:
-                viewer.camera.moveForward(rotateAmount);
-                break;
-            case 81:
-                viewer.camera.moveUp(rotateAmount);
-                break;
-            case 69:
-                viewer.camera.moveDown(rotateAmount);
-                break;
-            case 65:
-            case 37:
-                viewer.camera.moveLeft(rotateAmount);
-                break;
-            case 83:
-            case 40:
-                viewer.camera.moveBackward(rotateAmount);
-                break;
-            case 68:
-            case 39:
-                viewer.camera.moveRight(rotateAmount);
-                break;
-            case 107:
-                viewer.camera.zoomIn(zoomAmount);
-                break;
-            case 109:
-                viewer.camera.zoomOut(zoomAmount);
-                break;
-        }
-
-        //e.preventDefault();
-    });
-}
-//addKeyboardShortcuts();
 
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;
@@ -191,4 +123,3 @@ viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my ot
 */
 
 //load(viewer);
-global.pos = pos;

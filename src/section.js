@@ -3,7 +3,8 @@ var { dom, get, post } = require("./comm");
 var { JusoSearch } = require("./juso_search");
 
 class Section {
-    constructor(options) {
+    constructor(app,options) {
+        this.app = app;
         this.options = Object.assign({}, options);
         this.plugin = [];
         this.path = {
@@ -69,6 +70,23 @@ class Section {
     }
     getPlugin(name) {
         return this.plugin[name];
+    }
+    showView(bshow){
+        if( bshow ){
+            //$(".section-view").show();
+            $(".section-head>a>b").show();
+        }else{
+            //$(".section-view").hide();
+            $(".section-head>a>b").hide();
+        }
+        $(".section-view").transition('fade right');
+
+        this.app.onResize();
+        //_this.windowLayout.section.view.visible = !$(".section-view").is(":visible");
+        //$(".section-view").transition('fade right');
+        
+            
+            
     }
 }
 module.exports = {
