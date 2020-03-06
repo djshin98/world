@@ -56,7 +56,8 @@ class Application {
                 { name: "3d Map", icon: "map", page: "section/map.html" },
                 { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
-                { name: "인공위성", icon: "space shuttle", page: "section/sat.html" }
+                { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
+                { name: "animation", icon: "space shuttle", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {
@@ -112,6 +113,7 @@ global.map = new MilMap({
         id: "map3d"
     }
 });
+
 //var { load, pos } = require('./sample.js');
 //global.pos = pos;
 

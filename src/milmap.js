@@ -45,7 +45,8 @@ class MilMap {
             navigationHelpButton: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-            requestRenderMode: true, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨
+            requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다. 
             maximumRenderTimeChange: Infinity,
             navigationInstructionsInitiallyVisible: false,
             /*
@@ -137,7 +138,7 @@ class MilMap {
         Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
         var _viewModel = viewModel;
         var _this = this;
-        
+
         for (var name in viewModel) {
             if (viewModel.hasOwnProperty(name)) {
                 Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
@@ -146,6 +147,10 @@ class MilMap {
             }
         }
         updateCallback(this.viewer3d, viewModel);
+    }
+    animation(bool) {
+        bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
+
     }
 }
 
