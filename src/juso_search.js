@@ -152,10 +152,10 @@ class JusoSearch {
         strTest += "<div class='ui horizontal divider'></div>";
         strTest += "<div id='page_wrap' class='pagination ui small basic icon buttons'>";
         if (currentPage > pageSize * 2) {
-            strTest += "<button type='button' class='btn_first ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ><i class='ui angle double left icon'></i></button>";
+            strTest += "<button type='button' class='btn_first ui button' onclick='app.section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + ",1,true)' ><i class='ui angle double left icon'></i></button>";
         }
         if (currentPage - pageSize > 0) {
-            strTest += "<button type='button' class='btn_pre ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ><i class='ui angle left icon'></i></button>";
+            strTest += "<button type='button' class='btn_pre ui button' onclick='app.(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage - pageSize) + ",true)' ><i class='ui angle left icon'></i></button>";
         }
 
         //strTest += "<span id='page_count'>";
@@ -163,19 +163,19 @@ class JusoSearch {
         let endPage = startPage + pageSize;
         for (var c = startPage; c < totalPage && c < endPage; c++) {
             if (currentPage == c + 1) {
-                strTest += "<button class='ui button' style='color:red;' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
+                strTest += "<button class='ui button' style='color:red;' onclick='app.(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
             } else {
-                strTest += "<button class='ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
+                strTest += "<button class='ui button' onclick='app.section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (c + 1) + ",false)' >" + (c + 1) + "</button>";
             }
 
         }
         //strTest += "</span>";
 
         if (endPage < totalPage) {
-            strTest += "<button type='button' class='btn_next ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ><i class=' ui angle right icon'></i></button>";
+            strTest += "<button type='button' class='btn_next ui button' onclick='app.section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ><i class=' ui angle right icon'></i></button>";
         }
         if ((endPage + pageSize) < totalPage) {
-            strTest += "<button type='button' class='btn_last ui button' onclick='section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ><i class=' ui angle double right icon'></i></button>";
+            strTest += "<button type='button' class='btn_last ui button' onclick='app.section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (totalPage - 1) + ",true)' ><i class=' ui angle double right icon'></i></button>";
         }
         strTest += "</div>";
 
