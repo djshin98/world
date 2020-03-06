@@ -42,9 +42,11 @@ class Application {
     init() {
         var _this = this;
         dom.$("#door-handle")[0].onclick = function(e) {
-            _this.windowLayout.section.view.visible = !_this.windowLayout.section.view.visible;
-            _this.section.showView(_this.windowLayout.section.view.visible);
+            _this.section.showView(!_this.windowLayout.section.view.visible);
         };
+    }
+    sectionShowStatus(bshow) {
+        this.windowLayout.section.view.visible = bshow;
     }
     createSection() {
         return new Section(this, {

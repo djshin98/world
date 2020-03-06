@@ -55,6 +55,7 @@ class Section {
             tag.classList.add("active");
             dom.$(_this.path.view + ">.tab").forEach(function(d) { d.classList.remove("active"); });
             dom.$(_this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
+            _this.showView(true);
         })();
     }
     resize(w, h) {
@@ -75,18 +76,28 @@ class Section {
         if (bshow) {
             //$(".section-view").show();
             $(".section-head>a>b").show();
+
+            if ($(".section-view").is(":visible")) {
+                $(".section-view").transition('bounce');
+            } else {
+                $(".section-view").transition('fade right');
+            }
+
         } else {
             //$(".section-view").hide();
             $(".section-head>a>b").hide();
+
+            if ($(".section-view").is(":visible")) {
+                $(".section-view").transition('fade right');
+
+            } else {
+                $(".section-view").transition('bounce');
+            }
         }
-        $(".section-view").transition('fade right');
 
+
+        this.app.sectionShowStatus(bshow);
         this.app.onResize();
-        //_this.windowLayout.section.view.visible = !$(".section-view").is(":visible");
-        //$(".section-view").transition('fade right');
-
-
-
     }
 }
 module.exports = {
