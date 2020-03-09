@@ -1,0 +1,15 @@
+.symboltable {
+    border: 1px solid #444444;
+    border-collapse: collapse;
+    tr {
+        th {
+            background-color: #ddd;
+            border: 1px solid #333333;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #333333;
+            padding: 10px;
+        }
+    }
+}

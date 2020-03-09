@@ -29,7 +29,7 @@ var paths = {
         dest: './dist/'
     },
     scss: {
-        src: './src/scss/*.scss',
+        src: './src/scss/**/*.scss',
         dest: './src/css/'
     },
     css: {
