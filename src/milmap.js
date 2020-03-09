@@ -153,7 +153,7 @@ class MilMap {
         bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
     }
-    tileset(){
+    tileset() {
         // A simple demo of 3D Tiles feature picking with hover and select behavior
         // Building data courtesy of NYC OpenData portal: http://www1.nyc.gov/site/doitt/initiatives/3d-building.page
         var viewer = this.viewer3d;
@@ -269,18 +269,18 @@ class MilMap {
                 selectedEntity.description = 'Loading <div class="cesium-infoBox-loading"></div>';
                 viewer.selectedEntity = selectedEntity;
                 selectedEntity.description = '<table class="cesium-infoBox-defaultTable"><tbody>' +
-                                            '<tr><th>BIN</th><td>' + pickedFeature.getProperty('BIN') + '</td></tr>' +
-                                            '<tr><th>DOITT ID</th><td>' + pickedFeature.getProperty('DOITT_ID') + '</td></tr>' +
-                                            '<tr><th>SOURCE ID</th><td>' + pickedFeature.getProperty('SOURCE_ID') + '</td></tr>' +
-                                            '</tbody></table>';
+                    '<tr><th>BIN</th><td>' + pickedFeature.getProperty('BIN') + '</td></tr>' +
+                    '<tr><th>DOITT ID</th><td>' + pickedFeature.getProperty('DOITT_ID') + '</td></tr>' +
+                    '<tr><th>SOURCE ID</th><td>' + pickedFeature.getProperty('SOURCE_ID') + '</td></tr>' +
+                    '</tbody></table>';
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         } else {
             // Silhouettes are not supported. Instead, change the feature color.
 
             // Information about the currently highlighted feature
             var highlighted = {
-                feature : undefined,
-                originalColor : new Cesium.Color()
+                feature: undefined,
+                originalColor: new Cesium.Color()
             };
 
             // Color a feature yellow on hover.
@@ -346,16 +346,74 @@ class MilMap {
                 selectedEntity.description = 'Loading <div class="cesium-infoBox-loading"></div>';
                 viewer.selectedEntity = selectedEntity;
                 selectedEntity.description = '<table class="cesium-infoBox-defaultTable"><tbody>' +
-                                            '<tr><th>BIN</th><td>' + pickedFeature.getProperty('BIN') + '</td></tr>' +
-                                            '<tr><th>DOITT ID</th><td>' + pickedFeature.getProperty('DOITT_ID') + '</td></tr>' +
-                                            '<tr><th>SOURCE ID</th><td>' + pickedFeature.getProperty('SOURCE_ID') + '</td></tr>' +
-                                            '<tr><th>Longitude</th><td>' + pickedFeature.getProperty('longitude') + '</td></tr>' +
-                                            '<tr><th>Latitude</th><td>' + pickedFeature.getProperty('latitude') + '</td></tr>' +
-                                            '<tr><th>Height</th><td>' + pickedFeature.getProperty('height') + '</td></tr>' +
-                                            '<tr><th>Terrain Height (Ellipsoid)</th><td>' + pickedFeature.getProperty('TerrainHeight') + '</td></tr>' +
-                                            '</tbody></table>';
+                    '<tr><th>BIN</th><td>' + pickedFeature.getProperty('BIN') + '</td></tr>' +
+                    '<tr><th>DOITT ID</th><td>' + pickedFeature.getProperty('DOITT_ID') + '</td></tr>' +
+                    '<tr><th>SOURCE ID</th><td>' + pickedFeature.getProperty('SOURCE_ID') + '</td></tr>' +
+                    '<tr><th>Longitude</th><td>' + pickedFeature.getProperty('longitude') + '</td></tr>' +
+                    '<tr><th>Latitude</th><td>' + pickedFeature.getProperty('latitude') + '</td></tr>' +
+                    '<tr><th>Height</th><td>' + pickedFeature.getProperty('height') + '</td></tr>' +
+                    '<tr><th>Terrain Height (Ellipsoid)</th><td>' + pickedFeature.getProperty('TerrainHeight') + '</td></tr>' +
+                    '</tbody></table>';
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         }
+    }
+
+    add3DModel(x, y, z, model, name) {
+        var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
+        var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
+        var CZMLName = [];
+
+        CZMLName.push({
+            "id": "document",
+            "name": "3D Models",
+            "version": "1.0",
+        });
+
+        CZMLName.push({
+            "id": name,
+            "name": name,
+            "position": {
+                "cartographicDegrees": [x, y, z]
+            },
+            "model": {
+                "gltf": model,
+                "distanceDisplayCondition": {
+                    "distanceDisplayCondition": [minDistance, maxDistance]
+                },
+                "color": {
+                    "rgba": [255, 0, 0, 255]
+                },
+                "minimumPixelSize": 64,
+            },
+            "label": {
+                "show": true,
+                "text": name,
+                "font": "10pt Arial",
+                "outlineWidth": 1,
+                "horizontalOrigin": "LEFT",
+                "pixelOffset": {
+                    "cartesian2": [-30, -30]
+                },
+                "fillColor": {
+                    "rgba": [255, 255, 0, 200]
+                },
+                "distanceDisplayCondition": {
+                    "distanceDisplayCondition": [minDistance, maxDistance]
+                },
+                "disableDepthTestDistance": Number.POSITIVE_INFINITY
+            }
+        });
+
+        this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
+
+            // viewer.trackedEntity = ds.entities.getById(name);
+
+        });
+    }
+
+
+    addModel() {
+        this.add3DModel(125.681289395675, 39.019323547473, 2000, "models/Fighter_jet.glb", "Jet1");
     }
 }
 
