@@ -135,24 +135,24 @@ class MilMap {
     }
     connectViewModel(id, viewModel, updateCallback) {
 
-        Cesium.knockout.track(viewModel);
-        Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
-        var _viewModel = viewModel;
-        var _this = this;
+            Cesium.knockout.track(viewModel);
+            Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
+            var _viewModel = viewModel;
+            var _this = this;
 
-        for (var name in viewModel) {
-            if (viewModel.hasOwnProperty(name)) {
-                Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
-                    updateCallback(_this.viewer3d, _viewModel, newValue);
-                });
+            for (var name in viewModel) {
+                if (viewModel.hasOwnProperty(name)) {
+                    Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
+                        updateCallback(_this.viewer3d, _viewModel, newValue);
+                    });
+                }
             }
+            updateCallback(this.viewer3d, viewModel);
         }
-        updateCallback(this.viewer3d, viewModel);
-    }
-    animation(bool) {
-        bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
+        /* animation(bool) {
+            bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
-    }
+        } */
     tileset() {
         // A simple demo of 3D Tiles feature picking with hover and select behavior
         // Building data courtesy of NYC OpenData portal: http://www1.nyc.gov/site/doitt/initiatives/3d-building.page
@@ -362,6 +362,19 @@ class MilMap {
         var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
         var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
         var CZMLName = [];
+        var positionData = [];
+        var a = 0;
+        var b = -122.93797;
+        var c = 39.50935;
+        var d = 3076;
+
+        for (var i = 0; i < 100000; i++) {
+            a += 10;
+            b += 0.0005;
+            c += 0;
+            d += 5;
+            positionData.push(a, b, c, d);
+        }
 
         CZMLName.push({
             "id": "document",
@@ -373,7 +386,23 @@ class MilMap {
             "id": name,
             "name": name,
             "position": {
-                "cartographicDegrees": [x, y, z]
+                "epoch": "2020-03-09T08:00:00Z",
+                "cartographicDegrees": positionData
+            },
+            "path": {
+                "material": {
+                    "polylineOutline": {
+                        "color": {
+                            "rgba": [255, 0, 255, 255]
+                        },
+                        "outlineColor": {
+                            "rgba": [0, 255, 255, 255]
+                        },
+                        "outlineWidth": 5
+                    }
+                },
+                "width": 8,
+                "resolution": 5
             },
             "model": {
                 "gltf": model,
@@ -381,9 +410,17 @@ class MilMap {
                     "distanceDisplayCondition": [minDistance, maxDistance]
                 },
                 "color": {
-                    "rgba": [255, 0, 0, 255]
+                    "rgba": [0, 8, 255, 255]
                 },
                 "minimumPixelSize": 64,
+            },
+            "orientation": {
+                "interpolationAlgorithm": "LAGRANGE",
+                "interpolationDegree": 1,
+                "epoch": "2020-03-09T08:00:00Z",
+                "unitQuaternion": [
+                    0, 0.45652188368372576, -100, -0.8819344359461565, 0.10640131785324795
+                ]
             },
             "label": {
                 "show": true,
@@ -405,15 +442,13 @@ class MilMap {
         });
 
         this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
-
-            // viewer.trackedEntity = ds.entities.getById(name);
-
+            map.viewer3d.trackedEntity = ds.entities.getById(name);
         });
     }
 
 
     addModel() {
-        this.add3DModel(125.681289395675, 39.019323547473, 2000, "models/Fighter_jet.glb", "Jet1");
+        this.add3DModel(125.681289395675, 39.019323547473, 2000, "../models/Cesium_Air.glb", "Jet1");
     }
 }
 
