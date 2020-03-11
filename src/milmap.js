@@ -1,4 +1,5 @@
 var { IxDatabase } = require('./db');
+var { Animation } = require('./animation');
 global.Cesium = require('cesium/Cesium');
 
 require('cesium/Widgets/widgets.css');
@@ -451,7 +452,10 @@ class MilMap {
     addModel() {
         this.add3DModel(127.0215633, 37.4890219, 2000, "../models/Cesium_Air.glb", "Jet1");
     }
-
+    addHeadingPitchRoll() {
+        var options = {}
+        global.objtest = new Animation(options);
+    }
     addHeadingPitchRoll2() {
 
         var timestamp = 0;
@@ -491,7 +495,7 @@ class MilMap {
         var speedVector = new Cesium.Cartesian3();
         var fixedFrameTransform = Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
 
-        var planePrimitive = scene.primitives.add(Cesium.Model.fromGltf({
+        var planePrimitive = map.viewer3d.scene.primitives.add(Cesium.Model.fromGltf({
             url: 'https://assets.agi.com/models/launchvehicle.glb',
             modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform),
             minimumPixelSize: 128
@@ -607,7 +611,7 @@ class MilMap {
             hpRoll.pitch += Cesium.Math.TWO_PI;
         }
 
-        this.viewer3d.scene.preUpdate.addEventListener(function(scene, time) {
+        scene.preUpdate.addEventListener(function(scene, time) {
             speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X, speed / 10, speedVector);
             position = Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, speedVector, position);
             pathPosition.addSample(Cesium.JulianDate.now(), position);

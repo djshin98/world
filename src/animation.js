@@ -33,7 +33,7 @@ class Animation {
         this.deltaRadians = Cesium.Math.toRadians(0.05);
         ///options.position -발사지점
 
-        this.position = Cesium.Cartesian3.fromDegrees(37.4981853, 127.0296724, 5000);
+        this.position = Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
         this.cameraposition = new Cesium.Cartesian3(-3355072.3251947914, 4309027.65150185, 3834824.8952014796);
         this.speedVector = new Cesium.Cartesian3();
         this.fixedFrameTransform = Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
@@ -87,9 +87,10 @@ class Animation {
         });
     }
     flyToCamera() {
-        this.planePrimitive = this.scene.primitives.add(Cesium.Model.fromGltf({
+        var _this = this;
+        this.planePrimitive = map.viewer3d.scene.primitives.add(Cesium.Model.fromGltf({
             url: 'https://assets.agi.com/models/launchvehicle.glb',
-            modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(this.position, this.hpRoll, Cesium.Ellipsoid.WGS84, this.fixedFrameTransform),
+            modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(_this.position, _this.hpRoll, Cesium.Ellipsoid.WGS84, _this.fixedFrameTransform),
             minimumPixelSize: 128
         }));
         this.planePrimitive.readyPromise.then(function(model) {
@@ -100,18 +101,18 @@ class Animation {
                 loop: Cesium.ModelAnimationLoop.REPEAT
             });
             // Zoom to model
-            // r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
-            // controller.minimumZoomDistance = r * 0.5;
-            Cesium.Matrix4.multiplyByPoint(model.modelMatrix, model.boundingSphere.center, this.center);
+            // r = 2.0 * Math.max(model.boundingSphere.radius, _this.camera.frustum.near);
+            // thiscontroller.minimumZoomDistance = r * 0.5;
+            Cesium.Matrix4.multiplyByPoint(model.modelMatrix, model.boundingSphere.center, _this.center);
             var heading = Cesium.Math.toRadians(230.0);
             var pitch = Cesium.Math.toRadians(-20.0);
-            this.hpRange.heading = 6.118334442501016;
-            this.hpRange.pitch = -0.9805559970133615;
-            this.hpRange.range = 0.00016222259613485335;
+            _this.hpRange.heading = 6.118334442501016;
+            _this.hpRange.pitch = -0.9805559970133615;
+            _this.hpRange.range = 0.00016222259613485335;
             // center.z = 500000;
-            this.camera.flyTo({
-                destination: cameraposition,
-                orientation: hpRange
+            _this.camera.flyTo({
+                destination: _this.cameraposition,
+                orientation: _this.hpRange
             });
         });
     }
