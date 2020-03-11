@@ -452,71 +452,74 @@ class MilMap {
         this.add3DModel(127.0215633, 37.4890219, 2000, "../models/Cesium_Air.glb", "Jet1");
     }
 
-    addHeadingPitchRoll() {
-        if (map.viewer3d.scene.primitives._primitives.length < 1) {
+    addHeadingPitchRoll2() {
 
+        var timestamp = 0;
+        var scene = this.viewer3d.scene;
 
-            var scene = this.viewer3d.scene;
+        var pathPosition = new Cesium.SampledPositionProperty();
+        var entityPath = this.viewer3d.entities.add({
+            position: pathPosition,
+            name: 'path',
+            path: {
+                show: true,
+                leadTime: 0,
+                trailTime: 60,
+                width: 10,
+                resolution: 1,
+                material: new Cesium.PolylineGlowMaterialProperty({
+                    glowPower: 0.3,
+                    taperPower: 0.3,
+                    color: Cesium.Color.PALEGOLDENROD
+                })
+            }
+        });
 
-            var pathPosition = new Cesium.SampledPositionProperty();
-            var entityPath = this.viewer3d.entities.add({
-                position: pathPosition,
-                name: 'path',
-                path: {
-                    show: true,
-                    leadTime: 0,
-                    trailTime: 60,
-                    width: 10,
-                    resolution: 1,
-                    material: new Cesium.PolylineGlowMaterialProperty({
-                        glowPower: 0.3,
-                        taperPower: 0.3,
-                        color: Cesium.Color.PALEGOLDENROD
-                    })
-                }
+        var camera = this.viewer3d.camera;
+        var controller = scene.screenSpaceCameraController;
+        var r = 0;
+        var center = new Cesium.Cartesian3();
+
+        var hpRoll = new Cesium.HeadingPitchRoll();
+        hpRoll.pitch = 1.5708;
+        var hpRange = new Cesium.HeadingPitchRange();
+        var speed = 1;
+        var deltaRadians = Cesium.Math.toRadians(0.05);
+
+        var position = Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
+        var cameraPosition = new Cesium.Cartesian3(-3355072.3251947914, 4309027.65150185, 3834824.8952014796);
+        var speedVector = new Cesium.Cartesian3();
+        var fixedFrameTransform = Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
+
+        var planePrimitive = scene.primitives.add(Cesium.Model.fromGltf({
+            url: 'https://assets.agi.com/models/launchvehicle.glb',
+            modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform),
+            minimumPixelSize: 128
+        }));
+
+        planePrimitive.readyPromise.then(function(model) {
+            // Play and loop all animations at half-speed
+            model.activeAnimations.addAll({
+                multiplier: 0.5,
+                loop: Cesium.ModelAnimationLoop.REPEAT
             });
 
-            var camera = this.viewer3d.camera;
-            var controller = scene.screenSpaceCameraController;
-            var r = 0;
-            var center = new Cesium.Cartesian3();
-
-            var hpRoll = new Cesium.HeadingPitchRoll();
-            hpRoll.pitch = 1.5708;
-            var hpRange = new Cesium.HeadingPitchRange();
-            var speed = 1;
-            var deltaRadians = Cesium.Math.toRadians(0.05);
-
-            var position = Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
-            var speedVector = new Cesium.Cartesian3();
-            var fixedFrameTransform = Cesium.Transforms.localFrameToFixedFrameGenerator('north', 'west');
-
-            var planePrimitive = scene.primitives.add(Cesium.Model.fromGltf({
-                url: 'https://assets.agi.com/models/launchvehicle.glb',
-                modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform),
-                minimumPixelSize: 128
-            }));
-
-            planePrimitive.readyPromise.then(function(model) {
-                // Play and loop all animations at half-speed
-                model.activeAnimations.addAll({
-                    multiplier: 0.5,
-                    loop: Cesium.ModelAnimationLoop.REPEAT
-                });
-
-                // Zoom to model
-                r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
-                controller.minimumZoomDistance = r * 0.5;
-                Cesium.Matrix4.multiplyByPoint(model.modelMatrix, model.boundingSphere.center, center);
-                var heading = Cesium.Math.toRadians(230.0);
-                var pitch = Cesium.Math.toRadians(-20.0);
-                hpRange.heading = heading;
-                hpRange.pitch = pitch;
-                hpRange.range = r * 50.0;
-                camera.lookAt(center, hpRange);
+            // Zoom to model
+            r = 2.0 * Math.max(model.boundingSphere.radius, camera.frustum.near);
+            controller.minimumZoomDistance = r * 0.5;
+            Cesium.Matrix4.multiplyByPoint(model.modelMatrix, model.boundingSphere.center, center);
+            var heading = Cesium.Math.toRadians(230.0);
+            var pitch = Cesium.Math.toRadians(-20.0);
+            hpRange.heading = 6.118334442501016;
+            hpRange.pitch = -0.9805559970133615;
+            hpRange.range = 0.00016222259613485335;
+            camera.flyTo({
+                destination: cameraPosition,
+                orientation: hpRange
             });
+        });
 
-            /*  document.addEventListener('keydown', function(e) {
+        /*  document.addEventListener('keydown', function(e) {
             switch (e.keyCode) {
                 case 40:
                     if (e.shiftKey) {
@@ -576,49 +579,54 @@ class MilMap {
             }
         });
  */
-            setInterval(() => {
-                hpRoll.pitch += deltaRadians;
-                hpRoll.roll -= deltaRadians;
+        setInterval(() => {
+            timestamp += 10;
+            hpRoll.pitch += deltaRadians;
+            // hpRoll.roll -= deltaRadians;
+            if (timestamp > 38000) {
+                speed = 0;
+
+            } else {
                 speed = Math.min(speed += 3, 500);
                 if (hpRoll.pitch > Cesium.Math.TWO_PI) {
                     hpRoll.pitch -= Cesium.Math.TWO_PI;
                 }
+                ///////////////////방향 계속돌아감... 수정필요
                 if (hpRoll.pitch >= 1.5708 && deltaRadians > 0) deltaRadians = -deltaRadians;
-            }, 10);
-            // pitch up
-            hpRoll.pitch += deltaRadians;
-            if (hpRoll.pitch > Cesium.Math.TWO_PI) {
-                hpRoll.pitch -= Cesium.Math.TWO_PI;
             }
+        }, 10);
 
-            hpRoll.pitch -= deltaRadians;
-            if (hpRoll.pitch < -Cesium.Math.TWO_PI) {
-                hpRoll.pitch += Cesium.Math.TWO_PI;
-            }
-
-            this.viewer3d.scene.preUpdate.addEventListener(function(scene, time) {
-                speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X, speed / 10, speedVector);
-                position = Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, speedVector, position);
-                pathPosition.addSample(Cesium.JulianDate.now(), position);
-                Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform, planePrimitive.modelMatrix);
-                if (fromBehind.checked) {
-                    // Zoom to model
-                    Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, planePrimitive.boundingSphere.center, center);
-                    hpRange.heading = hpRoll.heading;
-                    hpRange.pitch = hpRoll.pitch;
-                    camera.lookAt(center, hpRange);
-                }
-            });
-
-            /*   this.viewer3d.scene.preRender.addEventListener(function(scene, time) {
-                  headingSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.heading).toFixed(1);
-                  pitchSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.pitch).toFixed(1);
-                  rollSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.roll).toFixed(1);
-                  speedSpan.innerHTML = speed.toFixed(1);
-              }); */
-        } else {
-            alert("이미 animation 객체가 있습니다");
+        // pitch up
+        hpRoll.pitch += deltaRadians;
+        if (hpRoll.pitch > Cesium.Math.TWO_PI) {
+            hpRoll.pitch -= Cesium.Math.TWO_PI;
         }
+
+        hpRoll.pitch -= deltaRadians;
+        if (hpRoll.pitch < -Cesium.Math.TWO_PI) {
+            hpRoll.pitch += Cesium.Math.TWO_PI;
+        }
+
+        this.viewer3d.scene.preUpdate.addEventListener(function(scene, time) {
+            speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X, speed / 10, speedVector);
+            position = Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, speedVector, position);
+            pathPosition.addSample(Cesium.JulianDate.now(), position);
+            Cesium.Transforms.headingPitchRollToFixedFrame(position, hpRoll, Cesium.Ellipsoid.WGS84, fixedFrameTransform, planePrimitive.modelMatrix);
+            if (fromBehind.checked) {
+                // Zoom to model
+                Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, planePrimitive.boundingSphere.center, center);
+                hpRange.heading = hpRoll.heading;
+                hpRange.pitch = hpRoll.pitch;
+                camera.lookAt(center, hpRange);
+            }
+        });
+
+        /*   this.viewer3d.scene.preRender.addEventListener(function(scene, time) {
+              headingSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.heading).toFixed(1);
+              pitchSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.pitch).toFixed(1);
+              rollSpan.innerHTML = Cesium.Math.toDegrees(hpRoll.roll).toFixed(1);
+              speedSpan.innerHTML = speed.toFixed(1);
+          }); */
     }
 }
 
