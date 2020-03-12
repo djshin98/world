@@ -108,10 +108,10 @@ class MilMap {
     }
     flyTo(x, y) {
         this.viewer3d.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(x, y, 150.0),
+            destination: Cesium.Cartesian3.fromDegrees(x, y, 500.0),
             orientation: {
-                heading: Cesium.Math.toRadians(20.0),
-                pitch: Cesium.Math.toRadians(-35.0),
+                heading: Cesium.Math.toRadians(0.0),
+                pitch: Cesium.Math.toRadians(-80.0),
                 roll: 0.0
             }
         });
@@ -455,6 +455,43 @@ class MilMap {
     addHeadingPitchRoll() {
         var options = {}
         global.objtest = new Animation(options);
+    }
+    czmlFileLoad() {
+        var _this = this;
+        var czmlPath = "../models/fuel/";
+        var dataSource = new Cesium.CzmlDataSource();
+        var vehicleEntity;
+        this.viewer3d.dataSources.add(dataSource);
+
+        var partsToLoad = [{
+            url: 'a1.czml',
+            range: [0, 1500],
+            requested: false,
+            loaded: false
+        }, {
+            url: 'a2.czml',
+            range: [1500, 3000],
+            requested: false,
+            loaded: false
+        }, {
+            url: 'a3.czml',
+            range: [3000, 4500],
+            requested: false,
+            loaded: false
+        }];
+
+        function processPart(part) {
+            part.requested = true;
+            dataSource.process(czmlPath + part.url).then(function() {
+                part.loaded = true;
+                // Follow the vehicle with the camera.
+                if (!_this.viewer3d.trackedEntity) {
+                    _this.viewer3d.trackedEntity = vehicleEntity = dataSource.entities.getById('Vehicle');
+                }
+            });
+        }
+
+        processPart(partsToLoad[0]);
     }
     addHeadingPitchRoll2() {
 

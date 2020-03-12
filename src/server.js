@@ -3,7 +3,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT || 8082;
+const port = process.env.PORT || 8081;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -11,7 +11,7 @@ app.use(cors());
 app.get('/map/juso/', (req, res) => {
     var url = req.query.url;
     console.log(url);
-    var request = http.get(url, function (response) {
+    var request = http.get(url, function(response) {
         var body = "";
         var jsonObj;
         response.on('data', (chunk) => {

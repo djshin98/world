@@ -29,7 +29,7 @@
       },
       "scale":1.0,
       "show":[
-        {
+        { 
           "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
           "boolean":true
         }
@@ -39,7 +39,7 @@
       "verticalOrigin":"CENTER"
     },
     "model":{
-      "gltf":"models/CesiumMilkTruck/CesiumMilkTruck.glb",
+      "gltf":"../Cesium_Air.glb", 
       "minimumPixelSize":100,
       "maximumScale":50
     },
