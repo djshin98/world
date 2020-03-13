@@ -111,7 +111,7 @@ class JusoSearch {
             "key=" + this.options.key + "&" +
             "page=" + (option.currentPage ? option.currentPage : 1) + "&" +
             "size=" + (option.countPerPage ? option.countPerPage : 10) + "&" +
-            "query=" + option.keyword + "&" +
+            "query=" + encodeURI(option.keyword) + "&" +
             "request=search&" +
             "type=" + searchType.type + "&" +
             "category=" + searchType.category + "&" +

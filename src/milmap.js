@@ -373,11 +373,56 @@ class MilMap {
         for (var i = 0; i < 100000; i++) {
             a += 10;
             b += 0.0005;
-            c += 0;
+            c += 0.0003;
+            if (i === 50000) {
+                c -= 0.0002;
+            }
             d += 5;
             positionData.push(a, b, c, d);
         }
+        var result = [];
+        var index = 0;
+        var test = [];
 
+        /*  function reslArr(arr) {
+             var index = 0;
+             var result = [];
+             arr.forEach(function(d, i) {
+                 if (i % 4 === 0 && i > 0) {
+                     for (let k = 0; k < 4; k++) {
+
+                         result.push(test33(k, arr)[index]);
+                     }
+                     index++;
+                 }
+                 result.push(d);
+             });
+             return result;
+         }
+
+         function test33(x, arr) {
+             var resultArr = [];
+             for (let y = x; y < arr.length; y += 4) {
+                 if (y + 4 < arr.length) {
+                     resultArr.push((arr[y] + arr[y + 4]) / 2);
+                 }
+
+             }
+             return resultArr;
+         } */
+        /* test.forEach(function(d, i) {
+
+            if (i % 4 === 0 && i > 0) {
+                for (let k = 0; k < 4; k++) {
+
+                    result.push(test33(k, test)[index]);
+                }
+                index++;
+            }
+            result.push(d);
+        }); */
+
+        Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
         CZMLName.push({
             "id": "document",
             "name": "3D Models",
@@ -388,8 +433,8 @@ class MilMap {
             "id": name,
             "name": name,
             "position": {
-                "epoch": "2020-03-09T08:00:00Z",
-                "cartographicDegrees": positionData
+                "epoch": "2020-03-13T08:00:00Z",
+                "cartographicDegrees": result
             },
             "path": {
                 "material": {
@@ -417,12 +462,7 @@ class MilMap {
                 "minimumPixelSize": 64,
             },
             "orientation": {
-                "interpolationAlgorithm": "LAGRANGE",
-                "interpolationDegree": 1,
-                "epoch": "2020-03-09T08:00:00Z",
-                "unitQuaternion": [
-                    0, 0.45652188368372576, -100, -0.8819344359461565, 0.10640131785324795
-                ]
+                "velocityReference": "#position"
             },
             "label": {
                 "show": true,
@@ -492,6 +532,35 @@ class MilMap {
         }
 
         processPart(partsToLoad[0]);
+    }
+    remove3DModel() {
+            this.viewer3d.dataSources.removeAll();
+        }
+        //    [[1,2],[3,4],[5,6]]
+    ragrange(val, arrPoint) {
+        var res = 0;
+        var xResult = [];
+        var finalRes = 0;
+        arrPoint.forEach(function(da, i) {
+            if (xResult.length < arrPoint.length) {
+                arrPoint.forEach(function(d) {
+                    var num = 1;
+                    var den = 1;
+                    var numArr = arrPoint.filter(function(f) {
+                        return f[0] !== d[0];
+                    });
+                    numArr.forEach(function(c) {
+                        num *= (val - c[0]);
+                        den *= (d[0] - c[0]);
+                    });
+
+                    xResult.push(num / den);
+
+                });
+            }
+            finalRes += (xResult[i] * da[1]);
+        });
+        return finalRes;
     }
     addHeadingPitchRoll2() {
 

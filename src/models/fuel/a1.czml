@@ -38,10 +38,10 @@
       "text":"Test Vehicle",
       "verticalOrigin":"CENTER"
     },
-    "model":{
+    "model":{ 
       "gltf":"../Cesium_Air.glb", 
       "minimumPixelSize":100,
-      "maximumScale":50
+      "maximumScale":50 
     },
     "orientation" : {
       "velocityReference": "#position"
