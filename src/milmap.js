@@ -48,7 +48,7 @@ class MilMap {
             terrainExaggeration: 1.0, //고도 기복 비율 조정
             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다. 
+            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
             maximumRenderTimeChange: Infinity,
             navigationInstructionsInitiallyVisible: false,
             /*
@@ -65,7 +65,7 @@ class MilMap {
         navigationInitialization(this.options.map3.id, this.viewer3d);
 
         let _this = this;
-        this.viewer3d.camera.moveEnd.addEventListener(function() {
+        this.viewer3d.camera.moveEnd.addEventListener(function () {
             let obj = _this.viewer3d.scene.camera;
             _this.db.set("scene", "camera", {
                 position: obj.position,
@@ -76,7 +76,7 @@ class MilMap {
             console.log("save position");
         });
 
-        this.db.get("scene", "camera", function(result) {
+        this.db.get("scene", "camera", function (result) {
             if (result.value) {
                 let obj = result.value;
                 _this.viewer3d.camera.flyTo({
@@ -90,7 +90,7 @@ class MilMap {
             }
         });
 
-        this.viewer3d.canvas.addEventListener('click', function(e) {
+        this.viewer3d.canvas.addEventListener('click', function (e) {
             var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
 
             var ellipsoid = _this.viewer3d.scene.globe.ellipsoid;
@@ -136,24 +136,24 @@ class MilMap {
     }
     connectViewModel(id, viewModel, updateCallback) {
 
-            Cesium.knockout.track(viewModel);
-            Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
-            var _viewModel = viewModel;
-            var _this = this;
+        Cesium.knockout.track(viewModel);
+        Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
+        var _viewModel = viewModel;
+        var _this = this;
 
-            for (var name in viewModel) {
-                if (viewModel.hasOwnProperty(name)) {
-                    Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
-                        updateCallback(_this.viewer3d, _viewModel, newValue);
-                    });
-                }
+        for (var name in viewModel) {
+            if (viewModel.hasOwnProperty(name)) {
+                Cesium.knockout.getObservable(viewModel, name).subscribe(function (newValue) {
+                    updateCallback(_this.viewer3d, _viewModel, newValue);
+                });
             }
-            updateCallback(this.viewer3d, viewModel);
         }
-        /* animation(bool) {
-            bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
+        updateCallback(this.viewer3d, viewModel);
+    }
+    /* animation(bool) {
+        bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
-        } */
+    } */
     tileset() {
         // A simple demo of 3D Tiles feature picking with hover and select behavior
         // Building data courtesy of NYC OpenData portal: http://www1.nyc.gov/site/doitt/initiatives/3d-building.page
@@ -364,8 +364,10 @@ class MilMap {
         var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
         var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
         var CZMLName = [];
-        var positionData = [];
-        var a = 0;
+
+        // xyz z 높이
+
+        /* var a = 0;
         var b = -122.93797;
         var c = 39.50935;
         var d = 3076;
@@ -379,10 +381,8 @@ class MilMap {
             }
             d += 5;
             positionData.push(a, b, c, d);
-        }
+        } */
         var result = [];
-        var index = 0;
-        var test = [];
 
         /*  function reslArr(arr) {
              var index = 0;
@@ -422,7 +422,10 @@ class MilMap {
             result.push(d);
         }); */
 
-        Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
+        var startPoint = [126.9332975, 37.35917];
+        var endPotint = [129.9885203, 42.9565201];
+        result = this.targeting(startPoint, endPotint);
+
         CZMLName.push({
             "id": "document",
             "name": "3D Models",
@@ -432,11 +435,14 @@ class MilMap {
         CZMLName.push({
             "id": name,
             "name": name,
+            "availability": "2020-03-14T12:00:00Z/2020-03-17T16:00:00.9962195740191Z",
             "position": {
-                "epoch": "2020-03-13T08:00:00Z",
-                "cartographicDegrees": result
+                "interpolationAlgorithm": "LAGRANGE",
+                "interpolationDegree": 1,
+                "epoch": "2020-03-14T12:00:00Z",
+                "cartesian": result
             },
-            "path": {
+            /* "path": {
                 "material": {
                     "polylineOutline": {
                         "color": {
@@ -450,20 +456,24 @@ class MilMap {
                 },
                 "width": 8,
                 "resolution": 5
-            },
+            }, */
             "model": {
                 "gltf": model,
                 "distanceDisplayCondition": {
                     "distanceDisplayCondition": [minDistance, maxDistance]
                 },
                 "color": {
-                    "rgba": [0, 8, 255, 255]
+                    "rgba": [0, 221, 221, 221]
                 },
                 "minimumPixelSize": 64,
             },
             "orientation": {
                 "velocityReference": "#position"
             },
+            "viewFrom": {
+                "cartesian": [-2080, -1715, 779]
+            },
+
             "label": {
                 "show": true,
                 "text": name,
@@ -483,14 +493,48 @@ class MilMap {
             }
         });
 
-        this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
+        this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function (ds) {
             map.viewer3d.trackedEntity = ds.entities.getById(name);
         });
     }
+    /* pointDistance(startXY, deXY, height){
+        var distanceRes=[];
+        distanceRes = [distance(Cesium.Cartesian3.fromDegrees(startXY[0], startXY[1], 0), Cesium.Cartesian3.fromDegrees(deXY[0], deXY[1], 0)),height];
+        return distanceRes;
+    } */
 
+    targeting(startPoint, endPotint) {
+        var positionData = [];
 
+        var formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 200);
+        var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 0), Cesium.Cartesian3.fromDegrees(endPotint[0], endPotint[1], 0));
+        // var Depot = pointDistance();
+        var resultHeight = [];
+        for (let q = 0; q < distance; q += 500) {
+            // 높이값이된다
+            var ragVal = this.ragrange(q, [[10000, 3000], [distance / 2, 1000000], [distance, 500]]);
+            if (ragVal > 200) { resultHeight.push(ragVal); }
+        }
+        var yInc = (endPotint[0] - startPoint[0]) / resultHeight.length;
+        var xInc = (endPotint[1] - startPoint[1]) / resultHeight.length;
+        var timeVal = 0.0;
+
+        positionData = [timeVal, formatCart3.x, formatCart3.y, formatCart3.z];
+        resultHeight.forEach(function (d, i) {
+            timeVal += 10.0;
+            startPoint[0] += yInc;
+            startPoint[1] += xInc;
+            console.log(startPoint);
+            positionData.push(timeVal);
+            formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], resultHeight[i]);
+            positionData.push(formatCart3.x);
+            positionData.push(formatCart3.y);
+            positionData.push(formatCart3.z);
+        })
+        return positionData;
+    }
     addModel() {
-        this.add3DModel(127.0215633, 37.4890219, 2000, "../models/Cesium_Air.glb", "Jet1");
+        this.add3DModel(127.0215633, 37.4890219, 0, "https://assets.agi.com/models/launchvehicle.glb", "Jet1");
     }
     addHeadingPitchRoll() {
         var options = {}
@@ -522,7 +566,7 @@ class MilMap {
 
         function processPart(part) {
             part.requested = true;
-            dataSource.process(czmlPath + part.url).then(function() {
+            dataSource.process(czmlPath + part.url).then(function () {
                 part.loaded = true;
                 // Follow the vehicle with the camera.
                 if (!_this.viewer3d.trackedEntity) {
@@ -534,22 +578,22 @@ class MilMap {
         processPart(partsToLoad[0]);
     }
     remove3DModel() {
-            this.viewer3d.dataSources.removeAll();
-        }
-        //    [[1,2],[3,4],[5,6]]
+        this.viewer3d.dataSources.removeAll();
+    }
+    //    라그랑지언의 곡선 좌표 구하기 ... 포인트 지점의 distance와 높이를 2차원배열 형태로 넘겨준다...val은 산출하고자하는 distance의 값..  [[1,2],[3,4],[5,6]]
     ragrange(val, arrPoint) {
         var res = 0;
         var xResult = [];
         var finalRes = 0;
-        arrPoint.forEach(function(da, i) {
+        arrPoint.forEach(function (da, i) {
             if (xResult.length < arrPoint.length) {
-                arrPoint.forEach(function(d) {
+                arrPoint.forEach(function (d) {
                     var num = 1;
                     var den = 1;
-                    var numArr = arrPoint.filter(function(f) {
+                    var numArr = arrPoint.filter(function (f) {
                         return f[0] !== d[0];
                     });
-                    numArr.forEach(function(c) {
+                    numArr.forEach(function (c) {
                         num *= (val - c[0]);
                         den *= (d[0] - c[0]);
                     });
@@ -607,7 +651,7 @@ class MilMap {
             minimumPixelSize: 128
         }));
 
-        planePrimitive.readyPromise.then(function(model) {
+        planePrimitive.readyPromise.then(function (model) {
             // Play and loop all animations at half-speed
             model.activeAnimations.addAll({
                 multiplier: 0.5,
@@ -717,7 +761,7 @@ class MilMap {
             hpRoll.pitch += Cesium.Math.TWO_PI;
         }
 
-        scene.preUpdate.addEventListener(function(scene, time) {
+        scene.preUpdate.addEventListener(function (scene, time) {
             speedVector = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.UNIT_X, speed / 10, speedVector);
             position = Cesium.Matrix4.multiplyByPoint(planePrimitive.modelMatrix, speedVector, position);
             pathPosition.addSample(Cesium.JulianDate.now(), position);
