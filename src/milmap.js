@@ -534,9 +534,8 @@ class MilMap {
         processPart(partsToLoad[0]);
     }
     remove3DModel() {
-            this.viewer3d.dataSources.removeAll();
-        }
-        //    [[1,2],[3,4],[5,6]]
+        this.viewer3d.dataSources.removeAll();
+    }
     ragrange(val, arrPoint) {
         var res = 0;
         var xResult = [];
