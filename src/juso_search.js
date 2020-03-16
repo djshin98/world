@@ -25,17 +25,17 @@ class JusoSearch {
     }
     init() {
         let _this = this;
-        this.db.get("juso", this.options.name, function(result) {
-            !result || !result.value || (function(result) {
+        this.db.get("juso", this.options.name, function (result) {
+            !result || !result.value || (function (result) {
                 $("#" + _this.options.ctrl.input).val(result.value);
                 _this.call({ keyword: result.value });
                 $(".accordion>.title:first-child>i").trigger("click");
             })(result);
         });
-        dom.$("#" + _this.options.ctrl.button)[0].onclick = function() {
+        dom.$("#" + _this.options.ctrl.button)[0].onclick = function () {
             _this._callByTrigger();
         }
-        dom.$("#" + _this.options.ctrl.input)[0].onkeypress = function(e) {
+        dom.$("#" + _this.options.ctrl.input)[0].onkeypress = function (e) {
             !(e.which == 13) || _this._callByTrigger();
         }
 
@@ -43,7 +43,7 @@ class JusoSearch {
     _callByTrigger() {
         let _this = this;
         var txt = dom.$("#" + _this.options.ctrl.input)[0].value;
-        !txt || !(txt.trim().length > 0) || (function(txt) {
+        !txt || !(txt.trim().length > 0) || (function (txt) {
             _this.call({ keyword: txt });
             _this.db.set("juso", _this.options.name, txt);
         })(txt.trim());
@@ -52,7 +52,7 @@ class JusoSearch {
         option.countPerPage = option.countPerPage || this.options.countPerPage;
         option.currentPage = option.currentPage || 1;
         let _this = this;
-        this.options.types.forEach(function(t) {
+        this.options.types.forEach(function (t) {
             var opt = Object.assign({}, option);
 
             if (!opt.searchType || opt.searchType.id == t.id) {
@@ -64,7 +64,7 @@ class JusoSearch {
                     $("[data-target='#" + t.id + "']>label").html("<img src='img/wait.gif' height='20'/>");
                 }*/
 
-                _this._call(t, opt, function(keyword, type, response) {
+                _this._call(t, opt, function (keyword, type, response) {
                     if (keyword) {
                         var str1 = "";
                         var response = response.obj.response;
@@ -72,7 +72,7 @@ class JusoSearch {
                         if (response.result) {
                             var crs = response.result.crs;
 
-                            response.result.items.forEach(function(d, i) {
+                            response.result.items.forEach(function (d, i) {
                                 str1 += "<div class='item'>";
                                 str1 += "<i class='map marker icon'></i>";
                                 str1 += "<div class='juso' onclick='map.flyTo(" + d.point.x + ", " + d.point.y + ")'>";
@@ -118,7 +118,7 @@ class JusoSearch {
             "format=json";
         // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
         var _this = this;
-        axios.get("http://localhost:8081/map/juso", {
+        axios.get("http://localhost:8082/map/juso", {
             params: {
                 url: str
             }
@@ -207,7 +207,7 @@ class JusoSearch {
                 buldSlno: option.buldSlno,
                 resultType: "json"
             },
-            success: function(status, textStatus, data) {
+            success: function (status, textStatus, data) {
                 console.log(data);
                 !data.results.juso;
 
@@ -216,7 +216,7 @@ class JusoSearch {
                 //application.openedMaps(function(omap) { omap.move(19, item[0].entX, item[0].entY); });
                 //}
             },
-            error: function(status, textStatus, evt) {
+            error: function (status, textStatus, evt) {
                 console.error(data);
             }
         });

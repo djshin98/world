@@ -48,7 +48,7 @@ class MilMap {
             terrainExaggeration: 1.0, //고도 기복 비율 조정
             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다. 
+            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
             maximumRenderTimeChange: Infinity,
             navigationInstructionsInitiallyVisible: false,
             /*
@@ -361,136 +361,184 @@ class MilMap {
 
 
     add3DModel(x, y, z, model, name) {
-        var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
-        var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
-        var CZMLName = [];
-        var positionData = [];
-        var a = 0;
-        var b = -122.93797;
-        var c = 39.50935;
-        var d = 3076;
+            var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
+            var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
+            var CZMLName = [];
 
-        for (var i = 0; i < 100000; i++) {
-            a += 10;
-            b += 0.0005;
-            c += 0.0003;
-            if (i === 50000) {
-                c -= 0.0002;
-            }
-            d += 5;
-            positionData.push(a, b, c, d);
-        }
-        var result = [];
-        var index = 0;
-        var test = [];
+            // xyz z 높이
 
-        /*  function reslArr(arr) {
-             var index = 0;
-             var result = [];
-             arr.forEach(function(d, i) {
-                 if (i % 4 === 0 && i > 0) {
-                     for (let k = 0; k < 4; k++) {
+            /* var a = 0;
+            var b = -122.93797;
+            var c = 39.50935;
+            var d = 3076;
 
-                         result.push(test33(k, arr)[index]);
-                     }
-                     index++;
-                 }
-                 result.push(d);
-             });
-             return result;
-         }
-
-         function test33(x, arr) {
-             var resultArr = [];
-             for (let y = x; y < arr.length; y += 4) {
-                 if (y + 4 < arr.length) {
-                     resultArr.push((arr[y] + arr[y + 4]) / 2);
-                 }
-
-             }
-             return resultArr;
-         } */
-        /* test.forEach(function(d, i) {
-
-            if (i % 4 === 0 && i > 0) {
-                for (let k = 0; k < 4; k++) {
-
-                    result.push(test33(k, test)[index]);
+            for (var i = 0; i < 100000; i++) {
+                a += 10;
+                b += 0.0005;
+                c += 0.0003;
+                if (i === 50000) {
+                    c -= 0.0002;
                 }
-                index++;
-            }
-            result.push(d);
-        }); */
+                d += 5;
+                positionData.push(a, b, c, d);
+            } */
+            var result = [];
 
-        Cesium.Cartesian3.fromDegrees(127.0215633, 37.4890219, 1000.0);
-        CZMLName.push({
-            "id": "document",
-            "name": "3D Models",
-            "version": "1.0",
-        });
+            /*  function reslArr(arr) {
+                 var index = 0;
+                 var result = [];
+                 arr.forEach(function(d, i) {
+                     if (i % 4 === 0 && i > 0) {
+                         for (let k = 0; k < 4; k++) {
 
-        CZMLName.push({
-            "id": name,
-            "name": name,
-            "position": {
-                "epoch": "2020-03-13T08:00:00Z",
-                "cartographicDegrees": result
-            },
-            "path": {
-                "material": {
-                    "polylineOutline": {
-                        "color": {
-                            "rgba": [255, 0, 255, 255]
-                        },
-                        "outlineColor": {
-                            "rgba": [0, 255, 255, 255]
-                        },
-                        "outlineWidth": 5
+                             result.push(test33(k, arr)[index]);
+                         }
+                         index++;
+                     }
+                     result.push(d);
+                 });
+                 return result;
+             }
+
+             function test33(x, arr) {
+                 var resultArr = [];
+                 for (let y = x; y < arr.length; y += 4) {
+                     if (y + 4 < arr.length) {
+                         resultArr.push((arr[y] + arr[y + 4]) / 2);
+                     }
+
+                 }
+                 return resultArr;
+             } */
+            /* test.forEach(function(d, i) {
+
+                if (i % 4 === 0 && i > 0) {
+                    for (let k = 0; k < 4; k++) {
+
+                        result.push(test33(k, test)[index]);
                     }
-                },
-                "width": 8,
-                "resolution": 5
-            },
-            "model": {
-                "gltf": model,
-                "distanceDisplayCondition": {
-                    "distanceDisplayCondition": [minDistance, maxDistance]
-                },
-                "color": {
-                    "rgba": [0, 8, 255, 255]
-                },
-                "minimumPixelSize": 64,
-            },
-            "orientation": {
-                "velocityReference": "#position"
-            },
-            "label": {
-                "show": true,
-                "text": name,
-                "font": "10pt Arial",
-                "outlineWidth": 1,
-                "horizontalOrigin": "LEFT",
-                "pixelOffset": {
-                    "cartesian2": [-30, -30]
-                },
-                "fillColor": {
-                    "rgba": [255, 255, 0, 200]
-                },
-                "distanceDisplayCondition": {
-                    "distanceDisplayCondition": [minDistance, maxDistance]
-                },
-                "disableDepthTestDistance": Number.POSITIVE_INFINITY
-            }
-        });
+                    index++;
+                }
+                result.push(d);
+            }); */
 
-        this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
-            map.viewer3d.trackedEntity = ds.entities.getById(name);
-        });
+            var startPoint = [126.9332975, 37.35917];
+            var endPotint = [129.9885203, 42.9565201];
+            result = this.targeting(startPoint, endPotint);
+
+            CZMLName.push({
+                "id": "document",
+                "name": "3D Models",
+                "version": "1.0",
+            });
+
+            CZMLName.push({
+                "id": name,
+                "name": name,
+                "availability": "2020-03-14T12:00:00Z/2020-03-17T16:00:00.9962195740191Z",
+                "position": {
+                    "interpolationAlgorithm": "LAGRANGE",
+                    "interpolationDegree": 1,
+                    "epoch": "2020-03-14T12:00:00Z",
+                    "cartesian": result
+                },
+                /* "path": {
+                    "material": {
+                        "polylineOutline": {
+                            "color": {
+                                "rgba": [255, 0, 255, 255]
+                            },
+                            "outlineColor": {
+                                "rgba": [0, 255, 255, 255]
+                            },
+                            "outlineWidth": 5
+                        }
+                    },
+                    "width": 8,
+                    "resolution": 5
+                }, */
+                "model": {
+                    "gltf": model,
+                    "distanceDisplayCondition": {
+                        "distanceDisplayCondition": [minDistance, maxDistance]
+                    },
+                    "color": {
+                        "rgba": [0, 221, 221, 221]
+                    },
+                    "minimumPixelSize": 64,
+                },
+                "orientation": {
+                    "velocityReference": "#position"
+                },
+                "viewFrom": {
+                    "cartesian": [-2080, -1715, 779]
+                },
+
+                "label": {
+                    "show": true,
+                    "text": name,
+                    "font": "10pt Arial",
+                    "outlineWidth": 1,
+                    "horizontalOrigin": "LEFT",
+                    "pixelOffset": {
+                        "cartesian2": [-30, -30]
+                    },
+                    "fillColor": {
+                        "rgba": [255, 255, 0, 200]
+                    },
+                    "distanceDisplayCondition": {
+                        "distanceDisplayCondition": [minDistance, maxDistance]
+                    },
+                    "disableDepthTestDistance": Number.POSITIVE_INFINITY
+                }
+            });
+
+            this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
+                map.viewer3d.trackedEntity = ds.entities.getById(name);
+            });
+        }
+        /* pointDistance(startXY, deXY, height){
+            var distanceRes=[];
+            distanceRes = [distance(Cesium.Cartesian3.fromDegrees(startXY[0], startXY[1], 0), Cesium.Cartesian3.fromDegrees(deXY[0], deXY[1], 0)),height];
+            return distanceRes;
+        } */
+
+    targeting(startPoint, endPotint) {
+        var positionData = [];
+
+        var formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 200);
+        var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 0), Cesium.Cartesian3.fromDegrees(endPotint[0], endPotint[1], 0));
+        // var Depot = pointDistance();
+        var resultHeight = [];
+        for (let q = 0; q < distance; q += 500) {
+            // 높이값이된다
+            var ragVal = this.ragrange(q, [
+                [10000, 3000],
+                [distance / 2, 1000000],
+                [distance, 500]
+            ]);
+            if (ragVal > 200) { resultHeight.push(ragVal); }
+        }
+        var yInc = (endPotint[0] - startPoint[0]) / resultHeight.length;
+        var xInc = (endPotint[1] - startPoint[1]) / resultHeight.length;
+        var timeVal = 0.0;
+
+        positionData = [timeVal, formatCart3.x, formatCart3.y, formatCart3.z];
+        resultHeight.forEach(function(d, i) {
+            timeVal += 10.0;
+            startPoint[0] += yInc;
+            startPoint[1] += xInc;
+            console.log(startPoint);
+            positionData.push(timeVal);
+            formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], resultHeight[i]);
+            positionData.push(formatCart3.x);
+            positionData.push(formatCart3.y);
+            positionData.push(formatCart3.z);
+        })
+        return positionData;
     }
-
-
     addModel() {
-        this.add3DModel(127.0215633, 37.4890219, 2000, "../models/Cesium_Air.glb", "Jet1");
+        this.add3DModel(127.0215633, 37.4890219, 0, "https://assets.agi.com/models/launchvehicle.glb", "Jet1");
     }
     addHeadingPitchRoll() {
         var options = {}
@@ -534,8 +582,9 @@ class MilMap {
         processPart(partsToLoad[0]);
     }
     remove3DModel() {
-        this.viewer3d.dataSources.removeAll();
-    }
+            this.viewer3d.dataSources.removeAll();
+        }
+        //    라그랑지언의 곡선 좌표 구하기 ... 포인트 지점의 distance와 높이를 2차원배열 형태로 넘겨준다...val은 산출하고자하는 distance의 값..  [[1,2],[3,4],[5,6]]
     ragrange(val, arrPoint) {
         var res = 0;
         var xResult = [];
