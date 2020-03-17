@@ -362,7 +362,7 @@ class MilMap {
 
     add3DModel(x, y, z, model, name) {
             var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
-            var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
+            var maxDistance = 5000000; //축소시 보여지는 최대 거리(m) 정의
             var CZMLName = [];
 
             // xyz z 높이
@@ -421,10 +421,25 @@ class MilMap {
                 }
                 result.push(d);
             }); */
+            /*아직 순서 미완성.....x축의 값을 안에 중간지점이 들어와야 된다........... ㅠㄴㅁㄹ휼ㄴ휴
+              아직은 링크 포인트가 여러개 왔을떄 처리로직이 애매하다. 
+              그리고 링크가 기준이 되는 x값의 범위가 안에잇어야 처리가가능하다....
+              X축도 라그랑지언 써볼까..
+             */
 
-            var startPoint = [126.9332975, 37.35917];
-            var endPotint = [129.9885203, 42.9565201];
-            result = this.targeting(startPoint, endPotint);
+            var startPoint = [140.2376733, 45.5725329, 200];
+            var endPotint = [126.982116, 35.9431969, 500];
+            //sampleLink ....
+
+            var linkPoint = [
+                [127.424844, 43.5416026, 50000],
+                [129.2376733, 41.5416026, 120000],
+                [130.2376733, 40.5416026, 300000],
+                [136.2376733, 38.5416026, 240000],
+                [138.2376733, 36.8416026, 120000]
+            ];
+
+            result = this.targeting(startPoint, endPotint, linkPoint);
 
             CZMLName.push({
                 "id": "document",
@@ -435,7 +450,7 @@ class MilMap {
             CZMLName.push({
                 "id": name,
                 "name": name,
-                "availability": "2020-03-14T12:00:00Z/2020-03-17T16:00:00.9962195740191Z",
+                "availability": "2020-03-14T12:00:00Z/2020-03-15T16:00:00.9962195740191Z",
                 "position": {
                     "interpolationAlgorithm": "LAGRANGE",
                     "interpolationDegree": 1,
@@ -503,38 +518,70 @@ class MilMap {
             return distanceRes;
         } */
 
-    targeting(startPoint, endPotint) {
+    targeting(startPoint, endPoint, linkPoint) {
         var positionData = [];
-
         var formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 200);
-        var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 0), Cesium.Cartesian3.fromDegrees(endPotint[0], endPotint[1], 0));
+        // var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 0), Cesium.Cartesian3.fromDegrees(endPoint[0], endPoint[1], 0));
         // var Depot = pointDistance();
         var resultHeight = [];
-        for (let q = 0; q < distance; q += 500) {
-            // 높이값이된다
-            var ragVal = this.ragrange(q, [
-                [10000, 3000],
-                [distance / 2, 1000000],
-                [distance, 500]
-            ]);
-            if (ragVal > 200) { resultHeight.push(ragVal); }
+        var resultY = [];
+        var arrPoint = [];
+        // arrPoint.push( [linkPoint[1],linkPoint[0]]);
+        var ragPointX = [];
+        var ragPointH = [];
+        ragPointX.push([startPoint[1], startPoint[0]]);
+        ragPointX.push([endPoint[1], endPoint[0]]);
+        ragPointH.push([startPoint[0], startPoint[2]]);
+        ragPointH.push([endPoint[0], endPoint[2]]);
+
+        linkPoint.forEach(function(d) {
+                ragPointX.push([d[1], d[0]]);
+                ragPointH.push([d[0], d[2]]);
+            })
+            /* for (let k = 0; k < 1000; k++) {
+            var regY = this.ragrange(k, [
+                [startPoint[1], startPoint[0]],
+                [linkPoint[1], linkPoint[0]],
+                [endPoint[1], endPoint[0]]
+            ])
+            resultY.push(regX);
         }
-        var yInc = (endPotint[0] - startPoint[0]) / resultHeight.length;
-        var xInc = (endPotint[1] - startPoint[1]) / resultHeight.length;
+ */
+        var precision = (endPoint[1] - startPoint[1]) / 5000;
+        var resultX = [];
+        for (let j = startPoint[1];
+            (precision > 0) ? j < endPoint[1] : j > endPoint[1]; j += precision) {
+            var regY = this.ragrange(j, ragPointX);
+            resultX.push(j);
+            resultY.push(regY);
+        }
+
+        // var xInc = (endPoint[0] - startPoint[0]) / resultY.length;
+        // var Rvaild = [];
+        for (let q = 0; q < resultY.length; q++) {
+            // 높이값이된다
+            var ragVal = this.ragrange(resultY[q], ragPointH);
+
+            resultHeight.push(ragVal);
+
+        }
+
         var timeVal = 0.0;
 
-        positionData = [timeVal, formatCart3.x, formatCart3.y, formatCart3.z];
         resultHeight.forEach(function(d, i) {
-            timeVal += 10.0;
-            startPoint[0] += yInc;
-            startPoint[1] += xInc;
-            console.log(startPoint);
-            positionData.push(timeVal);
-            formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], resultHeight[i]);
-            positionData.push(formatCart3.x);
-            positionData.push(formatCart3.y);
-            positionData.push(formatCart3.z);
-        })
+            if (resultHeight[i] > 500) {
+
+                console.log(resultY[i] + resultX[i] + resultHeight[i]);
+
+                formatCart3 = Cesium.Cartesian3.fromDegrees(resultY[i], resultX[i], resultHeight[i]);
+                // startPoint[0] += yInc;
+                positionData.push(timeVal);
+                positionData.push(formatCart3.x);
+                positionData.push(formatCart3.y);
+                positionData.push(formatCart3.z);
+                timeVal += 10.0;
+            }
+        });
         return positionData;
     }
     addModel() {
