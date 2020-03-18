@@ -18,49 +18,54 @@ class MilMap {
         this.options = Object.assign({}, options);
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, {
             //디폴트 레이어로 World_TMS 설정
-            /*
-                imageryProvider: Cesium.createTileMapServiceImageryProvider({
-                    url: wUrl + '/World_TMS/',
-                    proxy: new Cesium.DefaultProxy(proxyUrl)
-                }),
-            */
-            /*
-             imageryProvider: Cesium.createWorldImagery({
-                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-             }),*/
-            terrainProvider: Cesium.createWorldTerrain(),
-            shadows: false,
-            scene3DOnly: true, //3차원 화면으로 구성 // ,
-            //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-            animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-            baseLayerPicker: true,
-            geocoder: true,
-            vrButton: false,
-            homeButton: false,
-            infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-            sceneModePicker: false,
-            selectionIndicator: false,
-            creditsDisplay: true,
-            //creditContainer: false,
-            fullscreenButton: false,
-            timeline: true,
-            navigationHelpButton: false,
-            terrainExaggeration: 1.0, //고도 기복 비율 조정
-            shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-            requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-            // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-            maximumRenderTimeChange: Infinity,
-            navigationInstructionsInitiallyVisible: false,
-            /*
-            skyBox: new Cesium.SkyBox({}),
-            skyAtmosphere: new Cesium.SkyAtmosphere(),
-            clockViewModel: new Cesium.ClockViewModel(clock),
-            contextOptions: {
-                id: "cesiumCanvas", //must
-                webgl: {
-                    preserveDrawingBuffer: true
-                }
-            }*/
+
+            /*  imageryProvider: new Cesium.TileMapServiceImageryProvider({
+                 url: 'http://localhost:8080/node_modules/cesium/Build/Cesium/Assets/Textures/World_TMS/',
+                 // proxy: new Cesium.DefaultProxy(proxyUrl)
+             }), */
+
+            imageryProvider: new Cesium.TileMapServiceImageryProvider({
+                url: Cesium.buildModuleUrl('Assets/Textures/World_TMS')
+            }),
+            baseLayerPicker: false,
+            geocoder: false
+                /*
+                 imageryProvider: Cesium.createWorldImagery({
+                     style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+                 }),*/
+                /*  terrainProvider: Cesium.createWorldTerrain(),
+                 shadows: false,
+                 scene3DOnly: true, //3차원 화면으로 구성 // ,
+                 //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+                 animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+                 baseLayerPicker: true,
+                 geocoder: true,
+                 vrButton: false,
+                 homeButton: false,
+                 infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+                 sceneModePicker: false,
+                 selectionIndicator: false,
+                 creditsDisplay: true,
+                 //creditContainer: false,
+                 fullscreenButton: false,
+                 timeline: true,
+                 navigationHelpButton: false,
+                 terrainExaggeration: 1.0, //고도 기복 비율 조정
+                 shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+                 requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+                 // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+                 maximumRenderTimeChange: Infinity,
+                 navigationInstructionsInitiallyVisible: false, */
+                /*
+                skyBox: new Cesium.SkyBox({}),
+                skyAtmosphere: new Cesium.SkyAtmosphere(),
+                clockViewModel: new Cesium.ClockViewModel(clock),
+                contextOptions: {
+                    id: "cesiumCanvas", //must
+                    webgl: {
+                        preserveDrawingBuffer: true
+                    }
+                }*/
         });
         navigationInitialization(this.options.map3.id, this.viewer3d);
 
@@ -427,16 +432,13 @@ class MilMap {
               X축도 라그랑지언 써볼까..
              */
 
-            var startPoint = [140.2376733, 45.5725329, 200];
-            var endPotint = [126.982116, 35.9431969, 500];
+            var startPoint = [127.0239084, 37.4847926, 50000];
+            var endPotint = [143.041785, 41.6162979, 80000];
             //sampleLink ....
 
             var linkPoint = [
-                [127.424844, 43.5416026, 50000],
-                [129.2376733, 41.5416026, 120000],
-                [130.2376733, 40.5416026, 300000],
-                [136.2376733, 38.5416026, 240000],
-                [138.2376733, 36.8416026, 120000]
+                [123.1584762, 39.0786155, 100000]
+                // [128.1584762, 40.0786155, 80000]
             ];
 
             result = this.targeting(startPoint, endPotint, linkPoint);
@@ -585,7 +587,7 @@ class MilMap {
         return positionData;
     }
     addModel() {
-        this.add3DModel(127.0215633, 37.4890219, 0, "https://assets.agi.com/models/launchvehicle.glb", "Jet1");
+        this.add3DModel(127.0215633, 37.4890219, 0, "../models/Cesium_Air.glb", "Jet1");
     }
     addHeadingPitchRoll() {
         var options = {}
