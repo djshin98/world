@@ -44,6 +44,8 @@ section {
             font-size: 0.8em;
             overflow: hidden;
             background: #6a6e82;
+            padding: 10px 0px;
+            width:75px;
             .active.item:after {
                 background: $sectionBackgroundColor !important
             }
@@ -102,6 +104,48 @@ section {
                     .ui.button.btn_last {
                         padding: 6px 0px;
                     }
+                }
+                .ui.sub.header{
+                    font-size: 1em;
+                    color: white;
+                    margin-top: 0.4em;
+                }
+                select.ui{
+                    padding: 0.2em;
+                    height: 2em;
+                    border-radius: 3px;
+                    width: 100%;
+                }
+                .filetree{
+                    background-color: #fff;
+                    border:#ddd;
+                    font-family: Verdana, helvetica, arial, sans-serif;
+                    line-height: 1em;
+                    height:300px;
+                    overflow: scroll;
+                }
+                .ui.inline{
+                    input{
+                        display: inline;
+                    }
+                    div{
+                        display: inline;
+                        font-size: 1.2em;
+                        color:yellow;
+                        label{
+                            display: inline;
+                            color:white;
+                        }
+                        
+                    }
+                    div.right{
+                        float:right;
+                    }
+                }
+                .ui.result{
+                    background-color: #fff;
+                    border:1px solid #ddd;
+                    height:120px;
                 }
             }
         }
