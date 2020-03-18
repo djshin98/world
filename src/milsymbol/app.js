@@ -163,7 +163,7 @@ class ViewModel_KMilSymbol {
                 makeSIDCSelect(this.options.VIWE.MISSION, "mission", codeType.standard.mission);
                 makeModifierTree(this.options.VIWE.FI, codeType.standard.identifier);
                 makeUnitTree(this.options.VIWE.UNIT, codeType.standard.unit);
-
+                /*
                 var toggler = document.getElementsByClassName("caret");
                 Array.from(toggler).forEach((d) => {
                     d.addEventListener("click", function() {
@@ -171,7 +171,7 @@ class ViewModel_KMilSymbol {
                         this.classList.toggle("caret-down");
                     });
                 });
-
+                */
                 global.selectedCodeType = codeType.code;
             }
         };
