@@ -111,14 +111,14 @@ class JusoSearch {
             "key=" + this.options.key + "&" +
             "page=" + (option.currentPage ? option.currentPage : 1) + "&" +
             "size=" + (option.countPerPage ? option.countPerPage : 10) + "&" +
-            "query=" + option.keyword + "&" +
+            "query=" + encodeURI(option.keyword) + "&" +
             "request=search&" +
             "type=" + searchType.type + "&" +
             "category=" + searchType.category + "&" +
             "format=json";
         // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
         var _this = this;
-        axios.get("http://localhost:8081/map/juso", {
+        axios.get("http://localhost:8082/map/juso", {
             params: {
                 url: str
             }
