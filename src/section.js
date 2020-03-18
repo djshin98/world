@@ -78,7 +78,7 @@ class Section {
             $(".section-head>a>b").show();
 
             if ($(".section-view").is(":visible")) {
-                $(".section-view").transition('fade left');
+                $(".section-view").transition('pulse');
             } else {
                 $(".section-view").transition('fade right');
             }

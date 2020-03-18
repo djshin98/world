@@ -62,6 +62,12 @@ var paths = {
         output_src: 'main.src.js',
         dest: 'dist/js/'
     },
+    kmil_app_scripts: {
+        entries: ['./src/milsymbol/app.js'],
+        output: 'kmilsymbol_edit.js',
+        output_src: 'kmilsymbol_edit.src.js',
+        dest: 'dist/js/'
+    },
     html: {
         src: 'src/**/*.html',
         dest: 'dist/'

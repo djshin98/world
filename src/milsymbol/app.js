@@ -116,13 +116,39 @@ function makeUnitTree(id, arr) {
 
     document.getElementById(id).innerHTML = str;
 }
-class CodeType {
+class ViewModel_KMilSymbol {
     constructor(opt) {
         this.activeType;
-        this.init(opt.id);
+        this.options = Object.assign({
+            CODETYPE:"codetype",
+            AFFILIATION:"affiliation",
+            BATTLEFIELD:"battlefield",
+            STATUS:"status",
+            FI:"function-indentifier",
+            UNIT:"unit",
+            SIDC:"sidc",
+            option : {
+                FILL:"mil-option-fill",
+                FRAME:"mil-option-frame",
+                ICON:"mil-option-icon",
+                SIZE:"mil-option-size",
+                DESC:"mil-option-label"
+            }
+        },opt);
+        this.init();
     }
-    init(id) {
-        let ele = document.querySelector("#" + id);
+    init() {
+        let ele = document.querySelector("#" + this.options.VIEW.CODETYPE);
+
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "size", id: this.options.VIEW.option.SIZE, type: "input", dataType: "number", dataDefault: 50 }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "sic", id: this.options.VIEW.option.SIDC, type: "input", dataType: "text" }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "uniqueDesignation", id: this.options.VIEW.option.DESC, type: "input", dataType: "text" }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "fill", id: this.options.VIEW.option.FILL, type: "select", dataType: "bool" }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "frame", id: this.options.VIEW.option.FRAME, type: "select", dataType: "bool" }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "monoColor", id: this.options.VIEW.option.COLOR, type: "select", dataType: "text", dataUndefined: "none" }));
+        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "icon", id: this.options.VIEW.option.ICON, type: "select", dataType: "bool" }));
+
+
         let str;
         codeTypes.forEach(d => {
             str += '<option value="' + d.code + '">' + d.desc + '</option>';
@@ -131,12 +157,12 @@ class CodeType {
         ele.onchange = function() {
             let codeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
             if (codeType) {
-                makeSIDCSelect("affiliation", "affiliation", codeType.standard.affiliation);
-                makeSIDCSelect("battlefield", "battlefield", codeType.standard.battlefield);
-                makeSIDCSelect("status", "status", codeType.standard.status);
-                makeSIDCSelect("mission", "mission", codeType.standard.mission);
-                makeModifierTree("treeModifier", codeType.standard.identifier);
-                makeUnitTree("treeMobility", codeType.standard.unit);
+                makeSIDCSelect(this.options.VIWE.AFFILIATION, "affiliation", codeType.standard.affiliation);
+                makeSIDCSelect(this.options.VIWE.BATTLEFIELD, "battlefield", codeType.standard.battlefield);
+                makeSIDCSelect(this.options.VIWE.STATUS, "status", codeType.standard.status);
+                makeSIDCSelect(this.options.VIWE.MISSION, "mission", codeType.standard.mission);
+                makeModifierTree(this.options.VIWE.FI, codeType.standard.identifier);
+                makeUnitTree(this.options.VIWE.UNIT, codeType.standard.unit);
 
                 var toggler = document.getElementsByClassName("caret");
                 Array.from(toggler).forEach((d) => {
@@ -246,19 +272,18 @@ var symbolTest = {
     }
 };
 
-
+/*
 window.onload = function() {
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "size", id: "symbolSize", type: "input", dataType: "number", dataDefault: 50 }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "sic", id: "symbolCode", type: "input", dataType: "text" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "uniqueDesignation", id: "symbolLabel", type: "input", dataType: "text" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "fill", id: "symbolFill", type: "select", dataType: "bool" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "frame", id: "symbolFrame", type: "select", dataType: "bool" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "monoColor", id: "symbolMonoColor", type: "select", dataType: "text", dataUndefined: "none" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "icon", id: "symbolIcon", type: "select", dataType: "bool" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "size", id: "mil-option-size", type: "input", dataType: "number", dataDefault: 50 }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "sic", id: "sidc", type: "input", dataType: "text" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "uniqueDesignation", id: "mil-option-label", type: "input", dataType: "text" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "fill", id: "mil-option-fill", type: "select", dataType: "bool" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "frame", id: "mil-option-frame", type: "select", dataType: "bool" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "monoColor", id: "mil-option-monocolor", type: "select", dataType: "text", dataUndefined: "none" }));
+    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "icon", id: "mil-option-icon", type: "select", dataType: "bool" }));
 
     global.selectedCodeTypeObj = new CodeType({ id: "codetype" });
-
-
-
-
 }
+*/
+global.CodeType = ViewModel_KMilSymbol;
+//export default CodeType;

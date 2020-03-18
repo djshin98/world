@@ -44,8 +44,11 @@ section {
             font-size: 0.8em;
             overflow: hidden;
             background: #6a6e82;
-            padding: 10px 0px;
+            
             width:75px;
+            .item{
+                padding: 10px 0px;
+            }
             .active.item:after {
                 background: $sectionBackgroundColor !important
             }
@@ -136,7 +139,6 @@ section {
                             display: inline;
                             color:white;
                         }
-                        
                     }
                     div.right{
                         float:right;

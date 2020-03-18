@@ -1,17 +1,17 @@
 <div class="section-content">
-    <div class="ui sub header">코드 타입</div>
+    <div class="ui sub header" id="codetype-text" >코드 타입</div>
     <select class="ui dropdown" id="codetype">
     </select>
-    <div class="ui sub header">피아관계</div>
+    <div class="ui sub header" id="affiliation-text" >피아관계</div>
     <select class="ui dropdown" id="affiliation">
     </select>
-    <div class="ui sub header">전장</div>
+    <div class="ui sub header" id="battlefield-text" >전장</div>
     <select class="ui dropdown" id="battlefield">
     </select>
-    <div class="ui sub header">상태</div>
+    <div class="ui sub header" id="status-text" >상태</div>
     <select class="ui dropdown" id="status">
     </select>
-    <div class="ui sub header">기능 조정자</div>
+    <div class="ui sub header" id="function-indentifier-text" >기능 조정자</div>
     <ul id="function-indentifier" class="filetree" style="height:300px;">
 		<li><span class="folder">Folder 1</span>
 			<ul>
@@ -75,19 +75,31 @@
     
     <div class="ui inline">
         <div class="ui checkbox" >
-            <input type="checkbox" name="fill">
+            <input type="checkbox" id="mil-option-fill">
             <label>fill</label>
         </div>
         <div class="ui checkbox">
-            <input type="checkbox" name="frame">
+            <input type="checkbox" id="mil-option-frame">
             <label>frame</label>
         </div>
         <div class="ui checkbox">
-            <input type="checkbox" name="icon">
+            <input type="checkbox" id="mil-option-icon">
             <label>icon</label>
         </div>
-        <input type="color" name="color" style="width:2em;">
+        <input type="color" id="mil-option-monocolor" style="width:2em;border-radius: 3px;">
     </div>
+
+    <div class="ui inline">
+        <div class="ui ">
+            <label>size</label>
+            <input class="ui input" id="mil-option-size" style="width:50px;"/>
+        </div>
+        <div class="ui right">
+            <label>desc</label>
+            <input class="ui input" id="mil-option-label" style="width:80px;"/>
+        </div>
+    </div>
+
 
     <div class="ui inline">
         <input class="ui input" id="sidc" style="width:130px;"/>
@@ -106,6 +118,7 @@
 
 <script>
 
+
     $("#function-indentifier").treeview({
 		collapsed: true
     });
@@ -114,4 +127,24 @@
 		collapsed: true
     });
     
+    var selectedCodeTypeObj = new ViewModel_KMilSymbol({ 
+        view : {
+            CODETYPE:"codetype",
+            AFFILIATION:"affiliation",
+            BATTLEFIELD:"battlefield",
+            STATUS:"status",
+            MISSION:"mission",
+            FI:"function-indentifier",
+            UNIT:"unit",
+            SIDC:"sidc",
+            option : {
+                FILL:"mil-option-fill",
+                FRAME:"mil-option-frame",
+                ICON:"mil-option-icon",
+                COLOR:"mil-option-monocolor",
+                SIZE:"mil-option-size",
+                DESC:"mil-option-label",
+            }
+        }    
+    });
 </script>
