@@ -19,9 +19,6 @@ var codeTypes = [
 
 
     //{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
-function tooltipModifier(d) {
-    return d.type + d.affiliation + d.battlefield + d.status;
-}
 
 class ViewModel_KMilSymbol {
     constructor(opt,onchange) {
@@ -68,6 +65,7 @@ class ViewModel_KMilSymbol {
         ele.innerHTML = str;
         var _this = this;
         ele.onchange = function() {
+            document.getElementById(_this.options.view.SIDC).value = "";
             _this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
             
             if (_this.activeType) {
@@ -112,7 +110,7 @@ class ViewModel_KMilSymbol {
 
                     dom.$( ".functionIndentfierClickable").forEach(d=>{
                         d.addEventListener("click",()=>{
-                            let id = this.getAttribute("data-id");
+                            let id = d.getAttribute("data-id");
                             let idf = _this.findFunctionIdentifier(id);
                             if( idf ){
                                 _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
@@ -168,7 +166,7 @@ class ViewModel_KMilSymbol {
     }
     changeMobility(code) {
         let ele = document.getElementById(this.options.view.SIDC);
-        let sidc = new SIDC(ele.value);
+        let sidc = new SIDC(this.activeType.code, ele.value);
         sidc.codeType = this.activeType.code;
         sidc.echelon = code;
         ele.value = sidc.toCode();
@@ -178,7 +176,7 @@ class ViewModel_KMilSymbol {
     changeModifier(code, type, affiliation, battlefield, status) {
         let ele = document.getElementById(this.options.view.SIDC);
         let val = ele.value;
-        let sidc = new SIDC(val);
+        let sidc = new SIDC(this.activeType.code, val);
         sidc.codeType = type;
         if (type != '' && type != '*' && type != '-') document.getElementById(this.options.view.CODETYPE).value = sidc.codeType;
         
@@ -237,25 +235,33 @@ class ViewModel_KMilSymbol {
         document.getElementById(id).onchange = (e) => {
             let val = document.getElementById(id).value;
             let ele = document.getElementById(_this.options.view.SIDC);
-            let sidc = new SIDC(ele.value);
+            let sidc = new SIDC(_this.activeType.code, ele.value);
             sidc.codeType = _this.activeType.code;
             sidc[field] = val;
             ele.value = sidc.toCode();
             this.symbolTest.try();
         }
     }     
+    tooltipModifier(d) {
+        if( this.activeType.code != "W"){
+            return d.type + d.affiliation + d.battlefield + d.status;
+        }else{
+            return d.type + d.pos + d.fix + d.graphic;
+        }
+    }
+    
     _makeModifierTree(id, arr) {
         let str = '';
         var _this = this;
         arr.forEach(d => {
             if (d.children && d.children.length > 0) {
-                str += '<li><div class="folder tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div>';
+                str += '<li><div class="folder tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + _this.tooltipModifier(d) + '</span></div>';
                 str += '<ul>';
                 str += _this._makeModifierTree(id, d.children);
                 str += '</ul>';
                 str += '</li>';
             } else {
-                str += '<li><div class="file tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div></li>';
+                str += '<li><div class="file tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + _this.tooltipModifier(d) + '</span></div></li>';
             }
         });
         return str;
@@ -282,7 +288,8 @@ class ViewModel_KMilSymbol {
     }
 }
 class SIDC {
-    constructor(sidc) {
+    constructor(codeStyle, sidc) {
+        this.codeStyle = codeStyle;
         this.extra = "";
         if (!sidc || sidc.length == 0) { sidc = "---------------"; } else if (sidc.length < 15) {
             sidc += "-".repeat(15 - sidc.length);
@@ -309,7 +316,7 @@ class SIDC {
         
     }
     toCode() {
-        if( this.codeType != "W" ){
+        if( this.codeStyle != "W" ){
             return this.codeType + this.affiliation + this.battlefield +
                 this.status + this.modifier + this.echelon + this.nation + this.mission;
         }else{
@@ -382,11 +389,12 @@ class SymbolTest {
             var symbol = new ms.Symbol(option.sic, option);
 
             option.code = symbol.toDataURL();
-            return this.template(option.code);
+            return this.template(option, option.code);
         }
     }
-    template(result) {
-        return '<img class="symbol-sm" src="' + result + '"/>';
+    template(option,result) {
+        option.code = "";
+        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + result + '"/>';
     }
     try() {
         let output = this.create();

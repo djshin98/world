@@ -22,33 +22,26 @@
         function dragOver(e){
             e.preventDefault();
         }
-
+        function drag(ev) {
+            ev.dataTransfer.setData("option", ev.target.getAttribute("data-option") );
+        }
         var billboards;
         function dragDrop(e) {
             if( !billboards ){
                 billboards = map.viewer3d.scene.primitives.add(new Cesium.BillboardCollection());
                 map.viewer3d.extend(Cesium.viewerDragDropMixin);
             }
-            /*
-            var canvas = document.createElement('canvas');
-            canvas.width = 32;
-            canvas.height = 32;
-            var ctx = canvas.getContext('2d');
-            ctx.beginPath();
-            ctx.arc(16, 16, 15, 0, Cesium.Math.TWO_PI, true);
-            ctx.closePath();
-            ctx.fillStyle = `hsl(${Math.random()*360},55%,55%)`;
-            ctx.fill();
-            */
             var cartesian = map.viewer3d.camera.pickEllipsoid(
             new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
 
-            billboards.add({
-                id:"a",
+            var obj = {
+                id:JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))),
                 image: e.dataTransfer.getData("text"),
                 position: cartesian,
                 scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
-            });
+            };
+            db.
+            billboards.add(obj);
         }
     </script>
 </head>

@@ -16,6 +16,11 @@ class MilMap {
         this.mode = "3D";
         this.db = new IxDatabase(1);
         this.options = Object.assign({}, options);
+
+        var extent = Cesium.Rectangle.fromDegrees(117.896284, 31.499028, 139.597380, 43.311528);
+        Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
+        Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
+
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, {
             //디폴트 레이어로 World_TMS 설정
 
@@ -31,7 +36,9 @@ class MilMap {
             baseLayerPicker: false,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+            selectionIndicator: false,
             homeButton: false,
+            navigationInstructionsInitiallyVisible: false,
                 /*
                  imageryProvider: Cesium.createWorldImagery({
                      style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -71,8 +78,46 @@ class MilMap {
                 }*/
         });
         navigationInitialization(this.options.map3.id, this.viewer3d);
-
         let _this = this;
+        /*
+        var entity = this.viewer3d.entities.add({
+            label:{
+                show: true,
+                showBackground:true,
+                backgroundColor: Cesium.Color.BLACK,
+                font:'25px sans-serif',
+                horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                verticalOrigin: Cesium.VerticalOrigin.TOP,
+                pixelOffset: new Cesium.Cartesian2(15,0)
+            }
+        });
+        */
+        var enenthandler = new Cesium.ScreenSpaceEventHandler(this.viewer3d.scene.canvas);
+        enenthandler.setInputAction(function(movement){
+            var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition,_this.viewer3d.scene.globe.ellipsoid);
+            if( cartesian ){
+                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                var longitude = Cesium.Math.toDegrees( cartographic.longitude ).toFixed(5);
+                var latitude = Cesium.Math.toDegrees( cartographic.latitude ).toFixed(5);
+
+                var cc = Cesium.Cartographic.fromCartesian(map.viewer3d.camera.position);
+
+                var clongitude = Cesium.Math.toDegrees( cc.longitude ).toFixed(5);
+                var clatitude = Cesium.Math.toDegrees( cc.latitude ).toFixed(5);
+
+                //entity.position = cartesian;
+                //entity.label.show = true;
+                //entity.label.text = "경도 : " + ("" + longitude).slice(-7) + "\u00B0" + "\n위도 : " +("" + latitude).slice(-7) + "\u00B0";
+                document.getElementById("cursor-longitude").innerText = longitude;
+                document.getElementById("cursor-latitude").innerText = latitude;
+
+                document.getElementById("center-longitude").innerText = clongitude;
+                document.getElementById("center-latitude").innerText = clatitude;
+            }else{
+                //entity.label.show = false;
+            }
+        },Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        
         this.viewer3d.camera.moveEnd.addEventListener(function() {
             let obj = _this.viewer3d.scene.camera;
             _this.db.set("scene", "camera", {
