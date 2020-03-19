@@ -128,9 +128,11 @@ section {
                     overflow: scroll;
 
                     div.file {
+                        cursor:pointer;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
                     }
                     div.folder {
+                        cursor:pointer;
                         background: url(../libs/jquery-treeview/images/folder.gif) 0 0 no-repeat;
                     }
                     div.folder, div.file {
@@ -237,14 +239,16 @@ header {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: rgb(202, 202, 202);
+    color: rgb(49, 49, 49);
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
+    left: 0px;
+    top: -25px;
 }
 
 

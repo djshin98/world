@@ -14,6 +14,43 @@
     <link rel="stylesheet" href="libs/jquery-treeview/jquery.treeview.css" />
     <script src="libs/jquery-treeview/jquery.treeview.js"></script>
     <script src="kmilsymbol.development.js"></script>
+    <script>
+        function dragEnter(e){
+            event.preventDefault();
+            return true;
+        }
+        function dragOver(e){
+            e.preventDefault();
+        }
+
+        var billboards;
+        function dragDrop(e) {
+            if( !billboards ){
+                billboards = map.viewer3d.scene.primitives.add(new Cesium.BillboardCollection());
+                map.viewer3d.extend(Cesium.viewerDragDropMixin);
+            }
+            /*
+            var canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            var ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.arc(16, 16, 15, 0, Cesium.Math.TWO_PI, true);
+            ctx.closePath();
+            ctx.fillStyle = `hsl(${Math.random()*360},55%,55%)`;
+            ctx.fill();
+            */
+            var cartesian = map.viewer3d.camera.pickEllipsoid(
+            new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+
+            billboards.add({
+                id:"a",
+                image: e.dataTransfer.getData("text"),
+                position: cartesian,
+                scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -28,7 +65,7 @@
             <a class="ui logo icon image" href="/">
                 <img src="/img/olive.png" style="width:40px;">
             </a>
-            <a href="https://github.com/djshin98/world" target=”_blank”><b>Olive 3D 0.2.1</b></a>
+            <a href="" target=”_blank”><b>MapX 3D 1.3.3</b></a>
         </div>
         <div class="section-body">
             <div class="ui vertical inverted sidebar labeled icon pointing menu visible">
@@ -41,7 +78,7 @@
 
     <article>
         <div id="door-handle"><i class="angle left icon"></i></div>
-        <div id="map3d"></div>
+        <div id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)" ></div>
         <div id="map2d"></div>
     </article>
     <footer></footer>

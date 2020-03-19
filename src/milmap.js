@@ -29,7 +29,9 @@ class MilMap {
             }),
             */
             baseLayerPicker: false,
-            geocoder: false
+            geocoder: false,
+            infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+            homeButton: false,
                 /*
                  imageryProvider: Cesium.createWorldImagery({
                      style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
