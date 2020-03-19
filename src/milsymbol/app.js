@@ -47,7 +47,7 @@ class ViewModel_KMilSymbol {
             }
         },opt);
         this.onchange = onchange;
-        this.symbolTest = new SymbolTest(this.options.view.RESULT);
+        this.symbolTest = new SymbolTest(this,this.options.view.RESULT);
         this.init();
     }
     init() {
@@ -94,10 +94,10 @@ class ViewModel_KMilSymbol {
     
                     dom.$( ".unitClickable").forEach(d=>{
                         d.addEventListener("click",()=>{
-                            let id = this.getAttribute("data-id");
+                            let id = d.getAttribute("data-id");
                             let idf = _this.findUnit(id);
                             if( idf ){
-                                _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                                _this.changeMobility( idf.code);
                             }
                         });
                     });
@@ -272,7 +272,7 @@ class ViewModel_KMilSymbol {
             str += '<li><span class="folder">' + d + '</span>';
             str += '<ul>';
             arr[d].forEach(item => {
-                str += '<li class="unitClickable" data-id="' + item.code + '"><span class="file">' + item.desc_kor + '</span></li>';
+                str += '<li><span class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</span></li>';
             });
             str += '</ul>';
             str += '</li>';
@@ -323,9 +323,14 @@ class ViewModelElement {
         this.options = Object.assign({}, options);
         let ele = document.querySelector("#" + this.options.id);
 
-        ele.addEventListener('change',container.symbolTest.try);
+        container.call
+        ele.addEventListener('change',function(){
+            container.symbolTest.try();
+        });
         if (this.options.type == "input") {
-            ele.addEventListener('keyup',container.symbolTest.try);
+            ele.addEventListener('keyup',function(){
+                container.symbolTest.try();
+            });
         }
     }
     dataKey() {
@@ -365,7 +370,8 @@ class ViewModelElement {
     }
 }
 class SymbolTest {
-    constructor(resId){
+    constructor(container,resId){
+        this.container = container;
         this.resultId = resId;
         this.viewModels = [];
     }

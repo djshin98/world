@@ -23,10 +23,11 @@ class MilMap {
                  url: 'http://localhost:8080/node_modules/cesium/Build/Cesium/Assets/Textures/World_TMS/',
                  // proxy: new Cesium.DefaultProxy(proxyUrl)
              }), */
-
+             /*
             imageryProvider: new Cesium.TileMapServiceImageryProvider({
                 url: Cesium.buildModuleUrl('Assets/Textures/World_TMS')
             }),
+            */
             baseLayerPicker: false,
             geocoder: false
                 /*
