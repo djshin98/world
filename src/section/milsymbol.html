@@ -1,16 +1,15 @@
 <div class="section-content">
     <div class="ui sub header" id="codetype-text" >코드 타입</div>
-    <select class="ui dropdown" id="codetype">
-    </select>
+    <select class="ui dropdown" id="codetype"></select>
     <div class="ui sub header" id="affiliation-text" >피아관계</div>
-    <select class="ui dropdown" id="affiliation">
-    </select>
+    <select class="ui dropdown" id="affiliation"></select>
     <div class="ui sub header" id="battlefield-text" >전장</div>
-    <select class="ui dropdown" id="battlefield">
-    </select>
+    <select class="ui dropdown" id="battlefield"></select>
     <div class="ui sub header" id="status-text" >상태</div>
-    <select class="ui dropdown" id="status">
-    </select>
+    <select class="ui dropdown" id="status"></select>
+    <div class="ui sub header" id="mission-text" >임무</div>
+    <select class="ui dropdown" id="mission"></select>
+
     <div class="ui sub header" id="function-indentifier-text" >기능 조정자</div>
     <ul id="function-indentifier" class="filetree" style="height:300px;">
 		<li><span class="folder">Folder 1</span>
@@ -111,7 +110,7 @@
           </div>
          
     </div>
-    <div class="ui result"></div>
+    <div class="ui result" id="sidc-img" ></div>
 
 
 </div>
@@ -119,13 +118,7 @@
 <script>
 
 
-    $("#function-indentifier").treeview({
-		collapsed: true
-    });
-
-    $("#unit").treeview({
-		collapsed: true
-    });
+    
     
     var selectedCodeTypeObj = new ViewModel_KMilSymbol({ 
         view : {
@@ -137,6 +130,7 @@
             FI:"function-indentifier",
             UNIT:"unit",
             SIDC:"sidc",
+            RESULT:"sidc-img",
             option : {
                 FILL:"mil-option-fill",
                 FRAME:"mil-option-frame",
@@ -146,5 +140,15 @@
                 DESC:"mil-option-label",
             }
         }    
+    }, function(){
+        $("#function-indentifier").treeview({
+		collapsed: true
+        });
+
+        $("#unit").treeview({
+            collapsed: true
+        });
     });
+
+    
 </script>

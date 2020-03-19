@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+var {dom} = require("../comm");
 var basic = require("./mil_basic");
 var emergency = require("./mil_emergency");
 var operAct = require("./mil_operAct");
@@ -10,172 +11,274 @@ var weather = require("./mil_weather");
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
     { code: "G", desc: "G:작전활동부호", standard: operAct },
-    //{ code: "W", desc: "W:기상 및 해양부호", standard: weather },
+    { code: "W", desc: "W:기상 및 해양부호", standard: weather },
     { code: "I", desc: "I:신호정보부호", standard: signal },
     { code: "O", desc: "O:안정화작전부호", standard: safe },
     { code: "E", desc: "E:비상관리부호", standard: emergency }
 ]
 
-function makeSIDCSelect(id, field, obj) {
-    let a = document.getElementById(id);
-    let txt = "";
-    obj.forEach(d => {
-        txt += '<option value="' + d.code + '">' + d.desc + '</option>';
-    });
-    a.innerHTML = txt;
-    document.getElementById(id).onchange = (e) => {
-        let val = document.getElementById(id).value;
-        let ele = document.getElementById("symbolCode");
-        let sidc = new SIDC(ele.value);
-        sidc.codeType = global.selectedCodeType;
-        sidc[field] = val;
-        ele.value = sidc.toCode();
-        symbolTest.try();
-    }
-}
 
-
-global.changeMobility = function(code) {
-    let ele = document.getElementById("symbolCode");
-    let sidc = new SIDC(ele.value);
-    sidc.codeType = global.selectedCodeType;
-    sidc.echelon = code;
-    ele.value = sidc.toCode();
-    symbolTest.try();
-}
-
-global.changeModifier = function(code, type, affiliation, battlefield, status) {
-        let ele = document.getElementById("symbolCode");
-        let val = ele.value;
-        let sidc = new SIDC(val);
-        sidc.codeType = type;
-        if (type != '' && type != '*' && type != '-') document.getElementById("codetype").value = sidc.codeType;
-        sidc.affiliation = affiliation;
-        if (affiliation != '' && affiliation != '*' && affiliation != '-') {
-            document.getElementById("affiliation").value = sidc.affiliation;
-        } else {
-            sidc.affiliation = document.getElementById("affiliation").value;
-        }
-        sidc.battlefield = battlefield;
-        if (battlefield != '' && battlefield != '*' && battlefield != '-') {
-            document.getElementById("battlefield").value = sidc.battlefield;
-        } else {
-            sidc.battlefield = document.getElementById("battlefield").value;
-        }
-        sidc.status = status;
-        if (status != '' && status != '*' && status != '-') {
-            document.getElementById("status").value = sidc.status;
-        } else {
-            sidc.status = document.getElementById("status").value;
-        }
-        sidc.modifier = code;
-        ele.value = sidc.toCode();
-        symbolTest.try();
-    }
     //{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
 function tooltipModifier(d) {
     return d.type + d.affiliation + d.battlefield + d.status;
 }
 
-function _makeModifierTree(id, arr) {
-    let str = '<ul class="tree-wrapper">';
-    arr.forEach(d => {
-        let param = '\'' + d.modifier + '\',\'' + d.type + '\',\'' + d.affiliation + '\',\'' + d.battlefield + '\',\'' + d.status + '\'';
-        if (d.children && d.children.length > 0) {
-            str += '<li ><span class="caret"><div class="tooltip" onclick="changeModifier(' + param + ')">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div></span>';
-            str += '<ul class="nested">';
-            str += _makeModifierTree(id, d.children);
-            str += '</ul>';
-            str += '</li>';
-        } else {
-            str += '<li ><div class="tooltip" onclick="changeModifier(' + param + ')">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div></li>';
-        }
-    });
-    str += "</ul>";
-    return str;
-}
-
-function makeModifierTree(id, arr) {
-
-    document.getElementById(id).innerHTML = _makeModifierTree(id, arr);
-}
-
-function makeUnitTree(id, arr) {
-
-    let str = '<ul class="tree-wrapper">';
-    Object.keys(arr).forEach(d => {
-        str += '<li><span class="caret">' + d + '</span>';
-        str += '<ul class="nested">';
-        arr[d].forEach(item => {
-            str += '<li onclick="changeMobility(\'' + item.code + '\')">' + item.desc + '</li>';
-        });
-        str += '</ul>';
-        str += '</li>';
-    });
-    str += "</ul>";
-
-    document.getElementById(id).innerHTML = str;
-}
 class ViewModel_KMilSymbol {
-    constructor(opt) {
+    constructor(opt,onchange) {
         this.activeType;
-        this.options = Object.assign({
-            CODETYPE:"codetype",
-            AFFILIATION:"affiliation",
-            BATTLEFIELD:"battlefield",
-            STATUS:"status",
-            FI:"function-indentifier",
-            UNIT:"unit",
-            SIDC:"sidc",
-            option : {
-                FILL:"mil-option-fill",
-                FRAME:"mil-option-frame",
-                ICON:"mil-option-icon",
-                SIZE:"mil-option-size",
-                DESC:"mil-option-label"
+        this.options = Object.assign({},{
+            view:{
+                CODETYPE:"codetype",
+                AFFILIATION:"affiliation",
+                BATTLEFIELD:"battlefield",
+                STATUS:"status",
+                FI:"function-indentifier",
+                UNIT:"unit",
+                MISSION:"mission",
+                SIDC:"sidc",
+                RESULT:"sidc-img",
+                option : {
+                    FILL:"mil-option-fill",
+                    FRAME:"mil-option-frame",
+                    ICON:"mil-option-icon",
+                    SIZE:"mil-option-size",
+                    DESC:"mil-option-label"
+                }
             }
         },opt);
+        this.onchange = onchange;
+        this.symbolTest = new SymbolTest(this.options.view.RESULT);
         this.init();
     }
     init() {
-        let ele = document.querySelector("#" + this.options.VIEW.CODETYPE);
+        let ele = document.querySelector("#" + this.options.view.CODETYPE);
 
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "size", id: this.options.VIEW.option.SIZE, type: "input", dataType: "number", dataDefault: 50 }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "sic", id: this.options.VIEW.option.SIDC, type: "input", dataType: "text" }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "uniqueDesignation", id: this.options.VIEW.option.DESC, type: "input", dataType: "text" }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "fill", id: this.options.VIEW.option.FILL, type: "select", dataType: "bool" }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "frame", id: this.options.VIEW.option.FRAME, type: "select", dataType: "bool" }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "monoColor", id: this.options.VIEW.option.COLOR, type: "select", dataType: "text", dataUndefined: "none" }));
-        symbolTest.viewModels.push(new ViewModelElement({ dataKey: "icon", id: this.options.VIEW.option.ICON, type: "select", dataType: "bool" }));
-
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "size", id: this.options.view.option.SIZE, type: "input", dataType: "number", dataDefault: 50 }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "sic", id: this.options.view.SIDC, type: "input", dataType: "text" }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "uniqueDesignation", id: this.options.view.option.DESC, type: "input", dataType: "text" }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "fill", id: this.options.view.option.FILL, type: "select", dataType: "bool" }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "frame", id: this.options.view.option.FRAME, type: "select", dataType: "bool" }));
+        //this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "monoColor", id: this.options.view.option.COLOR, type: "select", dataType: "text", dataUndefined: "none" }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "icon", id: this.options.view.option.ICON, type: "select", dataType: "bool" }));
 
         let str;
         codeTypes.forEach(d => {
             str += '<option value="' + d.code + '">' + d.desc + '</option>';
         });
         ele.innerHTML = str;
+        var _this = this;
         ele.onchange = function() {
-            let codeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
-            if (codeType) {
-                makeSIDCSelect(this.options.VIWE.AFFILIATION, "affiliation", codeType.standard.affiliation);
-                makeSIDCSelect(this.options.VIWE.BATTLEFIELD, "battlefield", codeType.standard.battlefield);
-                makeSIDCSelect(this.options.VIWE.STATUS, "status", codeType.standard.status);
-                makeSIDCSelect(this.options.VIWE.MISSION, "mission", codeType.standard.mission);
-                makeModifierTree(this.options.VIWE.FI, codeType.standard.identifier);
-                makeUnitTree(this.options.VIWE.UNIT, codeType.standard.unit);
-                /*
-                var toggler = document.getElementsByClassName("caret");
-                Array.from(toggler).forEach((d) => {
-                    d.addEventListener("click", function() {
-                        this.parentElement.querySelector(".nested").classList.toggle("active");
-                        this.classList.toggle("caret-down");
+            _this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
+            
+            if (_this.activeType) {
+                if( _this.activeType.code != "W" ){
+                    document.getElementById(_this.options.view.MISSION).hidden = false;
+                    document.getElementById(_this.options.view.UNIT).hidden = false;
+
+                    _this.makeSIDCSelect(_this.options.view.AFFILIATION, "affiliation", _this.activeType.standard.affiliation);
+                    _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "battlefield", _this.activeType.standard.battlefield);
+                    _this.makeSIDCSelect(_this.options.view.STATUS, "status", _this.activeType.standard.status);
+                    _this.makeSIDCSelect(_this.options.view.MISSION, "mission", _this.activeType.standard.mission);
+                    _this.makeModifierTree(_this.options.view.FI, _this.activeType.standard.identifier);
+                    _this.makeUnitTree(_this.options.view.UNIT, _this.activeType.standard.unit);
+                
+                    dom.$( ".functionIndentfierClickable").forEach(d=>{
+                        d.addEventListener("click",()=>{
+                            let id = d.getAttribute("data-id");
+                            let idf = _this.findFunctionIdentifier(id);
+                            if( idf ){
+                                _this.changeModifier( idf.modifier , idf.type, idf.affiliation , idf.battlefield, idf.status );
+                            }
+                        });
                     });
-                });
-                */
-                global.selectedCodeType = codeType.code;
+    
+                    dom.$( ".unitClickable").forEach(d=>{
+                        d.addEventListener("click",()=>{
+                            let id = this.getAttribute("data-id");
+                            let idf = _this.findUnit(id);
+                            if( idf ){
+                                _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                            }
+                        });
+                    });
+                }else{
+                    _this.makeSIDCSelect(_this.options.view.AFFILIATION, "pos", _this.activeType.standard.pos);
+                    _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "fix", _this.activeType.standard.fix);
+                    _this.makeSIDCSelect(_this.options.view.STATUS, "graphic", _this.activeType.standard.graphic);
+                    _this.makeModifierTree(_this.options.view.FI, _this.activeType.standard.identifier);
+
+                    document.getElementById(_this.options.view.MISSION).hidden = true;
+                    document.getElementById(_this.options.view.UNIT).hidden = true;
+
+                    dom.$( ".functionIndentfierClickable").forEach(d=>{
+                        d.addEventListener("click",()=>{
+                            let id = this.getAttribute("data-id");
+                            let idf = _this.findFunctionIdentifier(id);
+                            if( idf ){
+                                _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                            }
+                        });
+                    });
+                }
+                if( _this.onchange ){
+                    _this.onchange();
+                }
+                    
             }
         };
         ele.onchange();
+    }
+   
+    
+    _findFunctionIdentifier(root, id){
+        let findObj;
+        //console.log( this.tab() + " searching " + this.id );
+        if( root.id == id ){
+            //console.log( this.tab() + id + " : finded to " + this.id );
+            findObj= root;
+        } else if( id.indexOf(root.id) == 0 && root.children ){
+            root.children.some((d)=>{
+                findObj = this._findFunctionIdentifier(d,id);
+                return findObj ? true : false;
+            });
+        }
+        return findObj;
+    }
+    findFunctionIdentifier(id){
+        let findObj;
+        this.activeType.standard.identifier.some(d=>{
+            findObj = this._findFunctionIdentifier(d,id);
+            return findObj ? true : false;
+        })
+        return findObj;
+    }
+    findUnit(code){
+        let findObj;
+        Object.keys(this.activeType.standard.unit).some(d=>{
+            let list = this.activeType.standard.unit[d];
+            list.some(v=>{
+                if( v.code == code ){
+                    findObj = v;
+                    return true;
+                }
+                return false;
+            });
+        });
+        return findObj;
+    }
+    changeMobility(code) {
+        let ele = document.getElementById(this.options.view.SIDC);
+        let sidc = new SIDC(ele.value);
+        sidc.codeType = this.activeType.code;
+        sidc.echelon = code;
+        ele.value = sidc.toCode();
+        this.symbolTest.try();
+    }
+
+    changeModifier(code, type, affiliation, battlefield, status) {
+        let ele = document.getElementById(this.options.view.SIDC);
+        let val = ele.value;
+        let sidc = new SIDC(val);
+        sidc.codeType = type;
+        if (type != '' && type != '*' && type != '-') document.getElementById(this.options.view.CODETYPE).value = sidc.codeType;
+        
+        if( this.activeType.code != "W"){
+            sidc.affiliation = affiliation;
+            if (affiliation != '' && affiliation != '*' && affiliation != '-') {
+                document.getElementById(this.options.view.AFFILIATION).value = sidc.affiliation;
+            } else {
+                sidc.affiliation = document.getElementById(this.options.view.AFFILIATION).value;
+            }
+            sidc.battlefield = battlefield;
+            if (battlefield != '' && battlefield != '*' && battlefield != '-') {
+                document.getElementById(this.options.view.BATTLEFIELD).value = sidc.battlefield;
+            } else {
+                sidc.battlefield = document.getElementById(this.options.view.BATTLEFIELD).value;
+            }
+            sidc.status = status;
+            if (status != '' && status != '*' && status != '-') {
+                document.getElementById(this.options.view.STATUS).value = sidc.status;
+            } else {
+                sidc.status = document.getElementById(this.options.view.STATUS).value;
+            }
+        }else{
+            sidc.pos = affiliation;
+            if (affiliation != '' && affiliation != '*' && affiliation != '-') {
+                document.getElementById(this.options.view.AFFILIATION).value = sidc.pos;
+            } else {
+                sidc.pos = document.getElementById(this.options.view.AFFILIATION).value;
+            }
+            sidc.fix = battlefield;
+            if (battlefield != '' && battlefield != '*' && battlefield != '-') {
+                document.getElementById(this.options.view.BATTLEFIELD).value = sidc.fix;
+            } else {
+                sidc.fix = document.getElementById(this.options.view.BATTLEFIELD).value;
+            }
+            sidc.graphic = status;
+            if (status != '' && status != '*' && status != '-') {
+                document.getElementById(this.options.view.STATUS).value = sidc.graphic;
+            } else {
+                sidc.graphic = document.getElementById(this.options.view.STATUS).value;
+            }
+        }
+        sidc.modifier = code;
+        ele.value = sidc.toCode();
+        this.symbolTest.try();
+    }
+
+    makeSIDCSelect(id, field, obj) {
+        let a = document.getElementById(id);
+        let txt = "";
+        obj.forEach(d => {
+            txt += '<option value="' + d.code + '">' + d.desc + '</option>';
+        });
+        a.innerHTML = txt;
+        var _this = this;
+        document.getElementById(id).onchange = (e) => {
+            let val = document.getElementById(id).value;
+            let ele = document.getElementById(_this.options.view.SIDC);
+            let sidc = new SIDC(ele.value);
+            sidc.codeType = _this.activeType.code;
+            sidc[field] = val;
+            ele.value = sidc.toCode();
+            this.symbolTest.try();
+        }
+    }     
+    _makeModifierTree(id, arr) {
+        let str = '';
+        var _this = this;
+        arr.forEach(d => {
+            if (d.children && d.children.length > 0) {
+                str += '<li><div class="folder tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div>';
+                str += '<ul>';
+                str += _this._makeModifierTree(id, d.children);
+                str += '</ul>';
+                str += '</li>';
+            } else {
+                str += '<li><div class="file tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + tooltipModifier(d) + '</span></div></li>';
+            }
+        });
+        return str;
+    }
+
+    makeModifierTree(id, arr) {
+        document.getElementById(id).innerHTML = this._makeModifierTree(id, arr);
+    }
+
+    makeUnitTree(id, arr) {
+
+        let str = '';
+        Object.keys(arr).forEach(d => {
+            str += '<li><span class="folder">' + d + '</span>';
+            str += '<ul>';
+            arr[d].forEach(item => {
+                str += '<li class="unitClickable" data-id="' + item.code + '"><span class="file">' + item.desc_kor + '</span></li>';
+            });
+            str += '</ul>';
+            str += '</li>';
+        });
+
+        document.getElementById(id).innerHTML = str;
     }
 }
 class SIDC {
@@ -188,28 +291,41 @@ class SIDC {
             sidc = sidc.substring(0, 15);
         }
         this.codeType = sidc[0];
-        this.affiliation = sidc[1];
-        this.battlefield = sidc[2];
-        this.status = sidc[3];
-        this.modifier = sidc.substring(4, 10); //6
-        this.echelon = sidc.substring(10, 12); //2
-        this.nation = sidc.substring(12, 14);
-        this.mission = sidc[14];
+        if( this.codeType != "W" ){
+            this.affiliation = sidc[1];
+            this.battlefield = sidc[2];
+            this.status = sidc[3];
+            this.modifier = sidc.substring(4, 10); //6
+            this.echelon = sidc.substring(10, 12); //2
+            this.nation = sidc.substring(12, 14);
+            this.mission = sidc[14];
+        }else{
+            this.pos = sidc[1];
+            this.fix = sidc.substring(2, 4);
+            this.modifier = sidc.substring(4, 10); //6
+            this.graphic = sidc.substring(10, 13); //2
+            this.last = "--";
+        }
+        
     }
     toCode() {
-        return this.codeType + this.affiliation + this.battlefield +
-            this.status + this.modifier + this.echelon + this.nation + this.mission;
+        if( this.codeType != "W" ){
+            return this.codeType + this.affiliation + this.battlefield +
+                this.status + this.modifier + this.echelon + this.nation + this.mission;
+        }else{
+            return this.codeType + this.pos + this.fix + this.modifier + this.graphic + this.last;
+        }
     }
 }
 
 class ViewModelElement {
-    constructor(options) {
+    constructor(container,options) {
         this.options = Object.assign({}, options);
         let ele = document.querySelector("#" + this.options.id);
 
-        ele.onchange = symbolTest.try;
+        ele.addEventListener('change',container.symbolTest.try);
         if (this.options.type == "input") {
-            ele.onkeyup = symbolTest.try;
+            ele.addEventListener('keyup',container.symbolTest.try);
         }
     }
     dataKey() {
@@ -248,42 +364,31 @@ class ViewModelElement {
         }
     }
 }
-var symbolTest = {
-    viewModels: [],
-    create: function() {
+class SymbolTest {
+    constructor(resId){
+        this.resultId = resId;
+        this.viewModels = [];
+    }
+    create() {
         var sel = this.viewModels.filter(d => { let v = d.val(); return v != undefined ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
         if (option.sic && option.sic.length > 0) {
             var symbol = new ms.Symbol(option.sic, option);
 
             option.code = symbol.toDataURL();
-            return symbolTest.template(option.code);
+            return this.template(option.code);
         }
-    },
-    template: function(result) {
+    }
+    template(result) {
         return '<img class="symbol-sm" src="' + result + '"/>';
-    },
-    try: function() {
-        let output = symbolTest.create();
+    }
+    try() {
+        let output = this.create();
         if (output) {
-            let div = document.querySelector("#symbolResult");
+            let div = document.querySelector("#"+this.resultId);
             div.innerHTML = output;
         }
     }
 };
 
-/*
-window.onload = function() {
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "size", id: "mil-option-size", type: "input", dataType: "number", dataDefault: 50 }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "sic", id: "sidc", type: "input", dataType: "text" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "uniqueDesignation", id: "mil-option-label", type: "input", dataType: "text" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "fill", id: "mil-option-fill", type: "select", dataType: "bool" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "frame", id: "mil-option-frame", type: "select", dataType: "bool" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "monoColor", id: "mil-option-monocolor", type: "select", dataType: "text", dataUndefined: "none" }));
-    symbolTest.viewModels.push(new ViewModelElement({ dataKey: "icon", id: "mil-option-icon", type: "select", dataType: "bool" }));
-
-    global.selectedCodeTypeObj = new CodeType({ id: "codetype" });
-}
-*/
-global.CodeType = ViewModel_KMilSymbol;
-//export default CodeType;
+global.ViewModel_KMilSymbol = ViewModel_KMilSymbol;
