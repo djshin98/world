@@ -150,7 +150,7 @@ section {
                     input{
                         display: inline;
                     }
-                    div{
+                    span, div{
                         display: inline;
                         font-size: 1.2em;
                         color:yellow;
@@ -257,4 +257,18 @@ header {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     z-index: 10000;
+}
+
+.map-cesium{
+    .cesium-infoBox {
+        right:100px;
+        .cesium-infoBox-description {
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 4px 10px;
+            margin-right: 4px;
+            color: #2f2f2f;
+            background: #fff;
+        }
+    }
 }

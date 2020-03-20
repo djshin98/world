@@ -11,6 +11,9 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
+var proxyUrl = "/GVS/proxy.jsp";
+var wUrl = "http://192.168.0.153:8180/Map";
+var terrainUrl = "http://192.168.0.153:38080";
 class MilMap {
     constructor(options) {
         this.mode = "3D";
@@ -21,24 +24,42 @@ class MilMap {
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
 
-        this.viewer3d = new Cesium.Viewer(this.options.map3.id, {
+        var viewOption = {
             //디폴트 레이어로 World_TMS 설정
-
+ /*
+            imageryProvider: Cesium.UrlTemplateImageryProvider({
+                url: Cesium.buildModuleUrl(wUrl + '/World_TMS/'),
+                credit : '© Analytical Graphics, Inc.',
+                tilingScheme : new Cesium.GeographicTilingScheme(),
+                maximumLevel : 5,
+                proxy: new Cesium.DefaultProxy(proxyUrl)
+            }),*/
+            /*
+            imageryProvider: Cesium.createTileMapServiceImageryProvider({
+                url: wUrl + '/World_TMS/',
+                proxy: new Cesium.DefaultProxy(proxyUrl)
+            }),*/
             /*  imageryProvider: new Cesium.TileMapServiceImageryProvider({
                  url: 'http://localhost:8080/node_modules/cesium/Build/Cesium/Assets/Textures/World_TMS/',
                  // proxy: new Cesium.DefaultProxy(proxyUrl)
-             }), */
-             /*
+             }), 
+            
             imageryProvider: new Cesium.TileMapServiceImageryProvider({
                 url: Cesium.buildModuleUrl('Assets/Textures/World_TMS')
             }),
             */
+            
+            shadows:true,
             baseLayerPicker: false,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
             selectionIndicator: false,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
+            terrainExaggeration: 1.0, //고도 기복 비율 조정
+            requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+            maximumRenderTimeChange: Infinity,
+            navigationHelpButton: false,
                 /*
                  imageryProvider: Cesium.createWorldImagery({
                      style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -76,8 +97,33 @@ class MilMap {
                         preserveDrawingBuffer: true
                     }
                 }*/
-        });
+        };
+        if( this.options.mapServiceMode == "internet"){
+
+        }else if( this.options.mapServiceMode == "offline" ){
+            viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
+                url: Cesium.buildModuleUrl(offlineOption.map)
+            });
+           
+            viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
+                url: offlineOption.terrain,
+                proxy : new Cesium.DefaultProxy(proxyUrl),
+                requestWaterMask: false,
+                requestVertexNormals: false
+            });
+        }
+        this.viewer3d = new Cesium.Viewer(this.options.map3.id, viewOption);
         navigationInitialization(this.options.map3.id, this.viewer3d);
+
+        if( this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0 ){
+            var imageryLayers = this.viewer3d.imageryLayers;
+            this.options.offlineBaseLayers.forEach(d=>{
+                imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
+                    url : d.url
+                }));
+            });
+        }
+
         let _this = this;
         /*
         var entity = this.viewer3d.entities.add({

@@ -13,8 +13,62 @@
 
     <link rel="stylesheet" href="libs/jquery-treeview/jquery.treeview.css" />
     <script src="libs/jquery-treeview/jquery.treeview.js"></script>
-    <script src="libs/kmilsymbol.development.js"></script>
+    <script src="libs/milsymbol/kmilsymbol.development.js"></script>
     <script>
+
+        class KMilSymbolCollection{
+            constructor(viewer){
+                this.viewer = viewer;
+                this.entities = [];
+            }
+            add(cartesian, options,image){
+                var obj = {
+                    options:options,
+                    image: image,
+                    position: cartesian,
+                    scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
+                };
+                // new Cesium.BillboardGraphics(options)
+                // new Entity( new Cesium.BillboardGraphics() )
+                //billboards.add( obj );
+                
+                let entity = this.viewer.entities.add({
+                    position: cartesian,
+                    billboard : obj,
+                    description : '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
+    <p>대한민국 군대 부호.</p>\
+    <p>부호코드 : '+obj.options.sic+' </p>\
+    <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
+                });
+                this.entities.push( entity );
+            }
+            ids(){
+                return this.entities.map(d=>{
+                    return d.id;
+                });
+            }
+            remove(id){
+                let ent;
+                if( this.entities.some(d=>{
+                    if( d.id == id ){
+                        ent = d;
+                        this.viewer.entities.remove(d);
+                        return true;
+                    }
+                    return false;
+                })){
+                    this.entities = this.entities.filter(d=>{
+                        if( d.id == id ){
+                            return false;
+                        }
+                        return true;
+                    });
+                }
+            }
+        }
+        
+        var kMilSymbolCollection;
+
         function dragEnter(e){
             event.preventDefault();
             return true;
@@ -25,36 +79,16 @@
         function drag(ev) {
             ev.dataTransfer.setData("option", ev.target.getAttribute("data-option") );
         }
-        var billboards;
+        
         function dragDrop(e) {
-            if( !billboards ){
-             //   billboards = map.viewer3d.scene.primitives.add(new Cesium.BillboardCollection());
-            //    map.viewer3d.extend(Cesium.viewerDragDropMixin);
-
-            }
+            if( !kMilSymbolCollection ){ kMilSymbolCollection = new KMilSymbolCollection(map.viewer3d); }
             var cartesian = map.viewer3d.camera.pickEllipsoid(
                 new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
 
-            var obj = {
-                id:JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))),
-                image: e.dataTransfer.getData("text"),
-                position: cartesian,
-                scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
-            };
-            // new Cesium.BillboardGraphics(options)
-            // new Entity( new Cesium.BillboardGraphics() )
-            //billboards.add( obj );
-            
-            let b = map.viewer3d.entities.add({
-                position: cartesian,
-                billboard : obj,
-                description : '<img width="120px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
-<p>대한민국 군대 부호.</p>\
-<p>부호코드 : '+obj.id.sic+' </p>\
-<p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
-            });
-            console.log("add");
+            kMilSymbolCollection.add( cartesian , JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))) , e.dataTransfer.getData("text") );
         }
+
+        
     </script>
 </head>
 
@@ -83,7 +117,7 @@
 
     <article>
         <div id="door-handle"><i class="angle left icon"></i></div>
-        <div id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)" ></div>
+        <div class="map-cesium" id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)" ></div>
         <div id="map2d"></div>
     </article>
     <footer></footer>

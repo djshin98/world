@@ -111,7 +111,18 @@ app.onResize();
 
 global.map = new MilMap({
     map3: {
-        id: "map3d"
+        id: "map3d",
+        mapServiceMode:"internet", //"offline"
+        offlineOption:{
+            proxy : "/GVS/proxy.jsp",
+            map : "http://192.168.0.153:8180/Map/World_TMS/",
+            terrain = "http://192.168.0.153:38080/tilesets/srtm/"
+        },
+        offlineBaseLayers:[
+            { url:'http://192.168.0.153:8180/Map/Hwasung_TMS/'},
+            { url:'http://192.168.0.153:8180/Map/Seoul_TMS/'},
+            { url:'http://192.168.0.153:8180/Map/Daejon_TMS/'}
+        ]
     }
 });
 
