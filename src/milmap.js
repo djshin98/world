@@ -11,9 +11,9 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-var proxyUrl = "/GVS/proxy.jsp";
-var wUrl = "http://192.168.0.153:8180/Map";
-var terrainUrl = "http://192.168.0.153:38080";
+//var proxyUrl = "/GVS/proxy.jsp";
+//var wUrl = "http://192.168.0.153:8180/Map";
+//var terrainUrl = "http://192.168.0.153:38080";
 class MilMap {
     constructor(options) {
         this.mode = "3D";
@@ -26,29 +26,6 @@ class MilMap {
 
         var viewOption = {
             //디폴트 레이어로 World_TMS 설정
- /*
-            imageryProvider: Cesium.UrlTemplateImageryProvider({
-                url: Cesium.buildModuleUrl(wUrl + '/World_TMS/'),
-                credit : '© Analytical Graphics, Inc.',
-                tilingScheme : new Cesium.GeographicTilingScheme(),
-                maximumLevel : 5,
-                proxy: new Cesium.DefaultProxy(proxyUrl)
-            }),*/
-            /*
-            imageryProvider: Cesium.createTileMapServiceImageryProvider({
-                url: wUrl + '/World_TMS/',
-                proxy: new Cesium.DefaultProxy(proxyUrl)
-            }),*/
-            /*  imageryProvider: new Cesium.TileMapServiceImageryProvider({
-                 url: 'http://localhost:8080/node_modules/cesium/Build/Cesium/Assets/Textures/World_TMS/',
-                 // proxy: new Cesium.DefaultProxy(proxyUrl)
-             }), 
-            
-            imageryProvider: new Cesium.TileMapServiceImageryProvider({
-                url: Cesium.buildModuleUrl('Assets/Textures/World_TMS')
-            }),
-            */
-            
             shadows:true,
             baseLayerPicker: false,
             geocoder: false,
@@ -98,26 +75,29 @@ class MilMap {
                     }
                 }*/
         };
-        if( this.options.mapServiceMode == "internet"){
+        if( this.options.map3.mapServiceMode == "internet"){
 
-        }else if( this.options.mapServiceMode == "offline" ){
-            viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
-                url: Cesium.buildModuleUrl(offlineOption.map)
-            });
-           
-            viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
-                url: offlineOption.terrain,
-                proxy : new Cesium.DefaultProxy(proxyUrl),
-                requestWaterMask: false,
-                requestVertexNormals: false
-            });
+        }else if( this.options.map3.mapServiceMode == "offline" ){
+            if( this.options.map3.offlineOption.map ){
+                viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
+                    url: Cesium.buildModuleUrl(this.options.map3.offlineOption.map)
+                });
+            }
+            if( this.options.map3.offlineOption.terrain ){
+                viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
+                    url: this.options.map3.offlineOption.terrain,
+                    proxy : new Cesium.DefaultProxy(this.options.map3.offlineOption.proxy),
+                    requestWaterMask: false,
+                    requestVertexNormals: false
+                });
+            }
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, viewOption);
         navigationInitialization(this.options.map3.id, this.viewer3d);
 
-        if( this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0 ){
+        if( this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0 ){
             var imageryLayers = this.viewer3d.imageryLayers;
-            this.options.offlineBaseLayers.forEach(d=>{
+            this.options.map3.offlineBaseLayers.forEach(d=>{
                 imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
                     url : d.url
                 }));

@@ -1,6 +1,108 @@
-<div class="section-content" id="jstree_demo_div">
+<div class="section-content">
+    <div>
+        <div class="ui" style="margin-bottom:0.5em">
+            <div class="ui input mini" style="width:100%">
+                <input id="favorite-name" type="text" placeholder="File Name...">
+            </div>
+            
+        </div>
+        <div class="ui" style="margin-bottom:0.5em" >
+            <div class="ui right" >
+                <button class="ui primary button mini" onclick="newFavorite()" >
+                    New
+                </button>
+                <button class="ui secondary button mini" onclick="saveFavorite()" >
+                    Save
+                </button>
+                <button class="ui button mini" onclick="deleteFavorite()" >
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="ui sub header">어플리케이션 저장 파일</div>
+    <ul id="favorite-view" class="filetree" style="height:100%;">
+		<li><div class="folder">Folder 1</div>
+			<ul>
+                <li><div class="file">Item 1.1</div></li>
+                <li><div class="file">File 2.1.1</div></li>
+                        <li><div class="file">File 2.1.2</div></li>
+                        <li><div class="file">File 2.1.1</div></li>
+						<li><div class="file">File 2.1.2</div></li>
+			</ul>
+		</li>
+		<li><div class="folder">Folder 2</div>
+			<ul>
+				<li><div class="folder">Subfolder 2.1</div>
+					<ul id="folder21">
+						<li><div class="file">File 2.1.1</div></li>
+						<li><div class="file">File 2.1.2</div></li>
+					</ul>
+				</li>
+				<li><div class="file">File 2.2</div></li>
+			</ul>
+		</li>
+		<li class="closed"><div class="folder">Folder 3 (closed at start)</div>
+			<ul>
+				<li><div class="file">File 3.1</div></li>
+			</ul>
+		</li>
+		<li><div class="file">File 4</div></li>
+    </ul>
 </div>
 
 <script>
+     function deleteFavorite(){
+        app.deleteFavorite( $('#favorite-name').text() , function(){
+            loadFav();
+        });
+    }
+    function newFavorite(){
+        app.newFavorite( $('#favorite-name').text() , function(){
+            loadFav();
+        });
+    }
+
+    function saveFavorite(){
+        app.saveFavorite( $('#favorite-name').text() , function(){
+            loadFav();
+        });
+    }
+    app.getFavoriteList(function(result){
+        loadFav();
+    });
+             
+    function loadFav(){
+        $("#favorite-view").treeview({
+            collapsed: true
+        });
+
+        $("#favorite-view li>div").bind('click', function(){
+            if( $(this).hasClass('file') ){
+                var fileName = $(this).text();
+                var parents = $(this).parents("li");
+                var path ="";
+                parents.each(function(i,d){
+                                let x = $(d).find(">div.folder"); 
+                                if( x ) { 
+                                    var f = $(x).text().trim();
+                                    if( f.length > 0 ){
+                                        if( path.length > 0 ){
+                                            path = f + "/" + path;
+                                        }else{
+                                            path = f;
+                                        }
+                                    }
+                                }   
+                });
+                let fullName = path + "/" + fileName;
+                $("#favorite-name").val(fullName);    
+                app.loadFavorite(fullName);
+            }            
+        });
+    }
     
+
+
 </script>

@@ -50,7 +50,7 @@ class ViewModel_KMilSymbol {
     init() {
         let ele = document.querySelector("#" + this.options.view.CODETYPE);
 
-        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "size", id: this.options.view.option.SIZE, type: "input", dataType: "number", dataDefault: 50 }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "size", id: this.options.view.option.SIZE, type: "input", dataType: "number", dataDefault: 30 }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "sic", id: this.options.view.SIDC, type: "input", dataType: "text" }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "uniqueDesignation", id: this.options.view.option.DESC, type: "input", dataType: "text" }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "fill", id: this.options.view.option.FILL, type: "select", dataType: "bool" }));

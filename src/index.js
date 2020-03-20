@@ -34,10 +34,19 @@ class Application {
                 }
             }
         }
+        this.favorite = new IxDatabase(1, "favorite");
+        this.favoriteJson = [];
         this.section = this.createSection();
         window.onresize = this.onResize;
+
         //window.onresize();
         this.init();
+    }
+    guid() {
+        function s4() {
+          return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
     init() {
         var _this = this;
@@ -64,6 +73,9 @@ class Application {
                 $(data).each(function(i, d) {
                     $(parentNode).append(d);
                 });
+            },
+            oncomplete:function(){
+               
             }
         });
     }
@@ -104,6 +116,43 @@ class Application {
             app.section.resize(width, bodyHeight);
         }
     }
+    getFavoriteList(callback){
+        this.favorite.get("favorite","list",function(result){
+            !result || !result.value || callback( result.value );
+            this.favoriteJson = result.value;
+        });
+    }
+    saveFavorite(path,callback){
+        var paths = path.split("/");
+        let len = paths.length;
+        let _this = this;
+        let obj = paths.reduce(function(prev,curr,i){
+            let obj = prev.find(function(d){ return d.name == curr ? true : false; });
+            if( !obj ){
+                obj = { name : curr , id : _this.guid() };   
+                prev.push( obj );
+            }
+            if( len == i+1 ){
+                obj.type = "file";
+                return obj;
+            }else{
+                obj.type = "folder";
+                if(!obj.children){obj.children = [];}
+                return obj.children;
+            }
+            
+        },this.favoriteJson);
+
+        this.favorite.set("item",obj.id,["a","b"]); 
+
+        this.favorite.set("favorite","list",this.favoriteJson);
+
+        this.favorite.get("favorite","list",function(result){
+            !result || !result.value || callback( result.value );
+        });
+    }
+    newFavorite(path,callback){
+    }
 }
 
 global.app = new Application();
@@ -112,17 +161,18 @@ app.onResize();
 global.map = new MilMap({
     map3: {
         id: "map3d",
-        mapServiceMode:"internet", //"offline"
+        mapServiceMode:"offline", //"internet offline"
         offlineOption:{
             proxy : "/GVS/proxy.jsp",
-            map : "http://192.168.0.153:8180/Map/World_TMS/",
-            terrain = "http://192.168.0.153:38080/tilesets/srtm/"
+            map : "http://192.168.0.153:8180/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+            terrain : "http://192.168.0.153:38080/tilesets/srtm/"
         },
         offlineBaseLayers:[
             { url:'http://192.168.0.153:8180/Map/Hwasung_TMS/'},
             { url:'http://192.168.0.153:8180/Map/Seoul_TMS/'},
             { url:'http://192.168.0.153:8180/Map/Daejon_TMS/'}
         ]
+        
     }
 });
 
