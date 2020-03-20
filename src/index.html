@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="libs/jquery-treeview/jquery.treeview.css" />
     <script src="libs/jquery-treeview/jquery.treeview.js"></script>
-    <script src="kmilsymbol.development.js"></script>
+    <script src="libs/kmilsymbol.development.js"></script>
     <script>
         function dragEnter(e){
             event.preventDefault();
@@ -28,11 +28,12 @@
         var billboards;
         function dragDrop(e) {
             if( !billboards ){
-                billboards = map.viewer3d.scene.primitives.add(new Cesium.BillboardCollection());
-                map.viewer3d.extend(Cesium.viewerDragDropMixin);
+             //   billboards = map.viewer3d.scene.primitives.add(new Cesium.BillboardCollection());
+            //    map.viewer3d.extend(Cesium.viewerDragDropMixin);
+
             }
             var cartesian = map.viewer3d.camera.pickEllipsoid(
-            new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+                new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
 
             var obj = {
                 id:JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))),
@@ -40,8 +41,19 @@
                 position: cartesian,
                 scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
             };
-            db.
-            billboards.add(obj);
+            // new Cesium.BillboardGraphics(options)
+            // new Entity( new Cesium.BillboardGraphics() )
+            //billboards.add( obj );
+            
+            let b = map.viewer3d.entities.add({
+                position: cartesian,
+                billboard : obj,
+                description : '<img width="120px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
+<p>대한민국 군대 부호.</p>\
+<p>부호코드 : '+obj.id.sic+' </p>\
+<p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
+            });
+            console.log("add");
         }
     </script>
 </head>

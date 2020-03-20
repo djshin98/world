@@ -389,12 +389,14 @@ class SymbolTest {
             var symbol = new ms.Symbol(option.sic, option);
 
             option.code = symbol.toDataURL();
-            return this.template(option, option.code);
+            return this.template(option);
         }
     }
-    template(option,result) {
+    template(option) {
+        let imgData = option.code;
+        option.category = "KMILSYMBOL";
         option.code = "";
-        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + result + '"/>';
+        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + imgData + '"/>';
     }
     try() {
         let output = this.create();

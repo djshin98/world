@@ -78,7 +78,7 @@ class Application {
         var sectionHandle = dom.$("#door-handle")[0];
         var article = dom.$("article")[0];
         //var header = dom.$("header")[0];
-        var map = dom.$("#map3d")[0];
+        var mapEle = dom.$("#map3d")[0];
         var viewWidth = window.innerWidth;
         var viewHeight = window.innerHeight;
         var bodyHeight = viewHeight - headerHeight;
@@ -98,7 +98,7 @@ class Application {
         article.style.width = (viewWidth - width) + "px";
         article.style.height = bodyHeight + "px";
 
-        map.style.height = bodyHeight + "px";
+        mapEle.style.height = bodyHeight + "px";
 
         if (windowLayout.section.view.visible) {
             app.section.resize(width, bodyHeight);
