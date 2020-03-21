@@ -29,21 +29,21 @@
 
 <script>
     function deleteFavorite(){
-        app.deleteFavorite( $('#favorite-name').val() , function(result){
+        app.favorite.delete( $('#favorite-name').val() , function(result){
             loadFav(result);
         });
     }
     function newFavorite(){
-        app.newFavorite( $('#favorite-name').val() , function(result){
+        app.favorite.new( $('#favorite-name').val() , function(result){
             loadFav(result);
         });
     }
     function saveFavorite(){
-        app.saveFavorite( $('#favorite-name').val() , function(result){
+        app.favorite.save( $('#favorite-name').val() , function(result){
             loadFav(result);
         });
     }
-    app.getFavoriteList(function(result){
+    app.favorite.folder(function(result){
         loadFav(result);
     });
     
@@ -86,8 +86,9 @@
                                 }   
                 });
                 let fullName = path + "/" + fileName;
-                $("#favorite-name").val(fullName);    
-                app.openFavorite(fullName);
+                $("#favorite-name").val(fullName);  
+                let id = $(this).data("id");  
+                app.favorite.open(id);
             }           
         });
     }

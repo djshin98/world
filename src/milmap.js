@@ -1,4 +1,4 @@
-var { IxDatabase } = require('./db');
+var { IxDatabase } = require('./repository/db');
 var { Animation } = require('./animation');
 global.Cesium = require('cesium/Cesium');
 

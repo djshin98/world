@@ -74,6 +74,14 @@ class IxDatabase {
 			console.log("(read)open error");
 		};
 	}
+	delete(category,url){
+		this.write(function(store){
+			var env = store.delete([category,url]);	
+			env.onsuccess = function() {	
+		        console.log('삭제 완료'); 
+		    }; 
+		});
+	}
 	set(category,url,value){
 		this.write(function(store){
 			var env = store.put({category:category ,url:url, value:value});	

@@ -1,8 +1,9 @@
-import { IxDatabase } from "./db";
+import { IxDatabase } from "./repository/db";
 var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
 var { MilMap } = require("./milmap");
-
+var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
+var { JsonByFolder } = require("./repository/json-by-folder");
 global.dom = dom;
 global.tx = { get: get, post: post };
 
@@ -34,9 +35,9 @@ class Application {
                 }
             }
         }
-        this.favorite = new IxDatabase(1, "favorite");
-        this.favoriteJson = [];
         this.section = this.createSection();
+
+        this.collections = {};
         window.onresize = this.onResize;
 
         //window.onresize();
@@ -53,6 +54,29 @@ class Application {
         dom.$("#door-handle")[0].onclick = function(e) {
             _this.section.showView(!_this.windowLayout.section.view.visible);
         };
+
+        this.map = new MilMap({
+            map3: {
+                id: "map3d",
+                mapServiceMode:"internet", //"internet offline"
+                offlineOption:{
+                    proxy : "/GVS/proxy.jsp",
+                    map : "http://192.168.0.153:8180/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+                    terrain : "http://192.168.0.153:38080/tilesets/srtm/"
+                },
+                offlineBaseLayers:[
+                    { url:'http://192.168.0.153:8180/Map/Hwasung_TMS/'},
+                    { url:'http://192.168.0.153:8180/Map/Seoul_TMS/'},
+                    { url:'http://192.168.0.153:8180/Map/Daejon_TMS/'}
+                ]
+                
+            }
+        });
+
+        this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map.viewer3d);
+
+        this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
+
     }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
@@ -116,6 +140,11 @@ class Application {
             app.section.resize(width, bodyHeight);
         }
     }
+    getCollection(name){
+        if( name ){
+            return this.collections[name];
+        }
+    }
     getFavoriteList(callback){
         let _this = this;
         this.favorite.get("favorite","list",function(result){
@@ -148,7 +177,8 @@ class Application {
             
         },this.favoriteJson);
 
-        this.favorite.set("item",obj.id,["a","b"]); 
+        let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
+        this.favorite.set("item",obj.id,kMilSymbolCollection.entities); 
 
         this.favorite.set("favorite","list",this.favoriteJson);
 
@@ -158,31 +188,21 @@ class Application {
     }
     deleteFavorite(path,callback){
     }
-    openFavorite(path){
-        
+    openFavorite(id){
+        let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
+
+        this.favorite.get("item",id,function(result){
+            if( result && result.value ){
+                kMilSymbolCollection.open(result.value);
+            }
+        }); 
     }
 }
 
 global.app = new Application();
 app.onResize();
 
-global.map = new MilMap({
-    map3: {
-        id: "map3d",
-        mapServiceMode:"internet", //"internet offline"
-        offlineOption:{
-            proxy : "/GVS/proxy.jsp",
-            map : "http://192.168.0.153:8180/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
-            terrain : "http://192.168.0.153:38080/tilesets/srtm/"
-        },
-        offlineBaseLayers:[
-            { url:'http://192.168.0.153:8180/Map/Hwasung_TMS/'},
-            { url:'http://192.168.0.153:8180/Map/Seoul_TMS/'},
-            { url:'http://192.168.0.153:8180/Map/Daejon_TMS/'}
-        ]
-        
-    }
-});
+global.map = app.map;
 
 //var { load, pos } = require('./sample.js');
 //global.pos = pos;

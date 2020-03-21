@@ -50,7 +50,13 @@ section {
                 padding: 10px 0px;
             }
             .active.item:after {
-                background: $sectionBackgroundColor !important
+                background: $sectionBackgroundColor !important;
+                
+            }
+            .active.item{
+                i{
+                    color: #ccfff3;
+                }
             }
         }
         .section-view {
