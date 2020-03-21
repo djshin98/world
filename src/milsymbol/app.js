@@ -275,10 +275,10 @@ class ViewModel_KMilSymbol {
 
         let str = '';
         Object.keys(arr).forEach(d => {
-            str += '<li><span class="folder">' + d + '</span>';
+            str += '<li><div class="folder">' + d + '</div>';
             str += '<ul>';
             arr[d].forEach(item => {
-                str += '<li><span class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</span></li>';
+                str += '<li><div class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</div></li>';
             });
             str += '</ul>';
             str += '</li>';

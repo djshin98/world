@@ -145,6 +145,23 @@
         $("#unit").treeview({
             collapsed: true
         });
+
+        $("#function-indentifier li>div.folder").bind('click', function(){
+            toggleFolder(this);
+        });
+        $("#function-indentifier li>div.file").bind('click', function(){
+            $('.clicked').removeClass('clicked');
+            $(this).addClass('clicked');
+        });
+
+        $("#unit li>div.folder").bind('click', function(){
+            toggleFolder(this);
+        });
+        $("#unit li>div.file").bind('click', function(){
+            $('.clicked').removeClass('clicked');
+            $(this).addClass('clicked');
+        });
+
     });
 
     

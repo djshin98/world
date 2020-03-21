@@ -60,6 +60,7 @@ section {
             position: absolute;
             padding: 5px 5px 5px 0px;
             font-size: 0.8em;
+            overflow-y: auto;
             div.tab {
                 display: none;
             }
@@ -113,11 +114,17 @@ section {
                     color: white;
                     margin-top: 0.4em;
                 }
+                .label{
+                    color: white;
+                    font-weight: 700;
+                    margin-right: 0.5em;
+                }
+                
                 select.ui{
                     padding: 0.2em;
                     height: 2em;
                     border-radius: 3px;
-                    width: 100%;
+                    /*width: 100%;*/
                 }
                 .filetree{
                     background-color: #fff;
@@ -130,6 +137,12 @@ section {
                     div.file {
                         cursor:pointer;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
+
+                        &.clicked{
+                            border: 1px dotted;
+                            background-color: #00398f;
+                            color: white;
+                        }
                     }
                     div.folder {
                         cursor:pointer;
@@ -138,12 +151,16 @@ section {
                     div.folder, div.file {
                         padding: 1px 0 1px 16px;
                         display: block;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
                     }
                     li.expandable{
                         div.folder {
                             background: url(../libs/jquery-treeview/images/folder-closed.gif) 0 0 no-repeat;
                         }
                     }
+
                 }
 
                 .ui.inline{

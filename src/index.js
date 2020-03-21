@@ -117,9 +117,14 @@ class Application {
         }
     }
     getFavoriteList(callback){
+        let _this = this;
         this.favorite.get("favorite","list",function(result){
-            !result || !result.value || callback( result.value );
-            this.favoriteJson = result.value;
+            if( result && result.value ){
+                callback( result.value );
+                _this.favoriteJson = result.value;
+            }else{
+                callback( [] );
+            }
         });
     }
     saveFavorite(path,callback){
@@ -147,11 +152,14 @@ class Application {
 
         this.favorite.set("favorite","list",this.favoriteJson);
 
-        this.favorite.get("favorite","list",function(result){
-            !result || !result.value || callback( result.value );
-        });
+        this.getFavoriteList(callback);
     }
     newFavorite(path,callback){
+    }
+    deleteFavorite(path,callback){
+    }
+    openFavorite(path){
+        
     }
 }
 
@@ -161,7 +169,7 @@ app.onResize();
 global.map = new MilMap({
     map3: {
         id: "map3d",
-        mapServiceMode:"offline", //"internet offline"
+        mapServiceMode:"internet", //"internet offline"
         offlineOption:{
             proxy : "/GVS/proxy.jsp",
             map : "http://192.168.0.153:8180/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
