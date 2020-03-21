@@ -43,12 +43,6 @@ class Application {
         //window.onresize();
         this.init();
     }
-    guid() {
-        function s4() {
-          return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     init() {
         var _this = this;
         dom.$("#door-handle")[0].onclick = function(e) {
@@ -141,61 +135,7 @@ class Application {
         }
     }
     getCollection(name){
-        if( name ){
-            return this.collections[name];
-        }
-    }
-    getFavoriteList(callback){
-        let _this = this;
-        this.favorite.get("favorite","list",function(result){
-            if( result && result.value ){
-                callback( result.value );
-                _this.favoriteJson = result.value;
-            }else{
-                callback( [] );
-            }
-        });
-    }
-    saveFavorite(path,callback){
-        var paths = path.split("/");
-        let len = paths.length;
-        let _this = this;
-        let obj = paths.reduce(function(prev,curr,i){
-            let obj = prev.find(function(d){ return d.name == curr ? true : false; });
-            if( !obj ){
-                obj = { name : curr , id : _this.guid() };   
-                prev.push( obj );
-            }
-            if( len == i+1 ){
-                obj.type = "file";
-                return obj;
-            }else{
-                obj.type = "folder";
-                if(!obj.children){obj.children = [];}
-                return obj.children;
-            }
-            
-        },this.favoriteJson);
-
-        let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
-        this.favorite.set("item",obj.id,kMilSymbolCollection.entities); 
-
-        this.favorite.set("favorite","list",this.favoriteJson);
-
-        this.getFavoriteList(callback);
-    }
-    newFavorite(path,callback){
-    }
-    deleteFavorite(path,callback){
-    }
-    openFavorite(id){
-        let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
-
-        this.favorite.get("item",id,function(result){
-            if( result && result.value ){
-                kMilSymbolCollection.open(result.value);
-            }
-        }); 
+        return this.collections[name];
     }
 }
 
