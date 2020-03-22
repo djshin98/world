@@ -75,7 +75,10 @@ class JsonByFolder{
                 if( prev ){
                     let obj = prev.find(function(d){ return d.name == curr ? true : false; });
                     if(obj && len == i+1){
-                        prev = prev.filter(d=>{ return (obj.id == d.id)?false:true; });
+                        let index = prev.findIndex(d=>{return (obj.id == d.id)?true:false; });
+                        if( index >= 0 ){
+                            prev.splice(index,1);
+                        }
                         return obj;
                     }else if( obj ){
                         return obj.children;

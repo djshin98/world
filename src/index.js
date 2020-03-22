@@ -159,4 +159,4 @@ viewer.scene.frameState.creditDisplay.addDefaultCredit(credit)
 viewer.scene.frameState.creditDisplay.addCredit(new Cesium.Credit({ text: 'my other credit text' }));
 */
 
-//load(viewer);
+//load(app.map.viewer3d);
