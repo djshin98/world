@@ -4,6 +4,7 @@ var { Section } = require("./section");
 var { MilMap } = require("./milmap");
 var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
 var { JsonByFolder } = require("./repository/json-by-folder");
+var { DrawInCesium } = require("./draw/base");
 global.dom = dom;
 global.tx = { get: get, post: post };
 
@@ -55,13 +56,13 @@ class Application {
                 mapServiceMode:"internet", //"internet offline"
                 offlineOption:{
                     proxy : "/GVS/proxy.jsp",
-                    map : "http://192.168.0.153:8180/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+                    map : "http://192.168.0.153:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
                     terrain : "http://192.168.0.153:38080/tilesets/srtm/"
                 },
                 offlineBaseLayers:[
-                    { url:'http://192.168.0.153:8180/Map/Hwasung_TMS/'},
-                    { url:'http://192.168.0.153:8180/Map/Seoul_TMS/'},
-                    { url:'http://192.168.0.153:8180/Map/Daejon_TMS/'}
+                    { url:'http://192.168.0.153:8080/Map/Hwasung_TMS/'},
+                    { url:'http://192.168.0.153:8080/Map/Seoul_TMS/'},
+                    { url:'http://192.168.0.153:8080/Map/Daejon_TMS/'}
                 ]
                 
             }
@@ -71,6 +72,11 @@ class Application {
 
         this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
 
+        this.drawInCesium = new DrawInCesium(this.map.viewer3d);
+
+    }
+    draw(mode){
+        this.drawInCesium.draw(mode);
     }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
@@ -85,7 +91,8 @@ class Application {
                 { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
-                { name: "animation", icon: "file video", page: "section/animation.html" }
+                { name: "Draw", icon: "edit", page: "section/draw.html" }
+                //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {

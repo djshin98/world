@@ -1,0 +1,20 @@
+<div class="section-content">
+  <div class="ui inline">
+    <div class="ui ">
+        <label>편집 모드</label>
+        <select class="ui dropdown" id="edit-mode">
+          <option value="view">View</option>
+          <option value="line">Draw Line</option>
+          <option value="polygon">Draw Polygon</option>
+        </select>
+    </div>
+</div>
+  
+</div>
+
+<script>
+  $("#edit-mode").bind("change", function(e){
+      app.draw( $(this).val() );
+      console.log( "mode : " + $(this).val() );
+  });
+</script>
