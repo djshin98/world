@@ -25,7 +25,7 @@ class DrawInCesium{
             console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-            var earthPosition = _this.viewer.scene.pickPosition(event.position);
+           var earthPosition = _this.viewer.scene.pickPosition(event.position);
             //var earthPosition = _this.viewer.camera.pickEllipsoid(event.endPosition,_this.viewer.scene.globe.ellipsoid);
             //var earthPosition = _this.viewer.camera.pickEllipsoid(
             //    new Cesium.Cartesian3(event.clientX-300, event.clientY), _this.viewer.scene.globe.ellipsoid);

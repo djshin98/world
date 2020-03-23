@@ -27,7 +27,7 @@ class MilMap {
         var viewOption = {
             //디폴트 레이어로 World_TMS 설정
             shadows:true,
-            baseLayerPicker: false,
+            baseLayerPicker: true,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
             selectionIndicator: false,
@@ -76,7 +76,7 @@ class MilMap {
                 }*/
         };
         if( this.options.map3.mapServiceMode == "internet"){
-
+            viewOption.terrainProvider = Cesium.createWorldTerrain();
         }else if( this.options.map3.mapServiceMode == "offline" ){
             if( this.options.map3.offlineOption.map ){
                 viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
