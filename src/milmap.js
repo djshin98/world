@@ -24,7 +24,7 @@ class MilMap {
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
 
-        var viewOption = {
+        this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
             shadows:true,
             baseLayerPicker: true,
@@ -76,15 +76,15 @@ class MilMap {
                 }*/
         };
         if( this.options.map3.mapServiceMode == "internet"){
-            viewOption.terrainProvider = Cesium.createWorldTerrain();
+            this.viewOption.terrainProvider = Cesium.createWorldTerrain();
         }else if( this.options.map3.mapServiceMode == "offline" ){
             if( this.options.map3.offlineOption.map ){
-                viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
+                this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
                     url: Cesium.buildModuleUrl(this.options.map3.offlineOption.map)
                 });
             }
             if( this.options.map3.offlineOption.terrain ){
-                viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
+                this.viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
                     url: this.options.map3.offlineOption.terrain,
                     proxy : new Cesium.DefaultProxy(this.options.map3.offlineOption.proxy),
                     requestWaterMask: false,
@@ -92,7 +92,7 @@ class MilMap {
                 });
             }
         }
-        this.viewer3d = new Cesium.Viewer(this.options.map3.id, viewOption);
+        this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
         navigationInitialization(this.options.map3.id, this.viewer3d);
 
         if( this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0 ){

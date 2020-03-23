@@ -29,9 +29,11 @@
         
         function dragDrop(e) {
             var img = e.dataTransfer.getData("text");
-            var cartesian = map.viewer3d.camera.pickEllipsoid(
-                new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+            //var cartesian = map.viewer3d.camera.pickEllipsoid(
+            //    new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
             
+            var cartesian = map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY));
+
             let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
             kMilSymbolCollection.add( cartesian , JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))) , img );
         }

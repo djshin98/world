@@ -2,8 +2,9 @@ var Cesium = require('cesium/Cesium');
 // widget 에 대한 표준을 만든다.
 
 class DrawInCesium{
-    constructor( viewer ){
+    constructor( viewer , baseLayerPicker ){
         this.viewer = viewer;
+        this.baseLayerPicker = baseLayerPicker;
         this.drawingMode = 'view';
 
         if (!this.viewer.scene.pickPositionSupported) {
@@ -21,10 +22,12 @@ class DrawInCesium{
 
         var _this = this;
         this.handler.setInputAction(function(event) {
-            console.log( event.position.x + "," + event.position.y );
+            //console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-            var earthPosition = _this.viewer.scene.pickPosition(event.position);
+            var earthPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :  
+                        _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+
             if (Cesium.defined(earthPosition)) {
                 if (_this.activeShapePoints.length === 0) {
                     _this.floatingPoint = _this.createPoint(earthPosition);
@@ -44,7 +47,10 @@ class DrawInCesium{
         
         this.handler.setInputAction(function(event) {
             if (Cesium.defined(_this.floatingPoint)) {
-                var newPosition = _this.viewer.scene.pickPosition(event.endPosition);
+
+                var newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.endPosition) :  
+                        _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.endPosition.x, event.endPosition.y), _this.viewer.scene.globe.ellipsoid);
+
                 if (Cesium.defined(newPosition)) {
                     _this.floatingPoint.position.setValue(newPosition);
                     _this.activeShapePoints.pop();
