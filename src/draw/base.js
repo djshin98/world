@@ -12,7 +12,7 @@ class DrawInCesium{
         this.activeShapePoints = [];
         this.activeShape;
         this.floatingPoint;
-        this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+        this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
 
         //this.init();
     }
@@ -22,6 +22,7 @@ class DrawInCesium{
 
         var _this = this;
         this.handler.setInputAction(function(event) {
+            console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
             var earthPosition = _this.viewer.scene.pickPosition(event.position);
