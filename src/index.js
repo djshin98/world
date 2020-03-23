@@ -74,6 +74,8 @@ class Application {
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d);
 
+        
+
     }
     draw(mode){
         this.drawInCesium.draw(mode);

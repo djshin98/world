@@ -61,6 +61,8 @@ module.exports = {
         minimize: false
     },
     devServer: {
-        contentBase: path.join(__dirname, "dist")
+        contentBase: path.join(__dirname, "dist"),
+        port: 8081,
+        host: '192.168.219.107',
     }
 };

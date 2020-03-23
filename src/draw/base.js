@@ -1,4 +1,5 @@
 var Cesium = require('cesium/Cesium');
+// widget 에 대한 표준을 만든다.
 
 class DrawInCesium{
     constructor( viewer ){
@@ -13,8 +14,6 @@ class DrawInCesium{
         this.activeShape;
         this.floatingPoint;
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
-
-        //this.init();
     }
 
     init(){
@@ -25,12 +24,7 @@ class DrawInCesium{
             console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-           var earthPosition = _this.viewer.scene.pickPosition(event.position);
-            //var earthPosition = _this.viewer.camera.pickEllipsoid(event.endPosition,_this.viewer.scene.globe.ellipsoid);
-            //var earthPosition = _this.viewer.camera.pickEllipsoid(
-            //    new Cesium.Cartesian3(event.clientX-300, event.clientY), _this.viewer.scene.globe.ellipsoid);
-
-            // `earthPosition` will be undefined if our mouse is not over the globe.
+            var earthPosition = _this.viewer.scene.pickPosition(event.position);
             if (Cesium.defined(earthPosition)) {
                 if (_this.activeShapePoints.length === 0) {
                     _this.floatingPoint = _this.createPoint(earthPosition);
@@ -58,7 +52,6 @@ class DrawInCesium{
                 }
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        // Redraw the shape so it's not dynamic and remove the dynamic shape.
         
         this.handler.setInputAction(function(event) {
             _this.terminateShape();
@@ -75,9 +68,9 @@ class DrawInCesium{
         }else{
             this.init();
             this.terminateShape();
-        }
-        
+        }        
     }
+
     createPoint(worldPosition) {
         var point = this.viewer.entities.add({
             position : worldPosition,
@@ -92,7 +85,7 @@ class DrawInCesium{
     
     drawShape(positionData) {
         var shape;
-        if (this.drawingMode === 'line') {
+        if(this.drawingMode === 'line') {
             shape = this.viewer.entities.add({
                 polyline : {
                     positions : positionData,
@@ -101,6 +94,27 @@ class DrawInCesium{
                 }
             });
         }else if (this.drawingMode === 'polygon') {
+            shape = this.viewer.entities.add({
+                polygon: {
+                    hierarchy: positionData,
+                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
+                }
+            });
+        }else if (this.drawingMode === 'ellipse') {
+            shape = this.viewer.entities.add({
+                polygon: {
+                    hierarchy: positionData,
+                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
+                }
+            });
+        }else if (this.drawingMode === 'dom') {
+            shape = this.viewer.entities.add({
+                polygon: {
+                    hierarchy: positionData,
+                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
+                }
+            });
+        }else if (this.drawingMode === 'rought') {
             shape = this.viewer.entities.add({
                 polygon: {
                     hierarchy: positionData,
@@ -120,6 +134,7 @@ class DrawInCesium{
         this.activeShape = undefined;
         this.activeShapePoints = [];
     }
+
 }
 /*
 var viewer = new Cesium.Viewer('cesiumContainer',  {
@@ -130,10 +145,6 @@ var viewer = new Cesium.Viewer('cesiumContainer',  {
 
 
 */
-
-
-
-
 
 /*
 var options = [{
@@ -159,6 +170,5 @@ Sandcastle.addToolbarMenu(options);
 // Zoom in to an area with mountains
 //viewer.camera.lookAt(Cesium.Cartesian3.fromDegrees(-122.2058, 46.1955, 1000.0), new Cesium.Cartesian3(5000.0, 5000.0, 5000.0));
 //viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-
 
 module.exports = {DrawInCesium : DrawInCesium};

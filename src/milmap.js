@@ -105,6 +105,8 @@ class MilMap {
         }
 
         let _this = this;
+        this.cursorWidgetHandler = new Cesium.ScreenSpaceEventHandler(this.viewer3d.scene.canvas);
+        this.cameraWidgetCallback;
         /*
         var entity = this.viewer3d.entities.add({
             label:{
@@ -118,31 +120,7 @@ class MilMap {
             }
         });
         */
-        var enenthandler = new Cesium.ScreenSpaceEventHandler(this.viewer3d.scene.canvas);
-        enenthandler.setInputAction(function(movement){
-            var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition,_this.viewer3d.scene.globe.ellipsoid);
-            if( cartesian ){
-                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                var longitude = Cesium.Math.toDegrees( cartographic.longitude ).toFixed(5);
-                var latitude = Cesium.Math.toDegrees( cartographic.latitude ).toFixed(5);
-
-                var cc = Cesium.Cartographic.fromCartesian(map.viewer3d.camera.position);
-
-                var clongitude = Cesium.Math.toDegrees( cc.longitude ).toFixed(5);
-                var clatitude = Cesium.Math.toDegrees( cc.latitude ).toFixed(5);
-
-                //entity.position = cartesian;
-                //entity.label.show = true;
-                //entity.label.text = "경도 : " + ("" + longitude).slice(-7) + "\u00B0" + "\n위도 : " +("" + latitude).slice(-7) + "\u00B0";
-                document.getElementById("cursor-longitude").innerText = longitude;
-                document.getElementById("cursor-latitude").innerText = latitude;
-
-                document.getElementById("center-longitude").innerText = clongitude;
-                document.getElementById("center-latitude").innerText = clatitude;
-            }else{
-                //entity.label.show = false;
-            }
-        },Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        
         
         this.viewer3d.camera.moveEnd.addEventListener(function() {
             let obj = _this.viewer3d.scene.camera;
@@ -152,11 +130,13 @@ class MilMap {
                 pitch: obj.pitch,
                 roll: obj.roll
             });
-            console.log("save position");
+            if( _this.cameraWidgetCallback ){
+                _this.cameraWidgetCallback(obj);
+            }
         });
 
         this.db.get("scene", "camera", function(result) {
-            if (result.value) {
+            if (result && result.value) {
                 let obj = result.value;
                 _this.viewer3d.camera.flyTo({
                     destination: obj.position,
@@ -184,6 +164,37 @@ class MilMap {
                 //alert('Globe was not picked');
             }
         }, false);
+    }
+    cameraWidget(enable,callback){
+        if( enable && enable == true ){
+            this.cameraWidgetCallback = callback;
+        }else if( !enable || (enable && enable == false) ){
+            this.cameraWidgetCallback = undefined;
+        }
+    }
+    cursorWidget(enable,callback){
+        if( enable && enable == true ){
+            var _this = this;
+            this.cursorWidgetHandler.setInputAction(function(movement){
+                var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition,_this.viewer3d.scene.globe.ellipsoid);
+                if( cartesian ){
+                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                    var longitude = Cesium.Math.toDegrees( cartographic.longitude ).toFixed(5);
+                    var latitude = Cesium.Math.toDegrees( cartographic.latitude ).toFixed(5);
+
+                    if( callback ){
+                        callback({
+                            latitude:latitude,
+                            longitude:longitude
+                        });
+                    }
+                }else{
+                    //entity.label.show = false;
+                }
+            },Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        }else if( !enable || (enable && enable == false) ){
+            this.cursorWidgetHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        }
     }
     flyTo(x, y) {
         this.viewer3d.camera.flyTo({

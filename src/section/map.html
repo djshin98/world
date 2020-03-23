@@ -30,3 +30,20 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    if( app ){
+        console.log("app valid");
+    }else{
+        console.log("app invalid");
+    }
+    map.cameraWidget(true,function(obj){
+        document.getElementById("center-longitude").innerText = obj.position.longitude;
+        document.getElementById("center-latitude").innerText = obj.position.latitude;
+    });
+    map.cursorWidget(true,function(obj){
+        document.getElementById("cursor-longitude").innerText = obj.longitude;
+        document.getElementById("cursor-latitude").innerText = obj.latitude;
+    });         
+
+</script>
