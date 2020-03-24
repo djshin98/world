@@ -29,14 +29,26 @@
         
         function dragDrop(e) {
             var img = e.dataTransfer.getData("text");
+            var options = JSON.parse(decodeURIComponent(e.dataTransfer.getData("option")));
             //var cartesian = map.viewer3d.camera.pickEllipsoid(
             //    new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
             
-            var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
-                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+            
 
             let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
-            kMilSymbolCollection.add( cartesian , JSON.parse(decodeURIComponent(e.dataTransfer.getData("option"))) , img );
+
+            if( options.sic[2] == 'A' || options.sic[2] == 'P' ){
+                var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500)) :
+                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500), map.viewer3d.scene.globe.ellipsoid);
+                
+                kMilSymbolCollection.addAir( cartesian , options , img );    
+            }else{
+                var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
+                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+
+                kMilSymbolCollection.add( cartesian , options , img );
+            }
+            
         }
 
         function toggleFolder(t){
