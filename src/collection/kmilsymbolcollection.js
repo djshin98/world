@@ -5,10 +5,10 @@ class KMilSymbolCollection{
         this.viewer = viewer;
         this.entities = [];
     }
-    add(cartesian, options,imgStr){
+    add(cartesian, options,x){
         var obj = {
             options:options,
-            image: imgStr,
+            image: x,
             position: cartesian,
             heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
             verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
