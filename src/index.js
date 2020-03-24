@@ -74,8 +74,6 @@ class Application {
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
 
-        
-
     }
     draw(mode){
         this.drawInCesium.draw(mode);

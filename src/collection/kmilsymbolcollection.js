@@ -5,11 +5,13 @@ class KMilSymbolCollection{
         this.viewer = viewer;
         this.entities = [];
     }
-    add(cartesian, options,x){
+    add(cartesian, options,imgStr){
         var obj = {
             options:options,
-            image: x,
+            image: imgStr,
             position: cartesian,
+            heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
         // new Cesium.BillboardGraphics(options)
