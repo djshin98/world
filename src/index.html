@@ -37,6 +37,11 @@
 
             let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
 
+            var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
+                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
+
+                kMilSymbolCollection.add( cartesian , options , img );
+            /*    
             if( options.sic[2] == 'A' || options.sic[2] == 'P' ){
                 var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500)) :
                 map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500), map.viewer3d.scene.globe.ellipsoid);
@@ -47,7 +52,7 @@
                 map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
 
                 kMilSymbolCollection.add( cartesian , options , img );
-            }
+            }*/
             
         }
 
