@@ -249,11 +249,11 @@ class MilMap {
             if( !layer ){
                 if( gridName == "GARS"){
                     layer = new Cesium.GridImageryProvider ({
-                        name:"GARS",
                         cells: 4,
                         glowWidth: 6,
                         backgroundColor: Cesium.Color.TRANSPARENT,
                         color: Cesium.Color.WHITE});
+                    layer.name = gridName;
                 }
                 this.extraImageryLayers.push({name:gridName,layer: layer});
             }
