@@ -70,9 +70,14 @@
         let b = $("#b-grid").prop("checked");
 
         if( gars == true ){
-            app.map.setGrid("GARS" ,true);
+            app.map.gridGARS(true,{
+                            tile:true,
+                            cells: 6,
+                            glowWidth: 8,
+                            backgroundColor: Cesium.Color.TRANSPARENT,
+                            color: Cesium.Color.WHITE});
         }else{
-            app.map.setGrid("GARS" ,false);
+            app.map.gridGARS(false);
         }
         
     })

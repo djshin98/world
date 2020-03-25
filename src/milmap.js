@@ -241,28 +241,31 @@ class MilMap {
         updateCallback(this.viewer3d, viewModel);    
     }
 
-    setImageryLayer(gridName,bshow){
+    gridGARS(bshow,options){
 
-        if( gridName ){
-            
-            let layer = this.extraImageryLayers.find(d=>{ return d.name == gridName ? true : false; });
-            if( !layer ){
-                if( gridName == "GARS"){
-                    layer = new Cesium.GridImageryProvider ({
-                        cells: 4,
-                        glowWidth: 6,
-                        backgroundColor: Cesium.Color.TRANSPARENT,
-                        color: Cesium.Color.WHITE});
-                    layer.name = gridName;
+        if(bshow){
+            if( !this.__gars ){
+                this.__gars = {};
+                if( options.tile && options.tile == true ){
+                    this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
+                        new Cesium.TileCoordinatesImageryProvider());
+                    this.__gars.tile.olive_name = "GARS_TILE";
                 }
-                this.extraImageryLayers.push({name:gridName,layer: layer});
+                    
+                this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider( 
+                    new Cesium.GridImageryProvider (options) );
+                this.__gars.layer.olive_name = "GARS";
             }
-
-            if( bshow == false ){
-                this.viewer3d.scene.imageryLayers.remove(layer,false);
-            }else{
-                this.viewer3d.scene.imageryLayers.add(layer);
+        }else{
+            if( this.__gars && this.__gars.layer ){
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.layer,true);
+                this.__gars.layer = undefined;
             }
+            if( this.__gars && this.__gars.tile ){
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.tile,true);
+                this.__gars.tile = undefined;
+            }
+            this.__gars = undefined;
         }
     }
         /* animation(bool) {
