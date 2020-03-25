@@ -226,20 +226,45 @@ class MilMap {
     }
     connectViewModel(id, viewModel, updateCallback) {
 
-            Cesium.knockout.track(viewModel);
-            Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
-            var _viewModel = viewModel;
-            var _this = this;
+        Cesium.knockout.track(viewModel);
+        Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
+        var _viewModel = viewModel;
+        var _this = this;
 
-            for (var name in viewModel) {
-                if (viewModel.hasOwnProperty(name)) {
-                    Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
+        for (var name in viewModel) {
+            if (viewModel.hasOwnProperty(name)) {
+                Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
                         updateCallback(_this.viewer3d, _viewModel, newValue);
-                    });
-                }
+                });
             }
-            updateCallback(this.viewer3d, viewModel);
         }
+        updateCallback(this.viewer3d, viewModel);    
+    }
+
+    setImageryLayer(gridName,bshow){
+
+        if( gridName ){
+            
+            let layer = this.extraImageryLayers.find(d=>{ return d.name == gridName ? true : false; });
+            if( !layer ){
+                if( gridName == "GARS"){
+                    layer = new Cesium.GridImageryProvider ({
+                        name:"GARS",
+                        cells: 4,
+                        glowWidth: 6,
+                        backgroundColor: Cesium.Color.TRANSPARENT,
+                        color: Cesium.Color.WHITE});
+                }
+                this.extraImageryLayers.push({name:gridName,layer: layer});
+            }
+
+            if( bshow == false ){
+                this.viewer3d.scene.imageryLayers.remove(layer,false);
+            }else{
+                this.viewer3d.scene.imageryLayers.add(layer);
+            }
+        }
+    }
         /* animation(bool) {
             bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 

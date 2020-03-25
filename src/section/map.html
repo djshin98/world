@@ -29,10 +29,53 @@
             </tr>
         </tbody>
     </table>
+    <div class="ui divider"></div>
+    <div class="ui sub header">Grid</div>
+    <div class="ui form">
+        <div class="grouped fields">
+          <label>Select Grid</label>
+          <div class="field">
+            <div class="ui slider checkbox">
+              <input type="radio" name="select-grid" id="none-grid" checked="checked">
+              <label>none</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui slider checkbox">
+              <input type="radio" name="select-grid" id="gars-grid">
+              <label>GARS grid</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui slider checkbox">
+              <input type="radio" name="select-grid" id="a-grid">
+              <label>5mbps max</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui slider checkbox">
+              <input type="radio" name="select-grid" id="b-grid">
+              <label>Unmetered</label>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
 <script>
-    
+    $("input[name='select-grid']").bind('change',function(){
+        let none = $("#none-grid").prop("checked");
+        let gars = $("#gars-grid").prop("checked");
+        let a = $("#a-grid").prop("checked");
+        let b = $("#b-grid").prop("checked");
+
+        if( gars == true ){
+            app.map.setGrid("GARS" ,true);
+        }else{
+            app.map.setGrid("GARS" ,false);
+        }
+        
+    })
         
 
 </script>
