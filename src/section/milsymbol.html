@@ -1,4 +1,4 @@
-<div class="section-content">
+<div class="section-content" id="viewmodel-milsymbol">
     <div class="ui sub header" id="codetype-text" >코드 타입</div>
     <select class="ui dropdown" id="codetype"></select>
     <div class="ui sub header" id="affiliation-text" >피아관계</div>
@@ -138,6 +138,37 @@
             }
         }    
     }, function(){
+        new OliveTree("#viewmodel-milsymbol #function-indentifier", undefined, {
+            onSelect:function(type,tag,obj){
+                if( type == "file" ){
+                    if( selectedCodeTypeObj.activeType && selectedCodeTypeObj.activeType.code != "W" ){
+                        let id = tag.getAttribute("data-id");
+                        let idf = selectedCodeTypeObj.findFunctionIdentifier(id);
+                        if( idf ){
+                            selectedCodeTypeObj.changeModifier( idf.modifier , idf.type, idf.affiliation , idf.battlefield, idf.status );
+                        }
+                    }else{
+                        let id = tag.getAttribute("data-id");
+                        let idf = selectedCodeTypeObj.findFunctionIdentifier(id);
+                        if( idf ){
+                            _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                        }
+                    }
+                }
+            }
+        });
+        new OliveTree("#viewmodel-milsymbol #unit", undefined,{
+            onSelect:function(type,tag,obj){
+                if( type == "file" ){
+                    let id = tag.getAttribute("data-id");
+                    let idf = selectedCodeTypeObj.findUnit(id);
+                    if( idf ){
+                        selectedCodeTypeObj.changeMobility( idf.code);
+                    }
+                }
+            }
+        });
+/*
         $("#function-indentifier").treeview({
 		    collapsed: true
         });
@@ -160,7 +191,7 @@
         $("#unit li>div.file").bind('click', function(){
             $('.clicked').removeClass('clicked');
             $(this).addClass('clicked');
-        });
+        });*/
 
     });
 

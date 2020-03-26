@@ -79,7 +79,7 @@ class ViewModel_KMilSymbol {
                     _this.makeSIDCSelect(_this.options.view.MISSION, "mission", _this.activeType.standard.mission);
                     _this.makeModifierTree(_this.options.view.FI, _this.activeType.standard.identifier);
                     _this.makeUnitTree(_this.options.view.UNIT, _this.activeType.standard.unit);
-                
+                /*
                     dom.$( ".functionIndentfierClickable").forEach(d=>{
                         d.addEventListener("click",()=>{
                             let id = d.getAttribute("data-id");
@@ -98,7 +98,7 @@ class ViewModel_KMilSymbol {
                                 _this.changeMobility( idf.code);
                             }
                         });
-                    });
+                    });*/
                 }else{
                     _this.makeSIDCSelect(_this.options.view.AFFILIATION, "pos", _this.activeType.standard.pos);
                     _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "fix", _this.activeType.standard.fix);
@@ -107,7 +107,7 @@ class ViewModel_KMilSymbol {
 
                     document.getElementById(_this.options.view.MISSION).hidden = true;
                     document.getElementById(_this.options.view.UNIT).hidden = true;
-
+                    /*
                     dom.$( ".functionIndentfierClickable").forEach(d=>{
                         d.addEventListener("click",()=>{
                             let id = d.getAttribute("data-id");
@@ -116,7 +116,7 @@ class ViewModel_KMilSymbol {
                                 _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
                             }
                         });
-                    });
+                    });*/
                 }
                 if( _this.onchange ){
                     _this.onchange();

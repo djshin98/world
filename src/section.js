@@ -63,6 +63,10 @@ class Section {
         let sv = dom.$(this.path.view)[0];
         sv.style.width = (w - tw) + "px";
         sv.style.height = h + "px";
+        let sectionContentHeight = h - 70 - 10;
+        dom.$(".section-content").forEach(function(d){
+            d.style.height = sectionContentHeight + "px";
+        });
     }
     addPlugin(name, options) {
         if (name == "JusoSearch") {

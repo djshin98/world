@@ -56,45 +56,7 @@
             
         }
 
-        function toggleFolder(t){
-            
-            let p = $(t).parent().eq(0); //.toggler();
-            p.find('ul').eq(0).toggle();
-            let prev = $(t).prev();
-            if( p.hasClass('expandable') ){
-                p.swapClass('expandable','collapsable');
-                prev.swapClass('expandable-hitarea','collapsable-hitarea');
-            }else{
-                p.swapClass('collapsable','expandable');
-                prev.swapClass('collapsable-hitarea','expandable-hitarea');
-            }
-        }
-
-        function makeTree(id, arr, options) {
-            function _toHtmlAttribute(v){
-                return Object.keys(v).reduce(function(prev,key){ return prev + "data-" + key +"='"+v[key]+"' "; }, " ");
-            }
-            function _makeTree(id, arr, options) {
-                let str = '';
-                arr.forEach(d => {
-                    let attr = options.onAttribute ? options.onAttribute(d) : "";
-                    let text = options.onText ? options.onText(d) : "";
-
-                    if (d.children && d.children.length > 0) {
-            
-                        str += '<li><div class="folder"' + _toHtmlAttribute(attr) + '>' + text + '</div>';
-                        str += '<ul>';
-                        str += _makeTree(id, d.children, options);
-                        str += '</ul>';
-                        str += '</li>';
-                    } else {
-                        str += '<li><div class="file"' + _toHtmlAttribute(attr) + '>' + text + '</li>';
-                    }
-                });
-                return str;
-            }
-            document.getElementById(id).innerHTML = _makeTree(id, arr, options);
-        }
+        
 
     </script>
 </head>

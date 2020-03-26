@@ -6,12 +6,15 @@ var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
 var { JsonByFolder } = require("./repository/json-by-folder");
 var { DrawInCesium } = require("./draw/base");
 require("./ui/olive-input");
+require("./ui/olive-tree");
 
 global.dom = dom;
 global.tx = { get: get, post: post };
 
 class Application {
     constructor() {
+        this.workStatus("section", false);
+        this.workStatus("map3d", false);
         this.windowLayout = {
             header: {
                 height: 0
@@ -38,6 +41,7 @@ class Application {
                 }
             }
         }
+        this.readyFunctions = [];
         this.section = this.createSection();
 
         this.collections = {};
@@ -69,13 +73,32 @@ class Application {
                 
             }
         });
-
+        
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map.viewer3d);
 
         this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
-
+        this.workStatus("map3d", true);
+    }
+    workStatus(name,bcomplete){
+        if( !this._workStatus ){ this._workStatus = {}; }
+        this._workStatus[name] = bcomplete;
+    }
+    isComplete(){
+        if( !this._workStatus ){
+            return true;
+        }else{
+            let _this = this;
+            return Object.keys(this._workStatus).every(key=>{
+                return _this._workStatus[key];
+            })
+        }
+    }
+    onReady(readyFunc){
+        if( readyFunc ){
+            this.readyFunctions.push( readyFunc );
+        }
     }
     draw(mode){
         this.drawInCesium.draw(mode);
@@ -84,6 +107,7 @@ class Application {
         this.windowLayout.section.view.visible = bshow;
     }
     createSection() {
+        let _this = this;
         return new Section(this, {
             contents: [
                 { name: "Home", icon: "home", page: "section/home.html" },
@@ -93,7 +117,8 @@ class Application {
                 { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
-                { name: "Draw", icon: "edit", page: "section/draw.html" }
+                { name: "Draw", icon: "edit", page: "section/draw.html" },
+                { name: "Entities", icon: "edit", page: "section/entities.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
@@ -112,6 +137,8 @@ class Application {
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
                 });     
+
+                _this.workStatus("section", true);
             }
         });
     }

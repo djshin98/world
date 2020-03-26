@@ -22,7 +22,7 @@
     </div>
     <div class="ui divider"></div>
     <div class="ui sub header">어플리케이션 저장 파일</div>
-    <ul id="favorite-view" class="filetree" style="height:100%;">
+    <ul id="favorite-view" class="filetree" style="height:80%;">
 		
     </ul>
 </div>
@@ -49,48 +49,41 @@
     
     function loadFav(result){
 
-        makeTree("favorite-view", result, {
+        new OliveTree("#favorite-view", result, {
             onAttribute : function(d){
                 return { id:d.id };
             },
             onText : function(d){
                 return d.name;
+            },
+            onSelect : function(type,tag,obj){
+                if( type == "file" ){
+                    var fileName = $(tag).text();
+                    var parents = $(tag).parents("li");
+                    var path ="";
+                    parents.each(function(i,d){
+                                    let x = $(d).find(">div.folder"); 
+                                    if( x ) { 
+                                        var f = $(x).text().trim();
+                                        if( f.length > 0 ){
+                                            if( path.length > 0 ){
+                                                path = f + "/" + path;
+                                            }else{
+                                                path = f;
+                                            }
+                                        }
+                                    }   
+                    });
+                    let fullName = path + "/" + fileName;
+                    $("#favorite-name").val(fullName);  
+                    let id = $(tag).data("id");  
+                    app.favorite.open(id);
+                }
+                
             }
         });
     
-        $("#favorite-view").treeview({
-            collapsed: false
-        });
-        $("#favorite-view li>div.folder").bind('click', function(){
-            toggleFolder(this);
-        });
-
-        $("#favorite-view li>div.file").bind('click', function(){
-            $('.clicked').removeClass('clicked');
-            $(this).addClass('clicked');
-            if( $(this).hasClass('file') ){
-                var fileName = $(this).text();
-                var parents = $(this).parents("li");
-                var path ="";
-                parents.each(function(i,d){
-                                let x = $(d).find(">div.folder"); 
-                                if( x ) { 
-                                    var f = $(x).text().trim();
-                                    if( f.length > 0 ){
-                                        if( path.length > 0 ){
-                                            path = f + "/" + path;
-                                        }else{
-                                            path = f;
-                                        }
-                                    }
-                                }   
-                });
-                let fullName = path + "/" + fileName;
-                $("#favorite-name").val(fullName);  
-                let id = $(this).data("id");  
-                app.favorite.open(id);
-            }           
-        });
+        
     }
     
 
