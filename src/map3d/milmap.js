@@ -26,7 +26,7 @@ class MilMap {
 
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
-            shadows:true,
+            shadows: true,
             baseLayerPicker: true,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
@@ -37,56 +37,56 @@ class MilMap {
             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
-                /*
-                 imageryProvider: Cesium.createWorldImagery({
-                     style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-                 }),*/
-                /*  terrainProvider: Cesium.createWorldTerrain(),
-                 shadows: false,
-                 scene3DOnly: true, //3차원 화면으로 구성 // ,
-                 //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-                 animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-                 baseLayerPicker: true,
-                 geocoder: true,
-                 vrButton: false,
-                 homeButton: false,
-                 infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-                 sceneModePicker: false,
-                 selectionIndicator: false,
-                 creditsDisplay: true,
-                 //creditContainer: false,
-                 fullscreenButton: false,
-                 timeline: true,
-                 navigationHelpButton: false,
-                 terrainExaggeration: 1.0, //고도 기복 비율 조정
-                 shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-                 requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-                 // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-                 maximumRenderTimeChange: Infinity,
-                 navigationInstructionsInitiallyVisible: false, */
-                /*
-                skyBox: new Cesium.SkyBox({}),
-                skyAtmosphere: new Cesium.SkyAtmosphere(),
-                clockViewModel: new Cesium.ClockViewModel(clock),
-                contextOptions: {
-                    id: "cesiumCanvas", //must
-                    webgl: {
-                        preserveDrawingBuffer: true
-                    }
-                }*/
+            /*
+             imageryProvider: Cesium.createWorldImagery({
+                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+             }),*/
+            /*  terrainProvider: Cesium.createWorldTerrain(),
+             shadows: false,
+             scene3DOnly: true, //3차원 화면으로 구성 // ,
+             //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+             animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+             baseLayerPicker: true,
+             geocoder: true,
+             vrButton: false,
+             homeButton: false,
+             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+             sceneModePicker: false,
+             selectionIndicator: false,
+             creditsDisplay: true,
+             //creditContainer: false,
+             fullscreenButton: false,
+             timeline: true,
+             navigationHelpButton: false,
+             terrainExaggeration: 1.0, //고도 기복 비율 조정
+             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+             // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+             maximumRenderTimeChange: Infinity,
+             navigationInstructionsInitiallyVisible: false, */
+            /*
+            skyBox: new Cesium.SkyBox({}),
+            skyAtmosphere: new Cesium.SkyAtmosphere(),
+            clockViewModel: new Cesium.ClockViewModel(clock),
+            contextOptions: {
+                id: "cesiumCanvas", //must
+                webgl: {
+                    preserveDrawingBuffer: true
+                }
+            }*/
         };
-        if( this.options.map3.mapServiceMode == "internet"){
+        if (this.options.map3.mapServiceMode == "internet") {
             this.viewOption.terrainProvider = Cesium.createWorldTerrain();
-        }else if( this.options.map3.mapServiceMode == "offline" ){
-            if( this.options.map3.offlineOption.map ){
+        } else if (this.options.map3.mapServiceMode == "offline") {
+            if (this.options.map3.offlineOption.map) {
                 this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
                     url: Cesium.buildModuleUrl(this.options.map3.offlineOption.map)
                 });
             }
-            if( this.options.map3.offlineOption.terrain ){
+            if (this.options.map3.offlineOption.terrain) {
                 this.viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
                     url: this.options.map3.offlineOption.terrain,
-                    proxy : new Cesium.DefaultProxy(this.options.map3.offlineOption.proxy),
+                    proxy: new Cesium.DefaultProxy(this.options.map3.offlineOption.proxy),
                     requestWaterMask: false,
                     requestVertexNormals: false
                 });
@@ -95,11 +95,11 @@ class MilMap {
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
         navigationInitialization(this.options.map3.id, this.viewer3d);
 
-        if( this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0 ){
+        if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
-            this.options.map3.offlineBaseLayers.forEach(d=>{
+            this.options.map3.offlineBaseLayers.forEach(d => {
                 imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
-                    url : d.url
+                    url: d.url
                 }));
             });
         }
@@ -120,8 +120,8 @@ class MilMap {
             }
         });
         */
-        
-        
+
+
         this.viewer3d.camera.moveEnd.addEventListener(function() {
             let obj = _this.viewer3d.scene.camera;
             _this.db.set("scene", "camera", {
@@ -130,7 +130,7 @@ class MilMap {
                 pitch: obj.pitch,
                 roll: obj.roll
             });
-            if( _this.cameraWidgetCallback ){
+            if (_this.cameraWidgetCallback) {
                 _this.cameraWidgetCallback(obj);
             }
         });
@@ -165,34 +165,34 @@ class MilMap {
             }
         }, false);
     }
-    cameraWidget(enable,callback){
-        if( enable && enable == true ){
+    cameraWidget(enable, callback) {
+        if (enable && enable == true) {
             this.cameraWidgetCallback = callback;
-        }else if( !enable || (enable && enable == false) ){
+        } else if (!enable || (enable && enable == false)) {
             this.cameraWidgetCallback = undefined;
         }
     }
-    cursorWidget(enable,callback){
-        if( enable && enable == true ){
+    cursorWidget(enable, callback) {
+        if (enable && enable == true) {
             var _this = this;
-            this.cursorWidgetHandler.setInputAction(function(movement){
-                var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition,_this.viewer3d.scene.globe.ellipsoid);
-                if( cartesian ){
+            this.cursorWidgetHandler.setInputAction(function(movement) {
+                var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition, _this.viewer3d.scene.globe.ellipsoid);
+                if (cartesian) {
                     var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                    var longitude = Cesium.Math.toDegrees( cartographic.longitude ).toFixed(5);
-                    var latitude = Cesium.Math.toDegrees( cartographic.latitude ).toFixed(5);
+                    var longitude = Cesium.Math.toDegrees(cartographic.longitude).toFixed(5);
+                    var latitude = Cesium.Math.toDegrees(cartographic.latitude).toFixed(5);
 
-                    if( callback ){
+                    if (callback) {
                         callback({
-                            latitude:latitude,
-                            longitude:longitude
+                            latitude: latitude,
+                            longitude: longitude
                         });
                     }
-                }else{
+                } else {
                     //entity.label.show = false;
                 }
-            },Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        }else if( !enable || (enable && enable == false) ){
+            }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        } else if (!enable || (enable && enable == false)) {
             this.cursorWidgetHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         }
     }
@@ -234,40 +234,40 @@ class MilMap {
         for (var name in viewModel) {
             if (viewModel.hasOwnProperty(name)) {
                 Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
-                        updateCallback(_this.viewer3d, _viewModel, newValue);
+                    updateCallback(_this.viewer3d, _viewModel, newValue);
                 });
             }
         }
-        updateCallback(this.viewer3d, viewModel);    
+        updateCallback(this.viewer3d, viewModel);
     }
 
-    gridGARS(bshow,options){
+    gridGARS(bshow, options) {
 
-        if(bshow){
-            if( !this.__gars ){
-                this.__gars = {};
-                if( options.tile && options.tile == true ){
-                    this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                        new Cesium.TileCoordinatesImageryProvider());
-                    this.__gars.tile.olive_name = "GARS_TILE";
+            if (bshow) {
+                if (!this.__gars) {
+                    this.__gars = {};
+                    if (options.tile && options.tile == true) {
+                        this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
+                            new Cesium.TileCoordinatesImageryProvider());
+                        this.__gars.tile.olive_name = "GARS_TILE";
+                    }
+
+                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(
+                        new Cesium.GridImageryProvider(options));
+                    this.__gars.layer.olive_name = "GARS";
                 }
-                    
-                this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider( 
-                    new Cesium.GridImageryProvider (options) );
-                this.__gars.layer.olive_name = "GARS";
+            } else {
+                if (this.__gars && this.__gars.layer) {
+                    this.viewer3d.scene.imageryLayers.remove(this.__gars.layer, true);
+                    this.__gars.layer = undefined;
+                }
+                if (this.__gars && this.__gars.tile) {
+                    this.viewer3d.scene.imageryLayers.remove(this.__gars.tile, true);
+                    this.__gars.tile = undefined;
+                }
+                this.__gars = undefined;
             }
-        }else{
-            if( this.__gars && this.__gars.layer ){
-                this.viewer3d.scene.imageryLayers.remove(this.__gars.layer,true);
-                this.__gars.layer = undefined;
-            }
-            if( this.__gars && this.__gars.tile ){
-                this.viewer3d.scene.imageryLayers.remove(this.__gars.tile,true);
-                this.__gars.tile = undefined;
-            }
-            this.__gars = undefined;
         }
-    }
         /* animation(bool) {
             bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
@@ -479,226 +479,85 @@ class MilMap {
 
 
     add3DModel(x, y, z, model, name) {
-            var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
-            var maxDistance = 5000000; //축소시 보여지는 최대 거리(m) 정의
-            var CZMLName = [];
+        var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의
+        var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
+        var CZMLName = [];
+        var result = [];
+        result = Cesium.Cartesian3.fromDegrees(x, y, z);
+        CZMLName.push({
+            "id": "document",
+            "name": "3D Models",
+            "version": "1.0",
+        });
 
-            // xyz z 높이
-
-            /* var a = 0;
-            var b = -122.93797;
-            var c = 39.50935;
-            var d = 3076;
-
-            for (var i = 0; i < 100000; i++) {
-                a += 10;
-                b += 0.0005;
-                c += 0.0003;
-                if (i === 50000) {
-                    c -= 0.0002;
-                }
-                d += 5;
-                positionData.push(a, b, c, d);
-            } */
-            var result = [];
-
-            /*  function reslArr(arr) {
-                 var index = 0;
-                 var result = [];
-                 arr.forEach(function(d, i) {
-                     if (i % 4 === 0 && i > 0) {
-                         for (let k = 0; k < 4; k++) {
-
-                             result.push(test33(k, arr)[index]);
-                         }
-                         index++;
-                     }
-                     result.push(d);
-                 });
-                 return result;
-             }
-
-             function test33(x, arr) {
-                 var resultArr = [];
-                 for (let y = x; y < arr.length; y += 4) {
-                     if (y + 4 < arr.length) {
-                         resultArr.push((arr[y] + arr[y + 4]) / 2);
-                     }
-
-                 }
-                 return resultArr;
-             } */
-            /* test.forEach(function(d, i) {
-
-                if (i % 4 === 0 && i > 0) {
-                    for (let k = 0; k < 4; k++) {
-
-                        result.push(test33(k, test)[index]);
+        CZMLName.push({
+            "id": name,
+            "name": name,
+            "availability": "2020-03-14T12:00:00Z/2020-03-15T16:00:00.9962195740191Z",
+            "position": {
+                "interpolationAlgorithm": "LAGRANGE",
+                "interpolationDegree": 1,
+                "epoch": "2020-03-14T12:00:00Z",
+                "cartesian": result
+            },
+            "path": {
+                "material": {
+                    "polylineOutline": {
+                        "color": {
+                            "rgba": [255, 0, 255, 255]
+                        },
+                        "outlineColor": {
+                            "rgba": [0, 255, 255, 255]
+                        },
+                        "outlineWidth": 5
                     }
-                    index++;
-                }
-                result.push(d);
-            }); */
-            /*아직 순서 미완성.....x축의 값을 안에 중간지점이 들어와야 된다........... ㅠㄴㅁㄹ휼ㄴ휴
-              아직은 링크 포인트가 여러개 왔을떄 처리로직이 애매하다. 
-              그리고 링크가 기준이 되는 x값의 범위가 안에잇어야 처리가가능하다....
-              X축도 라그랑지언 써볼까..
-             */
-
-            var startPoint = [127.0239084, 37.4847926, 50000];
-            var endPotint = [143.041785, 41.6162979, 80000];
-            //sampleLink ....
-
-            var linkPoint = [
-                [123.1584762, 39.0786155, 100000]
-                // [128.1584762, 40.0786155, 80000]
-            ];
-
-            result = this.targeting(startPoint, endPotint, linkPoint);
-
-            CZMLName.push({
-                "id": "document",
-                "name": "3D Models",
-                "version": "1.0",
-            });
-
-            CZMLName.push({
-                "id": name,
-                "name": name,
-                "availability": "2020-03-14T12:00:00Z/2020-03-15T16:00:00.9962195740191Z",
-                "position": {
-                    "interpolationAlgorithm": "LAGRANGE",
-                    "interpolationDegree": 1,
-                    "epoch": "2020-03-14T12:00:00Z",
-                    "cartesian": result
                 },
-                /* "path": {
-                    "material": {
-                        "polylineOutline": {
-                            "color": {
-                                "rgba": [255, 0, 255, 255]
-                            },
-                            "outlineColor": {
-                                "rgba": [0, 255, 255, 255]
-                            },
-                            "outlineWidth": 5
-                        }
-                    },
-                    "width": 8,
-                    "resolution": 5
-                }, */
-                "model": {
-                    "gltf": model,
-                    "distanceDisplayCondition": {
-                        "distanceDisplayCondition": [minDistance, maxDistance]
-                    },
-                    "color": {
-                        "rgba": [0, 221, 221, 221]
-                    },
-                    "minimumPixelSize": 64,
+                "width": 8,
+                "resolution": 5
+            },
+            "model": {
+                "gltf": model,
+                "distanceDisplayCondition": {
+                    "distanceDisplayCondition": [minDistance, maxDistance]
                 },
-                "orientation": {
-                    "velocityReference": "#position"
+                "color": {
+                    "rgba": [0, 221, 221, 221]
                 },
-                "viewFrom": {
-                    "cartesian": [-2080, -1715, 779]
+                "minimumPixelSize": 64,
+            },
+            "orientation": {
+                "velocityReference": "#position"
+            },
+            "viewFrom": {
+                "cartesian": [-2080, -1715, 779]
+            },
+
+            "label": {
+                "show": true,
+                "text": name,
+                "font": "10pt Arial",
+                "outlineWidth": 1,
+                "horizontalOrigin": "LEFT",
+                "pixelOffset": {
+                    "cartesian2": [-30, -30]
                 },
-
-                "label": {
-                    "show": true,
-                    "text": name,
-                    "font": "10pt Arial",
-                    "outlineWidth": 1,
-                    "horizontalOrigin": "LEFT",
-                    "pixelOffset": {
-                        "cartesian2": [-30, -30]
-                    },
-                    "fillColor": {
-                        "rgba": [255, 255, 0, 200]
-                    },
-                    "distanceDisplayCondition": {
-                        "distanceDisplayCondition": [minDistance, maxDistance]
-                    },
-                    "disableDepthTestDistance": Number.POSITIVE_INFINITY
-                }
-            });
-
-            this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
-                map.viewer3d.trackedEntity = ds.entities.getById(name);
-            });
-        }
-        /* pointDistance(startXY, deXY, height){
-            var distanceRes=[];
-            distanceRes = [distance(Cesium.Cartesian3.fromDegrees(startXY[0], startXY[1], 0), Cesium.Cartesian3.fromDegrees(deXY[0], deXY[1], 0)),height];
-            return distanceRes;
-        } */
-
-    targeting(startPoint, endPoint, linkPoint) {
-        var positionData = [];
-        var formatCart3 = Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 200);
-        // var distance = Cesium.Cartesian3.distance(Cesium.Cartesian3.fromDegrees(startPoint[0], startPoint[1], 0), Cesium.Cartesian3.fromDegrees(endPoint[0], endPoint[1], 0));
-        // var Depot = pointDistance();
-        var resultHeight = [];
-        var resultY = [];
-        var arrPoint = [];
-        // arrPoint.push( [linkPoint[1],linkPoint[0]]);
-        var ragPointX = [];
-        var ragPointH = [];
-        ragPointX.push([startPoint[1], startPoint[0]]);
-        ragPointX.push([endPoint[1], endPoint[0]]);
-        ragPointH.push([startPoint[0], startPoint[2]]);
-        ragPointH.push([endPoint[0], endPoint[2]]);
-
-        linkPoint.forEach(function(d) {
-                ragPointX.push([d[1], d[0]]);
-                ragPointH.push([d[0], d[2]]);
-            })
-            /* for (let k = 0; k < 1000; k++) {
-            var regY = this.ragrange(k, [
-                [startPoint[1], startPoint[0]],
-                [linkPoint[1], linkPoint[0]],
-                [endPoint[1], endPoint[0]]
-            ])
-            resultY.push(regX);
-        }
- */
-        var precision = (endPoint[1] - startPoint[1]) / 5000;
-        var resultX = [];
-        for (let j = startPoint[1];
-            (precision > 0) ? j < endPoint[1] : j > endPoint[1]; j += precision) {
-            var regY = this.ragrange(j, ragPointX);
-            resultX.push(j);
-            resultY.push(regY);
-        }
-
-        // var xInc = (endPoint[0] - startPoint[0]) / resultY.length;
-        // var Rvaild = [];
-        for (let q = 0; q < resultY.length; q++) {
-            // 높이값이된다
-            var ragVal = this.ragrange(resultY[q], ragPointH);
-
-            resultHeight.push(ragVal);
-
-        }
-
-        var timeVal = 0.0;
-
-        resultHeight.forEach(function(d, i) {
-            if (resultHeight[i] > 500) {
-
-                console.log(resultY[i] + resultX[i] + resultHeight[i]);
-
-                formatCart3 = Cesium.Cartesian3.fromDegrees(resultY[i], resultX[i], resultHeight[i]);
-                // startPoint[0] += yInc;
-                positionData.push(timeVal);
-                positionData.push(formatCart3.x);
-                positionData.push(formatCart3.y);
-                positionData.push(formatCart3.z);
-                timeVal += 10.0;
+                "fillColor": {
+                    "rgba": [255, 255, 0, 200]
+                },
+                "distanceDisplayCondition": {
+                    "distanceDisplayCondition": [minDistance, maxDistance]
+                },
+                "disableDepthTestDistance": Number.POSITIVE_INFINITY
             }
         });
-        return positionData;
+
+        this.viewer3d.dataSources.add(Cesium.CzmlDataSource.load(CZMLName)).then(function(ds) {
+            map.viewer3d.trackedEntity = ds.entities.getById(name);
+        });
     }
+
+
+
     addModel() {
         this.add3DModel(127.0215633, 37.4890219, 0, "../models/Cesium_Air.glb", "Jet1");
     }
@@ -747,31 +606,7 @@ class MilMap {
             this.viewer3d.dataSources.removeAll();
         }
         //    라그랑지언의 곡선 좌표 구하기 ... 포인트 지점의 distance와 높이를 2차원배열 형태로 넘겨준다...val은 산출하고자하는 distance의 값..  [[1,2],[3,4],[5,6]]
-    ragrange(val, arrPoint) {
-        var res = 0;
-        var xResult = [];
-        var finalRes = 0;
-        arrPoint.forEach(function(da, i) {
-            if (xResult.length < arrPoint.length) {
-                arrPoint.forEach(function(d) {
-                    var num = 1;
-                    var den = 1;
-                    var numArr = arrPoint.filter(function(f) {
-                        return f[0] !== d[0];
-                    });
-                    numArr.forEach(function(c) {
-                        num *= (val - c[0]);
-                        den *= (d[0] - c[0]);
-                    });
 
-                    xResult.push(num / den);
-
-                });
-            }
-            finalRes += (xResult[i] * da[1]);
-        });
-        return finalRes;
-    }
     addHeadingPitchRoll2() {
 
         var timestamp = 0;
