@@ -1,4 +1,4 @@
-<div class="section-content">
+<div class="section-content" id="map-viewmodel" >
     <div class="ui sub header">화면 조정</div>
     <table class="ui celled striped table">
         <thead>
@@ -30,36 +30,54 @@
         </tbody>
     </table>
     <div class="ui divider"></div>
-    <div class="ui sub header">Grid</div>
-    <div class="ui form">
-        <div class="grouped fields">
-          <label>Select Grid</label>
-          <div class="field">
-            <div class="ui slider checkbox">
-              <input type="radio" name="select-grid" id="none-grid" checked="checked">
-              <label>none</label>
+    <div class="ui sub header">그리드 정보</div>
+    <table class="ui celled striped table">
+      <thead>
+          <tr>
+              <th colspan="2">
+                  GARS grid
+              </th>
+              <td  >
+                <div class="ui checkbox">
+                  <input type="checkbox" name="gars">
+                  <label>enable</label>
+                </div>
+              </td>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ui label-text">tile</td>
+          <td colspan="2" >
+            <div class="ui checkbox">
+              <input type="checkbox" name="tileset"/>
+              <label>tile set</label>
             </div>
-          </div>
-          <div class="field">
-            <div class="ui slider checkbox">
-              <input type="radio" name="select-grid" id="gars-grid">
-              <label>GARS grid</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui slider checkbox">
-              <input type="radio" name="select-grid" id="a-grid">
-              <label>5mbps max</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui slider checkbox">
-              <input type="radio" name="select-grid" id="b-grid">
-              <label>Unmetered</label>
-            </div>
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>  
+        <tr>
+          <td rowspan="5" class="ui label-text">속성</td>
+          <td >cell</td>
+          <td ><div class="ui input ov-input"><input name="cell" type="number" placeholder="cell" style="width:60px;" value="4" /></div></td>
+        </tr>
+        <tr>
+          <td class="bl">glow width</td>
+          <td ><div class="ui input ov-input"><input name="glowwidth" type="number" placeholder="glow width" style="width:60px;" value="6" /></div></td>
+        </tr>
+        <tr>
+          <td class="bl">배경</td>
+          <td ><div class="ui input ov-input"><input name="background-color" type="color" value="#ff0"/></div></td>
+        </tr>
+        <tr>
+          <td class="bl">투명도</td>
+          <td ><div class="ui input ov-input"><input name="transparent" type="range" min="0" max="100" value="90" step="1" style="width:60px;" /></div></td>
+        </tr>
+        <tr>
+          <td class="bl">라인</td>
+          <td ><div class="ui input ov-input"><input name="color" type="color" value="#fff"/></div></td>
+        </tr>
+      </tbody>
+  </table>
 </div>
 
 <script>
@@ -69,17 +87,14 @@
         let a = $("#a-grid").prop("checked");
         let b = $("#b-grid").prop("checked");
 
-        if( gars == true ){
-            app.map.gridGARS(true,{
-                            tile:true,
-                            cells: 6,
-                            glowWidth: 8,
-                            backgroundColor: Cesium.Color.TRANSPARENT,
-                            color: Cesium.Color.WHITE});
-        }else{
-            app.map.gridGARS(false);
-        }
-        
+        var ui = new OliveInput("#map-viewmodel");
+        app.map.gridGARS(ui.boolean("gars"),{
+                            tile:ui.boolean("tileset"),
+                            cells: ui.number("cell"),
+                            glowWidth: ui.number("glowwidth"),
+                            backgroundColor: ui.color("background-color" , "transparent" ),
+                            color: ui.color("color") });
+                            
     })
         
 

@@ -1,7 +1,7 @@
 import { IxDatabase } from "./repository/db";
 var { dom, get, post } = require("./comm");
 var { Section } = require("./section");
-var { MilMap } = require("./milmap");
+var { MilMap } = require("./map3d/milmap");
 var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
 var { JsonByFolder } = require("./repository/json-by-folder");
 var { DrawInCesium } = require("./draw/base");
