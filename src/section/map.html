@@ -56,13 +56,17 @@
           </td>
         </tr>  
         <tr>
-          <td rowspan="5" class="ui label-text">속성</td>
+          <td rowspan="6" class="ui label-text">속성</td>
           <td >cell</td>
           <td ><div class="ui input ov-input"><input name="cell" type="number" placeholder="cell" style="width:60px;" value="4" /></div></td>
         </tr>
         <tr>
           <td class="bl">glow width</td>
-          <td ><div class="ui input ov-input"><input name="glowwidth" type="number" placeholder="glow width" style="width:60px;" value="6" /></div></td>
+          <td ><div class="ui input ov-input"><input name="glow-width" type="number" placeholder="glow width" style="width:60px;" value="6" /></div></td>
+        </tr>
+        <tr>
+          <td class="bl">glow color</td>
+          <td ><div class="ui input ov-input"><input name="glow-color" type="color" value="#ff0"/></div></td>
         </tr>
         <tr>
           <td class="bl">배경</td>
@@ -81,21 +85,17 @@
 </div>
 
 <script>
-    $("input[name='select-grid']").bind('change',function(){
-        let none = $("#none-grid").prop("checked");
-        let gars = $("#gars-grid").prop("checked");
-        let a = $("#a-grid").prop("checked");
-        let b = $("#b-grid").prop("checked");
-
+    $("#map-viewmodel input[name=gars]").bind('change',function(){
         var ui = new OliveInput("#map-viewmodel");
         app.map.gridGARS(ui.boolean("gars"),{
                             tile:ui.boolean("tileset"),
                             cells: ui.number("cell"),
-                            glowWidth: ui.number("glowwidth"),
+                            glowWidth: ui.number("glow-width"),
+                            glowColor: ui.color("glow-color"),
                             backgroundColor: ui.color("background-color" , "transparent" ),
                             color: ui.color("color") });
                             
-    })
+    });
         
 
 </script>
