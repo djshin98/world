@@ -12,20 +12,21 @@ global.dom = dom;
 global.tx = { get: get, post: post };
 
 class Application {
-    constructor() {
+    constructor(options) {
         this.workStatus("section", false);
         this.workStatus("map3d", false);
+        let _this = this;
         this.windowLayout = {
             header: {
                 height: 0
             },
             section: {
                 getWidth: function() {
-                    if (app.windowLayout.section.visible) {
-                        if (app.windowLayout.section.view.visible) {
-                            return app.windowLayout.section.width;
+                    if (_this.windowLayout.section.visible) {
+                        if (_this.windowLayout.section.view.visible) {
+                            return _this.windowLayout.section.width;
                         }
-                        return app.windowLayout.section.width - app.windowLayout.section.view.width;
+                        return _this.windowLayout.section.width - _this.windowLayout.section.view.width;
                     } else {
                         return 0;
                     }
@@ -48,15 +49,17 @@ class Application {
         window.onresize = this.onResize;
 
         //window.onresize();
-        this.init();
+        this.init(options);
     }
-    init() {
+    init(options) {
         var _this = this;
         dom.$("#door-handle")[0].onclick = function(e) {
             _this.section.showView(!_this.windowLayout.section.view.visible);
         };
 
-        this.map = new MilMap({
+        this.map = new MilMap(options);
+        /*
+        {
             map3: {
                 id: "map3d",
                 mapServiceMode:"internet", //"internet offline"
@@ -73,13 +76,19 @@ class Application {
                 
             }
         });
-        
+        */
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map.viewer3d);
 
         this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
+
+        this.onResize();
+
+        global.map = this.map;
+
+        
     }
     workStatus(name,bcomplete){
         if( !this._workStatus ){ this._workStatus = {}; }
@@ -143,7 +152,7 @@ class Application {
         });
     }
     onResize() {
-        let windowLayout = app.windowLayout;
+        let windowLayout = this.windowLayout;
         var width = windowLayout.section.getWidth();
         var headerHeight = windowLayout.header.height;
         var sectionHeaderHeight = 40;
@@ -176,19 +185,15 @@ class Application {
         mapEle.style.height = bodyHeight + "px";
 
         if (windowLayout.section.view.visible) {
-            app.section.resize(width, bodyHeight);
+            this.section.resize(width, bodyHeight);
         }
     }
     getCollection(name){
         return this.collections[name];
     }
-}
+};
 
-global.app = new Application();
-app.onResize();
-
-global.map = app.map;
-
+global.Application = Application;
 
 //var { load, pos } = require('./sample.js');
 //global.pos = pos;

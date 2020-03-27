@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>Globe 3D Web Service</title>
+    <link rel="stylesheet" href="./css/bucket.css">
+
+    <script type="text/javascript" src="./js/properties.js"></script>
+
+    <!--<script type="text/javascript" src="./js/MapX3D/cesium_MapX3D.js"></script> -->
+
+    <script type="text/javascript" src="./js/M-1.55/Cesium.js"></script>
+
+    <script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
+
+    <script type="text/javascript" src="./js/crs/coordConvert.js"></script>
+    <script type="text/javascript" src="./js/crs/vector3d.js"></script>
+    <script type="text/javascript" src="./js/crs/latlon-ellipsoidal.js"></script>
+    <script type="text/javascript" src="./js/crs/utm.js"></script>
+    <script type="text/javascript" src="./js/crs/mgrs.js"></script>
+    <script type="text/javascript" src="./js/crs/coordinate.js"></script>
+
+    <script type="text/javascript" src="./js/crs/GridManager.js"></script>
+    <script type="text/javascript" src="./js/crs/ParticleEffect.js"></script>
+
+    <!-- <script type="text/javascript" src="./js/milsymbol/milsymbol.js"></script>  -->
+    <script type="text/javascript" src="./js/object/renderObject.js"></script>
+    <script type="text/javascript" src="./js/object/Keyboard.js"></script>
+
+    <script type="text/javascript" src="./js/object/FlightPath.js"></script>
+    <script type="text/javascript" src="./js/object/BallisticMissileObject.js"></script>
+    <script type="text/javascript" src="./js/object/AirplaneSimulation.js"></script>
+    <script type="text/javascript" src="./js/object/Particle.js"></script>
+
+    <script type="text/javascript" src="./js/object/Pyongyang3DModels.js"></script>
+
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="cesiumContainer" class="fullSize"></div>
+
+    <!-- <div id="COPTitle" style="position: absolute; top: 5px; left: 5px; color: #FFC000; size; font: bold 3.0em/1.0em HY견고딕;">
+       KTMO Cell 성능개량 콘솔
+    </div> -->
+
+
+    <!--
+    <div id="COPTitle" style="position:absolute;top:5px;left:5px;color:#FFC000;" >
+        MapX3D for GEOINT Visualization Service
+    </div>
+    -->
+
+    <div id="actionCheckSnow" style="position:absolute;top:12px;right:280px;">
+        <input type="checkbox" name="ShowSnow" value="Snow" onclick="ShowHideSnowEffect();">Snow
+    </div>
+
+    <div id="actionCheckRain" style="position:absolute;top:12px;right:235px;">
+        <input type="checkbox" name="ShowRain" value="Rain" onclick="ShowHideRainEffect();">Rain
+    </div>
+
+
+
+    <!-- 
+    <div id="actionCheckAirSpace" style="position:absolute;top:12px;right:400px;">
+        <input type="checkbox" name="ShowAirSpace" value="AirSpace" onclick="ShowHideAirSpace();">AirSpace
+    </div>	
+    -->
+
+    <div id="actionCheckCoordinate" style="position:absolute;top:12px;right:150px;">
+        <input type="checkbox" name="ShowCoordinate" value="Coordinate" onClick="ShowHideCoordinate();">Coordinate
+    </div>
+    <!---->
+
+    <!--
+    <div id="actionCheckMilSymbol" style="position:absolute;top:12px;right:230px;">
+        <button type="button" class="button" name="ShowMilSymbol" onclick="RenderMilSymbol();">MilSymbol</button>
+    </div>	-->
+    <!-- 
+	<div id="actionDiv" style="position:absolute;top:12px;right:130px;">
+       <button id="button" class="button" onClick="fncGotoOpen();">Move Center</button>
+	</div>	
+  -->
+    <div id="toolbar" style="position:absolute;top:2px;right:5px;">
+        <table>
+            <tr>
+                <td><select id="selTile" onChange="fncCallImagery();">
+					<option value="World_TMS">World Map</option>
+					<option value="Seoul_TMS">Seoul(1m)</option>
+                    <option value="Hwasung_TMS">Hwasung(51cm)</option>
+                    <option value="Daejon_TMS">Daejon(25cm)</option>
+                    <option value="Ga50KTIF16_TMS">Ground 50K</option>
+                </select></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="DIATitle" style="position:absolute;bottom:5px;left:5px;float:left;">
+        (c) 2019. U3 C&amp;C Inc. all rights reserved.
+    </div>
+
+    <!-- <div id="DIATitle" style="position: absolute; bottom: 5px; size; font: normal 1.1em/1.1em HY견고딕;">
+        (c) 2019. LIG Nex1 & U3 C&amp;C Inc. all rights reserved.
+    </div> -->
+    <!--
+    <div id="DIATitle" style="position: absolute; bottom: 5px; size; font: normal 1.1em/1.1em HY견고딕;">
+        (c) 2019. U3 C&amp;C Inc. all rights reserved.
+    </div>
+
+    <div style="position: absolute; bottom: 5px; left: 35%; align: left; color: #FFC000; size; font: normal 1.5em/1.5em HY견고딕; ">
+        3D 엔진 기반으로 KTMO Cell 콘솔을 구현한 프로토타입 화면입니다.
+    </div> -->
+
+    <script id="cesiumInit">
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNTZjNzhiNS03MmVhLTRlYjktYWM0MC0wZGU1MDdjMWVhZDUiLCJpZCI6Nzg3OSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU1MDY1ODAxMn0.wdPv5Drc0hGJ7sifJp5aq6qKUTBNCFSYgzcvUoC41LE';
+
+        var viewer = new Cesium.Viewer('cesiumContainer', {
+
+            //디폴트 레이어로 World_TMS 설정
+            imageryProvider: Cesium.createTileMapServiceImageryProvider({
+                url: wUrl + '/World_TMS/',
+                proxy: new Cesium.DefaultProxy(proxyUrl)
+            })
+
+            ,
+            shadows: false
+
+
+            ,
+            scene3DOnly: true //3차원 화면으로 구성
+                // ,sceneMode: Cesium.SceneMode.SCENE2D //2차원 화면으로 구성
+
+            ,
+            animation: false
+
+            //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+            ,
+            baseLayerPicker: false,
+            geocoder: false,
+            vrButton: false,
+            homeButton: false,
+            infoBox: false //객체 선택 시 상세정보 표시 기능 활성화
+                ,
+            sceneModePicker: false,
+            selectionIndicator: false,
+            timeline: false,
+            navigationHelpButton: false
+
+            ,
+            terrainExaggeration: 1.0 //고도 기복 비율 조정
+
+            ,
+            shouldAnimate: true //새로추가.. 눈 비 안개를위한 20181005
+                ,
+            requestRenderMode: false //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨
+                ,
+            maximumRenderTimeChange: Infinity
+        });
+
+        var imageryLayers = viewer.imageryLayers;
+
+        // var layerBase1 = imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
+        //                url : wUrl+'/World_TMS/'
+        // }));
+
+
+        //Connect default layer
+        //var layerBase1 = viewer.imageryLayers('Bing Maps Aerial');
+
+        var layerBase2 = imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
+            url: wUrl + '/Hwasung_TMS/'
+        }));
+
+
+        var layerBase3 = imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
+            url: wUrl + '/Seoul_TMS/'
+        }));
+
+
+        var layerBase3 = imageryLayers.addImageryProvider(Cesium.createTileMapServiceImageryProvider({
+            url: wUrl + '/Daejon_TMS/'
+        }));
+        /**/
+
+        var cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
+            url: terrainUrl + "/tilesets/srtm/",
+            proxy: new Cesium.DefaultProxy(proxyUrl),
+            requestWaterMask: false,
+            requestVertexNormals: false
+        });
+
+        viewer.terrainProvider = cesiumTerrainProviderMeshes;
+
+        //Enable depth testing so things behind the terrain disappear.
+        //??? viewer.scene.globe.depthTestAgainstTerrain = false;
+
+
+        //Call WMS Service..Do Not Delete
+        /* var layerWMS = imageryLayers.addImageryProvider(
+					new Cesium.WebMapServiceImageryProvider({
+						url: 'http://192.168.0.153:8180/MapXServer/World/afa001/wms',
+						layers : 'afa001',
+						parameters : {
+							service : 'WMS', 
+							version : '1.1.0',
+							request : 'GetMap', 
+							styles : '', 
+							format : 'image/png', 
+							srs : 'EPSG:4326',
+							format_options : 'antialias:none',
+							transparent : true	
+						}
+					})); */
+        //End of WMS Service
+
+
+        viewer.scene.moon.show = false;
+        viewer.scene.sun.show = false;
+        viewer.scene.skyBox.show = false;
+        viewer.scene.logarithmicDepthBuffer = false; //Terrain Provider 설정으로 인한 Black Spot 발생 버그 수정
+
+        //화면 FPS 표시여부
+        viewer.scene.debugShowFramesPerSecond = true;
+
+        viewer.scene.globe.depthTestAgainstTerrain = true; //Enable Depth Test
+
+        viewer.resolutionScale = 1.0 / window.devicePixelRatio;
+
+        //Stop Underground exploring
+        viewer.camera.changed.addEventListener(
+            function() {
+                if (viewer.camera._suspendTerrainAdjustment && viewer.scene.mode === Cesium.SceneMode.SCENE3D) {
+                    viewer.camera._suspendTerrainAdjustment = false;
+                    viewer.camera._adjustHeightForTerrain();
+                }
+
+                //Terrain 적용시 특정 높이 에서 카메라 zoom 이 굉장히 빠르게 되는 불편함 방지
+                var camHeight = viewer.camera.positionCartographic.height;
+
+                var minZoom = 250;
+                var maxZoom = 20000000;
+
+                if (camHeight < minZoom)
+                    viewer.scene.screenSpaceCameraController._zoomFactor = 2;
+                else if (camHeight > maxZoom)
+                    viewer.scene.screenSpaceCameraController._zoomFactor = 5;
+
+
+
+            }
+        );
+
+        //Use Cesiumjs 1.55 functionality
+        Initialize_Snow_Particle();
+        Initialize_Rain_Particle();
+
+        //Use randomize functionality
+        //RenderSnowy();
+        //RenderRainy();
+
+
+        //AddModel("js/MapX3D/3DModels/CesiumAir/Cesium_Air.glb", 127, 39, 5000);
+        //AddKML("js/MapX3D/kml/facilities/facilities.kml");
+        //AddKML("js/MapX3D/kml/Seoul_Road.kml", options); 
+        //AddKML("js/MapX3D/kml/World.kmz"); 
+        //AddKML("js/MapX3D/kml/SUAS_Test.kml"); 
+
+        //AddGeoJSON("AirSpace", "js/MapX3D/json/SUAS.geojson");
+
+        //Defalut Gazetteer
+        AddLabelHeight(126.977389, 37.533882, 2000, "Seoul(서울)", Cesium.Color.WHITE, 1);
+        AddLabelHeight(125.730843, 39.036712, 2000, "PyeonGyang(평양)", Cesium.Color.WHITE, 2);
+        //AddLabelHeight(127, 38, 2000, "what is it...?", 3);
+        //RemoveObject(3); //Remove ID 3 Object
+
+        //AddCircleOutline(126.977389, 37.533882, 4000, 20000, "Circle", 4); // 서울 중심 20km 반경 표시
+
+        //AddImage(128, 38,   2000, "./images/cross.png", "Image Test", 5); 
+        //AddLine(-0.1, 0, 0, -179, 0, 0, "test", 0);
+        //AddLabelHeight(128, 38, 2000, "Label Test", 7);
+
+        //AddImage(127, 38.12, 2000, "./images/drop.png", "Image Test", 8);
+        //AddImage(126, 38.4, 2000, "./images/icon_09.png", "Image Test", 9);
+        //AddImage(125, 38.6, 2000, "./images/star.png", "Image Test", 10);
+
+        //경위도 그리드 도시
+        DrawGeodeticGrid(127, 37, 10);
+
+
+        //경위도 중심좌표값에서 임의 거리(m)만큼 떨어진 지점에 경위도 좌표값 구하기
+        /*
+    var lon1 = 127;
+	var lat1 = 37;
+	var radius = 100 * 1000; //100km
+	var geo = destVincenty(lon1, lat1, 0, radius);
+    
+	AddLine(lon1, lat1, 100, geo.lng, geo.lat, 100, "1000", 100);
+	AddCircleOutline(lon1, lat1, 100, radius, "Radius", 101);
+    */
+
+
+        ActivateKeyboard();
+
+
+        //공역 관련 데모
+        //SetAirPlaneSimulation();	
+
+
+        //KTMO Cell 데모
+        //InitializeBallisticMissile();
+
+
+        //무빙맵 성능개량 데모
+        //viewer.scene.skyAtmosphere.saturationShift = 0.02;
+        //viewer.scene.skyAtmosphere.brightnessShift = 0.5;
+        //InitializeAirplaneSimulation();
+
+
+        //평양지역 3D 모델 전시
+        InitializePyongyang3DModels();
+
+
+
+        /*viewer.ScreenSpaceEventHandler.setInputAction(function onMouseMove(movement) {
+
+            var ray = viewer.camera.getPickRay(movement.endPosition);
+            var position = viewer.scene.globe.pick(ray, viewer.scene);
+            if (Cesium.defined(position)) {
+                var cartographic = Cesium.Ellipsoid.WGS84.cartesianToCartographic(position);
+                var lon = Cesium.Math.toDegrees(cartographic.longitude);
+                var lat = Cesium.Math.toDegrees(cartographic.latitude);
+                var height = cartographic.height
+
+                console.log(lon, lat, height);
+            }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);*/
+    </script>
+
+
+    <script id="targetInit">
+        function lookAtKorea() {
+            var target = new Cesium.Cartesian3.fromDegrees(128, 36);
+            var heading = Cesium.Math.toRadians(0);
+            var pitch = Cesium.Math.toRadians(-30);
+            var range = 600000.0;
+
+            viewer.camera.lookAt(target, new Cesium.HeadingPitchRange(heading, pitch, range));
+            viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+        }
+
+        lookAtKorea();
+    </script>
+
+
+
+    <script id="callLocalFunction">
+        function fncGotoOpen() {
+            window.open("moveCenter.html", "codeDetailPop", "scrollbars=yes,toolbar=no,statusbar=no,location=no,status=no,menubar=no,resizable=yes,width=700,height=427,left=0,top=0");
+        }
+
+        function fncGoto(lon, lat) {
+            //Flyto Move Center
+            FlyToMoveCenter(lon, lat, 0.25);
+        }
+
+
+        var imageryLayers = viewer.imageryLayers;
+
+        var viewModel = {
+            layers: [],
+            baseLayers: [],
+            upLayer: null,
+            downLayer: null,
+            selectedLayer: null,
+            isSelectableLayer: function(layer) {
+                return baseLayers.indexOf(layer) >= 0;
+            },
+            raise: function(layer, index) {
+                imageryLayers.raise(layer);
+                viewModel.upLayer = layer;
+                viewModel.downLayer = viewModel.layers[Math.max(0, index - 1)];
+                updateLayerList();
+                window.setTimeout(function() {
+                    viewModel.upLayer = viewModel.downLayer = null;
+                }, 10);
+            },
+            lower: function(layer, index) {
+                imageryLayers.lower(layer);
+                viewModel.upLayer = viewModel.layers[Math.min(viewModel.layers.length - 1, index + 1)];
+                viewModel.downLayer = layer;
+                updateLayerList();
+                window.setTimeout(function() {
+                    viewModel.upLayer = viewModel.downLayer = null;
+                }, 10);
+            },
+            canRaise: function(layerIndex) {
+                return layerIndex > 0;
+            },
+            canLower: function(layerIndex) {
+                return layerIndex >= 0 && layerIndex < imageryLayers.length - 1;
+            }
+        };
+        Cesium.knockout.track(viewModel);
+
+        var baseLayers = viewModel.baseLayers;
+
+        function addBaseLayerOption(name, imageryProvider) {
+            var layer;
+
+            if (typeof imageryProvider === 'undefined') {
+                layer = imageryLayers.get(0);
+                viewModel.selectedLayer = layer;
+            } else {
+                layer = new Cesium.ImageryLayer(imageryProvider);
+            }
+            layer.name = name;
+            baseLayers.push(layer);
+        }
+
+        function addAdditionalLayerOption(name, imageryProvider, alpha, show) {
+
+            addBaseLayerOption('World_TMS', undefined);
+
+            if (typeof imageryProvider == 'World_TMS') {;
+            } else {
+                var layer = imageryLayers.addImageryProvider(imageryProvider);
+                layer.alpha = Cesium.defaultValue(alpha, 1.0);
+                layer.show = Cesium.defaultValue(show, true);
+                layer.name = name;
+                Cesium.knockout.track(layer, ['alpha', 'show', 'name']);
+            }
+        }
+
+        function updateLayerList() {
+            var numLayers = imageryLayers.length;
+            viewModel.layers.splice(0, viewModel.layers.length);
+            for (var i = numLayers - 1; i >= 0; --i) {
+                viewModel.layers.push(imageryLayers.get(i));
+            }
+        }
+
+        function setupLayers() {
+            addAdditionalLayerOption(
+                'Seoul_TMS',
+                new Cesium.createTileMapServiceImageryProvider({
+                    url: wUrl + '/Seoul_TMS/',
+                }), 1, false);
+            addAdditionalLayerOption(
+                'Hwasung_TMS',
+                new Cesium.createTileMapServiceImageryProvider({
+                    url: wUrl + '/Hwasung_TMS/',
+                }), 1, false);
+            addAdditionalLayerOption(
+                'Daejon_TMS',
+                new Cesium.createTileMapServiceImageryProvider({
+                    url: wUrl + '/Daejon_TMS/',
+                }), 1, false);
+            addAdditionalLayerOption(
+                'Ga50KTIF16_TMS',
+                new Cesium.createTileMapServiceImageryProvider({
+                    url: wUrl + '/Tile_GEOTIFF_G50K/',
+                }), 1, false);
+        }
+
+        setupLayers();
+        updateLayerList();
+
+        var toolbar = document.getElementById('toolbar');
+        Cesium.knockout.applyBindings(viewModel, toolbar);
+
+        Cesium.knockout.getObservable(viewModel, 'selectedLayer').subscribe(function(baseLayer) {
+            // Handle changes to the drop-down base layer selector.
+            var activeLayerIndex = 0;
+            var numLayers = viewModel.layers.length;
+            for (var i = 0; i < numLayers; ++i) {
+                if (viewModel.isSelectableLayer(viewModel.layers[i])) {
+                    activeLayerIndex = i;
+                    break;
+                }
+            }
+            var activeLayer = viewModel.layers[activeLayerIndex];
+            var show = activeLayer.show;
+            var alpha = activeLayer.alpha;
+            imageryLayers.remove(activeLayer, false);
+            imageryLayers.add(baseLayer, numLayers - activeLayerIndex - 1);
+            baseLayer.show = show;
+            baseLayer.alpha = alpha;
+            updateLayerList();
+        });
+
+        //모든 Imagery를 올린 다음에 show값만 on/off한다.
+        function fncCallImagery() {
+
+            if ($("#selTile").val() == "") return;
+
+            var name = "" + $("#selTile").val();
+
+            //Display Off
+            var totalIdx = viewer.imageryLayers.length;
+            for (var i = 0; i < totalIdx; i++) {
+                var imageryProvider = imageryLayers.get(i);
+                if (imageryProvider.name == "World_TMS")
+                    continue;
+
+                if (imageryProvider.name == name) {
+                    imageryProvider.show = true;
+                } else {
+                    imageryProvider.show = false;
+                } //end if
+            } //end for
+
+
+        } //end fncCallImagery function
+    </script>
+
+</body>
+
+</html>

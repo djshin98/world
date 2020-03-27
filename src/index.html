@@ -40,7 +40,7 @@
             var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
                 map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
 
-                kMilSymbolCollection.add( cartesian , options , img );
+            kMilSymbolCollection.add( cartesian , options , img );
             /*    
             if( options.sic[2] == 'A' || options.sic[2] == 'P' ){
                 var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500)) :
@@ -56,7 +56,23 @@
             
         }
 
-        
+        $(function(){
+            window.app = new Application({map3: {
+                id: "map3d",
+                mapServiceMode:"internet", //"internet offline"
+                offlineOption:{
+                    proxy : "/GVS/proxy.jsp",
+                    map : "http://192.168.0.153:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+                    terrain : "http://192.168.0.153:38080/tilesets/srtm/"
+                },
+                offlineBaseLayers:[
+                    { url:'http://192.168.0.153:8080/Map/Hwasung_TMS/'},
+                    { url:'http://192.168.0.153:8080/Map/Seoul_TMS/'},
+                    { url:'http://192.168.0.153:8080/Map/Daejon_TMS/'}
+                ]
+                }
+            });
+        });
 
     </script>
 </head>

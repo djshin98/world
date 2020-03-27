@@ -3,6 +3,8 @@ var { Animation } = require('../animation');
 var { Tileset } = require('./tileset');
 global.Cesium = require('cesium/Cesium');
 
+require('./grid/wgs84');
+
 require('cesium/Widgets/widgets.css');
 
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYjMyZDgyMS1lMGUzLTRkNmUtYWMzNS1lNzcxMDE1NGQ1NWYiLCJpZCI6MjE4NjIsInNjb3BlcyI6WyJhc2wiLCJhc3IiLCJhc3ciLCJnYyJdLCJpYXQiOjE1ODE5OTY1NjR9.SFdCmlB5cqZjQz8hv6S5ub2ik71BrbsgXWt_8P9C0ls';
@@ -38,8 +40,8 @@ class MilMap {
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-             }),*/
-            /*  terrainProvider: Cesium.createWorldTerrain(),
+             }),
+              terrainProvider: Cesium.createWorldTerrain(),
              shadows: false,
              scene3DOnly: true, //3차원 화면으로 구성 // ,
              //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
@@ -238,7 +240,9 @@ class MilMap {
         }
         updateCallback(this.viewer3d, viewModel);
     }
-
+    wireframe(bshow){
+        this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
+    }
     gridGARS(bshow, options) {
 
             if (bshow) {

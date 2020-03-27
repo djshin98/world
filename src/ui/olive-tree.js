@@ -30,8 +30,6 @@ class OliveTree{
                 if( _this.options.onSelect ){
                     _this.options.onSelect('file', this , _this);
                 }
-                
-               
             }           
         });
     }
