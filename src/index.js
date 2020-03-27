@@ -152,7 +152,8 @@ class Application {
         });
     }
     onResize() {
-        let windowLayout = this.windowLayout;
+        let application = ( typeof(app) == "undefined" )?this: app;
+        let windowLayout = application.windowLayout;
         var width = windowLayout.section.getWidth();
         var headerHeight = windowLayout.header.height;
         var sectionHeaderHeight = 40;
@@ -185,7 +186,7 @@ class Application {
         mapEle.style.height = bodyHeight + "px";
 
         if (windowLayout.section.view.visible) {
-            this.section.resize(width, bodyHeight);
+            application.section.resize(width, bodyHeight);
         }
     }
     getCollection(name){
