@@ -26,7 +26,7 @@ class IxDatabase {
 			console.log('create database : ' + _this.databaseName + "." +_this.version+"."+_this.storeName);
 		};
 		open.onsuccess = function() {
-			console.log('init success');
+			console.log('opened database : ' + _this.databaseName + "." + _this.storeName + " (" + _this.version + ")");
         };
 	}
 	

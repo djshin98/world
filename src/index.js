@@ -134,13 +134,13 @@ class Application {
                 });
             },
             oncomplete:function(){
-                map.cameraWidget(true,function(obj){
+                map.oliveCamera.widget(function(obj){
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
                     document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(10));
                     document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(10));
                 });
-                map.cursorWidget(true,function(obj){
+                map.cursorWidget(function(obj){
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
                 });     

@@ -1,6 +1,7 @@
 var { IxDatabase } = require('../repository/db');
 var { Animation } = require('../animation');
 var { Tileset } = require('./tileset');
+var { OliveCamera } = require('./camera');
 global.Cesium = require('cesium/Cesium');
 
 require('./grid/wgs84');
@@ -108,7 +109,7 @@ class MilMap {
 
         let _this = this;
         this.cursorWidgetHandler = new Cesium.ScreenSpaceEventHandler(this.viewer3d.scene.canvas);
-        this.cameraWidgetCallback;
+        
         /*
         var entity = this.viewer3d.entities.add({
             label:{
@@ -123,33 +124,7 @@ class MilMap {
         });
         */
 
-
-        this.viewer3d.camera.moveEnd.addEventListener(function() {
-            let obj = _this.viewer3d.scene.camera;
-            _this.db.set("scene", "camera", {
-                position: obj.position,
-                heading: obj.heading,
-                pitch: obj.pitch,
-                roll: obj.roll
-            });
-            if (_this.cameraWidgetCallback) {
-                _this.cameraWidgetCallback(obj);
-            }
-        });
-
-        this.db.get("scene", "camera", function(result) {
-            if (result && result.value) {
-                let obj = result.value;
-                _this.viewer3d.camera.flyTo({
-                    destination: obj.position,
-                    orientation: {
-                        heading: obj.heading,
-                        pitch: obj.pitch,
-                        roll: obj.roll
-                    }
-                });
-            }
-        });
+        this.oliveCamera = new OliveCamera(this.viewer3d);
 
         this.viewer3d.canvas.addEventListener('click', function(e) {
             var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
@@ -166,13 +141,6 @@ class MilMap {
                 //alert('Globe was not picked');
             }
         }, false);
-    }
-    cameraWidget(enable, callback) {
-        if (enable && enable == true) {
-            this.cameraWidgetCallback = callback;
-        } else if (!enable || (enable && enable == false)) {
-            this.cameraWidgetCallback = undefined;
-        }
     }
     cursorWidget(enable, callback) {
         if (enable && enable == true) {
