@@ -2,6 +2,8 @@ var { IxDatabase } = require('../repository/db');
 var { Animation } = require('../animation');
 var { Tileset } = require('./tileset');
 var { OliveCamera } = require('./camera');
+var { dom } = require("../comm");
+
 global.Cesium = require('cesium/Cesium');
 
 require('./grid/wgs84');
@@ -96,7 +98,7 @@ class MilMap {
             }
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
-        navigationInitialization(this.options.map3.id, this.viewer3d);
+        let v = navigationInitialization(this.options.map3.id, this.viewer3d);
 
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
@@ -142,6 +144,30 @@ class MilMap {
             }
         }, false);
     }
+    _showElement(ele,bshow){ if( ele ){ ele.style.display = dom.trueOrundef(bshow)?"":"none"; } }
+    show(widget,bshow){
+        let  _bshow =  dom.trueOrundef(bshow) ? true : false;
+        if( !widget || widget.length == 0 ){
+            this._showElement(this.viewer3d.container, _bshow);
+        }else if( widget == "animation"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-animationContainer") , _bshow);
+        }else if( widget == "timeline"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-timelineContainer") , _bshow);
+        }else if( widget == "fullscreen"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-fullscreenContainer") , _bshow);
+        }else if( widget == "credits"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-widget-credits") , _bshow);
+        }else if( widget == "navigation"){
+            this._showElement( dom.e("#" + this.options.map3.id + " #navigationDiv") , _bshow);
+        }else if( widget == "fps"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-performanceDisplay-defaultContainer") , _bshow);
+        }else if( widget == "distance"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .distance-legend") , _bshow);
+        }else if( widget == "toolbar"){
+            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-toolbar") , _bshow);
+        }
+    }
+    hide(widget){ this.show(widget,false); }
     cursorWidget(enable, callback) {
         if (enable && enable == true) {
             var _this = this;
@@ -211,10 +237,7 @@ class MilMap {
         updateCallback(this.viewer3d, viewModel);
     }
     widget(name,bshow){
-        if( name == "animation"){
-            let eles = dom.$(".cesium-viewer-animationContainer");
-           
-        }
+        
     }
     wireframe(bshow){
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;

@@ -2926,11 +2926,11 @@
         this.version = "2.0.0";
         if (typeof console === "object" && typeof process !== "object") {
             console.info(
-                "milsymbol.js " +
+                "kmilsymbol.js " +
                 this.version +
-                " - Copyright (c) 2018 M" +
+                " - Copyright (c) 2020 " +
                 String.fromCharCode(229) +
-                "ns Beckman  http://www.spatialillusions.com"
+                "http://www.u3cnc.com"
             );
         }
     })();

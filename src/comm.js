@@ -1,5 +1,7 @@
 var dom = {
-    $: function(a) { return document.querySelectorAll(a); }
+    $: function(a) { return document.querySelectorAll(a); },
+    e: function(a) { return document.querySelector(a); },
+    trueOrundef: function(a){ return ((!a && a != false) || a == true)?true:false; }
 }
 var tx = {
     send: function(options) {
