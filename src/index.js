@@ -87,8 +87,6 @@ class Application {
         this.onResize();
 
         global.map = this.map;
-
-        
     }
     workStatus(name,bcomplete){
         if( !this._workStatus ){ this._workStatus = {}; }

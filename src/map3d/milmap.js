@@ -37,6 +37,8 @@ class MilMap {
             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
+            timeline: true,
+            animation: true
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
