@@ -242,6 +242,12 @@ class MilMap {
         }
         updateCallback(this.viewer3d, viewModel);
     }
+    widget(name,bshow){
+        if( name == "animation"){
+            let eles = dom.$(".cesium-viewer-animationContainer");
+           
+        }
+    }
     wireframe(bshow){
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
