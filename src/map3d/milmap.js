@@ -2,6 +2,7 @@ var { IxDatabase } = require('../repository/db');
 var { Animation } = require('../animation');
 var { Tileset } = require('./tileset');
 var { OliveCamera } = require('./camera');
+var { OliveCursor } = require('./cursor');
 var { dom } = require("../comm");
 
 global.Cesium = require('cesium/Cesium');
@@ -110,7 +111,7 @@ class MilMap {
         }
 
         let _this = this;
-        this.cursorWidgetHandler = new Cesium.ScreenSpaceEventHandler(this.viewer3d.scene.canvas);
+        
         
         /*
         var entity = this.viewer3d.entities.add({
@@ -127,6 +128,7 @@ class MilMap {
         */
 
         this.oliveCamera = new OliveCamera(this.viewer3d);
+        this.oliveCursor = new OliveCursor(this.viewer3d);
 
         this.viewer3d.canvas.addEventListener('click', function(e) {
             var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
@@ -168,40 +170,7 @@ class MilMap {
         }
     }
     hide(widget){ this.show(widget,false); }
-    cursorWidget(enable, callback) {
-        if (enable && enable == true) {
-            var _this = this;
-            this.cursorWidgetHandler.setInputAction(function(movement) {
-                var cartesian = _this.viewer3d.camera.pickEllipsoid(movement.endPosition, _this.viewer3d.scene.globe.ellipsoid);
-                if (cartesian) {
-                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                    var longitude = Cesium.Math.toDegrees(cartographic.longitude).toFixed(5);
-                    var latitude = Cesium.Math.toDegrees(cartographic.latitude).toFixed(5);
-
-                    if (callback) {
-                        callback({
-                            latitude: latitude,
-                            longitude: longitude
-                        });
-                    }
-                } else {
-                    //entity.label.show = false;
-                }
-            }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        } else if (!enable || (enable && enable == false)) {
-            this.cursorWidgetHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        }
-    }
-    flyTo(x, y) {
-        this.viewer3d.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(x, y, 500.0),
-            orientation: {
-                heading: Cesium.Math.toRadians(0.0),
-                pitch: Cesium.Math.toRadians(-80.0),
-                roll: 0.0
-            }
-        });
-    }
+    
     dataSource(options, bshow) {
         let kmz = this.viewer3d.dataSources.getByName(options.name);
         if (bshow) {

@@ -140,7 +140,7 @@ class Application {
                     document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(10));
                     document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(10));
                 });
-                map.cursorWidget(function(obj){
+                map.oliveCursor.widget(function(obj){
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
                 });     

@@ -75,7 +75,7 @@ class JusoSearch {
                             response.result.items.forEach(function(d, i) {
                                 str1 += "<div class='item'>";
                                 str1 += "<i class='map marker icon'></i>";
-                                str1 += "<div class='juso' onclick='map.flyTo(" + d.point.x + ", " + d.point.y + ")'>";
+                                str1 += "<div class='juso' onclick='map.oliveCamera.flyTo(" + d.point.x + ", " + d.point.y + ")'>";
                                 if (t.type == "place") {
                                     var title = d.title ? d.title : (d.bldnm ? d.bldnm : "");
                                     str1 += "<a class='header'>" + title + "</a>";
