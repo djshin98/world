@@ -1,90 +1,207 @@
 <div class="section-content" id="map-viewmodel" >
-    <div class="ui sub header">화면 조정</div>
-    <table class="ui celled striped table">
-        <thead>
-            <tr>
-                <th colspan="3">
-                    기본 정보
-                </th>
+  <div class="ui horizontal divider"></div>
+    <div class="ui styled accordion">
+        <div class="title">
+            <i class="dropdown icon"></i> 화면 조정
+            <div id="search-place-count"></div>
+        </div>
+        <div class="ui list content">
+          <table class="ui celled striped table">
+            <thead>
+                <tr>
+                    <th colspan="3">
+                        기본 정보
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="2" class="ui label-text">커서</td>
+                    <td class="">경도</td>
+                    <td class="" id="cursor-longitude"></td>
+                </tr>
+                <tr>
+                    <td class="bl">위도</td>
+                    <td class="" id="cursor-latitude" ></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="ui label-text">중심<br/>좌표</td>
+                    <td class="">경도</td>
+                    <td class="" id="center-longitude" ></td>
+                </tr>
+                <tr>
+                    <td class="bl">위도</td>
+                    <td class="" id="center-latitude" ></td>
+                </tr>
+                <tr>
+                  <td class="bl">Animation</td>
+                  <td colspan="2" class="" >
+                    <div class="ui checkbox">
+                      <input type="checkbox" onclick="widget('animation');">
+                      <label></label>
+                    </div>
+                  </td>
+              </tr>
+              <tr>
+                <td class="bl">Timeline</td>
+                <td colspan="2" class="" >
+                  <div class="ui checkbox">
+                    <input type="checkbox" onclick="widget('timeline');">
+                    <label></label>
+                  </div>
+                </td>
             </tr>
-        </thead>
-        <tbody>
             <tr>
-                <td rowspan="2" class="ui label-text">커서</td>
-                <td class="">경도</td>
-                <td class="" id="cursor-longitude"></td>
-            </tr>
-            <tr>
-                <td class="bl">위도</td>
-                <td class="" id="cursor-latitude" ></td>
-            </tr>
-            <tr>
-                <td rowspan="2" class="ui label-text">중심<br/>좌표</td>
-                <td class="">경도</td>
-                <td class="" id="center-longitude" ></td>
-            </tr>
-            <tr>
-                <td class="bl">위도</td>
-                <td class="" id="center-latitude" ></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="ui divider"></div>
-    <div class="ui sub header">그리드 정보</div>
-    <table class="ui celled striped table">
-      <thead>
-          <tr>
-              <th colspan="2">
-                  GARS grid
-              </th>
-              <td  >
+              <td class="bl">Fullscreen</td>
+              <td colspan="2" class="" >
                 <div class="ui checkbox">
-                  <input type="checkbox" name="gars">
-                  <label>enable</label>
+                  <input type="checkbox" onclick="widget('fullscreen');">
+                  <label></label>
                 </div>
               </td>
           </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="ui label-text">tile</td>
-          <td colspan="2" >
-            <div class="ui checkbox">
-              <input type="checkbox" name="tileset"/>
-              <label>tile set</label>
-            </div>
-          </td>
-        </tr>  
-        <tr>
-          <td rowspan="6" class="ui label-text">속성</td>
-          <td >cell</td>
-          <td ><div class="ui input ov-input"><input name="cell" type="number" placeholder="cell" style="width:60px;" value="4" /></div></td>
-        </tr>
-        <tr>
-          <td class="bl">glow width</td>
-          <td ><div class="ui input ov-input"><input name="glow-width" type="number" placeholder="glow width" style="width:60px;" value="1" /></div></td>
-        </tr>
-        <tr>
-          <td class="bl">glow color</td>
-          <td ><div class="ui input ov-input"><input name="glow-color" type="color" value="#ffff00"/></div></td>
-        </tr>
-        <tr>
-          <td class="bl">배경</td>
-          <td ><div class="ui input ov-input"><input name="background-color" type="color" value="#ff00ff"/></div></td>
-        </tr>
-        <tr>
-          <td class="bl">투명도</td>
-          <td ><div class="ui input ov-input"><input name="transparent" type="range" min="0" max="100" value="10" step="1" style="width:60px;" /></div></td>
-        </tr>
-        <tr>
-          <td class="bl">라인</td>
-          <td ><div class="ui input ov-input"><input name="color" type="color" value="#ffffff"/></div></td>
-        </tr>
-      </tbody>
-  </table>
+          <tr>
+            <td class="bl">Navigation</td>
+            <td colspan="2" class="" >
+              <div class="ui checkbox">
+                <input type="checkbox" onclick="widget('navigation');">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="bl">FPS</td>
+            <td colspan="2" class="" >
+              <div class="ui checkbox">
+                <input type="checkbox" onclick="widget('fps');">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="bl">Toolbar</td>
+            <td colspan="2" class="" >
+              <div class="ui checkbox">
+                <input type="checkbox" onclick="widget('toolbar');">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="bl">Credits</td>
+            <td colspan="2" class="" >
+              <div class="ui checkbox">
+                <input type="checkbox" onclick="widget('credits');">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="bl">Distance</td>
+            <td colspan="2" class="" >
+              <div class="ui checkbox">
+                <input type="checkbox" onclick="widget('distance');">
+                <label></label>
+              </div>
+            </td>
+          </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="title">
+            <i class="dropdown icon"></i> 카메라
+            <div id="search-road-count"></div>
+        </div>
+        <div  class="ui list content">
+          <table class="ui celled striped table">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        Turn
+                    </th>
+                    <td  >
+                      <div class="ui checkbox">
+                        <input type="checkbox" name="turn">
+                        <label>enable</label>
+                      </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+        <div class="title active">
+            <i class="dropdown icon"></i> 그리드 정보
+            <div id="search-parcel-count"></div>
+        </div>
+        <div  class="ui list content">
+          <table class="ui celled striped table">
+          <thead>
+                <tr>
+                    <th colspan="2">
+                        GARS grid
+                    </th>
+                    <td  >
+                      <div class="ui checkbox">
+                        <input type="checkbox" name="gars">
+                        <label>enable</label>
+                      </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ui label-text">tile</td>
+                <td colspan="2" >
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="tileset"/>
+                    <label>tile set</label>
+                  </div>
+                </td>
+              </tr>  
+              <tr>
+                <td rowspan="6" class="ui label-text">속성</td>
+                <td >cell</td>
+                <td ><div class="ui input ov-input"><input name="cell" type="number" placeholder="cell" style="width:60px;" value="4" /></div></td>
+              </tr>
+              <tr>
+                <td class="bl">glow width</td>
+                <td ><div class="ui input ov-input"><input name="glow-width" type="number" placeholder="glow width" style="width:60px;" value="1" /></div></td>
+              </tr>
+              <tr>
+                <td class="bl">glow color</td>
+                <td ><div class="ui input ov-input"><input name="glow-color" type="color" value="#ffff00"/></div></td>
+              </tr>
+              <tr>
+                <td class="bl">배경</td>
+                <td ><div class="ui input ov-input"><input name="background-color" type="color" value="#ff00ff"/></div></td>
+              </tr>
+              <tr>
+                <td class="bl">투명도</td>
+                <td ><div class="ui input ov-input"><input name="transparent" type="range" min="0" max="100" value="10" step="1" style="width:60px;" /></div></td>
+              </tr>
+              <tr>
+                <td class="bl">라인</td>
+                <td ><div class="ui input ov-input"><input name="color" type="color" value="#ffffff"/></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+    
 </div>
 
 <script>
+
+$('#map-viewmodel .accordion').accordion({
+        selector: {
+            trigger: '.title .icon'
+        }
+});
+
     $("#map-viewmodel input[name=gars]").bind('change',function(){
         var ui = new OliveInput("#map-viewmodel");
         app.map.gridGARS(ui.boolean("gars"),{
@@ -96,6 +213,19 @@
                             color: ui.color("color") });
                             
     });
-        
-
+    $("#map-viewmodel input[name=turn]").bind('change',function(){
+      var ui = new OliveInput("#map-viewmodel");
+      if( ui.boolean("turn") ){
+        app.map.oliveCamera.turn();
+      }else{
+        app.map.oliveCamera.turnoff();
+      }
+    });
+function widget(name){
+  if( $(this).prop("checked") == "checked" ){
+    app.map.show(name, true);
+  }else{
+    app.map.show(name, false);
+  }
+}
 </script>
