@@ -65,7 +65,7 @@ class Camera{
             let center = this.center();
             if( center ){
                 this.distance = Cesium.Cartesian3.distance( this.camera.positionWC , center );
-                this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(radian, this.camera.pitch, this.distance));
+                this.camera.lookAt(center, new Cesium.HeadingPitchRange(radian, this.camera.pitch, this.distance));
             }
         }else{
             return this.camera.heading;
@@ -73,7 +73,7 @@ class Camera{
     }
     distance(d){
         this.distance = d;
-        this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(Cesium.Math.PI/4, -Cesium.Math.PI/7, this.distance));
+        this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(this.camera.heading, this.camera.pitch, this.distance));
     }
     center(){
         if (this.viewer.scene.mode == 3) {
@@ -102,6 +102,16 @@ class Camera{
                 pitch: this.camera.pitch,
                 roll: this.camera.roll
             }
+        });
+    }
+    flyToRectangle(rect){
+        this.camera.flyTo({
+            destination: rect,
+            /*orientation: {
+                heading: this.camera.heading,
+                pitch: this.camera.pitch,
+                roll: this.camera.roll
+            }*/
         });
     }
     turn(){

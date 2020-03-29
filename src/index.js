@@ -77,7 +77,7 @@ class Application {
             }
         });
         */
-        this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map.viewer3d);
+        this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map);
 
         this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
 

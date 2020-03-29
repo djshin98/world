@@ -1,8 +1,9 @@
 //let {Cesium} = require('cesium/Cesium');
 
 class KMilSymbolCollection{
-    constructor(viewer){
-        this.viewer = viewer;
+    constructor(map){
+        this.map = map;
+        this.viewer = map.viewer3d;
         this.entities = [];
     }
     add(cartesian, options,x){
@@ -62,14 +63,19 @@ class KMilSymbolCollection{
     open( entities ){
         this.close();
         if( entities ){
+            let cartesians = [];
             entities.forEach(d=>{
                 if( d.options.category == "KMILSYMBOL" ){
                     let cartesian = new Cesium.Cartesian3( d.cartesian.x, d.cartesian.y, d.cartesian.z );
                     let symbol = new kms.Symbol(d.options.sic, d.options);
                     let img = symbol.toDataURL();
                     this.add( cartesian, d.options , img );
+                    cartesians.push( cartesian );
                 }
             });
+
+            let rect = Cesium.Rectangle.fromCartesianArray( cartesians );
+            this.map.oliveCamera.flyToRectangle(rect);
         }
     }
     close(){
