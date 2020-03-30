@@ -29,7 +29,7 @@ class JsonByFolder{
     save(path,callback){
         let obj = this.new(path);
         if( obj ){
-            !this.collection || this.db.set(ITEM_CATEGORY,obj.id,this.collection.entities); 
+            !this.collection || this.db.set(ITEM_CATEGORY,obj.id,this.collection.entities()); 
             this.db.set(this.category,LIST_URL,this.folders);
         }
         this.folder(callback);
