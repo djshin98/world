@@ -15,6 +15,30 @@ class KMilSymbolCollection{
             verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
+        if( options.sic[2] == 'A' ){
+            //obj.eyeOffset = new Cesium.Cartesian3(0, 4000, 0);
+            var c = Cesium.Cartographic.fromCartesian(cartesian);
+            var longitude = c.longitude * (180/ Math.PI);
+            var latitude = c.latitude * (180/ Math.PI);
+            obj.heightReference = Cesium.HeightReference.NONE;
+            cartesian = Cesium.Cartesian3.fromDegrees(longitude,latitude, 6000);
+            let entity = this.viewer.entities.add({
+                name : 'billboard_arrow',
+                options:{category:"KMILSYMBOL.ARROW"},
+                polyline : {
+                    positions : Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0,
+                        longitude, latitude, 6000]),
+                    width : 10,
+                    material : new Cesium.PolylineGlowMaterialProperty({
+                        glowPower : 0.2,
+                        taperPower : 0.5,
+                        color : Cesium.Color.CORNFLOWERBLUE
+                    })
+                }
+            });
+        }else if( options.sic[2] == 'P' ){
+
+        }
         var carto = Cesium.Cartographic.fromCartesian(cartesian, Cesium.Ellipsoid.WGS84);
         console.log( Cesium.Cartographic.fromCartesian(cartesian, Cesium.Ellipsoid.WGS84).toString() );
         let entity = this.viewer.entities.add({

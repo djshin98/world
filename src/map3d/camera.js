@@ -54,7 +54,15 @@ class Camera{
         }
     }
     roll(bfixCenter, radian){
-        if( bfixCenter && radian ){
+        if( bfixCenter && typeof(radian) != "undefined" ){
+            this.camera.flyTo({
+                destination: this.camera.position,
+                orientation: {
+                    heading: this.camera.heading,
+                    pitch: this.camera.pitch,
+                    roll: radian
+                }
+            });
             //this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(Cesium.Math.PI/4, -Cesium.Math.PI/7, this.distance));
         }else{
             return this.camera.roll;
