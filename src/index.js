@@ -119,7 +119,7 @@ class Application {
             contents: [
                 { name: "Home", icon: "home", page: "section/home.html" },
                 { name: "즐겨찾기", icon: "map marker alternate", page: "section/favorite.html" },
-                { name: "위치검색", icon: "search", page: "section/search.html" },
+                /*{ name: "위치검색", icon: "search", page: "section/search.html" },*/
                 { name: "3d Map", icon: "map", page: "section/map.html" },
                 { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
