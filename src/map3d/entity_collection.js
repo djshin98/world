@@ -3,10 +3,15 @@ class OliveEntityCollection{
     constructor(map){
         this.map = map;
         this.viewer = map.viewer3d;
-        
+        this.objects = [];   
     }
     entities(){
-        return this.viewer.entities.values;
+        /*
+        return this.viewer.entities.values.filter(d=> { 
+            return d.options.category == "KMILSYMBOL" ? true : false; 
+        });
+        */
+       return this.objects;
     }
     close(){
         this.removeAll();
@@ -15,6 +20,15 @@ class OliveEntityCollection{
         return this.viewer.entities.values.map(d=>{
             return d.id;
         });
+    }
+    addEntity(opt){
+        let entity = this.viewer.entities.add( opt );
+        this.objects.push( {
+            id : entity.id,
+            cartesian : opt.position,
+            options : opt.billboard.options
+        });
+        return entity;
     }
     removeAll(){
         this.viewer.entities.removeAll();
@@ -47,7 +61,7 @@ class OliveEntityCollection{
                 entity.subEntites.forEach(d=>{
                     let sub = _this.get(d);
                     if( sub ){
-                        if( sub.name && sub.name == "billboard_arrow" ){
+                        if( sub.options.category == "KMILSYMBOL.ARROW" ){
                             sub.polyline.positions = Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0,longitude, latitude, height]);
                         }    
                     } 

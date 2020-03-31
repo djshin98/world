@@ -125,7 +125,7 @@ class Application {
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
                 { name: "Draw", icon: "edit", page: "section/draw.html" },
-                { name: "Entities", icon: "edit", page: "section/entities.html" }
+                { name: "Entities", icon: "sitemap", page: "section/entities.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
@@ -159,6 +159,7 @@ class Application {
                 //_this.map.show('toolbar',false);
                 //_this.map.show('fps',false);
                 _this.map.show('distance',false);
+                _this.map.viewer3d.scene.debugShowFramesPerSecond = false;
             }
         });
     }

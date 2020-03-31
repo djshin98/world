@@ -28,8 +28,7 @@ class KMilSymbolCollection extends OliveEntityCollection{
             obj.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude,latitude, 6000);
         }
-        let entity = this.viewer.entities.add({
-            name : options.sic,
+        let entity = this.addEntity({
             position: cartesian,
             billboard : obj,
             /*
@@ -56,8 +55,7 @@ class KMilSymbolCollection extends OliveEntityCollection{
         
         if( options.sic[2] == 'A' ){
             let entity_arrow = this.viewer.entities.add({
-                name : 'billboard_arrow',
-                ref_id : entity.id,
+                //name : 'billboard_arrow',
                 options:{category:"KMILSYMBOL.ARROW"},
                 polyline : {
                     positions : Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0,

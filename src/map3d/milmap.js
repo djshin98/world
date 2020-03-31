@@ -107,6 +107,7 @@ class MilMap {
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
         
+        
         if( this.viewOption.navigation && this.viewOption.navigation == true ){
             navigationInitialization(this.options.map3.id, this.viewer3d);
         }
@@ -119,7 +120,7 @@ class MilMap {
                 }));
             });
         }
-
+        
         let _this = this;
         
         
