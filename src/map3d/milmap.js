@@ -40,7 +40,7 @@ class MilMap {
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
-            requestRenderMode: true, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+            requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
             timeline: false,
@@ -48,7 +48,7 @@ class MilMap {
             navigation:true,
             fullscreenButton: false,
             creditsDisplay: false,
-            distanceDisplayCondition:false
+            distanceDisplayCondition:true
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -256,7 +256,6 @@ class MilMap {
         let ts = new Tileset(this.viewer3d);
         ts.create();
     }
-
 
     add3DModel(x, y, z, model, name) {
         var minDistance = 10; //확대시 보여지는 최소 거리(m) 정의

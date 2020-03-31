@@ -157,7 +157,7 @@ class Application {
                 $("input[data-olive-widget=distance]").prop("checked",_this.map.viewOption.distance);
                 _this.map.show('credits',false);
                 //_this.map.show('toolbar',false);
-                _this.map.show('fps',false);
+                //_this.map.show('fps',false);
                 _this.map.show('distance',false);
             }
         });
@@ -209,7 +209,6 @@ global.Application = Application;
 
 //var { load, pos } = require('./sample.js');
 //global.pos = pos;
-
 
 //const commandOpts = {};
 //commandOpts.enableDistanceLegend = false;
