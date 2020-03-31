@@ -28,6 +28,8 @@ class MilMap {
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
 
+        
+        
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
             shadows: true,
@@ -38,11 +40,15 @@ class MilMap {
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
-            requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+            requestRenderMode: true, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
-            timeline: true,
-            animation: true
+            timeline: false,
+            animation: false,
+            navigation:true,
+            fullscreenButton: false,
+            creditsDisplay: false,
+            distanceDisplayCondition:false
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -81,6 +87,7 @@ class MilMap {
                 }
             }*/
         };
+
         if (this.options.map3.mapServiceMode == "internet") {
             this.viewOption.terrainProvider = Cesium.createWorldTerrain();
         } else if (this.options.map3.mapServiceMode == "offline") {
@@ -99,8 +106,11 @@ class MilMap {
             }
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
-        let v = navigationInitialization(this.options.map3.id, this.viewer3d);
-
+        
+        if( this.viewOption.navigation && this.viewOption.navigation == true ){
+            navigationInitialization(this.options.map3.id, this.viewer3d);
+        }
+        
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
             this.options.map3.offlineBaseLayers.forEach(d => {

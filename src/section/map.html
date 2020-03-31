@@ -37,7 +37,7 @@
                   <td class="bl">Animation</td>
                   <td colspan="2" class="" >
                     <div class="ui checkbox">
-                      <input type="checkbox" onclick="widget('animation');">
+                      <input type="checkbox" data-olive-widget='animation' onclick="widget(this,'animation');">
                       <label></label>
                     </div>
                   </td>
@@ -46,7 +46,7 @@
                 <td class="bl">Timeline</td>
                 <td colspan="2" class="" >
                   <div class="ui checkbox">
-                    <input type="checkbox" onclick="widget('timeline');">
+                    <input type="checkbox" data-olive-widget='timeline' onclick="widget(this,'timeline');">
                     <label></label>
                   </div>
                 </td>
@@ -55,7 +55,7 @@
               <td class="bl">Fullscreen</td>
               <td colspan="2" class="" >
                 <div class="ui checkbox">
-                  <input type="checkbox" onclick="widget('fullscreen');">
+                  <input type="checkbox" data-olive-widget='fullscreen' onclick="widget(this,'fullscreen');">
                   <label></label>
                 </div>
               </td>
@@ -64,7 +64,7 @@
             <td class="bl">Navigation</td>
             <td colspan="2" class="" >
               <div class="ui checkbox">
-                <input type="checkbox" onclick="widget('navigation');">
+                <input type="checkbox" data-olive-widget='navigation' onclick="widget(this,'navigation');">
                 <label></label>
               </div>
             </td>
@@ -73,7 +73,7 @@
             <td class="bl">FPS</td>
             <td colspan="2" class="" >
               <div class="ui checkbox">
-                <input type="checkbox" onclick="widget('fps');">
+                <input type="checkbox" data-olive-widget='fps' onclick="widget(this,'fps');">
                 <label></label>
               </div>
             </td>
@@ -82,7 +82,7 @@
             <td class="bl">Toolbar</td>
             <td colspan="2" class="" >
               <div class="ui checkbox">
-                <input type="checkbox" onclick="widget('toolbar');">
+                <input type="checkbox" data-olive-widget='toolbar' onclick="widget(this,'toolbar');">
                 <label></label>
               </div>
             </td>
@@ -91,7 +91,7 @@
             <td class="bl">Credits</td>
             <td colspan="2" class="" >
               <div class="ui checkbox">
-                <input type="checkbox" onclick="widget('credits');">
+                <input type="checkbox" data-olive-widget='credits' onclick="widget(this,'credits');">
                 <label></label>
               </div>
             </td>
@@ -100,7 +100,7 @@
             <td class="bl">Distance</td>
             <td colspan="2" class="" >
               <div class="ui checkbox">
-                <input type="checkbox" onclick="widget('distance');">
+                <input type="checkbox" onclick="widget(this,'distance');">
                 <label></label>
               </div>
             </td>
@@ -221,8 +221,8 @@ $('#map-viewmodel .accordion').accordion({
         app.map.oliveCamera.turnoff();
       }
     });
-function widget(name){
-  if( $(this).prop("checked") == "checked" ){
+function widget(tag,name){
+  if( $(tag).prop("checked") == true ){
     app.map.show(name, true);
   }else{
     app.map.show(name, false);
