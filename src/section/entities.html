@@ -1,16 +1,18 @@
 <div class="section-content">
     <div id="entities-view" class="filetree" style="height:100%;">
-		
+
     </div>
 </div>
 
 <script>
-    app.onReady(function(){
+    app.onReady(function() {
         new OliveTree("#entities-view", undefined, {
-            onAttribute : function(d){
-                return { id:d.id };
+            onAttribute: function(d) {
+                return {
+                    id: d.id
+                };
             },
-            onText : function(d){
+            onText: function(d) {
                 return d.name;
             }
         });

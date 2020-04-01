@@ -28,8 +28,8 @@ class MilMap {
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
 
-        
-        
+
+
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
             shadows: true,
@@ -45,47 +45,47 @@ class MilMap {
             navigationHelpButton: false,
             timeline: false,
             animation: false,
-            navigation:true,
+            navigation: true,
             fullscreenButton: false,
             creditsDisplay: false,
-            distanceDisplayCondition:true
-            /*
-             imageryProvider: Cesium.createWorldImagery({
-                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-             }),
-              terrainProvider: Cesium.createWorldTerrain(),
-             shadows: false,
-             scene3DOnly: true, //3차원 화면으로 구성 // ,
-             //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-             animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-             baseLayerPicker: true,
-             geocoder: true,
-             vrButton: false,
-             homeButton: false,
-             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-             sceneModePicker: false,
-             selectionIndicator: false,
-             creditsDisplay: true,
-             //creditContainer: false,
-             fullscreenButton: false,
-             timeline: true,
-             navigationHelpButton: false,
-             terrainExaggeration: 1.0, //고도 기복 비율 조정
-             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-             // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-             maximumRenderTimeChange: Infinity,
-             navigationInstructionsInitiallyVisible: false, */
-            /*
-            skyBox: new Cesium.SkyBox({}),
-            skyAtmosphere: new Cesium.SkyAtmosphere(),
-            clockViewModel: new Cesium.ClockViewModel(clock),
-            contextOptions: {
-                id: "cesiumCanvas", //must
-                webgl: {
-                    preserveDrawingBuffer: true
-                }
-            }*/
+            distanceDisplayCondition: true
+                /*
+                 imageryProvider: Cesium.createWorldImagery({
+                     style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+                 }),
+                  terrainProvider: Cesium.createWorldTerrain(),
+                 shadows: false,
+                 scene3DOnly: true, //3차원 화면으로 구성 // ,
+                 //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+                 animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+                 baseLayerPicker: true,
+                 geocoder: true,
+                 vrButton: false,
+                 homeButton: false,
+                 infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+                 sceneModePicker: false,
+                 selectionIndicator: false,
+                 creditsDisplay: true,
+                 //creditContainer: false,
+                 fullscreenButton: false,
+                 timeline: true,
+                 navigationHelpButton: false,
+                 terrainExaggeration: 1.0, //고도 기복 비율 조정
+                 shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+                 requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+                 // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+                 maximumRenderTimeChange: Infinity,
+                 navigationInstructionsInitiallyVisible: false, */
+                /*
+                skyBox: new Cesium.SkyBox({}),
+                skyAtmosphere: new Cesium.SkyAtmosphere(),
+                clockViewModel: new Cesium.ClockViewModel(clock),
+                contextOptions: {
+                    id: "cesiumCanvas", //must
+                    webgl: {
+                        preserveDrawingBuffer: true
+                    }
+                }*/
         };
 
         if (this.options.map3.mapServiceMode == "internet") {
@@ -106,12 +106,12 @@ class MilMap {
             }
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
-        
-        
-        if( this.viewOption.navigation && this.viewOption.navigation == true ){
+
+
+        if (this.viewOption.navigation && this.viewOption.navigation == true) {
             navigationInitialization(this.options.map3.id, this.viewer3d);
         }
-        
+
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
             this.options.map3.offlineBaseLayers.forEach(d => {
@@ -120,10 +120,10 @@ class MilMap {
                 }));
             });
         }
-        
+
         let _this = this;
-        
-        
+
+
         /*
         var entity = this.viewer3d.entities.add({
             label:{
@@ -157,31 +157,31 @@ class MilMap {
             }
         }, false);
     }
-    _showElement(ele,bshow){ if( ele ){ ele.style.display = dom.trueOrundef(bshow)?"":"none"; } }
-    show(widget,bshow){
-        let  _bshow =  dom.trueOrundef(bshow) ? true : false;
-        if( !widget || widget.length == 0 ){
+    _showElement(ele, bshow) { if (ele) { ele.style.display = dom.trueOrundef(bshow) ? "" : "none"; } }
+    show(widget, bshow) {
+        let _bshow = dom.trueOrundef(bshow) ? true : false;
+        if (!widget || widget.length == 0) {
             this._showElement(this.viewer3d.container, _bshow);
-        }else if( widget == "animation"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-animationContainer") , _bshow);
-        }else if( widget == "timeline"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-timelineContainer") , _bshow);
-        }else if( widget == "fullscreen"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-fullscreenContainer") , _bshow);
-        }else if( widget == "credits"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-widget-credits") , _bshow);
-        }else if( widget == "navigation"){
-            this._showElement( dom.e("#" + this.options.map3.id + " #navigationDiv") , _bshow);
-        }else if( widget == "fps"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-performanceDisplay-defaultContainer") , _bshow);
-        }else if( widget == "distance"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .distance-legend") , _bshow);
-        }else if( widget == "toolbar"){
-            this._showElement( dom.e("#" + this.options.map3.id + " .cesium-viewer-toolbar") , _bshow);
+        } else if (widget == "animation") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-animationContainer"), _bshow);
+        } else if (widget == "timeline") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-timelineContainer"), _bshow);
+        } else if (widget == "fullscreen") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-fullscreenContainer"), _bshow);
+        } else if (widget == "credits") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-widget-credits"), _bshow);
+        } else if (widget == "navigation") {
+            this._showElement(dom.e("#" + this.options.map3.id + " #navigationDiv"), _bshow);
+        } else if (widget == "fps") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-performanceDisplay-defaultContainer"), _bshow);
+        } else if (widget == "distance") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .distance-legend"), _bshow);
+        } else if (widget == "toolbar") {
+            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-toolbar"), _bshow);
         }
     }
-    hide(widget){ this.show(widget,false); }
-    
+    hide(widget) { this.show(widget, false); }
+
     dataSource(options, bshow) {
         let kmz = this.viewer3d.dataSources.getByName(options.name);
         if (bshow) {
@@ -216,10 +216,10 @@ class MilMap {
         }
         updateCallback(this.viewer3d, viewModel);
     }
-    widget(name,bshow){
-        
+    widget(name, bshow) {
+
     }
-    wireframe(bshow){
+    wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
     gridGARS(bshow, options) {
@@ -383,9 +383,9 @@ class MilMap {
         processPart(partsToLoad[0]);
     }
     remove3DModel() {
-            this.viewer3d.dataSources.removeAll();
-        }
-        //    라그랑지언의 곡선 좌표 구하기 ... 포인트 지점의 distance와 높이를 2차원배열 형태로 넘겨준다...val은 산출하고자하는 distance의 값..  [[1,2],[3,4],[5,6]]
+        this.viewer3d.dataSources.removeAll();
+    }
+
 
     addHeadingPitchRoll2() {
 

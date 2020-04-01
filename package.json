@@ -10,7 +10,12 @@
         "cors": "^2.8.5",
         "ejs": "^3.0.2",
         "express-csp-header": "^2.3.2",
+<<<<<<< HEAD
         "express-session": "^1.17.0",
+=======
+        "mybatis-mapper": "^0.6.5",
+        "mysql": "^2.18.1",
+>>>>>>> 9f9073fad2fc7c265e398314e950fee339beed40
         "fs": "0.0.1-security",
         "mqtt": "^3.0.0",
         "mqtt-server": "^0.1.0",

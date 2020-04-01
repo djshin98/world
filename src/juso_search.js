@@ -1,7 +1,7 @@
 //name:"도로명주소 검색 API",
 var { IxDatabase } = require("./repository/db");
 var { dom, get } = require("./comm");
-var axios = require('axios');
+
 var service = require('./service/posts.js');
 
 class JusoSearch {
