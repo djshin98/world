@@ -5,9 +5,11 @@ var { MilMap } = require("./map3d/milmap");
 var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
 var { JsonByFolder } = require("./repository/json-by-folder");
 var { DrawInCesium } = require("./draw/base");
+var { mariaConfig } = require("./repository/dataset");
+var { MariaDB } = require("./repository/maria_db");
 require("./ui/olive-input");
 require("./ui/olive-tree");
-
+global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
 
@@ -58,6 +60,8 @@ class Application {
         };
 
         this.map = new MilMap(options);
+        this.mariaDB = new MariaDB(mariaConfig);
+        global.mariaDB = this.mariaDB;
         /*
         {
             map3: {
@@ -79,7 +83,7 @@ class Application {
         */
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map);
 
-        this.favorite = new JsonByFolder("favorite",this.collections["KMILSYMBOL"]);
+        this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
@@ -88,26 +92,26 @@ class Application {
 
         global.map = this.map;
     }
-    workStatus(name,bcomplete){
-        if( !this._workStatus ){ this._workStatus = {}; }
+    workStatus(name, bcomplete) {
+        if (!this._workStatus) { this._workStatus = {}; }
         this._workStatus[name] = bcomplete;
     }
-    isComplete(){
-        if( !this._workStatus ){
+    isComplete() {
+        if (!this._workStatus) {
             return true;
-        }else{
+        } else {
             let _this = this;
-            return Object.keys(this._workStatus).every(key=>{
+            return Object.keys(this._workStatus).every(key => {
                 return _this._workStatus[key];
             })
         }
     }
-    onReady(readyFunc){
-        if( readyFunc ){
-            this.readyFunctions.push( readyFunc );
+    onReady(readyFunc) {
+        if (readyFunc) {
+            this.readyFunctions.push(readyFunc);
         }
     }
-    draw(mode){
+    draw(mode) {
         this.drawInCesium.draw(mode);
     }
     sectionShowStatus(bshow) {
@@ -133,38 +137,38 @@ class Application {
                     $(parentNode).append(d);
                 });
             },
-            oncomplete:function(){
-                _this.map.oliveCamera.widget(function(obj){
+            oncomplete: function() {
+                _this.map.oliveCamera.widget(function(obj) {
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
                     document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(10));
                     document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(10));
                 });
-                _this.map.oliveCursor.widget(function(obj){
+                _this.map.oliveCursor.widget(function(obj) {
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
-                });     
+                });
 
                 _this.workStatus("section", true);
 
-                $("input[data-olive-widget=animation]").prop("checked",_this.map.viewOption.animation);
-                $("input[data-olive-widget=timeline]").prop("checked",_this.map.viewOption.timeline);
-                $("input[data-olive-widget=fullscreen]").prop("checked",_this.map.viewOption.fullscreenButton);
-                $("input[data-olive-widget=fps]").prop("checked",_this.map.viewOption.requestRenderMode);
-                $("input[data-olive-widget=toolbar]").prop("checked",_this.map.viewOption.baseLayerPicker);
-                $("input[data-olive-widget=credits]").prop("checked",_this.map.viewOption.creditsDisplay);
-                $("input[data-olive-widget=navigation]").prop("checked",_this.map.viewOption.navigation);
-                $("input[data-olive-widget=distance]").prop("checked",_this.map.viewOption.distance);
-                _this.map.show('credits',false);
+                $("input[data-olive-widget=animation]").prop("checked", _this.map.viewOption.animation);
+                $("input[data-olive-widget=timeline]").prop("checked", _this.map.viewOption.timeline);
+                $("input[data-olive-widget=fullscreen]").prop("checked", _this.map.viewOption.fullscreenButton);
+                $("input[data-olive-widget=fps]").prop("checked", _this.map.viewOption.requestRenderMode);
+                $("input[data-olive-widget=toolbar]").prop("checked", _this.map.viewOption.baseLayerPicker);
+                $("input[data-olive-widget=credits]").prop("checked", _this.map.viewOption.creditsDisplay);
+                $("input[data-olive-widget=navigation]").prop("checked", _this.map.viewOption.navigation);
+                $("input[data-olive-widget=distance]").prop("checked", _this.map.viewOption.distance);
+                _this.map.show('credits', false);
                 //_this.map.show('toolbar',false);
                 //_this.map.show('fps',false);
-                _this.map.show('distance',false);
+                _this.map.show('distance', false);
                 _this.map.viewer3d.scene.debugShowFramesPerSecond = false;
             }
         });
     }
     onResize() {
-        let application = ( typeof(app) == "undefined" )?this: app;
+        let application = (typeof(app) == "undefined") ? this : app;
         let windowLayout = application.windowLayout;
         var width = windowLayout.section.getWidth();
         var headerHeight = windowLayout.header.height;
@@ -201,7 +205,7 @@ class Application {
             application.section.resize(width, bodyHeight);
         }
     }
-    getCollection(name){
+    getCollection(name) {
         return this.collections[name];
     }
 };
