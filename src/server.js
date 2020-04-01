@@ -17,9 +17,7 @@ server.set('view engine', 'ejs');
 server.engine('html', require('ejs').renderFile);
 
 const port = process.env.PORT || 8082;
-<<<<<<< HEAD
-server.listen(port, () => console.log(`Listening on port ${port}`));
-=======
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -35,7 +33,7 @@ var connection = mysql.createConnection({
     password: '#Djshin98Root2019',
     database: 'world'
 });
->>>>>>> 9f9073fad2fc7c265e398314e950fee339beed40
+
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
@@ -52,8 +50,6 @@ server.get('/map/juso/', (req, res) => {
         });
     });
 });
-<<<<<<< HEAD
-=======
 
 app.get('/default/', (req, res) => {
     var queryStm = req.query.queryStm.split(';');
@@ -100,7 +96,4 @@ app.get('/Entities/', (req, res) => {
 
 mapper: mybatisMapper.getStatement
 
-
-
 app.listen(port, () => console.log(`Listening on port ${port}`));
->>>>>>> 9f9073fad2fc7c265e398314e950fee339beed40
