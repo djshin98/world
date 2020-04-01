@@ -13,7 +13,7 @@
 
     var yargs = require('yargs').options({
         'port': {
-            'default': 8081,
+            'default': 8080,
             'description': 'Port to listen on.'
         },
         'public': {
@@ -117,7 +117,9 @@
 
     app.get('/proxy/*', function(req, res, next) {
         // look for request like http://localhost:8080/proxy/http://example.com/file?query=1
+        console.log(req);
         var remoteUrl = getRemoteUrlFromParam(req);
+
         if (!remoteUrl) {
             // look for request like http://localhost:8080/proxy/?http%3A%2F%2Fexample.com%2Ffile%3Fquery%3D1
             remoteUrl = Object.keys(req.query)[0];

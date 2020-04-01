@@ -75,6 +75,18 @@ var paths = {
     libs: {
         src: 'src/libs/**/*.*',
         dest: 'dist/libs/'
+    },
+    worlds: {
+        src: 'world.js',
+        dest: 'dist/'
+    },
+    serverjs: {
+        src: 'src/server.js',
+        dest: 'dist/'
+    },
+    mapperxml: {
+        src: 'src/**/*.xml',
+        dest: 'dist/'
     }
 };
 
@@ -102,6 +114,20 @@ function md_src() {
         .pipe(dest(paths.md_src.src));
 }
 
+function world() {
+    return src(paths.worlds.src)
+        .pipe(dest(paths.worlds.dest));
+}
+
+function mapperxmls() {
+    return src(paths.mapperxml.src)
+        .pipe(dest(paths.mapperxml.dest));
+}
+
+function serverJs() {
+    return src(paths.serverjs.src)
+        .pipe(dest(paths.serverjs.dest));
+}
 /*
 function js_b() {
     return browserify({
@@ -202,8 +228,11 @@ function watchFiles() {
     watch(paths.png.src, png);
     watch(paths.gif.src, gif);
     watch(paths.libs.src, libs);
+    watch(paths.worlds.src, world);
+    watch(paths.serverjs.src, serverJs);
+    watch(paths.mapperxml.src, mapperxmls);
 }
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(md, md_src, libs, jpg, png, gif, scss, css, models, html));
+exports.default = parallel(watchFiles, series(md, md_src, libs, jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
