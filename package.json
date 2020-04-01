@@ -22,6 +22,7 @@
     "devDependencies": {
         "body-parser": "^1.19.0",
         "cesium": "^1.67.0",
+        "cesium-navigation": "^1.0.0",
         "copy-webpack-plugin": "^5.1.1",
         "css-loader": "^3.4.2",
         "express": "^4.17.1",

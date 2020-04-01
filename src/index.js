@@ -141,8 +141,8 @@ class Application {
                 _this.map.oliveCamera.widget(function(obj) {
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
-                    document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(10));
-                    document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(10));
+                    document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
+                    document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
                 });
                 _this.map.oliveCursor.widget(function(obj) {
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
@@ -151,19 +151,21 @@ class Application {
 
                 _this.workStatus("section", true);
 
+                
                 $("input[data-olive-widget=animation]").prop("checked", _this.map.viewOption.animation);
                 $("input[data-olive-widget=timeline]").prop("checked", _this.map.viewOption.timeline);
                 $("input[data-olive-widget=fullscreen]").prop("checked", _this.map.viewOption.fullscreenButton);
-                $("input[data-olive-widget=fps]").prop("checked", _this.map.viewOption.requestRenderMode);
+                $("input[data-olive-widget=fps]").prop("checked", _this.map.viewOption.fps);
                 $("input[data-olive-widget=toolbar]").prop("checked", _this.map.viewOption.baseLayerPicker);
                 $("input[data-olive-widget=credits]").prop("checked", _this.map.viewOption.creditsDisplay);
                 $("input[data-olive-widget=navigation]").prop("checked", _this.map.viewOption.navigation);
                 $("input[data-olive-widget=distance]").prop("checked", _this.map.viewOption.distance);
                 _this.map.show('credits', false);
-                //_this.map.show('toolbar',false);
-                //_this.map.show('fps',false);
+                _this.map.show('toolbar',false);
+                _this.map.show('fps',false);
                 _this.map.show('distance', false);
-                _this.map.viewer3d.scene.debugShowFramesPerSecond = false;
+                //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
+                
             }
         });
     }
