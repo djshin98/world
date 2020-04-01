@@ -1,14 +1,25 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const app = express();
-const cors = require('cors');
-const port = process.env.PORT || 8082;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+const server = express();
+var session = require('express-session');
+var fs = require("fs");
 
-app.get('/map/juso/', (req, res) => {
+const cors = require('cors');
+
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(cors());
+
+// 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다. 
+server.set('', __dirname + '/dist');
+server.set('view engine', 'ejs');
+server.engine('html', require('ejs').renderFile);
+
+const port = process.env.PORT || 8082;
+server.listen(port, () => console.log(`Listening on port ${port}`));
+
+server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
     console.log(url);
     var request = http.get(url, function (response) {
@@ -23,5 +34,3 @@ app.get('/map/juso/', (req, res) => {
         });
     });
 });
-
-app.listen(port, () => console.log(`Listening on port ${port}`));
