@@ -9,7 +9,10 @@
         "cors": "^2.8.5",
         "express-csp-header": "^2.3.2",
         "mybatis-mapper": "^0.6.5",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "fs": "0.0.1-security",
+        "mqtt": "^3.0.0",
+        "mqtt-server": "^0.1.0"
     },
     "devDependencies": {
         "body-parser": "^1.19.0",
