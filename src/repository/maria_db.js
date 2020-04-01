@@ -1,12 +1,3 @@
-/* console.log("start");
-
-function test() {
-    console.log("test");
-}
-
-test();
- */
-
 class MariaDB {
     constructor(options) {
         this.serverUrl = "http://localhost:8082"; // 나중에 다른 DB도 연동시 공통으로 빼야함(global setting 이라던지..).

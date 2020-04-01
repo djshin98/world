@@ -6,6 +6,8 @@ var { OliveCursor } = require('./cursor');
 var { dom } = require("../comm");
 
 global.Cesium = require('cesium/Cesium');
+//require('./viewerCesiumNavigationMixin');
+
 
 require('./grid/wgs84');
 
@@ -44,11 +46,12 @@ class MilMap {
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
             timeline: false,
+            fps:false,
             animation: false,
             navigation: true,
             fullscreenButton: false,
             creditsDisplay: false,
-            distanceDisplayCondition: true
+            distanceDisplayCondition: false
                 /*
                  imageryProvider: Cesium.createWorldImagery({
                      style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -108,9 +111,7 @@ class MilMap {
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
 
 
-        if (this.viewOption.navigation && this.viewOption.navigation == true) {
-            navigationInitialization(this.options.map3.id, this.viewer3d);
-        }
+        
 
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
@@ -156,6 +157,12 @@ class MilMap {
                 //alert('Globe was not picked');
             }
         }, false);
+
+        if (this.viewOption.navigation && this.viewOption.navigation == true) {
+            this.viewer3d.extend(Cesium.viewerCesiumNavigationMixin, {});
+            //Cesium.viewerCesiumNavigationMixin(this.viewer3d,{});
+            //navigationInitialization(this.options.map3.id, this.viewer3d);
+        }
     }
     _showElement(ele, bshow) { if (ele) { ele.style.display = dom.trueOrundef(bshow) ? "" : "none"; } }
     show(widget, bshow) {
