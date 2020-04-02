@@ -32,6 +32,12 @@ class KMilSymbolCollection extends OliveEntityCollection{
             obj.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude,latitude, 6000);
         }
+        var sidc_desc = "";
+        if( options.description ){
+            sidc_desc = options.description.reduce((prev,curr)=>{
+                return prev + "<p>"+curr.name+" : "+ curr.value+" </p>";
+            },"");
+        }
         let entity = this.addEntity({
             position: cartesian,
             billboard : obj,
@@ -52,7 +58,8 @@ class KMilSymbolCollection extends OliveEntityCollection{
                 <p>부호코드 : '+obj.options.sic+' </p>\
                 <p>위도 : '+(carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5)+' </p>\
                 <p>경도 : '+(carto.longitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5)+' </p>\
-                <p>고도 : '+(carto.height).toFixed(2)+' m </p>\
+                <p>고도 : '+(carto.height).toFixed(2)+' m</p>\
+                '+sidc_desc+'\
                 <button>테스트</button>\
                 <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
         });
