@@ -53,7 +53,8 @@ class KMilSymbolCollection extends OliveEntityCollection{
                 <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
             },true)
             */
-           description : '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
+           description : new Cesium.CallbackProperty(function(time, result) {
+                return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
                 <p>대한민국 군대 부호.</p>\
                 <p>부호코드 : '+obj.options.sic+' </p>\
                 <p>위도 : '+(carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5)+' </p>\
@@ -61,7 +62,8 @@ class KMilSymbolCollection extends OliveEntityCollection{
                 <p>고도 : '+(carto.height).toFixed(2)+' m</p>\
                 '+sidc_desc+'\
                 <button>테스트</button>\
-                <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
+                <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
+            },true)
         });
         
         if( options.sic[2] == 'A' ){
