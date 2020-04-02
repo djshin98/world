@@ -13,7 +13,7 @@ module.exports = {
     context: __dirname,
     entry: {
         CesiumApp: './src/index.js',
-        KMilSymbolEditor: './src/milsymbol/viewmodel-kmilsymbol.js'
+        KMilSymbolEditor: './src/js/milsymbol/viewmodel-kmilsymbol.js'
     },
     output: {
         filename: '[name].js',

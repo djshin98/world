@@ -1,9 +1,9 @@
 var { IxDatabase } = require('../repository/db');
-var { Animation } = require('../animation');
+var { Animation } = require('../../animation');
 var { Tileset } = require('./tileset');
 var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
-var { dom } = require("../comm");
+var { dom } = require("../../comm");
 
 global.Cesium = require('cesium/Cesium');
 //require('./viewerCesiumNavigationMixin');
