@@ -37,8 +37,25 @@ class Cursor{
                 } else {
                     //entity.label.show = false;
                 }
+
+                _this.getSelectedObjFromPoint(movement.endPosition);
             }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         }
+    }
+
+    getSelectedObjFromPoint(position){
+        var valueToReturn= null;
+        var pickedObject = this.viewer.scene.pick(position);
+        var pickedObjects = this.viewer.scene.drillPick(position);
+        var picked = pickedObjects[0];
+        if (!Cesium.defined(pickedObject)) {
+            picked = null;
+            valueToReturn = null;
+        }
+        else {
+            valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
+        }
+        return valueToReturn;
     }
 }
 
