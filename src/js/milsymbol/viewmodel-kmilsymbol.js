@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-var {dom} = require("../../comm");
+var {dom} = require("../util/comm");
 var basic = require("./mil_basic");
 var emergency = require("./mil_emergency");
 var operAct = require("./mil_operAct");
