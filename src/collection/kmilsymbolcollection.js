@@ -31,6 +31,9 @@ class KMilSymbolCollection extends OliveEntityCollection{
         if( options.sic[2] == 'A' ){
             obj.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude,latitude, 6000);
+        }else  if( options.sic[2] == 'P' ){
+            obj.heightReference = Cesium.HeightReference.NONE;
+            cartesian = Cesium.Cartesian3.fromDegrees(longitude,latitude, 250000);
         }
         var sidc_desc = "";
         if( options.description ){
@@ -78,6 +81,23 @@ class KMilSymbolCollection extends OliveEntityCollection{
                         glowPower : 0.2,
                         taperPower : 0.5,
                         color : Cesium.Color.CORNFLOWERBLUE
+                    })
+                }
+            });
+            entity.subEntites = [];
+            entity.subEntites.push( entity_arrow.id );
+        }else if( options.sic[2] == 'P' ){
+            let entity_arrow = this.viewer.entities.add({
+                //name : 'billboard_arrow',
+                options:{category:"KMILSYMBOL.ARROW"},
+                polyline : {
+                    positions : Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0,
+                        longitude, latitude, 250000]),
+                    width : 10,
+                    material : new Cesium.PolylineGlowMaterialProperty({
+                        glowPower : 0.2,
+                        taperPower : 0.5,
+                        color : Cesium.Color.BLUE 
                     })
                 }
             });
