@@ -330,7 +330,7 @@ class SIDC {
         }
     }
     _getDesc( code , arr ){
-        let obj = arr.find(d=>{ code == d.code ? true : false; });
+        let obj = arr.find(d=>{ return (code == d.code) ? true : false; });
         if( obj ){
             return obj.desc;
         }
@@ -340,7 +340,7 @@ class SIDC {
         let obj;
         Object.keys(arr).some(d=>{
             if( d == code[0] ){
-                obj = arr[d].find(d=>{ (code == d.code )? true : false; });
+                obj = arr[d].find(d=>{ return (code == d.code )? true : false; });
                 if( obj ){
                     return true;
                 }
@@ -359,7 +359,7 @@ class SIDC {
         tree.some(d=>{
             if( d.modifier == code ){ obj = d; return true; }
             else if( d.children ){
-                obj = _this._getDescOnTree(code, d.children);
+                obj = _this._getNodeOnTree(code, d.children);
                 if( obj ){
                     return true;
                 }
@@ -375,26 +375,24 @@ class SIDC {
         }
         return "";
     }
-    _includeCode( a , b){
-
-    }
     toDescription(){
-        let desc = {};
+        let desc = [];
+        let item = {};
         let _this = this;
         let activeType = codeTypes.find(d => { return d.code == _this.codeType ? true : false; });
         if( activeType.code != "W" ){
-            desc.affiliation = this._getDesc( this.affiliation , activeType.standard.affiliation );//
-            desc.battlefield = this._getDesc( this.battlefield , activeType.standard.battlefield );//
-            desc.status = this._getDesc( this.status , activeType.standard.status );//
-            desc.modifier = this._getDescOnTree( this.modifier , activeType.standard.identifier );
-            desc.echelon = this._getDesc2( this.echelon , activeType.standard.unit );
-            desc.nation = ""//this._getDesc( this.nation , activeType.standard.nation );
-            desc.mission = this._getDesc( this.mission , activeType.standard.mission );//
+            desc.push( { name:"파아구분", key:"affiliation" , value: this._getDesc( this.affiliation , activeType.standard.affiliation ) });
+            desc.push( { name:"전장", key:"battlefield" , value: this._getDesc( this.battlefield , activeType.standard.battlefield ) });
+            desc.push( { name:"상태", key:"status" , value: this._getDesc( this.status , activeType.standard.status ) });
+            desc.push( { name:"기능", key:"modifier" , value: this._getDescOnTree( this.modifier , activeType.standard.identifier ) });
+            desc.push( { name:"부대", key:"echelon" , value: this._getDesc2( this.echelon , activeType.standard.unit ) });
+            desc.push( { name:"국가", key:"nation" , value: ""});//this._getDesc( this.nation , activeType.standard.nation );
+            desc.push( { name:"임무", key:"mission" , value: this._getDesc( this.mission , activeType.standard.mission ) });
         }else{
-            desc.pos = this._getDesc( this.pos , activeType.standard.pos );
-            desc.fix = this._getDesc( this.fix , activeType.standard.fix );
-            desc.modifier = this._getDesc( this.modifier , activeType.standard.graphic );
-            desc.graphic = this._getDescOnTree( this.graphic , activeType.standard.identifier );
+            desc.push( { name:"위치", key:"pos" , value: this._getDesc( this.pos , activeType.standard.pos ) });
+            desc.push( { name:"상태", key:"fix" , value: this._getDesc( this.fix , activeType.standard.fix ) });
+            desc.push( { name:"형식", key:"modifier" , value: this._getDesc( this.modifier , activeType.standard.graphic ) });
+            desc.push( { name:"기능", key:"graphic" , value: this._getDescOnTree( this.graphic , activeType.standard.identifier ) });
         }
         return desc;
     }

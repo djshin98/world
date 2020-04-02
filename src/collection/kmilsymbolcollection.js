@@ -33,6 +33,15 @@ class KMilSymbolCollection extends OliveEntityCollection {
         if (options.sic[2] == 'A') {
             obj.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude, latitude, 6000);
+        } else if (options.sic[2] == 'P') {
+            obj.heightReference = Cesium.HeightReference.NONE;
+            cartesian = Cesium.Cartesian3.fromDegrees(longitude, latitude, 250000);
+        }
+        var sidc_desc = "";
+        if (options.description) {
+            sidc_desc = options.description.reduce((prev, curr) => {
+                return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
+            }, "");
         }
         let entity = this.addEntity({
             position: cartesian,
@@ -49,14 +58,17 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
             },true)
             */
-            description: '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + obj.image + '"/>\
+            description: new Cesium.CallbackProperty(function(time, result) {
+                return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + obj.image + '"/>\
                 <p>대한민국 군대 부호.</p>\
                 <p>부호코드 : ' + obj.options.sic + ' </p>\
                 <p>위도 : ' + (carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
                 <p>경도 : ' + (carto.longitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
-                <p>고도 : ' + (carto.height).toFixed(2) + ' m </p>\
+                <p>고도 : ' + (carto.height).toFixed(2) + ' m</p>\
+                ' + sidc_desc + '\
                 <button>테스트</button>\
-                <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>'
+                <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
+            }, true)
         });
 
         if (options.sic[2] == 'A') {
@@ -72,6 +84,24 @@ class KMilSymbolCollection extends OliveEntityCollection {
                         glowPower: 0.2,
                         taperPower: 0.5,
                         color: Cesium.Color.CORNFLOWERBLUE
+                    })
+                }
+            });
+            entity.subEntites = [];
+            entity.subEntites.push(entity_arrow.id);
+        } else if (options.sic[2] == 'P') {
+            let entity_arrow = this.viewer.entities.add({
+                //name : 'billboard_arrow',
+                options: { category: "KMILSYMBOL.ARROW" },
+                polyline: {
+                    positions: Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0,
+                        longitude, latitude, 250000
+                    ]),
+                    width: 10,
+                    material: new Cesium.PolylineGlowMaterialProperty({
+                        glowPower: 0.2,
+                        taperPower: 0.5,
+                        color: Cesium.Color.BLUE
                     })
                 }
             });
