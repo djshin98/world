@@ -340,7 +340,7 @@ class SIDC {
         let obj;
         Object.keys(arr).some(d=>{
             if( d == code[0] ){
-                obj = arr.find(d=>{ (code == d.code )? true : false; });
+                obj = arr[d].find(d=>{ (code == d.code )? true : false; });
                 if( obj ){
                     return true;
                 }
@@ -353,6 +353,28 @@ class SIDC {
         }
         return "?";
     }
+    _getNodeOnTree( code , tree ){
+        let obj;
+        let _this = this;
+        tree.some(d=>{
+            if( d.modifier == code ){ obj = d; return true; }
+            else if( d.children ){
+                obj = _this._getDescOnTree(code, d.children);
+                if( obj ){
+                    return true;
+                }
+            }
+            return false;
+        });
+        return obj;
+    }
+    _getDescOnTree( code , tree ){
+        let obj = this._getNodeOnTree(code,tree);
+        if( obj ){
+            return obj.desc_kor;
+        }
+        return "";
+    }
     _includeCode( a , b){
 
     }
@@ -362,18 +384,17 @@ class SIDC {
         let activeType = codeTypes.find(d => { return d.code == _this.codeType ? true : false; });
         if( activeType.code != "W" ){
             desc.affiliation = this._getDesc( this.affiliation , activeType.standard.affiliation );//
-            desc.affiliation = this._getDesc( this.battlefield , activeType.standard.battlefield );//
-            desc.affiliation = this._getDesc( this.status , activeType.standard.status );//
-            desc.affiliation = this._getDesc( this.modifier , activeType.standard.modifier );
-            desc.affiliation = this._getDesc2( this.echelon , activeType.standard.unit );
-            desc.affiliation = this._getDesc( this.nation , activeType.standard.nation );
-            desc.affiliation = this._getDesc( this.mission , activeType.standard.mission );//
+            desc.battlefield = this._getDesc( this.battlefield , activeType.standard.battlefield );//
+            desc.status = this._getDesc( this.status , activeType.standard.status );//
+            desc.modifier = this._getDescOnTree( this.modifier , activeType.standard.identifier );
+            desc.echelon = this._getDesc2( this.echelon , activeType.standard.unit );
+            desc.nation = ""//this._getDesc( this.nation , activeType.standard.nation );
+            desc.mission = this._getDesc( this.mission , activeType.standard.mission );//
         }else{
-            this.pos = sidc[1];
-            this.fix = sidc.substring(2, 4);
-            this.modifier = sidc.substring(4, 10); //6
-            this.graphic = sidc.substring(10, 13); //2
-            this.last = "--";
+            desc.pos = this._getDesc( this.pos , activeType.standard.pos );
+            desc.fix = this._getDesc( this.fix , activeType.standard.fix );
+            desc.modifier = this._getDesc( this.modifier , activeType.standard.graphic );
+            desc.graphic = this._getDescOnTree( this.graphic , activeType.standard.identifier );
         }
         return desc;
     }
