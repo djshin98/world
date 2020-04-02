@@ -337,8 +337,17 @@ class SIDC {
         return "?";
     }
     _getDesc2( code , arr ){
-        Object.keys
-        let obj = arr.find(d=>{ (code == d.code || this._includeCode(code,d.code) )? true : false; });
+        let obj;
+        Object.keys(arr).some(d=>{
+            if( d == code[0] ){
+                obj = arr.find(d=>{ (code == d.code )? true : false; });
+                if( obj ){
+                    return true;
+                }
+            }
+            return false;
+        });
+        
         if( obj ){
             return obj.desc;
         }
