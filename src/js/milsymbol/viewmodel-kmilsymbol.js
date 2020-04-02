@@ -481,4 +481,5 @@ class SymbolTest {
     }
 };
 
+module.exports = { SIDC : SIDC }
 global.ViewModel_KMilSymbol = ViewModel_KMilSymbol;

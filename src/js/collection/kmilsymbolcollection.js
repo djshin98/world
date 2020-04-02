@@ -1,5 +1,7 @@
 //let {Cesium} = require('cesium/Cesium');
-let { OliveEntityCollection } = require('../map3d/entity_collection')
+let { OliveEntityCollection } = require('../map3d/entity_collection');
+let { SIDC } = require("../milsymbol/viewmodel-kmilsymbol");
+
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map) {
         super(map);
@@ -13,6 +15,9 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
     add(cartesian, options){
         let image = new kms.Symbol(options.sic, options);
+        if( !options.description ){
+            options.description = (new SIDC(options.sic[0], options.sic)).toDescription();
+        }
         this._add( cartesian , options, image.toDataURL() );
     }
     _add(cartesian, options,img){
