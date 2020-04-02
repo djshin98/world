@@ -12,7 +12,7 @@ module.exports = {
     mode: "development",
     context: __dirname,
     entry: {
-        CesiumApp: './src/index.js',
+        CesiumApp: './src/js/app/index.js',
         KMilSymbolEditor: './src/js/milsymbol/viewmodel-kmilsymbol.js'
     },
     output: {

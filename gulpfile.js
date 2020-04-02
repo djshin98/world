@@ -24,10 +24,6 @@ var paths = {
         src: './*.md',
         dest: './dist/'
     },
-    md_src: {
-        src: './src/**/*.md',
-        dest: './dist/'
-    },
     scss: {
         src: './src/scss/**/*.scss',
         dest: './src/css/'
@@ -105,7 +101,7 @@ function md() {
         .pipe(inject.append("</body></html>"))
         .pipe(dest(paths.md.dest));
 }
-
+/*
 function md_src() {
     return src(paths.md_src.src)
         .pipe(markdown())
@@ -113,7 +109,7 @@ function md_src() {
         .pipe(inject.append("</body></html>"))
         .pipe(dest(paths.md_src.src));
 }
-
+*/
 function world() {
     return src(paths.worlds.src)
         .pipe(dest(paths.worlds.dest));
@@ -217,7 +213,6 @@ function models() {
 function watchFiles() {
 
     watch(paths.md.src, md);
-    watch(paths.md_src.src, md_src);
 
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
@@ -235,4 +230,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(md, md_src, libs, jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(md, libs, jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
