@@ -130,7 +130,7 @@ class Application {
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
                 { name: "Draw", icon: "edit", page: "section/draw.html" },
                 { name: "Entities", icon: "sitemap", page: "section/entities.html" },
-                { name: "city", icon: "users", page: "section/city.html" }
+                { name: "도시요소", icon: "users", page: "section/city.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {

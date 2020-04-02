@@ -126,7 +126,13 @@ class ViewModel_KMilSymbol {
         };
         ele.onchange();
     }
-   
+    descriptionFromSIDC(sidc){
+        if( !sidc || sidc.length < 1 ){
+            return {};
+        }
+        let code = new SIDC( sidc[0] , sidc );
+        return code.toDescription();
+    }
     
     _findFunctionIdentifier(root, id){
         let findObj;
@@ -323,6 +329,45 @@ class SIDC {
             return this.codeType + this.pos + this.fix + this.modifier + this.graphic + this.last;
         }
     }
+    _getDesc( code , arr ){
+        let obj = arr.find(d=>{ code == d.code ? true : false; });
+        if( obj ){
+            return obj.desc;
+        }
+        return "?";
+    }
+    _getDesc2( code , arr ){
+        Object.keys
+        let obj = arr.find(d=>{ (code == d.code || this._includeCode(code,d.code) )? true : false; });
+        if( obj ){
+            return obj.desc;
+        }
+        return "?";
+    }
+    _includeCode( a , b){
+
+    }
+    toDescription(){
+        let desc = {};
+        let _this = this;
+        let activeType = codeTypes.find(d => { return d.code == _this.codeType ? true : false; });
+        if( activeType.code != "W" ){
+            desc.affiliation = this._getDesc( this.affiliation , activeType.standard.affiliation );//
+            desc.affiliation = this._getDesc( this.battlefield , activeType.standard.battlefield );//
+            desc.affiliation = this._getDesc( this.status , activeType.standard.status );//
+            desc.affiliation = this._getDesc( this.modifier , activeType.standard.modifier );
+            desc.affiliation = this._getDesc2( this.echelon , activeType.standard.unit );
+            desc.affiliation = this._getDesc( this.nation , activeType.standard.nation );
+            desc.affiliation = this._getDesc( this.mission , activeType.standard.mission );//
+        }else{
+            this.pos = sidc[1];
+            this.fix = sidc.substring(2, 4);
+            this.modifier = sidc.substring(4, 10); //6
+            this.graphic = sidc.substring(10, 13); //2
+            this.last = "--";
+        }
+        return desc;
+    }
 }
 
 class ViewModelElement {
@@ -396,6 +441,7 @@ class SymbolTest {
         let imgData = option.code;
         option.category = "KMILSYMBOL";
         option.code = "";
+        option.description = this.container.descriptionFromSIDC(option.sic);
         return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + imgData + '"/>';
     }
     try() {

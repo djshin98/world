@@ -26,11 +26,9 @@ class MilMap {
         this.db = new IxDatabase(1);
         this.options = Object.assign({}, options);
 
-        var extent = Cesium.Rectangle.fromDegrees(117.896284, 31.499028, 139.597380, 43.311528);
+        var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
-        Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.7;
-
-
+        Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.1;
 
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
