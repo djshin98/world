@@ -82,7 +82,9 @@ class Application {
         });
         */
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map);
-
+        this.collections["ALLY"] = new KMilSymbolCollection(this.map);
+        this.collections["BOMA"] = new KMilSymbolCollection(this.map);
+        this.collections["ENEMY"] = new KMilSymbolCollection(this.map);
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);

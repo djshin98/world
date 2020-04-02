@@ -35,15 +35,6 @@ class MariaDB {
             }
         }).then(
             res => {
-                /*  res.data.result1.reduce(function(prev, curr) {
-                     var fnode = prev.find(function(d, i) {
-                         return (d.ALLYFORCE_ID === curr.HIGHFORCE_ID) ? true : false;
-                     })
-                     console.log(fnode);
-                     prev.push({ ALLYFORCE_ID: curr.ALLYFORCE_ID, HIGHFORCE_ID: curr.HIGHFORCE_ID, ARMY_NAME: curr.ARMY_NAME });
-                     return prev;
-                 }, []); */
-
 
                 callback(res.data);
             }

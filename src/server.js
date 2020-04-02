@@ -82,7 +82,7 @@ server.get('/Entities/', (req, res) => {
         connection.query(query2, function(err, result2, fields) {
             connection.query(query3, function(err, result3, fields) {
                 if (!err) {
-                    res.json({ ally: result1, result2: result2, enemy: result3 });
+                    res.json({ ally: result1, bmoa: result2, enemy: result3 });
                 } else {
                     console.log('query error : ' + err);
                     res.send(err);
