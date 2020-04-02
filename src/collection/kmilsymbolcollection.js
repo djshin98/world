@@ -10,6 +10,10 @@ class KMilSymbolCollection extends OliveEntityCollection{
         }
         return false;
     }
+    addCode(cartesian, options){
+        let image = kms.Symbol(options.sic);
+        this.add( cartesian , options, image );
+    }
     add(cartesian, options,x){
         var obj = {
             options:options,
