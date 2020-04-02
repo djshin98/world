@@ -129,7 +129,8 @@ class Application {
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
                 { name: "Draw", icon: "edit", page: "section/draw.html" },
-                { name: "Entities", icon: "sitemap", page: "section/entities.html" }
+                { name: "Entities", icon: "sitemap", page: "section/entities.html" },
+                { name: "city", icon: "users", page: "section/city.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
             onload: function(parentNode, data) {
@@ -151,7 +152,7 @@ class Application {
 
                 _this.workStatus("section", true);
 
-                
+
                 $("input[data-olive-widget=animation]").prop("checked", _this.map.viewOption.animation);
                 $("input[data-olive-widget=timeline]").prop("checked", _this.map.viewOption.timeline);
                 $("input[data-olive-widget=fullscreen]").prop("checked", _this.map.viewOption.fullscreenButton);
@@ -161,11 +162,11 @@ class Application {
                 $("input[data-olive-widget=navigation]").prop("checked", _this.map.viewOption.navigation);
                 $("input[data-olive-widget=distance]").prop("checked", _this.map.viewOption.distance);
                 _this.map.show('credits', false);
-                _this.map.show('toolbar',false);
-                _this.map.show('fps',false);
+                _this.map.show('toolbar', false);
+                _this.map.show('fps', false);
                 _this.map.show('distance', false);
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
-                
+
             }
         });
     }

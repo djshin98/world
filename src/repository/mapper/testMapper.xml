@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="testMapper">  
-  <select id="testBasic">
+  <select id="testBasic1">
+      SELECT * 
+        FROM ally_force
+  </select>
+  <select id="testBasic2">
+      SELECT * 
+        FROM bmoa
+  </select>
+  <select id="testBasic3">
       SELECT * 
         FROM enemy_force
-       WHERE HIGHFORCE_ID = #{allyforceId} 
-         AND ARMY_CODE = #{armyCode}
   </select>
 </mapper>
 
