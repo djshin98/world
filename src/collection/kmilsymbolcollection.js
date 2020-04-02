@@ -10,14 +10,15 @@ class KMilSymbolCollection extends OliveEntityCollection{
         }
         return false;
     }
-    addCode(cartesian, options){
-        let image = kms.Symbol(options.sic);
-        this.add( cartesian , options, image );
+    add(cartesian, options){
+        let image = new kms.Symbol(options.sic, options);
+        this._add( cartesian , options, image.toDataURL() );
     }
-    add(cartesian, options,x){
+    _add(cartesian, options,img){
         var obj = {
             options:options,
-            image: x,
+            image: img,
+            scale:1.0,
             position: cartesian,
             heightReference : Cesium.HeightReference.CLAMP_TO_GROUND ,
             verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
