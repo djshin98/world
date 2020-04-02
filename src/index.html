@@ -15,65 +15,50 @@
     <script src="libs/jquery-treeview/jquery.treeview.js"></script>
     <script src="libs/milsymbol/kmilsymbol.development.js"></script>
     <script>
-
-        function dragEnter(e){
+        function dragEnter(e) {
             event.preventDefault();
             return true;
         }
-        function dragOver(e){
+
+        function dragOver(e) {
             e.preventDefault();
         }
-        function drag(ev) {
-            ev.dataTransfer.setData("option", ev.target.getAttribute("data-option") );
-        }
-        
-        function dragDrop(e) {
-            //var img = e.dataTransfer.getData("text");
-            var options = JSON.parse(decodeURIComponent(e.dataTransfer.getData("option")));
-            //var cartesian = map.viewer3d.camera.pickEllipsoid(
-            //    new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
-            
-            
 
+        function drag(ev) {
+            ev.dataTransfer.setData("option", ev.target.getAttribute("data-option"));
+        }
+
+        function dragDrop(e) {
+            var options = JSON.parse(decodeURIComponent(e.dataTransfer.getData("option")));
             let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
 
-            var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
-                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
-
-            kMilSymbolCollection.add( cartesian , options );
-            /*    
-            if( options.sic[2] == 'A' || options.sic[2] == 'P' ){
-                var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500)) :
-                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY, 500), map.viewer3d.scene.globe.ellipsoid);
-                
-                kMilSymbolCollection.addAir( cartesian , options , img );    
-            }else{
-                var cartesian = map.viewOption.baseLayerPicker ?  map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX-300, e.clientY)) :
-                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX-300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
-
-                kMilSymbolCollection.add( cartesian , options , img );
-            }*/
+            var cartesian = map.viewOption.baseLayerPicker ? map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX - 300, e.clientY)) :
+                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX - 300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
             
+            kMilSymbolCollection.add(cartesian, options);
+
         }
 
-        $(function(){
-            window.app = new Application({map3: {
-                id: "map3d",
-                mapServiceMode:"internet", //"internet offline"
-                offlineOption:{
-                    proxy : "/GVS/proxy.jsp",
-                    map : "http://192.168.0.153:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
-                    terrain : "http://192.168.0.153:38080/tilesets/srtm/"
-                },
-                offlineBaseLayers:[
-                    { url:'http://192.168.0.153:8080/Map/Hwasung_TMS/'},
-                    { url:'http://192.168.0.153:8080/Map/Seoul_TMS/'},
-                    { url:'http://192.168.0.153:8080/Map/Daejon_TMS/'}
-                ]
+        $(function() {
+            window.app = new Application({
+                map3: {
+                    id: "map3d",
+                    mapServiceMode: "internet", //"internet offline"
+                    offlineOption: {
+                        proxy: "/GVS/proxy.jsp",
+                        map: "http://192.168.0.153:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+                        terrain: "http://192.168.0.153:38080/tilesets/srtm/"
+                    },
+                    offlineBaseLayers: [{
+                        url: 'http://192.168.0.153:8080/Map/Hwasung_TMS/'
+                    }, {
+                        url: 'http://192.168.0.153:8080/Map/Seoul_TMS/'
+                    }, {
+                        url: 'http://192.168.0.153:8080/Map/Daejon_TMS/'
+                    }]
                 }
             });
         });
-
     </script>
 </head>
 
@@ -102,7 +87,7 @@
 
     <article>
         <div id="door-handle"><i class="angle left icon"></i></div>
-        <div class="map-cesium" id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)" ></div>
+        <div class="map-cesium" id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
         <div id="map2d"></div>
     </article>
     <footer></footer>
@@ -132,11 +117,12 @@
         </div>
 
     </div>
-<!--
+    <!--
     <script src="./libs/navigation/Cesium-Navigation.js"></script>
     <link rel="stylesheet" type="text/css" href="./libs/navigation/Cesium-Navigation.css" />
     -->
-    
+
 </body>
 <script src="./libs/navigation/viewerCesiumNavigationMixin.js"></script>
+
 </html>

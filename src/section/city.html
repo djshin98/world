@@ -16,11 +16,15 @@
             children: []
         }];
         var index = 0;
+        let aLLYCollection = app.getCollection("ALLY");
+        var options = {};
         for (var r in resultdata) {
             node[index].children = resultdata[r].reduce(function(prev, curr, i) {
                 if (curr.hasOwnProperty('ARMY_NAME')) {
                     prev.push({
-                        name: curr.ARMY_NAME
+                        name: curr.ARMY_NAME,
+                        cartesianVal: Cesium.Cartesian3.fromDegrees(parseFloat(curr.BMOA_LON), parseFloat(curr.BMOA_LAT), 0),
+                        sic: curr.MIL_SYMBOL_CODE
                     });
                 } else {
                     prev.push({
@@ -36,18 +40,13 @@
                 return d.name;
             }
         });
-    });
-    /* app.onReady(function() {
-        console.log("test");
-        new OliveTree("#entities-view", undefined, {
-            onAttribute: function(d) {
-                return {
-                    id: d.id
-                };
-            },
-            onText: function(d) {
-                return d.name;
+        node.forEach(function(n, i) {
+            if (i !== 1) {
+                //bmoa는 어떻게 보여줄건지 고민해보자... 인덱스 1을 뺸이유
+                n.children.forEach(function(d) {
+                    aLLYCollection.addCode(d.cartesianVal, d);
+                });
             }
         });
-    }); */
+    });
 </script>
