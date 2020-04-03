@@ -1,53 +1,77 @@
 <div class="section-content">
+    <div class="ui" style="margin-bottom:0.5em">
+        <div class="ui right">
+            <button class="ui primary button mini" onclick="viewCity()">on</button>
+        </div>
+        <div class="ui right">
+            <button class="ui primary button mini" onclick="app.collections['ALLY'].removeAll()">off</button>
+        </div>
+    </div>
     <div id="city-view" class="filetree" style="height:100%;">
+
     </div>
 </div>
 
 <script>
-    mariaDB.excuteQuery('Entities', {}, function(resultdata) {
-        var node = [{
-            name: '아군부대',
-            children: []
-        }, {
-            name: 'bmoa',
-            children: []
-        }, {
-            name: '적부대',
-            children: []
-        }];
-        var index = 0;
-        let allyCollection = app.getCollection("ALLY");
-        var options = {};
-        for (var r in resultdata) {
-            node[index].children = resultdata[r].reduce(function(prev, curr, i) {
-                if (curr.hasOwnProperty('ARMY_NAME')) {
-                    prev.push({
-                        name: curr.ARMY_NAME,
-                        cartesianVal: Cesium.Cartesian3.fromDegrees(parseFloat(curr.BMOA_LON), parseFloat(curr.BMOA_LAT), 0),
-                        sic: curr.MIL_SYMBOL_CODE
-                    });
-                } else {
-                    prev.push({
-                        name: curr.BMOA_ID
-                    })
+    function viewCity() {
+        if (app.collections["ALLY"].objects.length > 0) {
+            return;
+        } else {
+            mariaDB.excuteQuery('Entities', {}, function(resultdata) {
+                var node = [{
+                    name: '아군부대',
+                    children: []
+                }, {
+                    name: 'bmoa',
+                    children: []
+                }, {
+                    name: '적부대',
+                    children: []
+                }];
+                var index = 0;
+                let allyCollection = app.getCollection("ALLY");
+                let enemyCollection = app.getCollection("ENEMY");
+                var options = {};
+                for (var r in resultdata) {
+                    node[index].children = resultdata[r].reduce(function(prev, curr, i) {
+                        if (curr.hasOwnProperty('ARMY_NAME')) {
+                            prev.push({
+                                name: curr.ARMY_NAME,
+                                cartesianVal: Cesium.Cartesian3.fromDegrees(parseFloat(curr.BMOA_LON), parseFloat(curr.BMOA_LAT), 0),
+                                sic: curr.MIL_SYMBOL_CODE
+                            });
+                        } else {
+                            prev.push({
+                                name: curr.BMOA_ID
+                            })
+                        }
+                        return prev;
+                    }, []);
+                    index++;
                 }
-                return prev;
-            }, []);
-            index++;
-        }
-        new OliveTree("#city-view", node, {
-            onText: function(d) {
-                return d.name;
-            }
-        });
-        node.forEach(function(n, i) {
-            if (i !== 1) {
-                //bmoa는 어떻게 보여줄건지 고민해보자... 인덱스 1을 뺸이유
-                n.children.forEach(function(d) {
-                    d.size = 20;
-                    allyCollection.add(d.cartesianVal, d);
+                new OliveTree("#city-view", node, {
+                    onText: function(d) {
+                            return d.name;
+                        }
+
                 });
-            }
-        });
-    });
+
+                // document.querySelector("[data-content='Home']").className
+                node.forEach(function(n, i) {
+                    if (i === 0) {
+                        n.children.forEach(function(d) {
+                            d.size = 30;
+                            allyCollection.add(d.cartesianVal, d);
+                        });
+                    } else if (i === 2) {
+                        n.children.forEach(function(d) {
+                            d.size = 30;
+                            enemyCollection.add(d.cartesianVal, d);
+                        });
+                    }
+                });
+            });
+        }
+
+    }
 </script>

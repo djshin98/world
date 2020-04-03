@@ -1,6 +1,7 @@
 var { IxDatabase } = require('../repository/db');
 var { Animation } = require('../util/animation');
 var { Tileset } = require('./tileset');
+var { Contour } = require('./contour');
 var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
 var { dom } = require("../util/comm");
@@ -36,7 +37,7 @@ class MilMap {
             baseLayerPicker: true,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-            selectionIndicator: false,
+            selectionIndicator: true,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
@@ -227,6 +228,12 @@ class MilMap {
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
+    contour(viewModel){
+        if( !this.contourWidget ){
+            this.contourWidget = new Contour(this.viewer3d);
+        }
+        this.contourWidget.update(viewModel);
+    }
     gridGARS(bshow, options) {
 
             if (bshow) {
@@ -238,8 +245,31 @@ class MilMap {
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
 
-                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                        new Cesium.GridImageryProvider(options));
+                    let bound = new Cesium.Rectangle(112/Cesium.Math.DEGREES_PER_RADIAN,30/Cesium.Math.DEGREES_PER_RADIAN,
+                                                    148/Cesium.Math.DEGREES_PER_RADIAN,48/Cesium.Math.DEGREES_PER_RADIAN);
+                    options.tilingScheme = new Cesium.GeographicTilingScheme({
+                        rectangle : bound,
+                        numberOfLevelZeroTilesX : 18,
+                        numberOfLevelZeroTilesY : 9
+                    });
+                    
+                    options.tileWidth = 256;
+                    options.tileHeight = 256;
+                    options.cells = 0;
+                    let grid = new Cesium.GridImageryProvider(options);
+                    
+                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
+
+                    grid.readyPromise.then(function(result) {
+                        if( result ){
+                            
+                        }
+                        console.log("readyPromise GridImageryProvider" );
+                        console.log("minimumLevel " + grid.minimumLevel );
+                        console.log("maximumLevel " + grid.maximumLevel );
+                        
+                    });
+
                     this.__gars.layer.olive_name = "GARS";
                 }
             } else {
@@ -571,10 +601,15 @@ class MilMap {
 }
 
 
-function addKeyboardShortcuts() {
+function keyInput() {
     const zoomAmount = 15,
         rotateAmount = 5;
+    const ARROW_UP = 38;
+    const ARROW_LEFT = 37;
+    const ARROW_DOWN = 40;
+    const ARROW_RIGHT = 39;
     document.addEventListener('keydown', e => {
+        let viewer = map.viewer3d;
         // 87 -> W
         // 65 -> A
         // 83 -> S
@@ -588,28 +623,25 @@ function addKeyboardShortcuts() {
         // 107 -> + (add)
         // 109 -> - (sub)
         switch (e.keyCode) {
-            case 87:
-            case 38:
+            case ARROW_UP:
                 viewer.camera.moveForward(rotateAmount);
                 break;
-            case 81:
+            /*case 81:
                 viewer.camera.moveUp(rotateAmount);
                 break;
             case 69:
                 viewer.camera.moveDown(rotateAmount);
-                break;
-            case 65:
-            case 37:
+                break;*/
+            case ARROW_LEFT:
                 viewer.camera.moveLeft(rotateAmount);
                 break;
-            case 83:
-            case 40:
+            case ARROW_DOWN:
                 viewer.camera.moveBackward(rotateAmount);
                 break;
-            case 68:
-            case 39:
+            case ARROW_RIGHT:
                 viewer.camera.moveRight(rotateAmount);
                 break;
+                
             case 107:
                 viewer.camera.zoomIn(zoomAmount);
                 break;
@@ -621,7 +653,8 @@ function addKeyboardShortcuts() {
         //e.preventDefault();
     });
 }
-//addKeyboardShortcuts();
+
+keyInput();
 
 module.exports = {
     MilMap: MilMap

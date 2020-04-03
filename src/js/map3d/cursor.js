@@ -1,3 +1,4 @@
+var { dom } = require('../util/comm');
 
 class Cursor{
     constructor(viewer){
@@ -38,12 +39,12 @@ class Cursor{
                     //entity.label.show = false;
                 }
 
-                _this.getSelectedObjFromPoint(movement.endPosition);
+                _this.getSelectedObjFromPoint(movement.endPosition,longitude,latitude);
             }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         }
     }
 
-    getSelectedObjFromPoint(position){
+    getSelectedObjFromPoint(position,longitude,latitude){
         var valueToReturn= null;
         var pickedObject = this.viewer.scene.pick(position);
         var pickedObjects = this.viewer.scene.drillPick(position);
@@ -51,12 +52,66 @@ class Cursor{
         if (!Cesium.defined(pickedObject)) {
             picked = null;
             valueToReturn = null;
+            if( this.labelEntity ){
+                this.labelEntity.label.show = false;
+                this.labelEntity.ref = undefined;
+            }
         }
         else {
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
+
+            if( this.labelEntity ){
+                if( this.labelEntity.ref && this.labelEntity.ref == picked.id ){
+
+                }else{
+                    var cartesian = picked.id.position._value; //this.viewer.scene.pickPosition(position);
+                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                    var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+                    var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+                    var heightString = cartographic.height.toFixed(2);
+    
+                    this.labelEntity.position = cartesian;
+                    this.labelEntity.label.show = true;
+                    this.labelEntity.label.text =
+                            '경도: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                            '\n위도: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                            '\n높이: ' + ('   ' + heightString).slice(-7) + 'm';
+    
+                    //this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+                    this.labelEntity.ref = picked.id;
+                }
+                
+            }
         }
         return valueToReturn;
     }
+    
+    tooltip(bshow){
+        if( dom.trueOrundef(bshow) ){
+            if( !this.labelEntity ){
+                this.labelEntity = this.viewer.entities.add({
+                    label : {
+                        show : false,
+                        showBackground : true,
+                        font : '24px Helvetica',
+                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        outlineWidth : 4,
+                        horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                        pixelOffset : new Cesium.Cartesian2(0, -60)
+                    }
+                });
+            }
+        }else{
+            if( this.labelEntity ){
+                this.viewer.entities.remove(this.labelEntity);
+            }
+            this.labelEntity = undefined;
+        }
+        
+    }
+
+    
 }
 
 module.exports = { OliveCursor : Cursor };
