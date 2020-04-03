@@ -601,7 +601,7 @@ class MilMap {
 }
 
 
-keyInput() {
+function keyInput() {
     const zoomAmount = 15,
         rotateAmount = 5;
     const ARROW_UP = 38;
@@ -609,6 +609,7 @@ keyInput() {
     const ARROW_DOWN = 40;
     const ARROW_RIGHT = 39;
     document.addEventListener('keydown', e => {
+        let viewer = map.viewer3d;
         // 87 -> W
         // 65 -> A
         // 83 -> S
@@ -625,12 +626,12 @@ keyInput() {
             case ARROW_UP:
                 viewer.camera.moveForward(rotateAmount);
                 break;
-            case 81:
+            /*case 81:
                 viewer.camera.moveUp(rotateAmount);
                 break;
             case 69:
                 viewer.camera.moveDown(rotateAmount);
-                break;
+                break;*/
             case ARROW_LEFT:
                 viewer.camera.moveLeft(rotateAmount);
                 break;
@@ -640,6 +641,7 @@ keyInput() {
             case ARROW_RIGHT:
                 viewer.camera.moveRight(rotateAmount);
                 break;
+                
             case 107:
                 viewer.camera.zoomIn(zoomAmount);
                 break;
@@ -652,7 +654,7 @@ keyInput() {
     });
 }
 
-addKeyboardShortcuts();
+keyInput();
 
 module.exports = {
     MilMap: MilMap
