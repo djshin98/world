@@ -601,7 +601,7 @@ class MilMap {
 }
 
 
-function addKeyboardShortcuts() {
+keyInput() {
     const zoomAmount = 15,
         rotateAmount = 5;
     const ARROW_UP = 38;
@@ -651,6 +651,7 @@ function addKeyboardShortcuts() {
         //e.preventDefault();
     });
 }
+
 addKeyboardShortcuts();
 
 module.exports = {
