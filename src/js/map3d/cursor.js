@@ -110,6 +110,8 @@ class Cursor{
         }
         
     }
+
+    
 }
 
 module.exports = { OliveCursor : Cursor };
