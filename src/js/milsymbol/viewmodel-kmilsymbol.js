@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-var {dom} = require("../comm");
+var {dom} = require("../util/comm");
 var basic = require("./mil_basic");
 var emergency = require("./mil_emergency");
 var operAct = require("./mil_operAct");
@@ -456,7 +456,7 @@ class SymbolTest {
         this.viewModels = [];
     }
     create() {
-        var sel = this.viewModels.filter(d => { let v = d.val(); return v != undefined ? true : false; });
+        var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
         if (option.sic && option.sic.length > 0) {
             var symbol = new ms.Symbol(option.sic, option);
@@ -481,4 +481,5 @@ class SymbolTest {
     }
 };
 
+module.exports = { SIDC : SIDC }
 global.ViewModel_KMilSymbol = ViewModel_KMilSymbol;

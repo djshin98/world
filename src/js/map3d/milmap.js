@@ -1,9 +1,10 @@
 var { IxDatabase } = require('../repository/db');
-var { Animation } = require('../animation');
+var { Animation } = require('../util/animation');
 var { Tileset } = require('./tileset');
+var { Contour } = require('./contour');
 var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
-var { dom } = require("../comm");
+var { dom } = require("../util/comm");
 
 global.Cesium = require('cesium/Cesium');
 //require('./viewerCesiumNavigationMixin');
@@ -36,7 +37,7 @@ class MilMap {
             baseLayerPicker: true,
             geocoder: false,
             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-            selectionIndicator: false,
+            selectionIndicator: true,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
@@ -226,6 +227,16 @@ class MilMap {
     }
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
+    }
+    contour(bshow){
+        if( !this.contour ){
+            this.contour = new Contour(this.viewer3d);
+        }
+        if( bshow && bshow == true ){
+            this.contour.show();
+        }else{
+            this.contour.hide();
+        }
     }
     gridGARS(bshow, options) {
 

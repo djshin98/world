@@ -1,14 +1,14 @@
-import { IxDatabase } from "./repository/db";
-var { dom, get, post } = require("./comm");
-var { Section } = require("./section");
-var { MilMap } = require("./map3d/milmap");
-var { KMilSymbolCollection } = require("./collection/kmilsymbolcollection");
-var { JsonByFolder } = require("./repository/json-by-folder");
-var { DrawInCesium } = require("./draw/base");
-var { mariaConfig } = require("./repository/dataset");
-var { MariaDB } = require("./repository/maria_db");
-require("./ui/olive-input");
-require("./ui/olive-tree");
+import { IxDatabase } from "../repository/db";
+var { dom, get, post } = require("../util/comm");
+var { Section } = require("../section/section");
+var { MilMap } = require("../map3d/milmap");
+var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
+var { JsonByFolder } = require("../repository/json-by-folder");
+var { DrawInCesium } = require("../draw/base");
+var { mariaConfig } = require("../repository/dataset");
+var { MariaDB } = require("../repository/maria_db");
+require("../ui/olive-input");
+require("../ui/olive-tree");
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
@@ -52,6 +52,11 @@ class Application {
 
         //window.onresize();
         this.init(options);
+
+        if( options.success ){
+            options.success(this.map);
+        }
+        
     }
     init(options) {
         var _this = this;

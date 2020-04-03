@@ -16,7 +16,7 @@
             children: []
         }];
         var index = 0;
-        let aLLYCollection = app.getCollection("ALLY");
+        let allyCollection = app.getCollection("ALLY");
         var options = {};
         for (var r in resultdata) {
             node[index].children = resultdata[r].reduce(function(prev, curr, i) {
@@ -70,7 +70,8 @@
             if (i !== 1) {
                 //bmoa는 어떻게 보여줄건지 고민해보자... 인덱스 1을 뺸이유
                 n.children.forEach(function(d) {
-                    aLLYCollection.addCode(d.cartesianVal, d);
+                    d.size = 30;
+                    allyCollection.add(d.cartesianVal, d);
                 });
             }
         });

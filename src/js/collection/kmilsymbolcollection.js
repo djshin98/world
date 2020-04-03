@@ -1,5 +1,7 @@
 //let {Cesium} = require('cesium/Cesium');
-let { OliveEntityCollection } = require('../map3d/entity_collection')
+let { OliveEntityCollection } = require('../map3d/entity_collection');
+let { SIDC } = require("../milsymbol/viewmodel-kmilsymbol");
+
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map) {
         super(map);
@@ -10,16 +12,19 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         return false;
     }
-    addCode(cartesian, options) {
-        options.size = 30;
-        let symbol = new kms.Symbol(options.sic, options);
-        let img = symbol.toDataURL();
-        this.add(cartesian, options, img);
+
+    add(cartesian, options){
+        let image = new kms.Symbol(options.sic, options);
+        if( !options.description ){
+            options.description = (new SIDC(options.sic[0], options.sic)).toDescription();
+        }
+        this._add( cartesian , options, image.toDataURL() );
     }
-    add(cartesian, options, x) {
-        var obj = {
-            options: options,
-            image: x,
+    _add(cartesian, options,img){
+        var billboardOptions = {
+            options:options,
+            image: img,
+            scale:1.0,
             position: cartesian,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
@@ -31,10 +36,10 @@ class KMilSymbolCollection extends OliveEntityCollection {
         var latitude = carto.latitude * Cesium.Math.DEGREES_PER_RADIAN;
 
         if (options.sic[2] == 'A') {
-            obj.heightReference = Cesium.HeightReference.NONE;
+            billboardOptions.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude, latitude, 6000);
         } else if (options.sic[2] == 'P') {
-            obj.heightReference = Cesium.HeightReference.NONE;
+            billboardOptions.heightReference = Cesium.HeightReference.NONE;
             cartesian = Cesium.Cartesian3.fromDegrees(longitude, latitude, 250000);
         }
         var sidc_desc = "";
@@ -45,23 +50,11 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         let entity = this.addEntity({
             position: cartesian,
-            billboard: obj,
-            /*
-            description : new Cesium.CallbackProperty(function(time, result) {
-                return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="'+obj.image+'"/>\
-                <p>대한민국 군대 부호.</p>\
-                <p>부호코드 : '+obj.options.sic+' </p>\
-                <p>위도 : '+(carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5)+' </p>\
-                <p>경도 : '+(carto.longitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5)+' </p>\
-                <p>고도 : '+(carto.height).toFixed(2)+' m </p>\
-                <button>테스트</button>\
-                <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
-            },true)
-            */
+            billboard: billboardOptions,
             description: new Cesium.CallbackProperty(function(time, result) {
-                return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + obj.image + '"/>\
+                return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + billboardOptions.image + '"/>\
                 <p>대한민국 군대 부호.</p>\
-                <p>부호코드 : ' + obj.options.sic + ' </p>\
+                <p>부호코드 : ' + billboardOptions.options.sic + ' </p>\
                 <p>위도 : ' + (carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
                 <p>경도 : ' + (carto.longitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
                 <p>고도 : ' + (carto.height).toFixed(2) + ' m</p>\
@@ -108,7 +101,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entity.subEntites = [];
             entity.subEntites.push(entity_arrow.id);
         }
-        console.log("add entity : " + entity.id);
+        //console.log("add entity : " + entity.id);
     }
     open(entities) {
         this.close();

@@ -1,4 +1,4 @@
-var { dom, get, post } = require("./comm");
+var { dom, get, post } = require("../util/comm");
 
 var { JusoSearch } = require("./juso_search");
 
