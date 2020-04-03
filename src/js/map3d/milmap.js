@@ -245,6 +245,10 @@ class MilMap {
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
 
+                    options.tilingScheme = new Cesium.GeographicTilingScheme({
+                        numberOfLevelZeroTilesX : 90,
+                        numberOfLevelZeroTilesY : 45
+                    });
                     this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(
                         new Cesium.GridImageryProvider(options));
                     this.__gars.layer.olive_name = "GARS";
