@@ -39,12 +39,12 @@ class Cursor{
                     //entity.label.show = false;
                 }
 
-                _this.getSelectedObjFromPoint(movement.endPosition);
+                _this.getSelectedObjFromPoint(movement.endPosition,longitude,latitude);
             }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         }
     }
 
-    getSelectedObjFromPoint(position){
+    getSelectedObjFromPoint(position,longitude,latitude){
         var valueToReturn= null;
         var pickedObject = this.viewer.scene.pick(position);
         var pickedObjects = this.viewer.scene.drillPick(position);
@@ -54,6 +54,7 @@ class Cursor{
             valueToReturn = null;
             if( this.labelEntity ){
                 this.labelEntity.label.show = false;
+                this.labelEntity.ref = undefined;
             }
         }
         else {
@@ -72,11 +73,11 @@ class Cursor{
                     this.labelEntity.position = cartesian;
                     this.labelEntity.label.show = true;
                     this.labelEntity.label.text =
-                            'Lon: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
-                            '\nLat: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
-                            '\nAlt: ' + ('   ' + heightString).slice(-7) + 'm';
+                            '경도: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                            '\n위도: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                            '\n높이: ' + ('   ' + heightString).slice(-7) + 'm';
     
-                    this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+                    //this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
                     this.labelEntity.ref = picked.id;
                 }
                 
@@ -92,9 +93,9 @@ class Cursor{
                     label : {
                         show : false,
                         showBackground : true,
-                        font : '14px monospace',
-                        //style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                        //outlineWidth : 2,
+                        font : '24px Helvetica',
+                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        outlineWidth : 4,
                         horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
                         verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
                         pixelOffset : new Cesium.Cartesian2(0, -60)

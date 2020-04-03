@@ -228,15 +228,11 @@ class MilMap {
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
-    contour(bshow){
-        if( !this.contour ){
-            this.contour = new Contour(this.viewer3d);
+    contour(viewModel){
+        if( !this.contourWidget ){
+            this.contourWidget = new Contour(this.viewer3d);
         }
-        if( bshow && bshow == true ){
-            this.contour.show();
-        }else{
-            this.contour.hide();
-        }
+        this.contourWidget.update(viewModel);
     }
     gridGARS(bshow, options) {
 
@@ -249,8 +245,23 @@ class MilMap {
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
 
-                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                        new Cesium.GridImageryProvider(options));
+                    options.tilingScheme = new Cesium.GeographicTilingScheme({
+                        numberOfLevelZeroTilesX : 90,
+                        numberOfLevelZeroTilesY : 45
+                    });
+                    
+                    //options.cells = 1;
+                    let grid = new Cesium.GridImageryProvider(options);
+                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
+
+                    grid.readyPromise.then(function(grid) {
+                        grid.tileWidth = 1024;
+                        grid.tileHeight = 1024;
+                        //grid.maximumLevel  = 7;
+                        //grid.minimumLevel  = 6;
+                        
+                    });
+
                     this.__gars.layer.olive_name = "GARS";
                 }
             } else {

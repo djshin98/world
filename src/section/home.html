@@ -1,5 +1,8 @@
 <style>
-    #cesium-bloom td {
+    #olive-bloom td {
+        color: aliceblue;
+    }
+    #olive-label{
         color: aliceblue;
     }
 </style>
@@ -33,7 +36,7 @@
     </div>
 -->
     <div class="ui sub header">화면 조정</div>
-    <div id="cesium-bloom">
+    <div id="olive-bloom" class="demo-container">
         <table>
             <tbody>
                 <tr>
@@ -68,37 +71,40 @@
         </table>
     </div>
     <div class="ui horizontal divider"></div>
-    <!--
+    <div class="ui sub header">라벨</div>
+    <div id="olive-label" class="demo-container">
+        <div class="ui inline"><label for="olive-label-check" style="width:150px;">라벨 표시</label><input id="olive-label-check" type="checkbox" data-bind="checked: label"></div>
+    </div>
+    
     <div class="ui sub header">Contour</div>
     <div id="olive-contour">
-        <div id="zoomButtons"><select class="cesium-button"><option value="undefined">Himalayas</option><option value="undefined">Half Dome</option><option value="undefined">Vancouver</option><option value="undefined">Mount Everest</option></select></div>
         <div class="demo-container">
-            <label><input type="radio" name="shadingMaterials" value="none" data-bind="checked: selectedShading"> No shading</label>
+            <label><input type="radio" name="shadingMaterials" value="none" data-bind="checked: selectedShading"> No</label>
             <label><input type="radio" name="shadingMaterials" value="elevation" data-bind="checked: selectedShading"> Elevation</label>
             <label><input type="radio" name="shadingMaterials" value="slope" data-bind="checked: selectedShading"> Slope</label>
             <label><input type="radio" name="shadingMaterials" value="aspect" data-bind="checked: selectedShading"> Aspect</label>
         </div>
         <div class="demo-container">
             <div>
-                <label><input type="checkbox" data-bind="checked: enableContour">Enable Contour Lines</label>
+                <label><input type="checkbox" data-bind="checked: enableContour">등고선</label>
             </div>
-            <div>
-                Spacing <input style="width: 136px" type="range" min="1.0" max="500.0" step="1.0" data-bind="value: contourSpacing, valueUpdate: 'input', enable: enableContour"> <span data-bind="text: contourSpacing">87</span>m
+            <div class="ui inline">
+                <div class="label">간격</div><input style="width: 115px" type="range" min="1.0" max="500.0" step="1.0" data-bind="value: contourSpacing, valueUpdate: 'input', enable: enableContour"> <span data-bind="text: contourSpacing">87</span>m
             </div>
-            <div>
-                Line Width <input style="width: 125px" type="range" min="1.0" max="10.0" step="1.0" data-bind="value: contourWidth, valueUpdate: 'input', enable: enableContour"> <span data-bind="text: contourWidth">1</span>px
+            <div class="ui inline">
+                <div class="label">폭</div><input style="width: 115px" type="range" min="1.0" max="10.0" step="1.0" data-bind="value: contourWidth, valueUpdate: 'input', enable: enableContour"> <span data-bind="text: contourWidth">1</span>px
             </div>
             <div>
                 <button type="button" data-bind="click: changeColor, enable: enableContour">Change contour color</button>
             </div>
         </div>
     </div>
-  -->
+  
 
 </div>
 
 <script>
-    map.connectViewModel('cesium-bloom', {
+    map.connectViewModel('olive-bloom', {
         show: false,
         glowOnly: false,
         contrast: 128,
@@ -117,4 +123,25 @@
         bloom.uniforms.stepSize = Number(viewModel.stepSize);
         viewer.scene.requestRender();
     });
+
+    map.connectViewModel('olive-label', {
+        label: true
+    }, function(viewer, viewModel) {
+        map.oliveCursor.tooltip(Boolean(viewModel.label));
+        viewer.scene.requestRender();
+    });
+
+    map.connectViewModel('olive-contour', {
+        selectedShading: 'none',
+        enableContour: false,
+        contourSpacing: 80,
+        contourWidth: 1.0,
+        changeColor: function() {
+            this.contourUniforms.color = Cesium.Color.fromRandom({alpha: 1.0}, this.contourColor);
+        }
+    }, function(viewer, viewModel) {
+        map.contour(viewModel);
+        viewer.scene.requestRender();
+    });
+
 </script>
