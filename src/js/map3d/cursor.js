@@ -1,3 +1,4 @@
+var { dom } = require('../util/comm');
 
 class Cursor{
     constructor(viewer){
@@ -51,11 +52,54 @@ class Cursor{
         if (!Cesium.defined(pickedObject)) {
             picked = null;
             valueToReturn = null;
+            if( this.labelEntity ){
+                this.labelEntity.label.show = false;
+            }
         }
         else {
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
+
+            if( this.labelEntity ){
+                var cartesian = this.viewer.scene.pickPosition(position);
+                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+                var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+                var heightString = cartographic.height.toFixed(2);
+
+                this.labelEntity.position = cartesian;
+                this.labelEntity.label.show = true;
+                this.labelEntity.label.text =
+                        'Lon: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                        '\nLat: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                        '\nAlt: ' + ('   ' + heightString).slice(-7) + 'm';
+
+                this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+            }
         }
         return valueToReturn;
+    }
+    
+    tooltip(bshow){
+        if( dom.trueOrundef(bshow) ){
+            if( !this.labelEntity ){
+                this.labelEntity = this.viewer.entities.add({
+                    label : {
+                        show : false,
+                        showBackground : true,
+                        font : '14px monospace',
+                        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+                        verticalOrigin : Cesium.VerticalOrigin.TOP,
+                        pixelOffset : new Cesium.Cartesian2(15, 0)
+                    }
+                });
+            }
+        }else{
+            if( this.labelEntity ){
+                this.viewer.entities.remove(this.labelEntity);
+            }
+            this.labelEntity = undefined;
+        }
+        
     }
 }
 
