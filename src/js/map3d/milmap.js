@@ -228,15 +228,11 @@ class MilMap {
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
-    contour(bshow){
-        if( !this.contour ){
-            this.contour = new Contour(this.viewer3d);
+    contour(viewModel){
+        if( !this.contourWidget ){
+            this.contourWidget = new Contour(this.viewer3d);
         }
-        if( bshow && bshow == true ){
-            this.contour.show();
-        }else{
-            this.contour.hide();
-        }
+        this.contourWidget.update(viewModel);
     }
     gridGARS(bshow, options) {
 

@@ -9,19 +9,25 @@ class Contour{
 
         this.minHeight = -414.0; // approximate dead sea elevation
         this.maxHeight = 8777.0; // approximate everest elevation
-        this.contourColor = Cesium.Color.RED.clone();
+        this.contourColor = Cesium.Color.YELLOW.clone();
         this.contourUniforms = {};
         this.shadingUniforms = {};
 
-        this.hasContour = true; //viewModel.enableContour;
-        this.selectedShading = "elevation"; //viewModel.this.selectedShading;
+        this.viewModel = {
+            enableContour: true, //false
+            contourSpacing: 87, //150.0,
+            contourWidth: 1.0, //2.0,
+            selectedShading: 'elevation',
+            changeColor: function() {
+                this.contourUniforms.color = Cesium.Color.fromRandom({alpha: 1.0}, this.contourColor);
+            }
+        };
+
     }
-    show(){
+    update(viewModel){
+        this.viewModel = viewModel;
         this.viewer.scene.globe.enableLighting = true;
         this.updateMaterial(this.viewer);
-    }
-    hide(){
-        this.viewer.scene.globe.enableLighting = false;
     }
     getElevationContourMaterial() {
         // Creates a composite material with both elevation shading and contour lines
@@ -123,56 +129,47 @@ class Contour{
     
 
     updateMaterial(viewer) {
-        
-        var viewModel = {
-            enableContour: true, //false
-            contourSpacing: 87, //150.0,
-            contourWidth: 1.0, //2.0,
-            selectedShading: 'elevation',
-            changeColor: function() {
-                this.contourUniforms.color = Cesium.Color.fromRandom({alpha: 1.0}, this.contourColor);
-            }
-        };
-
+        var hasContour = this.viewModel.enableContour;
+        var selectedShading = this.viewModel.selectedShading;
         
         var globe = viewer.scene.globe;
         var material;
-        if (this.hasContour) {
-            if (this.selectedShading === 'elevation') {
-                material = getElevationContourMaterial();
+        if (hasContour) {
+            if (selectedShading === 'elevation') {
+                material = this.getElevationContourMaterial();
                 this.shadingUniforms = material.materials.elevationRampMaterial.uniforms;
                 this.shadingUniforms.minimumHeight = this.minHeight;
                 this.shadingUniforms.maximumHeight = this.maxHeight;
                 this.contourUniforms = material.materials.contourMaterial.uniforms;
-            } else if (this.selectedShading === 'slope') {
-                material = getSlopeContourMaterial();
+            } else if (selectedShading === 'slope') {
+                material = this.getSlopeContourMaterial();
                 this.shadingUniforms = material.materials.slopeRampMaterial.uniforms;
                 this.contourUniforms = material.materials.contourMaterial.uniforms;
-            } else if (this.selectedShading === 'aspect') {
-                material = getAspectContourMaterial();
+            } else if (selectedShading === 'aspect') {
+                material = this.getAspectContourMaterial();
                 this.shadingUniforms = material.materials.aspectRampMaterial.uniforms;
                 this.contourUniforms = material.materials.contourMaterial.uniforms;
             } else {
                 material = Cesium.Material.fromType('ElevationContour');
                 this.contourUniforms = material.uniforms;
             }
-            this.contourUniforms.width = viewModel.contourWidth;
-            this.contourUniforms.spacing = viewModel.contourSpacing;
+            this.contourUniforms.width = this.viewModel.contourWidth;
+            this.contourUniforms.spacing = this.viewModel.contourSpacing;
             this.contourUniforms.color = this.contourColor;
-        } else if (this.selectedShading === 'elevation') {
+        } else if (selectedShading === 'elevation') {
             material = Cesium.Material.fromType('ElevationRamp');
             this.shadingUniforms = material.uniforms;
             this.shadingUniforms.minimumHeight = this.minHeight;
             this.shadingUniforms.maximumHeight = this.maxHeight;
-        } else if (this.selectedShading === 'slope') {
+        } else if (selectedShading === 'slope') {
             material = Cesium.Material.fromType('SlopeRamp');
             this.shadingUniforms = material.uniforms;
-        } else if (this.selectedShading === 'aspect') {
+        } else if (selectedShading === 'aspect') {
             material = Cesium.Material.fromType('AspectRamp');
             this.shadingUniforms = material.uniforms;
         }
-        if (this.selectedShading !== 'none') {
-            this.shadingUniforms.image = getColorRamp(this.selectedShading);
+        if (selectedShading !== 'none') {
+            this.shadingUniforms.image = this.getColorRamp(selectedShading);
         }
 
         globe.material = material;
