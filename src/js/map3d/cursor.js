@@ -60,20 +60,26 @@ class Cursor{
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
 
             if( this.labelEntity ){
-                var cartesian = this.viewer.scene.pickPosition(position);
-                var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
-                var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
-                var heightString = cartographic.height.toFixed(2);
+                if( this.labelEntity.ref && this.labelEntity.ref == picked.id ){
 
-                this.labelEntity.position = cartesian;
-                this.labelEntity.label.show = true;
-                this.labelEntity.label.text =
-                        'Lon: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
-                        '\nLat: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
-                        '\nAlt: ' + ('   ' + heightString).slice(-7) + 'm';
-
-                this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+                }else{
+                    var cartesian = picked.id.position._value; //this.viewer.scene.pickPosition(position);
+                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                    var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+                    var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+                    var heightString = cartographic.height.toFixed(2);
+    
+                    this.labelEntity.position = cartesian;
+                    this.labelEntity.label.show = true;
+                    this.labelEntity.label.text =
+                            'Lon: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                            '\nLat: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                            '\nAlt: ' + ('   ' + heightString).slice(-7) + 'm';
+    
+                    this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+                    this.labelEntity.ref = picked.id;
+                }
+                
             }
         }
         return valueToReturn;
@@ -87,9 +93,11 @@ class Cursor{
                         show : false,
                         showBackground : true,
                         font : '14px monospace',
-                        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
-                        verticalOrigin : Cesium.VerticalOrigin.TOP,
-                        pixelOffset : new Cesium.Cartesian2(15, 0)
+                        //style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        //outlineWidth : 2,
+                        horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                        pixelOffset : new Cesium.Cartesian2(0, -60)
                     }
                 });
             }
