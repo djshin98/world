@@ -1,79 +1,79 @@
 <div class="section-content" id="viewmodel-milsymbol">
-    <div class="ui sub header" id="codetype-text" >코드 타입</div>
+    <div class="ui sub header" id="codetype-text">코드 타입</div>
     <select class="ui dropdown" id="codetype"></select>
-    <div class="ui sub header" id="affiliation-text" >피아관계</div>
+    <div class="ui sub header" id="affiliation-text">피아관계</div>
     <select class="ui dropdown" id="affiliation"></select>
-    <div class="ui sub header" id="battlefield-text" >전장</div>
+    <div class="ui sub header" id="battlefield-text">전장</div>
     <select class="ui dropdown" id="battlefield"></select>
-    <div class="ui sub header" id="status-text" >상태</div>
+    <div class="ui sub header" id="status-text">상태</div>
     <select class="ui dropdown" id="status"></select>
-    <div class="ui sub header" id="mission-text" >임무</div>
+    <div class="ui sub header" id="mission-text">임무</div>
     <select class="ui dropdown" id="mission"></select>
 
-    <div class="ui sub header" id="function-indentifier-text" >기능 조정자</div>
+    <div class="ui sub header" id="function-indentifier-text">기능 조정자</div>
     <ul id="function-indentifier" class="filetree" style="height:300px;">
-		<li><span class="folder">Folder 1</span>
-			<ul>
+        <li><span class="folder">Folder 1</span>
+            <ul>
                 <li><span class="file">Item 1.1</span></li>
                 <li><span class="file">File 2.1.1</span></li>
-                        <li><span class="file">File 2.1.2</span></li>
+                <li><span class="file">File 2.1.2</span></li>
+                <li><span class="file">File 2.1.1</span></li>
+                <li><span class="file">File 2.1.2</span></li>
+            </ul>
+        </li>
+        <li><span class="folder">Folder 2</span>
+            <ul>
+                <li><span class="folder">Subfolder 2.1</span>
+                    <ul id="folder21">
                         <li><span class="file">File 2.1.1</span></li>
-						<li><span class="file">File 2.1.2</span></li>
-			</ul>
-		</li>
-		<li><span class="folder">Folder 2</span>
-			<ul>
-				<li><span class="folder">Subfolder 2.1</span>
-					<ul id="folder21">
-						<li><span class="file">File 2.1.1</span></li>
-						<li><span class="file">File 2.1.2</span></li>
-					</ul>
-				</li>
-				<li><span class="file">File 2.2</span></li>
-			</ul>
-		</li>
-		<li class="closed"><span class="folder">Folder 3 (closed at start)</span>
-			<ul>
-				<li><span class="file">File 3.1</span></li>
-			</ul>
-		</li>
-		<li><span class="file">File 4</span></li>
+                        <li><span class="file">File 2.1.2</span></li>
+                    </ul>
+                </li>
+                <li><span class="file">File 2.2</span></li>
+            </ul>
+        </li>
+        <li class="closed"><span class="folder">Folder 3 (closed at start)</span>
+            <ul>
+                <li><span class="file">File 3.1</span></li>
+            </ul>
+        </li>
+        <li><span class="file">File 4</span></li>
     </ul>
-    
+
     <div class="ui sub header">부대단위 및 이동수단</div>
     <ul id="unit" class="filetree" style="height:120px;">
-		<li><span class="folder">Folder 1</span>
-			<ul>
+        <li><span class="folder">Folder 1</span>
+            <ul>
                 <li><span class="file">Item 1.1</span></li>
                 <li><span class="file">File 2.1.1</span></li>
-                        <li><span class="file">File 2.1.2</span></li>
+                <li><span class="file">File 2.1.2</span></li>
+                <li><span class="file">File 2.1.1</span></li>
+                <li><span class="file">File 2.1.2</span></li>
+            </ul>
+        </li>
+        <li><span class="folder">Folder 2</span>
+            <ul>
+                <li><span class="folder">Subfolder 2.1</span>
+                    <ul id="folder21">
                         <li><span class="file">File 2.1.1</span></li>
-						<li><span class="file">File 2.1.2</span></li>
-			</ul>
-		</li>
-		<li><span class="folder">Folder 2</span>
-			<ul>
-				<li><span class="folder">Subfolder 2.1</span>
-					<ul id="folder21">
-						<li><span class="file">File 2.1.1</span></li>
-						<li><span class="file">File 2.1.2</span></li>
-					</ul>
-				</li>
-				<li><span class="file">File 2.2</span></li>
-			</ul>
-		</li>
-		<li class="closed"><span class="folder">Folder 3 (closed at start)</span>
-			<ul>
-				<li><span class="file">File 3.1</span></li>
-			</ul>
-		</li>
-		<li><span class="file">File 4</span></li>
+                        <li><span class="file">File 2.1.2</span></li>
+                    </ul>
+                </li>
+                <li><span class="file">File 2.2</span></li>
+            </ul>
+        </li>
+        <li class="closed"><span class="folder">Folder 3 (closed at start)</span>
+            <ul>
+                <li><span class="file">File 3.1</span></li>
+            </ul>
+        </li>
+        <li><span class="file">File 4</span></li>
     </ul>
     <div class="ui divider"></div>
     <div class="ui sub header">코드</div>
-    
+
     <div class="ui inline">
-        <div class="ui checkbox" >
+        <div class="ui checkbox">
             <input type="checkbox" id="mil-option-fill">
             <label>fill</label>
         </div>
@@ -91,109 +91,106 @@
     <div class="ui inline">
         <div class="ui ">
             <label>size</label>
-            <input class="ui input" id="mil-option-size" style="width:50px;"/>
+            <input class="ui input" id="mil-option-size" style="width:50px;" />
         </div>
         <div class="ui right">
             <label>desc</label>
-            <input class="ui input" id="mil-option-label" style="width:80px;"/>
+            <input class="ui input" id="mil-option-label" style="width:80px;" />
         </div>
     </div>
 
 
     <div class="ui inline">
-        <input class="ui input" id="sidc" style="width:130px;"/>
+        <input class="ui input" id="sidc" style="width:130px;" />
         <div class="ui right">
             <i class="minus square outline icon"></i>
-          </div>
+        </div>
         <div class="ui right">
             <i class="plus square outline icon"></i>
-          </div>
-         
+        </div>
+
     </div>
-    <div class="ui result" id="sidc-img" ></div>
+    <div class="ui result" id="sidc-img"></div>
 
 
 </div>
 
 <script>
-
-    var selectedCodeTypeObj = new ViewModel_KMilSymbol({ 
-        view : {
-            CODETYPE:"codetype",
-            AFFILIATION:"affiliation",
-            BATTLEFIELD:"battlefield",
-            STATUS:"status",
-            MISSION:"mission",
-            FI:"function-indentifier",
-            UNIT:"unit",
-            SIDC:"sidc",
-            RESULT:"sidc-img",
-            option : {
-                FILL:"mil-option-fill",
-                FRAME:"mil-option-frame",
-                ICON:"mil-option-icon",
-                COLOR:"mil-option-monocolor",
-                SIZE:"mil-option-size",
-                DESC:"mil-option-label",
+    var selectedCodeTypeObj = new ViewModel_KMilSymbol({
+        view: {
+            CODETYPE: "codetype",
+            AFFILIATION: "affiliation",
+            BATTLEFIELD: "battlefield",
+            STATUS: "status",
+            MISSION: "mission",
+            FI: "function-indentifier",
+            UNIT: "unit",
+            SIDC: "sidc",
+            RESULT: "sidc-img",
+            option: {
+                FILL: "mil-option-fill",
+                FRAME: "mil-option-frame",
+                ICON: "mil-option-icon",
+                COLOR: "mil-option-monocolor",
+                SIZE: "mil-option-size",
+                DESC: "mil-option-label",
             }
-        }    
-    }, function(){
+        }
+    }, function() {
         new OliveTree("#viewmodel-milsymbol #function-indentifier", undefined, {
-            onSelect:function(type,tag,obj){
-                if( type == "file" ){
-                    if( selectedCodeTypeObj.activeType && selectedCodeTypeObj.activeType.code != "W" ){
+            onSelect: function(type, tag, obj) {
+                if (type == "file") {
+                    if (selectedCodeTypeObj.activeType && selectedCodeTypeObj.activeType.code != "W") {
                         let id = tag.getAttribute("data-id");
                         let idf = selectedCodeTypeObj.findFunctionIdentifier(id);
-                        if( idf ){
-                            selectedCodeTypeObj.changeModifier( idf.modifier , idf.type, idf.affiliation , idf.battlefield, idf.status );
+                        if (idf) {
+                            selectedCodeTypeObj.changeModifier(idf.modifier, idf.type, idf.affiliation, idf.battlefield, idf.status);
                         }
-                    }else{
+                    } else {
                         let id = tag.getAttribute("data-id");
                         let idf = selectedCodeTypeObj.findFunctionIdentifier(id);
-                        if( idf ){
-                            _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                        if (idf) {
+                            _this.changeModifier(idf.modifier, idf.type, idf.pos, idf.fix, idf.graphic);
                         }
                     }
                 }
             }
         });
-        new OliveTree("#viewmodel-milsymbol #unit", undefined,{
-            onSelect:function(type,tag,obj){
-                if( type == "file" ){
+        new OliveTree("#viewmodel-milsymbol #unit", undefined, {
+            onSelect: function(type, tag, obj) {
+                if (type == "file") {
                     let id = tag.getAttribute("data-id");
                     let idf = selectedCodeTypeObj.findUnit(id);
-                    if( idf ){
-                        selectedCodeTypeObj.changeMobility( idf.code);
+                    if (idf) {
+                        selectedCodeTypeObj.changeMobility(idf.code);
                     }
                 }
             }
         });
-/*
-        $("#function-indentifier").treeview({
-		    collapsed: true
-        });
+        /*
+                $("#function-indentifier").treeview({
+        		    collapsed: true
+                });
 
-        $("#unit").treeview({
-            collapsed: true
-        });
+                $("#unit").treeview({
+                    collapsed: true
+                });
 
-        $("#function-indentifier li>div.folder").bind('click', function(){
-            toggleFolder(this);
-        });
-        $("#function-indentifier li>div.file").bind('click', function(){
-            $('.clicked').removeClass('clicked');
-            $(this).addClass('clicked');
-        });
+                $("#function-indentifier li>div.folder").bind('click', function(){
+                    toggleFolder(this);
+                });
+                $("#function-indentifier li>div.file").bind('click', function(){
+                    $('.clicked').removeClass('clicked');
+                    $(this).addClass('clicked');
+                });
 
-        $("#unit li>div.folder").bind('click', function(){
-            toggleFolder(this);
-        });
-        $("#unit li>div.file").bind('click', function(){
-            $('.clicked').removeClass('clicked');
-            $(this).addClass('clicked');
-        });*/
+                $("#unit li>div.folder").bind('click', function(){
+                    toggleFolder(this);
+                });
+                $("#unit li>div.file").bind('click', function(){
+                    $('.clicked').removeClass('clicked');
+                    $(this).addClass('clicked');
+                });*/
 
     });
-
-    
 </script>

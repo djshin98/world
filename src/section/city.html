@@ -38,6 +38,32 @@
         new OliveTree("#city-view", node, {
             onText: function(d) {
                 return d.name;
+            },
+            onSelect: function(type, tag, obj) {
+                if (type == "file") {
+                    /* var fileName = $(tag).text();
+                    var parents = $(tag).parents("li");
+                    var path = "";
+                    parents.each(function(i, d) {
+                        let x = $(d).find(">div.folder");
+                        if (x) {
+                            var f = $(x).text().trim();
+                            if (f.length > 0) {
+                                if (path.length > 0) {
+                                    path = f + "/" + path;
+                                } else {
+                                    path = f;
+                                }
+                            }
+                        }
+                    });
+                    let fullName = path + "/" + fileName;
+                    $("#favorite-name").val(fullName);
+                    let id = $(tag).data("id");
+                    app.favorite.open(id); */
+                    console.log(type + tag + obj);
+                }
+
             }
         });
         node.forEach(function(n, i) {
