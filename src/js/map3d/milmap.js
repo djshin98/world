@@ -604,6 +604,10 @@ class MilMap {
 function addKeyboardShortcuts() {
     const zoomAmount = 15,
         rotateAmount = 5;
+    const ARROW_UP = 38;
+    const ARROW_LEFT = 37;
+    const ARROW_DOWN = 40;
+    const ARROW_RIGHT = 39;
     document.addEventListener('keydown', e => {
         // 87 -> W
         // 65 -> A
@@ -618,8 +622,7 @@ function addKeyboardShortcuts() {
         // 107 -> + (add)
         // 109 -> - (sub)
         switch (e.keyCode) {
-            case 87:
-            case 38:
+            case ARROW_UP:
                 viewer.camera.moveForward(rotateAmount);
                 break;
             case 81:
@@ -628,16 +631,13 @@ function addKeyboardShortcuts() {
             case 69:
                 viewer.camera.moveDown(rotateAmount);
                 break;
-            case 65:
-            case 37:
+            case ARROW_LEFT:
                 viewer.camera.moveLeft(rotateAmount);
                 break;
-            case 83:
-            case 40:
+            case ARROW_DOWN:
                 viewer.camera.moveBackward(rotateAmount);
                 break;
-            case 68:
-            case 39:
+            case ARROW_RIGHT:
                 viewer.camera.moveRight(rotateAmount);
                 break;
             case 107:
@@ -651,7 +651,7 @@ function addKeyboardShortcuts() {
         //e.preventDefault();
     });
 }
-//addKeyboardShortcuts();
+addKeyboardShortcuts();
 
 module.exports = {
     MilMap: MilMap
