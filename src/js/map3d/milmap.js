@@ -245,20 +245,28 @@ class MilMap {
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
 
+                    let bound = new Cesium.Rectangle(112/Cesium.Math.DEGREES_PER_RADIAN,30/Cesium.Math.DEGREES_PER_RADIAN,
+                                                    148/Cesium.Math.DEGREES_PER_RADIAN,48/Cesium.Math.DEGREES_PER_RADIAN);
                     options.tilingScheme = new Cesium.GeographicTilingScheme({
-                        numberOfLevelZeroTilesX : 90,
-                        numberOfLevelZeroTilesY : 45
+                        rectangle : bound,
+                        numberOfLevelZeroTilesX : 18,
+                        numberOfLevelZeroTilesY : 9
                     });
                     
-                    //options.cells = 1;
+                    options.tileWidth = 256;
+                    options.tileHeight = 256;
+                    options.cells = 0;
                     let grid = new Cesium.GridImageryProvider(options);
+                    
                     this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
 
-                    grid.readyPromise.then(function(grid) {
-                        grid.tileWidth = 1024;
-                        grid.tileHeight = 1024;
-                        //grid.maximumLevel  = 7;
-                        //grid.minimumLevel  = 6;
+                    grid.readyPromise.then(function(result) {
+                        if( result ){
+                            
+                        }
+                        console.log("readyPromise GridImageryProvider" );
+                        console.log("minimumLevel " + grid.minimumLevel );
+                        console.log("maximumLevel " + grid.maximumLevel );
                         
                     });
 
