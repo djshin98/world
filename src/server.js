@@ -11,14 +11,15 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
 // 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다. 
-server.set('', __dirname + '/dist');
+console.log("root : " + __dirname + '/../dist');
+server.set('', __dirname + '/../dist');
 server.set('view engine', 'ejs');
 server.engine('html', require('ejs').renderFile);
 
 const port = process.env.PORT || 8082;
 var mysql = require('mysql');
 var mybatisMapper = require('mybatis-mapper');
-mybatisMapper.createMapper([__dirname + '/repository/mapper/testMapper.xml']);
+mybatisMapper.createMapper([__dirname + '/js/repository/mapper/testMapper.xml']);
 var format = { language: 'sql', indent: '  ' };
 
 var connection = mysql.createConnection({

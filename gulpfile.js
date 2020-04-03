@@ -21,8 +21,8 @@ var del = require('del');
 
 var paths = {
     md: {
-        src: './*.md',
-        dest: './dist/'
+        src: './src/**/*.md',
+        dest: './dist/doc/'
     },
     scss: {
         src: './src/scss/**/*.scss',
