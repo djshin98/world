@@ -249,8 +249,19 @@ class MilMap {
                         numberOfLevelZeroTilesX : 90,
                         numberOfLevelZeroTilesY : 45
                     });
-                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                        new Cesium.GridImageryProvider(options));
+                    
+                    //options.cells = 1;
+                    let grid = new Cesium.GridImageryProvider(options);
+                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
+
+                    grid.readyPromise.then(function(grid) {
+                        grid.tileWidth = 1024;
+                        grid.tileHeight = 1024;
+                        //grid.maximumLevel  = 7;
+                        //grid.minimumLevel  = 6;
+                        
+                    });
+
                     this.__gars.layer.olive_name = "GARS";
                 }
             } else {
