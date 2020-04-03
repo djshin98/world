@@ -43,7 +43,7 @@ class OliveTree {
                     var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
                     var lon = Cesium.Math.toDegrees(carto.longitude);
                     var lat = Cesium.Math.toDegrees(carto.latitude);
-                    map.viewer3d.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, 5000.0) });
+                    map.oliveCamera.flyTo(lon, lat);
                 }
             }
         });
