@@ -101,7 +101,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entity.subEntites = [];
             entity.subEntites.push(entity_arrow.id);
         }
-        console.log("add entity : " + entity.id);
+        //console.log("add entity : " + entity.id);
     }
     open(entities) {
         this.close();

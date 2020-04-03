@@ -52,6 +52,11 @@ class Application {
 
         //window.onresize();
         this.init(options);
+
+        if( options.success ){
+            options.success(this.map);
+        }
+        
     }
     init(options) {
         var _this = this;
