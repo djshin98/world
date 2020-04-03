@@ -37,7 +37,7 @@ class MilMap {
             baseLayerPicker: true,
             geocoder: false,
             infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
-            selectionIndicator: false,
+            selectionIndicator: true,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
             terrainExaggeration: 1.0, //고도 기복 비율 조정
