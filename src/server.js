@@ -10,7 +10,7 @@ const cors = require('cors');
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cors());
-// 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다. 
+// 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다.
 console.log("root : " + __dirname + '/../dist');
 server.set('', __dirname + '/../dist');
 server.set('view engine', 'ejs');
@@ -19,10 +19,7 @@ server.engine('html', require('ejs').renderFile);
 const port = process.env.PORT || 8082;
 var mysql = require('mysql');
 var mybatisMapper = require('mybatis-mapper');
-<<<<<<< HEAD
-=======
 console.log(__dirname + '/js/repository/mapper/testMapper.xml');
->>>>>>> 700d778be5a061c17bab44152361fc573100dece
 mybatisMapper.createMapper([__dirname + '/js/repository/mapper/testMapper.xml']);
 var format = { language: 'sql', indent: '  ' };
 
@@ -37,7 +34,7 @@ var connection = mysql.createConnection({
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
     console.log(url);
-    var request = http.get(url, function(response) {
+    var request = http.get(url, function (response) {
         var body = "";
         var jsonObj;
         response.on('data', (chunk) => {
@@ -55,9 +52,9 @@ server.get('/default/', (req, res) => {
     console.log(queryStm);
     // var queryStm2 = req.query.queryStm2;
     //동시에 실행시키는 방법 생각해보자...
-    connection.query(queryStm[0], function(err, rows1, fields) {
+    connection.query(queryStm[0], function (err, rows1, fields) {
         if (!err) {
-            connection.query(queryStm[1], function(err, rows2, fields) {
+            connection.query(queryStm[1], function (err, rows2, fields) {
                 // connection.end();
                 if (!err) {
                     console.log(fields);
@@ -83,9 +80,9 @@ server.get('/Entities/', (req, res) => {
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
-    connection.query(query1, function(err, result1, fields) {
-        connection.query(query2, function(err, result2, fields) {
-            connection.query(query3, function(err, result3, fields) {
+    connection.query(query1, function (err, result1, fields) {
+        connection.query(query2, function (err, result2, fields) {
+            connection.query(query3, function (err, result3, fields) {
                 if (!err) {
                     res.json({ ally: result1, bmoa: result2, enemy: result3 });
                 } else {

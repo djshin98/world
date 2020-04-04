@@ -14,14 +14,14 @@ class OliveTree {
         $(this.selector + " li>div.folder").unbind();
         $(this.selector + " li>div.file").unbind();
 
-        $(this.selector + " li>div.folder").bind('click', function() {
+        $(this.selector + " li>div.folder").bind('click', function () {
             _this.toggleFolder(this);
             if (_this.options.onSelect) {
                 _this.options.onSelect('folder', this, _this);
             }
         });
 
-        $(this.selector + " li>div.file").bind('click', function() {
+        $(this.selector + " li>div.file").bind('click', function () {
             $('.clicked').removeClass('clicked');
             $(this).addClass('clicked');
             if ($(this).hasClass('file')) {
@@ -32,24 +32,30 @@ class OliveTree {
                     var __this = this;
                     var findData;
                     if ($(this).closest('.collapsable').children('.folder')[0].textContent === "아군부대") {
-                        findData = app.collections["ALLY"].objects.find(function(d) {
+                        findData = app.collections["ALLY"].objects.find(function (d) {
                             return (__this.textContent === d.options.name) ? true : false;
                         });
                     } else if ($(this).closest('.collapsable').children('.folder')[0].textContent === "적부대") {
-                        findData = app.collections["ENEMY"].objects.find(function(d) {
+                        findData = app.collections["ENEMY"].objects.find(function (d) {
                             return (__this.textContent === d.options.name) ? true : false;
                         });
                     }
+
+                    //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
+                    // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
+                    //   위도거리는 어디서나 1도=111Km
                     var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
                     var lon = Cesium.Math.toDegrees(carto.longitude);
                     var lat = Cesium.Math.toDegrees(carto.latitude);
-                    map.oliveCamera.flyTo(lon, lat);
+                    var calcresult = {};
+                    calcresult = map.oliveCamera.cameraFocus(lon, lat);
+                    map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
                 }
             }
         });
     }
     _toHtmlAttribute(v) {
-        return Object.keys(v).reduce(function(prev, key) { return prev + "data-" + key + "='" + v[key] + "' "; }, " ");
+        return Object.keys(v).reduce(function (prev, key) { return prev + "data-" + key + "='" + v[key] + "' "; }, " ");
     }
     _makeTree(arr, options) {
         let _this = this;
