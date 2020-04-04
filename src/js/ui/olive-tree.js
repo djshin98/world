@@ -28,7 +28,7 @@ class OliveTree {
                 if (_this.options.onSelect) {
                     _this.options.onSelect('file', this, _this);
                 }
-                if (_this.selector === "#city-view") {
+                if (_this.selector === "#toshow-view") {
                     var __this = this;
                     var findData;
                     if ($(this).closest('.collapsable').children('.folder')[0].textContent === "아군부대") {

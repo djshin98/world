@@ -23,7 +23,7 @@ class Application {
                 height: 0
             },
             section: {
-                getWidth: function() {
+                getWidth: function () {
                     if (_this.windowLayout.section.visible) {
                         if (_this.windowLayout.section.view.visible) {
                             return _this.windowLayout.section.width;
@@ -53,14 +53,14 @@ class Application {
         //window.onresize();
         this.init(options);
 
-        if( options.success ){
+        if (options.success) {
             options.success(this.map);
         }
-        
+
     }
     init(options) {
         var _this = this;
-        dom.$("#door-handle")[0].onclick = function(e) {
+        dom.$("#door-handle")[0].onclick = function (e) {
             _this.section.showView(!_this.windowLayout.section.view.visible);
         };
 
@@ -82,7 +82,7 @@ class Application {
                     { url:'http://192.168.0.153:8080/Map/Seoul_TMS/'},
                     { url:'http://192.168.0.153:8080/Map/Daejon_TMS/'}
                 ]
-                
+
             }
         });
         */
@@ -137,22 +137,22 @@ class Application {
                 { name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
                 { name: "Draw", icon: "edit", page: "section/draw.html" },
                 { name: "Entities", icon: "sitemap", page: "section/entities.html" },
-                { name: "도시요소", icon: "users", page: "section/city.html" }
+                { name: "도시요소", icon: "users", page: "section/toshow.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
             ],
-            onload: function(parentNode, data) {
-                $(data).each(function(i, d) {
+            onload: function (parentNode, data) {
+                $(data).each(function (i, d) {
                     $(parentNode).append(d);
                 });
             },
-            oncomplete: function() {
-                _this.map.oliveCamera.widget(function(obj) {
+            oncomplete: function () {
+                _this.map.oliveCamera.widget(function (obj) {
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
                     document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
                     document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
                 });
-                _this.map.oliveCursor.widget(function(obj) {
+                _this.map.oliveCursor.widget(function (obj) {
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
                 });
@@ -178,7 +178,7 @@ class Application {
         });
     }
     onResize() {
-        let application = (typeof(app) == "undefined") ? this : app;
+        let application = (typeof (app) == "undefined") ? this : app;
         let windowLayout = application.windowLayout;
         var width = windowLayout.section.getWidth();
         var headerHeight = windowLayout.header.height;
