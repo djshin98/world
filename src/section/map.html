@@ -203,7 +203,7 @@ $('#map-viewmodel .accordion').accordion({
         }
 });
 
-    $("#map-viewmodel input[name=gars]").bind('change',function(){
+$("#map-viewmodel input[name=gars]").bind('change',function(){
         var ui = new OliveInput("#map-viewmodel");
         app.map.gridGARS(ui.boolean("gars"),{
                             tile:ui.boolean("tileset"),
@@ -213,15 +213,15 @@ $('#map-viewmodel .accordion').accordion({
                             backgroundColor: ui.color("background-color" , "transparent" ),
                             color: ui.color("color") });
                             
-    });
-    $("#map-viewmodel input[name=turn]").bind('change',function(){
+});
+$("#map-viewmodel input[name=turn]").bind('change',function(){
       var ui = new OliveInput("#map-viewmodel");
       if( ui.boolean("turn") ){
         app.map.oliveCamera.turn();
       }else{
         app.map.oliveCamera.turnoff();
       }
-    });
+});
 function widget(tag,name){
   if( $(tag).prop("checked") == true ){
     app.map.show(name, true);

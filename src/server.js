@@ -19,10 +19,7 @@ server.engine('html', require('ejs').renderFile);
 const port = process.env.PORT || 8082;
 var mysql = require('mysql');
 var mybatisMapper = require('mybatis-mapper');
-<<<<<<< HEAD
-=======
 console.log(__dirname + '/js/repository/mapper/testMapper.xml');
->>>>>>> 700d778be5a061c17bab44152361fc573100dece
 mybatisMapper.createMapper([__dirname + '/js/repository/mapper/testMapper.xml']);
 var format = { language: 'sql', indent: '  ' };
 

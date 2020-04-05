@@ -63,6 +63,6 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         port: 8081,
-        host: '192.168.0.12'
+        host: 'localhost'
     }
 };
