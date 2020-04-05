@@ -6,7 +6,7 @@ class OliveTree {
             $(this.selector).html(this._makeTree(arr, this.options));
         }
         //document.getElementById(id).innerHTML = this._makeTree(id, arr, options);
-
+        this.arr = arr;
         let _this = this;
         $(this.selector).treeview({
             collapsed: false
@@ -53,6 +53,16 @@ class OliveTree {
                 }
             }
         });
+
+        $(this.selector + " li>input[type='checkbox']").change(function () {
+
+            _this.selectViewOnMap(this, this.className);
+            // if ($("#checkBoxId").is(":checked")) {
+            //     alert("체크박스 체크했음!");
+            // } else {
+            //     alert("체크박스 체크 해제!");
+            // }
+        });
     }
     _toHtmlAttribute(v) {
         return Object.keys(v).reduce(function (prev, key) { return prev + "data-" + key + "='" + v[key] + "' "; }, " ");
@@ -65,12 +75,20 @@ class OliveTree {
             let text = options.onText ? options.onText(d) : "";
 
             if (d.children && d.children.length > 0) {
-
-                str += '<li><div class="folder"' + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
-                str += '<ul>';
-                str += _this._makeTree(d.children, options);
-                str += '</ul>';
-                str += '</li>';
+                if (_this.selector === "#toshow-view") {
+                    str += '<li><input type="checkbox" class="' + d.id + '"/>';
+                    str += '<div class="folder"' + _this._toHtmlAttribute(attr) + 'style="display: inline-block;">' + text + '</div>';
+                    str += '<ul>';
+                    str += _this._makeTree(d.children, options);
+                    str += '</ul>';
+                    str += '</li>';
+                } else {
+                    str += '<li><div class="folder"' + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                    str += '<ul>';
+                    str += _this._makeTree(d.children, options);
+                    str += '</ul>';
+                    str += '</li>';
+                }
             } else {
                 str += '<li><div class="file"' + _this._toHtmlAttribute(attr) + '>' + text + '</li>';
             }
@@ -88,6 +106,24 @@ class OliveTree {
         } else {
             p.swapClass('collapsable', 'expandable');
             prev.swapClass('collapsable-hitarea', 'expandable-hitarea');
+        }
+    }
+    selectViewOnMap(_this, name) {
+        if (name === "BMOA") {
+            console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
+        } else {
+            if ($(_this).is(":checked")) {
+                var viewdata = this.arr.find(function (d) {
+                    return (d.id === name) ? true : false;
+                });
+                let addCollection = app.getCollection(name);
+                viewdata.children.forEach(function (d) {
+                    d.size = 30;
+                    addCollection.add(d.cartesianVal, d);
+                });
+            } else {
+                // app.collections['ALLY'].removeCollection();
+            }
         }
     }
 }

@@ -20,12 +20,15 @@
             mariaDB.excuteQuery('Entities', {}, function(resultdata) {
                 var node = [{
                     name: '아군부대',
+                    id: 'ALLY',
                     children: [],
                 }, {
                     name: 'bmoa',
+                    id: 'BMOA',
                     children: [],
                 }, {
                     name: '적부대',
+                    id: 'ENEMY',
                     children: [],
                 }, ];
                 var index = 0;
@@ -60,19 +63,19 @@
                 });
 
                 // document.querySelector("[data-content='Home']").className
-                node.forEach(function(n, i) {
-                    if (i === 0) {
-                        n.children.forEach(function(d) {
-                            d.size = 30;
-                            allyCollection.add(d.cartesianVal, d);
-                        });
-                    } else if (i === 2) {
-                        n.children.forEach(function(d) {
-                            d.size = 30;
-                            enemyCollection.add(d.cartesianVal, d);
-                        });
-                    }
-                });
+                /* node.forEach(function(n, i) {
+                                    if (i === 0) {
+                                        n.children.forEach(function(d) {
+                                            d.size = 30;
+                                            allyCollection.add(d.cartesianVal, d);
+                                        });
+                                    } else if (i === 2) {
+                                        n.children.forEach(function(d) {
+                                            d.size = 30;
+                                            enemyCollection.add(d.cartesianVal, d);
+                                        });
+                                    }
+                                }); */
             });
         }
     }
