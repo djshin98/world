@@ -47,8 +47,6 @@ class Cursor{
     getSelectedObjFromPoint(position,longitude,latitude){
         var valueToReturn= null;
         var pickedObject = this.viewer.scene.pick(position);
-        var pickedObjects = this.viewer.scene.drillPick(position);
-        var picked = pickedObjects[0];
         if (!Cesium.defined(pickedObject)) {
             picked = null;
             valueToReturn = null;
@@ -58,6 +56,9 @@ class Cursor{
             }
         }
         else {
+            var pickedObjects = this.viewer.scene.drillPick(position);
+            var picked = pickedObjects[0];
+        
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
 
             if( this.labelEntity ){
