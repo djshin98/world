@@ -174,7 +174,7 @@ class Camera {
         }
         let headCosine = Math.cos((areaDegree - headingDegree) * (Math.PI / 180));
         let headSine = Math.sin((areaDegree - headingDegree) * (Math.PI / 180));
-        if (latDistance > 20000) { latDistance = 20000; } // pitch의 각이 0도에 너무 가까워지면 최초 빗변이 될 distan가 너무멀어진다.
+        if (latDistance > 12000) { latDistance = 12000; } // pitch의 각이 0도에 너무 가까워지면 최초 빗변이 될 distan가 너무멀어진다.
 
         let resultlat = headCosine * latDistance;// 빗변의 길이라고 생각하자
         let resultlon = headSine * latDistance;
