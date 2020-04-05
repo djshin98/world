@@ -29,10 +29,34 @@
   </div>
 
   <div class="demo-container">
-    <label><input type="radio" name="lineStyle" value="line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle"> line</label>
-    <label><input type="radio" name="lineStyle" value="dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle"> dot</label>
-    <label><input type="radio" name="lineStyle" value="dot-line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle"> dot line</label>
-    <label><input type="radio" name="lineStyle" value="dot-dot-line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle"> dot dot line</label>
+    <label><input type="radio" name="lineStyle" value="line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+      <svg height="20" width="80">
+        <g fill="none" stroke="white" stroke-width="4">
+          <path stroke-linecap="butt" d="M5 15 l75 0" />
+        </g>
+      </svg>
+    </label>
+    <br/><label><input type="radio" name="lineStyle" value="dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+      <svg height="20" width="80">
+        <g fill="none" stroke="white" stroke-width="4">
+          <path stroke-dasharray="5,5" d="M5 15 l75 0" />
+        </g>
+      </svg>
+    </label>
+    <br/><label><input type="radio" name="lineStyle" value="long-dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+      <svg height="20" width="80">
+        <g fill="none" stroke="white" stroke-width="4">
+          <path stroke-dasharray="10,10" d="M5 15 l75 0" />
+        </g>
+      </svg>
+    </label>
+    <br/><label><input type="radio" name="lineStyle" value="dot-dot-line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+      <svg height="20" width="80">
+        <g fill="none" stroke="white" stroke-width="4">
+          <path stroke-dasharray="20,10,5,5,5,10" d="M5 15 l75 0" />
+        </g>
+      </svg>
+    </label>
   </div>
 
   <div class="demo-container">

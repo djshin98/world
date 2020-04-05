@@ -78,7 +78,17 @@ class DrawInCesium{
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
     }
-    
+    dashPatternFromString(str){
+        if( str == "line"){
+            return parseInt('11111111111', 2);
+        }else if( str == "dot"){
+            return parseInt('111111111111000000000000', 2);
+        }else if( str == "long-dot"){
+            return parseInt('110011001100', 2);
+        }else if( str == "dot-dot-line"){
+            return parseInt('111100101001111', 2);
+        }
+    }
     draw( viewModel ){
         this.viewModel = Object.assign(this.viewModel, viewModel );
         this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor).withAlpha(this.viewModel.lineTransparent);
@@ -112,13 +122,23 @@ class DrawInCesium{
     drawShape(positionData) {
         var shape;
         if(this.viewModel.mode === 'line') {
+            let _this = this;
+            let option = {
+                positions : positionData,
+                clampToGround : true,
+                color : _this.viewModel.lineColor,
+                width : _this.viewModel.lineWidth
+            };
+            if( this.viewModel.lineStyle != "line"){
+                option.material = new Cesium.PolylineDashMaterialProperty({
+                    color : _this.viewModel.lineColor,
+                    dashPattern: _this.dashPatternFromString(_this.viewModel.lineStyle)
+                });
+            }
             shape = this.viewer.entities.add({
-                polyline : {
-                    positions : positionData,
-                    clampToGround : true,
-                    width : 3
-                }
+                polyline : option
             });
+
         }else if (this.viewModel.mode === 'polygon') {
             shape = this.viewer.entities.add({
                 polygon: {
