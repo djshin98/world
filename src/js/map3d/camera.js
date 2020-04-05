@@ -1,21 +1,21 @@
 var { IxDatabase } = require('../repository/db');
 
-class Camera{
-    constructor(viewer){
+class Camera {
+    constructor(viewer) {
         this.viewer = viewer;
         this.camera = this.viewer.scene.camera;
 
-        this.db = new IxDatabase(1,"camera");
+        this.db = new IxDatabase(1, "camera");
         this.cameraWidgetCallback = undefined;
         this.distance = 3000;
         this.load();
     }
-    widget(callback){
+    widget(callback) {
         this.cameraWidgetCallback = callback;
     }
-    load(){
+    load() {
         let _this = this;
-        this.camera.moveEnd.addEventListener(function() {
+        this.camera.moveEnd.addEventListener(function () {
             _this.db.set("scene", "camera", {
                 position: _this.camera.position,
                 heading: _this.camera.heading,
@@ -27,7 +27,7 @@ class Camera{
             }
         });
 
-        this.db.get("scene", "camera", function(result) {
+        this.db.get("scene", "camera", function (result) {
             if (result && result.value) {
                 let obj = result.value;
                 _this.camera.flyTo({
@@ -41,20 +41,20 @@ class Camera{
             }
         });
     }
-    pitch(bfixCenter, radian){
-        if( bfixCenter && radian ){
+    pitch(bfixCenter, radian) {
+        if (bfixCenter && radian) {
             let center = this.center();
-            if( center ){
-                this.distance = Cesium.Cartesian3.distance( this.camera.positionWC , center );
+            if (center) {
+                this.distance = Cesium.Cartesian3.distance(this.camera.positionWC, center);
                 this.camera.lookAt(center, new Cesium.HeadingPitchRange(this.camera.heading, radian, this.distance));
             }
-            
-        }else{
+
+        } else {
             return this.camera.pitch;
         }
     }
-    roll(bfixCenter, radian){
-        if( bfixCenter && typeof(radian) != "undefined" ){
+    roll(bfixCenter, radian) {
+        if (bfixCenter && typeof (radian) != "undefined") {
             this.camera.flyTo({
                 destination: this.camera.position,
                 orientation: {
@@ -64,28 +64,28 @@ class Camera{
                 }
             });
             //this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(Cesium.Math.PI/4, -Cesium.Math.PI/7, this.distance));
-        }else{
+        } else {
             return this.camera.roll;
         }
     }
-    heading(bfixCenter, radian){
-        if( bfixCenter && radian ){
+    heading(bfixCenter, radian) {
+        if (bfixCenter && radian) {
             let center = this.center();
-            if( center ){
-                this.distance = Cesium.Cartesian3.distance( this.camera.positionWC , center );
+            if (center) {
+                this.distance = Cesium.Cartesian3.distance(this.camera.positionWC, center);
                 this.camera.lookAt(center, new Cesium.HeadingPitchRange(radian, this.camera.pitch, this.distance));
             }
-        }else{
+        } else {
             return this.camera.heading;
         }
     }
-    distance(d){
+    distance(d) {
         this.distance = d;
         this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(this.camera.heading, this.camera.pitch, this.distance));
     }
-    center(){
+    center() {
         if (this.viewer.scene.mode == 3) {
-            let windowPosition = new Cesium.Cartesian2(this.viewer.container.clientWidth / 2, 
+            let windowPosition = new Cesium.Cartesian2(this.viewer.container.clientWidth / 2,
                 this.viewer.container.clientHeight / 2);
             let pickRay = this.viewer.scene.camera.getPickRay(windowPosition);
             let pickPosition = this.viewer.scene.globe.pick(pickRay, this.viewer.scene);
@@ -101,7 +101,7 @@ class Camera{
         }
         return this.camera.position;
     }
-    
+
     flyTo(x, y) {
         this.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(x, y, this.distance),
@@ -112,7 +112,7 @@ class Camera{
             }
         });
     }
-    flyToRectangle(rect){
+    flyToRectangle(rect) {
         this.camera.flyTo({
             destination: rect,
             /*orientation: {
@@ -122,27 +122,85 @@ class Camera{
             }*/
         });
     }
-    turn(){
+    turn() {
         this.turnoff();
         let _this = this;
         let center = _this.center();
-        if( center ){
+        if (center) {
             let count = 0;
-            this.turnHandler = setInterval(function(){
-                _this.camera.rotate(center, Cesium.Math.PI/1000);
+            this.turnHandler = setInterval(function () {
+                _this.camera.rotate(center, Cesium.Math.PI / 1000);
                 count++;
-                if( count == 2000){
+                if (count == 2000) {
                     _this.turnoff();
                 }
-            },10);
+            }, 10);
         }
     }
-    turnoff(){
-        if( this.turnHandler ){
+    turnoff() {
+        if (this.turnHandler) {
             clearInterval(this.turnHandler);
             this.turnHandler = undefined;
         }
     }
+    cameraFocus(lon, lat) {
+        let headingDegree = map.viewer3d.camera.heading * Cesium.Math.DEGREES_PER_RADIAN;
+        let pitTangent = Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180));
+        let cameraHeight = map.oliveCamera.distance;
+        let latDistance = cameraHeight / pitTangent;
+        let areaDegree;
+        //   위도거리는 어디서나 1도=111Km
+        //   경도거리는 우리나라기준 1도= 88.8km
+        let earthLatByone = 111000;
+        let earthLonByone = 88800;
+        switch (parseInt(headingDegree / 90)) {
+            case 4:
+                areaDegree = 360;
+                break;
+            case 3:
+                areaDegree = 360;
+                break;
+            case 2:
+                areaDegree = 270;
+                break;
+            case 1:
+                areaDegree = 180;
+                break;
+            case 0:
+                areaDegree = 90;
+                break;
+            default:
+                break;
+        }
+        let headCosine = Math.cos((areaDegree - headingDegree) * (Math.PI / 180));
+        let headSine = Math.sin((areaDegree - headingDegree) * (Math.PI / 180));
+        if (latDistance > 20000) { latDistance = 20000; } // pitch의 각이 0도에 너무 가까워지면 최초 빗변이 될 distan가 너무멀어진다.
+
+        let resultlat = headCosine * latDistance;// 빗변의 길이라고 생각하자
+        let resultlon = headSine * latDistance;
+        // var lonDistance = latDistance * headSine;
+        //   90도단위가 넘어가면 각도가 다시 90도부터 초기화가 되서 사인 코사인값을 바꿔줘야한다
+        if (headingDegree < 90 || (180 < headingDegree && headingDegree < 270)) {
+            var temp;
+            temp = resultlat;
+            resultlat = resultlon;
+            resultlon = temp;
+        }
+
+        // 위도 좌표 조정 보는 방향에따라 위도와 경도를 더할지 뺄지 결정
+        if (90 < headingDegree && headingDegree < 270)
+            lat += resultlat / earthLatByone;
+        else {
+            lat -= resultlat / earthLatByone;
+        }
+
+        if (0 < headingDegree && headingDegree < 180) {
+            lon -= resultlon / earthLonByone;
+        } else {
+            lon += resultlon / earthLonByone;
+        }
+        return { lat: lat, lon: lon };
+    }
 }
 
-module.exports = { OliveCamera : Camera };
+module.exports = { OliveCamera: Camera };
