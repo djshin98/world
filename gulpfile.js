@@ -21,9 +21,16 @@ var del = require('del');
 
 var paths = {
     bootstrap:{
-        css: './node_modules/bootstap/dist/css/*.css',
-        js: './node_modules/bootstap/dist/js/*.js',
-        dest:'./dist/libs/bootstrap/'
+        src: './node_modules/bootstrap/dist/**/*.*',
+        dest:'./src/libs/bootstrap/'
+    },
+    jquery:{
+        src: './node_modules/jquery/dist/**/*.*',
+        dest:'./src/libs/jquery/'
+    },
+    lobipanel:{
+        src: './node_modules/lobipanel/dist/**/*.*',
+        dest:'./src/libs/lobipanel/'
     },
     md: {
         src: './src/**/*.md',
@@ -215,8 +222,26 @@ function models() {
         .pipe(dest(paths.model.dest));
 }
 
+function bootstrap() {
+    return src(paths.bootstrap.src)
+        .pipe(dest(paths.bootstrap.dest));
+}
+
+function jquery() {
+    return src(paths.jquery.src)
+        .pipe(dest(paths.jquery.dest));
+}
+
+function lobipanel() {
+    return src(paths.lobipanel.src)
+        .pipe(dest(paths.lobipanel.dest));
+}
+
 function watchFiles() {
 
+    watch(paths.bootstrap.src, bootstrap);
+    watch(paths.jquery.src, jquery);
+    watch(paths.lobipanel.src, lobipanel);
     watch(paths.md.src, md);
 
     watch(paths.scss.src, scss);
@@ -235,4 +260,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(md, libs, jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(md, bootstrap, jquery, lobipanel, libs,  jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
