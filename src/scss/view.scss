@@ -146,6 +146,9 @@ section {
                     height:300px;
                     overflow: scroll;
 
+                    input[type=checkbox]{
+                        margin:0px;
+                    }
                     div.file {
                         cursor:pointer;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
