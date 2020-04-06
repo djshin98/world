@@ -1,4 +1,3 @@
-
 class OliveEntityCollection {
     constructor(map, options) {
         this.map = map;
@@ -31,6 +30,9 @@ class OliveEntityCollection {
         this.objects = [];
     }
     removeCollection() {
+        for (var i = this.objects.length - 1; i >= 0; i--) {
+            this.remove(this.objects[i].id);
+        }
         this.objects = [];
         // this.objects = [];
     }
@@ -38,6 +40,7 @@ class OliveEntityCollection {
         return this.viewer.entities.values.find((entity) => { return entity.id == id ? true : false; });
     }
     remove(id) {
+        var _this = this;
         this._removeEntity(this.get(id), entity => {
             let fi = this.objects.findIndex(d => { return entity.id == d.id ? true : false; });
             if (fi >= 0) {
@@ -80,8 +83,7 @@ class OliveEntityCollection {
                     }
                     this._removeEntity(subent, callback ? callback.call(_this, subent) : undefined);
                 });
-            }
-            !callback || callback.call(this, entity);
+            }!callback || callback.call(this, entity);
         }
     }
     move(id, longitude, latitude, height) {

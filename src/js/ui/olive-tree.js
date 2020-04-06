@@ -14,14 +14,14 @@ class OliveTree {
         $(this.selector + " li>div.folder").unbind();
         $(this.selector + " li>div.file").unbind();
 
-        $(this.selector + " li>div.folder").bind('click', function () {
+        $(this.selector + " li>div.folder").bind('click', function() {
             _this.toggleFolder(this);
             if (_this.options.onSelect) {
                 _this.options.onSelect('folder', this, _this);
             }
         });
 
-        $(this.selector + " li>div.file").bind('click', function () {
+        $(this.selector + " li>div.file").bind('click', function() {
             $('.clicked').removeClass('clicked');
             $(this).addClass('clicked');
             if ($(this).hasClass('file')) {
@@ -32,11 +32,11 @@ class OliveTree {
                     var __this = this;
                     var findData;
                     if ($(this).closest('.collapsable').children('.folder')[0].textContent === "아군부대") {
-                        findData = app.collections["ALLY"].objects.find(function (d) {
+                        findData = app.collections["ALLY"].objects.find(function(d) {
                             return (__this.textContent === d.options.name) ? true : false;
                         });
                     } else if ($(this).closest('.collapsable').children('.folder')[0].textContent === "적부대") {
-                        findData = app.collections["ENEMY"].objects.find(function (d) {
+                        findData = app.collections["ENEMY"].objects.find(function(d) {
                             return (__this.textContent === d.options.name) ? true : false;
                         });
                     }
@@ -54,7 +54,7 @@ class OliveTree {
             }
         });
 
-        $(this.selector + " li>input[type='checkbox']").change(function () {
+        $(this.selector + " li>input[type='checkbox']").change(function() {
 
             _this.selectViewOnMap(this, this.className);
             // if ($("#checkBoxId").is(":checked")) {
@@ -65,7 +65,7 @@ class OliveTree {
         });
     }
     _toHtmlAttribute(v) {
-        return Object.keys(v).reduce(function (prev, key) { return prev + "data-" + key + "='" + v[key] + "' "; }, " ");
+        return Object.keys(v).reduce(function(prev, key) { return prev + "data-" + key + "='" + v[key] + "' "; }, " ");
     }
     _makeTree(arr, options) {
         let _this = this;
@@ -113,16 +113,16 @@ class OliveTree {
             console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
         } else {
             if ($(_this).is(":checked")) {
-                var viewdata = this.arr.find(function (d) {
+                var viewdata = this.arr.find(function(d) {
                     return (d.id === name) ? true : false;
                 });
                 let addCollection = app.getCollection(name);
-                viewdata.children.forEach(function (d) {
+                viewdata.children.forEach(function(d) {
                     d.size = 30;
                     addCollection.add(d.cartesianVal, d);
                 });
             } else {
-                // app.collections['ALLY'].removeCollection();
+                app.collections[name].removeCollection();
             }
         }
     }
