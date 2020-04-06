@@ -65,6 +65,7 @@ server.get('/default/', (req, res) => {
 });
 
 server.get('/Entities/', (req, res) => {
+    console.log("Entitites");
     var param = req.query.param;
     var mapper = req.query.mapper;
     console.log(JSON.parse(param));
