@@ -55,7 +55,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             var cartoSet = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
             var lon = Cesium.Math.toDegrees(cartoSet.longitude);
             var lat = Cesium.Math.toDegrees(cartoSet.latitude);
-            var targetSet = [133.0965503, 43.2573504];
+            var targetSet = [110.0965503, 50.2573504]; // 도착지점 좌표
             var xcountSet = (targetSet[0] - lon) / 5000;
             var ycountSet = (targetSet[1] - lat) / 5000;
             var arrLonSet = lon + ((targetSet[0] - lon) / 2);
@@ -63,7 +63,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             var arrPointSet = [
                 [lon, 6000],
                 [arrLonSet, 100000],
-                [targetSet[0], 6000]
+                [targetSet[0], 6000] // 그냥 임시로 시작지점과 같은높이로 설정
             ];
         }
         let entity = this.addEntity({
