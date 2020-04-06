@@ -1,0 +1,17 @@
+{
+    "serverUrl": "http://localhost:8082",
+    "DBconnectionInfo": {
+        "host": "175.207.13.28",
+        "port": 3306,
+        "user": "root",
+        "password": "#Djshin98Root2019",
+        "database": "world"
+    },
+    "DBobj": {
+        "Entities": {
+            "path": "/Entities",
+            "mapper": "testMapper"
+        }
+    }
+
+}

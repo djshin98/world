@@ -1,7 +1,9 @@
+const obj = require("../../../conf/server.json");
+
 class MariaDB {
-    constructor(options) {
-        this.serverUrl = "http://localhost:8082"; // 나중에 다른 DB도 연동시 공통으로 빼야함(global setting 이라던지..).
-        this.options = options;
+    constructor() {
+        this.serverUrl = obj.serverUrl;
+        this.options = obj.DBobj;
         this.entResult;
         this.queryResult;
         // this.excuteQuery('Entities', { allyforceId: 'KN00000001', armyCode: 3 });
