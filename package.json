@@ -12,6 +12,7 @@
         "express-csp-header": "^2.3.2",
         "express-session": "^1.17.0",
         "fs": "0.0.1-security",
+        "jquery-ui": "^1.12.1",
         "json-loader": "^0.5.7",
         "mqtt": "^3.0.0",
         "mqtt-server": "^0.1.0",

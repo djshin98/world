@@ -20,6 +20,11 @@ var inject = require("gulp-inject-string");
 var del = require('del');
 
 var paths = {
+    bootstrap:{
+        css: './node_modules/bootstap/dist/css/*.css',
+        js: './node_modules/bootstap/dist/js/*.js',
+        dest:'./dist/libs/bootstrap/'
+    },
     md: {
         src: './src/**/*.md',
         dest: './dist/doc/'
