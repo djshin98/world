@@ -19,9 +19,9 @@ class KMilSymbolCollection extends OliveEntityCollection {
         if (!options.description) {
             options.description = (new SIDC(options.sic[0], options.sic)).toDescription();
         }
-        this._add(cartesian, options, image.toDataURL(), this.posCollback);
+        this._add(cartesian, options, image.toDataURL() );
     }
-    _add(cartesian, options, img, posCollback) {
+    _add(cartesian, options, img) {
         var _this = this;
         var billboardOptions = {
             options: options,
@@ -72,7 +72,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 if (options.sic === "SPAAMFB--------") {
                     var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
                     if (carto.height >= cartoSet.height)
-                        cartesian = posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
+                        cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
                 }
                 /* if (options.name === "지상작전사령부") {
                     app.collections
