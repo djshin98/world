@@ -5,6 +5,7 @@ let { SIDC } = require("../milsymbol/viewmodel-kmilsymbol");
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map) {
         super(map);
+        this.simulationSeting = {};
     }
     isAirEntity(entity) {
         if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.sic) {
@@ -13,18 +14,19 @@ class KMilSymbolCollection extends OliveEntityCollection {
         return false;
     }
 
-    add(cartesian, options){
+    add(cartesian, options) {
         let image = new kms.Symbol(options.sic, options);
-        if( !options.description ){
+        if (!options.description) {
             options.description = (new SIDC(options.sic[0], options.sic)).toDescription();
         }
-        this._add( cartesian , options, image.toDataURL() );
+        this._add(cartesian, options, image.toDataURL(), this.posCollback);
     }
-    _add(cartesian, options,img){
+    _add(cartesian, options, img, posCollback) {
+        var _this = this;
         var billboardOptions = {
-            options:options,
+            options: options,
             image: img,
-            scale:1.0,
+            scale: 1.0,
             position: cartesian,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
@@ -48,8 +50,38 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
             }, "");
         }
+
+        if (options.sic === "SPAAMFB--------") {
+            var cartoSet = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+            var lon = Cesium.Math.toDegrees(cartoSet.longitude);
+            var lat = Cesium.Math.toDegrees(cartoSet.latitude);
+            var targetSet = [133.0965503, 43.2573504];
+            var xcountSet = (targetSet[0] - lon) / 5000;
+            var ycountSet = (targetSet[1] - lat) / 5000;
+            var arrLonSet = lon + ((targetSet[0] - lon) / 2);
+
+            var arrPointSet = [
+                [lon, 6000],
+                [arrLonSet, 100000],
+                [targetSet[0], 6000]
+            ];
+        }
         let entity = this.addEntity({
-            position: cartesian,
+            // position: cartesian,
+            position: new Cesium.CallbackProperty(function(time, getPos) {
+                if (options.sic === "SPAAMFB--------") {
+                    var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+                    if (carto.height >= cartoSet.height)
+                        cartesian = posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
+                }
+                /* if (options.name === "지상작전사령부") {
+                    app.collections
+                    count++;
+                    console.log(count);
+                } */
+                return cartesian;
+            }, false),
+
             billboard: billboardOptions,
             description: new Cesium.CallbackProperty(function(time, result) {
                 return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + billboardOptions.image + '"/>\
@@ -103,6 +135,39 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         //console.log("add entity : " + entity.id);
     }
+    posCollback(cartesian, target, xcount, ycount, arrLon, arrPoint) {
+        var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+        var lon = Cesium.Math.toDegrees(carto.longitude);
+        var lat = Cesium.Math.toDegrees(carto.latitude);
+        //distance 높이값 뭐뭐[]
+        var res = 0;
+        var xResult = [];
+        var finalRes = 0;
+        //val 이 구하고자 하는 x값 계속 바뀌는...
+
+        arrPoint.forEach(function(da, i) {
+            if (xResult.length < arrPoint.length) {
+                arrPoint.forEach(function(d) {
+                    var num = 1;
+                    var den = 1;
+                    var numArr = arrPoint.filter(function(f) {
+                        return f[0] !== d[0];
+                    });
+                    numArr.forEach(function(c) {
+                        num *= (lon + xcount - c[0]);
+                        den *= (d[0] - c[0]);
+                    });
+
+                    xResult.push(num / den);
+
+                });
+            }
+            finalRes += (xResult[i] * da[1]);
+        });
+
+        return Cesium.Cartesian3.fromDegrees(lon + xcount, lat + ycount, finalRes);
+    }
+
     open(entities) {
         this.close();
         if (entities) {

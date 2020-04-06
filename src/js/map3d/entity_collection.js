@@ -122,6 +122,7 @@ class OliveEntityCollection {
 
         }
     }
+
 }
 
 module.exports = { OliveEntityCollection: OliveEntityCollection };
