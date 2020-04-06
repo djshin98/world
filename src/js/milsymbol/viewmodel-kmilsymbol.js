@@ -261,13 +261,13 @@ class ViewModel_KMilSymbol {
         var _this = this;
         arr.forEach(d => {
             if (d.children && d.children.length > 0) {
-                str += '<li><div class="folder tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + _this.tooltipModifier(d) + '</span></div>';
+                str += '<li><div class="folder functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div>';
                 str += '<ul>';
                 str += _this._makeModifierTree(id, d.children);
                 str += '</ul>';
                 str += '</li>';
             } else {
-                str += '<li><div class="file tooltip functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '<span class="tooltiptext">' + _this.tooltipModifier(d) + '</span></div></li>';
+                str += '<li><div class="file functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div></li>';
             }
         });
         return str;
