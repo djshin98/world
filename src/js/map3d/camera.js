@@ -101,7 +101,6 @@ class Camera {
         }
         return this.camera.position;
     }
-
     flyTo(x, y) {
         this.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(x, y, this.distance),
