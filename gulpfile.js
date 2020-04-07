@@ -20,6 +20,14 @@ var inject = require("gulp-inject-string");
 var del = require('del');
 
 var paths = {
+    conf:{
+        src: './conf/**/*.*',
+        dest:'./dist/conf/'
+    },
+    popper:{
+        src: './node_modules/popper.js/dist/**/*.*',
+        dest:'./src/libs/popper/'
+    },
     bootstrap:{
         src: './node_modules/bootstrap/dist/**/*.*',
         dest:'./src/libs/bootstrap/'
@@ -236,9 +244,18 @@ function lobipanel() {
     return src(paths.lobipanel.src)
         .pipe(dest(paths.lobipanel.dest));
 }
+function popper() {
+    return src(paths.popper.src)
+        .pipe(dest(paths.popper.dest));
+}
+function conf() {
+    return src(paths.conf.src)
+        .pipe(dest(paths.conf.dest));
+}
 
 function watchFiles() {
-
+    watch(paths.conf.src, conf);
+    watch(paths.popper.src, popper);
     watch(paths.bootstrap.src, bootstrap);
     watch(paths.jquery.src, jquery);
     watch(paths.lobipanel.src, lobipanel);
@@ -260,4 +277,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(md, bootstrap, jquery, lobipanel, libs,  jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,md, popper, bootstrap, jquery, lobipanel, libs,  jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));

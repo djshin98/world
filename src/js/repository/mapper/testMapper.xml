@@ -3,14 +3,14 @@
 <mapper namespace="testMapper">  
   <select id="testBasic1">
       SELECT * 
-        FROM ally_force
+        FROM t_waa_unit
   </select>
   <select id="testBasic2">
       SELECT * 
-        FROM bmoa
+        FROM t_waa_bmoa
   </select>
   <select id="testBasic3">
       SELECT * 
-        FROM enemy_force
+        FROM t_waa_enemy_unit
   </select>
 </mapper>

@@ -9,11 +9,11 @@
 
     var gzipHeader = Buffer.from('1F8B08', 'hex');
 
-    console.log('ready Olive Server 1.2.1');
+    console.log('ready Olive Server 1.2.2');
 
     var yargs = require('yargs').options({
         'port': {
-            'default': 8080,
+            'default': 8081,
             'description': 'Port to listen on.'
         },
         'public': {
