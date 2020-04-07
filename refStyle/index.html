@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>합동참모본부 INDEX</title>
+  <link rel="stylesheet" href="./assets/styles/reset.css">
+  <link rel="stylesheet" href="./assets/styles/common.css">
+  <script src="../assets/scripts/libs/jquery-3.3.1.min.js"></script>
+  <style>
+    .index-table {
+      margin: 0 auto;
+      max-width: 1900px;
+      width: 100%;
+    }
+
+    .index-table th {
+      height: 50px;
+      vertical-align: middle;
+      background-color: #374148;
+    }
+
+    .index-table td {
+      height: 50px;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .index-table .red {
+      color: #a37a50;
+    }
+
+    .index-table a {
+      text-decoration: underline;
+      color: #3f8ea8;
+    }
+  </style>
+</head>
+
+<body>
+  <table class="index-table">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Page Name</th>
+        <th>Status</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num"></td>
+        <td class="title">
+          <a href="./pages/page1.html" target="_blank">Page 1</a>
+        </td>
+        <td class="red">작업완료</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="num"></td>
+        <td class="title">
+          <a href="./pages/page2.html" target="_blank">Page 2</a>
+        </td>
+        <td class="red">작업완료</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="num"></td>
+        <td class="title">
+          <a href="./pages/modal.html?modalName=edit" target="_blank">Modal (영상편집)</a>
+        </td>
+        <td class="red">작업완료</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="num"></td>
+        <td class="title">
+          <a href="./pages/modal.html?modalName=other" target="_blank">Modal (기타)</a>
+        </td>
+        <td class="red">작업완료</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <script type="text/javascript">
+    $(function () {
+      $('.num').each(function (index) {
+        $(this).text(index + 1);
+      })
+    })
+  </script>
+</body>
+
+</html>

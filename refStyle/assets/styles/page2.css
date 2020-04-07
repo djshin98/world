@@ -1,0 +1,16 @@
+@charset 'utf-8';
+
+.box {
+  height: 940px;
+  opacity: 1;
+  transform: scale(1);
+}
+.box.background {
+  background: url('../images/box-background.png') no-repeat 0 0;
+}
+.box.background .box__contents {
+  background: none;
+}
+.box:not(.background) .box__contents {
+  background: #2e3439;
+}

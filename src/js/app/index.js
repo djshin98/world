@@ -8,6 +8,7 @@ var { DrawInCesium } = require("../draw/base");
 var { MariaDB } = require("../repository/maria_db");
 require("../ui/olive-input");
 require("../ui/olive-tree");
+require("../ui/olive-dialog");
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
