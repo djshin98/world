@@ -72,7 +72,7 @@ server.get('/Entities/', (req, res) => {
     var mapper = req.query.mapper;
     console.log(JSON.parse(param));
     var query1 = mybatisMapper.getStatement(mapper, 'unit', JSON.parse(param), format);
-    var query2 = mybatisMapper.getStatement(mapper, 'emoa', JSON.parse(param), format);
+    var query2 = mybatisMapper.getStatement(mapper, 'bmoa', JSON.parse(param), format);
     var query3 = mybatisMapper.getStatement(mapper, 'enemy_unit', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
