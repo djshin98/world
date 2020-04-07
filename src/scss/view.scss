@@ -16,10 +16,11 @@ section {
     height: 600px;
     background-color: $sectionBackgroundColor;
     .section-head {
-        background-color: #99a0bf;
+        text-align: center;
+        background-color: #16191c;
         border-right: 1px solid $handleColor;
         height: $sectionHeadHeight;
-        padding: 1em;
+        padding: 1.1em;
         .logo.icon {
             img {
                 width: 2em;
