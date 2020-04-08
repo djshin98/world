@@ -5,7 +5,7 @@ var { MilMap } = require("../map3d/milmap");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { JsonByFolder } = require("../repository/json-by-folder");
 var { DrawInCesium } = require("../draw/base");
-var { MariaDB } = require("../repository/maria_db");
+require("../util/ServerAdapter");
 require("../ui/olive-input");
 require("../ui/olive-tree");
 require("../ui/olive-dialog");
@@ -65,8 +65,6 @@ class Application {
         };
 
         this.map = new MilMap(options);
-        this.mariaDB = new MariaDB();
-        global.mariaDB = this.mariaDB;
         /*
         {
             map3: {

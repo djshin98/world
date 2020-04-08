@@ -118,7 +118,7 @@ class JusoSearch {
             "format=json";
         // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
         var _this = this;
-        axios.get("http://localhost:8082/map/juso", {
+        axios.get("http://192.168.0.12:8082/map/juso", {
             params: {
                 url: str
             }

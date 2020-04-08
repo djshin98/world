@@ -17,7 +17,7 @@
         if (app.collections['ALLY'].objects.length > 0) {
             return;
         } else {
-            mariaDB.excuteQuery('Entities', {}, function(resultdata) {
+            serverAdapter.get('Entities', {}, function(resultdata) {
                 var node = [{
                     name: '아군부대',
                     id: 'ALLY',

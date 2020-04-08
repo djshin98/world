@@ -21,7 +21,7 @@ var del = require('del');
 
 var paths = {
     conf:{
-        src: './conf/**/*.*',
+        src: './src/conf/**/*.*',
         dest:'./dist/conf/'
     },
     popper:{

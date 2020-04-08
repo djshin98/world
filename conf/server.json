@@ -1,5 +1,5 @@
 {
-    "serverUrl": "http://localhost:8082",
+    "serverUrl": "http://192.168.0.12:8082",
     "DBconnectionInfo": {
         "host": "175.207.13.28",
         "port": 3306,
