@@ -1,6 +1,6 @@
 //let {Cesium} = require('cesium/Cesium');
 let { OliveEntityCollection } = require('../map3d/entity_collection');
-let { SIDC } = require("../milsymbol/viewmodel-kmilsymbol");
+let { SIDC } = require("../viewmodel/kmilsymbol");
 
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map) {
