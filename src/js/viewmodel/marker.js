@@ -1,23 +1,60 @@
+var pinBuilder = new Cesium.PinBuilder();
 class Marker{
-    constructor(){
-
+    constructor(options){
+        this.options = Object.assign({},options);
+        this.viewModel = {
+            type: 'color',
+            name:'',
+            size: 48,
+            height:0,
+            color: "#ffffff",
+            icon:'hostpital',
+            url: "",
+            };
     }
     update(viewModel) {
-        var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });
-        var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
-        if (option.sic && option.sic.length > 0) {
-            var symbol = new ms.Symbol(option.sic, option);
+        let options = Object.assign(this.viewModel,viewModel);
+        this.viewModel = options;
+        let image;
+        let _this = this;
+        let colorObj;
+        if( typeof(options.color) == "string" ){
+            colorObj = Cesium.Color.fromCssColorString(options.color);
+        }else{
+            colorObj = options.color;
+        }
 
-            option.code = symbol.toDataURL();
-            return this.template(option);
+        switch(options.type){
+            case 'color':{
+                image = pinBuilder.fromColor(colorObj, options.size).toDataURL();
+                $(this.options.selector).html(this.template(image,options));
+            }
+            break;
+            case 'text':{
+                image = pinBuilder.fromText(options.text, colorObj, options.size).toDataURL();
+                $(this.options.selector).html(this.template(image,options));
+            }
+            break;
+            case 'icon':{
+                Cesium.when(pinBuilder.fromMakiIconId(options.icon, colorObj, options.size), function(canvas) {
+                    image = canvas.toDataURL();
+                    $(_this.options.selector).html(_this.template(image,options));
+                });
+            }
+            break;
+            case 'image':{
+                var url = Cesium.buildModuleUrl(options.url);
+                Cesium.when(pinBuilder.fromUrl(url, colorObj, options.size), function(canvas) {
+                    image = canvas.toDataURL();
+                    $(_this.options.selector).html(_this.template(image,options));
+                });
+            }
+            break;
         }
     }
-    template(option) {
-        let imgData = option.code;
-        option.category = "KMILSYMBOL";
-        option.code = "";
-        option.description = this.container.descriptionFromSIDC(option.sic);
-        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
+    template(image,option) {
+        option.category = "MARKER";
+        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="app.dragger().drag(event)" src="' + image + '"/>';
     }
 }
 global.ViewModel_Marker = Marker;

@@ -91,26 +91,26 @@
   <div class="ui sub header">Pin</div>
     <div id="olive-marker">
         <div class="demo-container">
-            <label><input type="radio" name="selectedType" value="color" data-bind="checked: selectedType"> color</label>
-            <label><input type="radio" name="selectedType" value="text" data-bind="checked: selectedType"> text</label>
-            <label><input type="radio" name="selectedType" value="icon" data-bind="checked: selectedType"> icon</label>
-            <label><input type="radio" name="selectedType" value="image" data-bind="checked: selectedType"> image</label>
+            <label><input type="radio" name="type" value="color" data-bind="checked: type"> color</label>
+            <label><input type="radio" name="type" value="text" data-bind="checked: type"> text</label>
+            <label><input type="radio" name="type" value="icon" data-bind="checked: type"> icon</label>
+            <label><input type="radio" name="type" value="image" data-bind="checked: type"> image</label>
         </div>
         <div class="demo-container">
             <div>
-              <div class="label">문자</div><input type="text" data-bind="value: editedText" style="color:black;"/>
+              <div class="label">문자</div><input type="text" data-bind="value: name" style="color:black;"/>
             </div>
             <div class="ui inline">
-                <div class="label">크기</div><input style="width: 95px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: pinSize, valueUpdate: 'input'"> <span data-bind="text: pinSize">48</span>px
+                <div class="label">크기</div><input style="width: 95px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: size, valueUpdate: 'input'"> <span data-bind="text: size">48</span>px
             </div>
             <div class="ui inline">
-                <div class="label">높이</div><input style="width: 95px" type="range" min="1.0" max="1000.0" step="1.0" data-bind="value: pinHeight, valueUpdate: 'input'"> <span data-bind="text: pinHeight">1</span>m
+                <div class="label">높이</div><input style="width: 95px" type="range" min="1.0" max="1000.0" step="1.0" data-bind="value: height, valueUpdate: 'input'"> <span data-bind="text: height">1</span>m
             </div>
             <div class="ui inline">
-              <div class="label">색상</div><input style="width: 40px" type="color" data-bind="value: pinColor, valueUpdate: 'input'"> <span data-bind="text: pinColor"></span>
+              <div class="label">색상</div><input style="width: 40px" type="color" data-bind="value: color, valueUpdate: 'input'"> <span data-bind="text: color"></span>
             </div>
             <div>
-              <div class="label">아이콘</div><input type="text" data-bind="value: iconText" style="color:black;"/>
+              <div class="label">아이콘</div><input type="text" data-bind="value: icon" style="color:black;"/>
             </div>
             <div>
               <div class="label">아미지</div><input type="text" data-bind="value: url" style="color:black;"/>
@@ -156,25 +156,15 @@
 
   var marker = new ViewModel_Marker({selector:"#olive-marker-result"});
   map.connectViewModel('olive-marker', {
-    selectedType: 'view',
-    editedText:'',
-        pinSize: 48,
-        pinHeight:0,
-        pinColor: "#ffffff",
-        iconText:'hostpital',
-        url: "",
+    type: 'color',
+    name:'',
+    size: 48,
+    height:0,
+    color: "#ffffff",
+    icon:'hospital',
+    url: "",
     }, function(viewer, viewModel) {
       marker.update( viewModel );
   });  
-  var options = Object.assign({
-            name:'test',
-            type:'color',
-            color:Cesium.Color.ROYALBLUE,
-            text:'?',
-            icon:'hospital',
-            url:'',
-            size:48,
-        },opt);
-  
 
 </script>

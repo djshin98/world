@@ -1,3 +1,6 @@
+if( !Cesium.defined($) ){
+    alert('jquery unsupported');
+}
 class OliveDragger{
     constructor(app){
         this.map = app.map;

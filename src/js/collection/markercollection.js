@@ -18,9 +18,10 @@ class MarkerCollection extends OliveEntityCollection {
             size:48,
         },opt);
 
-        if( typeof(color) == "string" ){
-            options.color = Cesium.Color.fromCssColorString(color);
+        if( typeof(options.color) == "string" ){
+            options.color = Cesium.Color.fromCssColorString(options.color);
         }
+        let _this = this;
         switch(options.type){
             case 'color':{
                 this.viewer.entities.add({
@@ -46,7 +47,7 @@ class MarkerCollection extends OliveEntityCollection {
             break;
             case 'icon':{
                 Cesium.when(pinBuilder.fromMakiIconId(options.icon, options.color, options.size), function(canvas) {
-                    return viewer.entities.add({
+                    return _this.viewer.entities.add({
                         name : options.name,
                         position : cartesian,
                         billboard : {
@@ -60,7 +61,7 @@ class MarkerCollection extends OliveEntityCollection {
             case 'image':{
                 var url = Cesium.buildModuleUrl(options.url);
                 Cesium.when(pinBuilder.fromUrl(url, options.color, options.size), function(canvas) {
-                    return viewer.entities.add({
+                    return _this.viewer.entities.add({
                         name : options.name,
                         position : cartesian,
                         billboard : {

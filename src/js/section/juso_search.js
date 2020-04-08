@@ -2,8 +2,6 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get } = require("../util/comm");
 
-var service = require('../service/posts.js');
-
 class JusoSearch {
     constructor(options) {
         this.options = Object.assign({
