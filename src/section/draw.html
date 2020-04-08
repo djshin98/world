@@ -1,93 +1,127 @@
 <div class="section-content">
   <div id="olive-draw">
-  <div class="demo-container">
-    <div class="ui inline">
-      <div class="ui ">
-          <label>편집 모드
-          <select class="dropdown" data-bind="value: mode, valueUpdate: 'select'">
-            <option value="view">View</option>
-            <option value="line">Draw Line</option>
-            <option value="polygon">Draw Polygon</option>
-            <option value="ellipse">Draw Circle</option>
-            <option value="dom">Draw Dom</option>
-            <option value="rect">Draw Rect</option>
-          </select></label>
+    <div class="demo-container">
+      <div class="ui inline">
+        <div class="ui ">
+            <label>편집 모드
+            <select class="dropdown" data-bind="value: mode, valueUpdate: 'select'">
+              <option value="view">View</option>
+              <option value="line">Draw Line</option>
+              <option value="polygon">Draw Polygon</option>
+              <option value="ellipse">Draw Circle</option>
+              <option value="dom">Draw Dom</option>
+              <option value="rect">Draw Rect</option>
+            </select></label>
+        </div>
       </div>
+      <div>
+          <input style="display:none;" type="checkbox" data-bind="checked: enableStyle" />
+      </div>
+      <div class="ui inline">
+            <div class="label">선 두께</div><input style="width: 75px" type="range" min="1" max="50" step="1" data-bind="value: lineWidth, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: lineWidth">1</span>px
+      </div>
+      <div class="ui inline">
+        <div class="label">선 색상</div><input style="width: 40px" type="color" data-bind="value: lineColor, valueUpdate: 'input', enable: enableStyle" value="new Cesium.Color( 255,1,1,1 )"> <span data-bind="text: lineColor"></span>
+      </div>
+      <div class="ui inline">
+        <div class="label">선 투명도</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: lineTransparent, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: lineTransparent">1</span>%
+      </div>  
     </div>
-    <div>
-        <input style="display:none;" type="checkbox" data-bind="checked: enableStyle" />
-    </div>
-    <div class="ui inline">
-          <div class="label">선 두께</div><input style="width: 75px" type="range" min="1" max="50" step="1" data-bind="value: lineWidth, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: lineWidth">1</span>px
-    </div>
-    <div class="ui inline">
-      <div class="label">선 색상</div><input style="width: 40px" type="color" data-bind="value: lineColor, valueUpdate: 'input', enable: enableStyle" value="new Cesium.Color( 255,1,1,1 )"> <span data-bind="text: lineColor"></span>
-    </div>
-    <div class="ui inline">
-      <div class="label">선 투명도</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: lineTransparent, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: lineTransparent">1</span>%
-    </div>  
-  </div>
 
-  <div class="demo-container">
-    <label><input type="radio" name="lineStyle" value="line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
-      <svg height="20" width="80">
-        <g fill="none" stroke="white" stroke-width="4">
-          <path stroke-linecap="butt" d="M5 15 l75 0" />
-        </g>
-      </svg>
-    </label>
-    <br/><label><input type="radio" name="lineStyle" value="dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
-      <svg height="20" width="80">
-        <g fill="none" stroke="white" stroke-width="4">
-          <path stroke-dasharray="5,5" d="M5 15 l75 0" />
-        </g>
-      </svg>
-    </label>
-    <br/><label><input type="radio" name="lineStyle" value="long-dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
-      <svg height="20" width="80">
-        <g fill="none" stroke="white" stroke-width="4">
-          <path stroke-dasharray="10,10" d="M5 15 l75 0" />
-        </g>
-      </svg>
-    </label>
-    <br/><label><input type="radio" name="lineStyle" value="dot-dot-line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
-      <svg height="20" width="80">
-        <g fill="none" stroke="white" stroke-width="4">
-          <path stroke-dasharray="20,10,5,5,5,10" d="M5 15 l75 0" />
-        </g>
-      </svg>
-    </label>
-  </div>
+    <div class="demo-container">
+      <label><input type="radio" name="lineStyle" value="line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+        <svg height="20" width="80">
+          <g fill="none" stroke="white" stroke-width="4">
+            <path stroke-linecap="butt" d="M5 15 l75 0" />
+          </g>
+        </svg>
+      </label>
+      <br/><label><input type="radio" name="lineStyle" value="dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+        <svg height="20" width="80">
+          <g fill="none" stroke="white" stroke-width="4">
+            <path stroke-dasharray="5,5" d="M5 15 l75 0" />
+          </g>
+        </svg>
+      </label>
+      <br/><label><input type="radio" name="lineStyle" value="long-dot" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+        <svg height="20" width="80">
+          <g fill="none" stroke="white" stroke-width="4">
+            <path stroke-dasharray="10,10" d="M5 15 l75 0" />
+          </g>
+        </svg>
+      </label>
+      <br/><label><input type="radio" name="lineStyle" value="dot-dot-line" data-bind="checked: lineStyle, valueUpdate: 'input', enable: enableStyle">
+        <svg height="20" width="80">
+          <g fill="none" stroke="white" stroke-width="4">
+            <path stroke-dasharray="20,10,5,5,5,10" d="M5 15 l75 0" />
+          </g>
+        </svg>
+      </label>
+    </div>
 
-  <div class="demo-container">
-    <div class="ui inline">
-      <div class="label">면 색상</div><input style="width: 40px" type="color" data-bind="value: faceColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: faceColor"></span>
+    <div class="demo-container">
+      <div class="ui inline">
+        <div class="label">면 색상</div><input style="width: 40px" type="color" data-bind="value: faceColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: faceColor"></span>
+      </div>
+      <div class="ui inline">
+        <div class="label">면 투명도</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: faceTransparent, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: faceTransparent">1</span>%
+      </div>  
     </div>
-    <div class="ui inline">
-      <div class="label">면 투명도</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: faceTransparent, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: faceTransparent">1</span>%
+    <div class="demo-container">
+      <div>
+        <label><input type="checkbox" data-bind="checked: frameEnable, valueUpdate: 'input', enable: enableStyle">프레임 보기</label>
+      </div>
+      <div class="ui inline">
+        <div class="label">선 색상</div><input style="width: 40px" type="color" data-bind="value: frameColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: frameColor"></span>
+      </div>
     </div>  
+    <div class="demo-container">
+      <label><input type="radio" name="shapeStyle" value="point" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> point</label>
+      <label><input type="radio" name="shapeStyle" value="rect" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> rect</label>
+      <label><input type="radio" name="shapeStyle" value="star" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> star</label>
+      <label><input type="radio" name="shapeStyle" value="pin" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> pin</label>
+      <div class="ui inline">
+        <div class="label">색상</div><input style="width: 40px" type="color" data-bind="value: shapeColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: shapeColor"></span>
+      </div>
+      <div class="ui inline">
+        <div class="label">크기</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: shapeSize, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: shapeSize">5<0/span>px
+      </div>  
+    </div>
   </div>
-  <div class="demo-container">
-    <div>
-      <label><input type="checkbox" data-bind="checked: frameEnable, valueUpdate: 'input', enable: enableStyle">프레임 보기</label>
+  <div class="ui sub header">Pin</div>
+    <div id="olive-marker">
+        <div class="demo-container">
+            <label><input type="radio" name="selectedType" value="color" data-bind="checked: selectedType"> color</label>
+            <label><input type="radio" name="selectedType" value="text" data-bind="checked: selectedType"> text</label>
+            <label><input type="radio" name="selectedType" value="icon" data-bind="checked: selectedType"> icon</label>
+            <label><input type="radio" name="selectedType" value="image" data-bind="checked: selectedType"> image</label>
+        </div>
+        <div class="demo-container">
+            <div>
+              <div class="label">문자</div><input type="text" data-bind="value: editedText" style="color:black;"/>
+            </div>
+            <div class="ui inline">
+                <div class="label">크기</div><input style="width: 95px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: pinSize, valueUpdate: 'input'"> <span data-bind="text: pinSize">48</span>px
+            </div>
+            <div class="ui inline">
+                <div class="label">높이</div><input style="width: 95px" type="range" min="1.0" max="1000.0" step="1.0" data-bind="value: pinHeight, valueUpdate: 'input'"> <span data-bind="text: pinHeight">1</span>m
+            </div>
+            <div class="ui inline">
+              <div class="label">색상</div><input style="width: 40px" type="color" data-bind="value: pinColor, valueUpdate: 'input'"> <span data-bind="text: pinColor"></span>
+            </div>
+            <div>
+              <div class="label">아이콘</div><input type="text" data-bind="value: iconText" style="color:black;"/>
+            </div>
+            <div>
+              <div class="label">아미지</div><input type="text" data-bind="value: url" style="color:black;"/>
+            </div>
+        </div>
+        <div class="demo-container">
+            <div id="olive-marker-result" style="border:1px solid #ddd;border-radius:5px;padding:10px;height:100px;background-color: white;">
+                
+            </div>
+        </div>
     </div>
-    <div class="ui inline">
-      <div class="label">선 색상</div><input style="width: 40px" type="color" data-bind="value: frameColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: frameColor"></span>
-    </div>
-  </div>  
-  <div class="demo-container">
-    <label><input type="radio" name="shapeStyle" value="point" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> point</label>
-    <label><input type="radio" name="shapeStyle" value="rect" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> rect</label>
-    <label><input type="radio" name="shapeStyle" value="star" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> star</label>
-    <label><input type="radio" name="shapeStyle" value="pin" data-bind="checked: shapeStyle, valueUpdate: 'input', enable: enableStyle"> pin</label>
-    <div class="ui inline">
-      <div class="label">색상</div><input style="width: 40px" type="color" data-bind="value: shapeColor, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: shapeColor"></span>
-    </div>
-    <div class="ui inline">
-      <div class="label">크기</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: shapeSize, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: shapeSize">5<0/span>px
-    </div>  
-  </div>
-</div>
 </div>
 
 <script>
@@ -118,5 +152,21 @@
       }
       app.draw( viewModel );
       viewer.scene.requestRender();
+  }); 
+
+  var marker = new ViewModel_Marker({selector:"#olive-marker-result"});
+  map.connectViewModel('olive-marker', {
+    selectedType: 'view',
+    editedText:'',
+        pinSize: 48,
+        pinHeight:0,
+        pinColor: "#ffffff",
+        iconText:'hostpital',
+        url: "",
+    }, function(viewer, viewModel) {
+      marker.update( viewModel );
   });  
+
+  
+
 </script>

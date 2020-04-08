@@ -16,6 +16,8 @@ require("../ui/olive-dialog");
 var {OliveVideo} = require("../ui/olive-video");
 global.OliveVideo = OliveVideo;
 
+require("../viewmodel/Marker");
+
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
