@@ -27,30 +27,6 @@
 
     <script src="libs/milsymbol/kmilsymbol.development.js"></script>
     <script>
-        function dragEnter(e) {
-            event.preventDefault();
-            return true;
-        }
-
-        function dragOver(e) {
-            e.preventDefault();
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("option", ev.target.getAttribute("data-option"));
-        }
-
-        function dragDrop(e) {
-            var options = JSON.parse(decodeURIComponent(e.dataTransfer.getData("option")));
-            let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
-
-            var cartesian = map.viewOption.baseLayerPicker ? map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX - 300, e.clientY)) :
-                map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX - 300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
-            
-            kMilSymbolCollection.add(cartesian, options);
-
-        }
-
         $(function() {
             window.app = new Application({
                 map3: {
@@ -112,7 +88,7 @@
 
     <article>
         <div id="door-handle"><i class="angle left icon"></i></div>
-        <div class="map-cesium" id="map3d" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
+        <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
         <div id="map2d"></div>
     </article>
     <footer></footer>

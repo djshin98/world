@@ -470,7 +470,7 @@ class SymbolTest {
         option.category = "KMILSYMBOL";
         option.code = "";
         option.description = this.container.descriptionFromSIDC(option.sic);
-        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + imgData + '"/>';
+        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
     }
     try() {
         let output = this.create();
