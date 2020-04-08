@@ -166,7 +166,15 @@
     }, function(viewer, viewModel) {
       marker.update( viewModel );
   });  
-
+  var options = Object.assign({
+            name:'test',
+            type:'color',
+            color:Cesium.Color.ROYALBLUE,
+            text:'?',
+            icon:'hospital',
+            url:'',
+            size:48,
+        },opt);
   
 
 </script>
