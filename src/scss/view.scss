@@ -1,5 +1,5 @@
-$handleColor:#b7b7b7;
-$sectionBackgroundColor:#7c8198;
+$handleColor:#65686b;
+$sectionBackgroundColor:#3a4147;
 $sectionHeadHeight:70px;
 html,
 body {
@@ -16,10 +16,11 @@ section {
     height: 600px;
     background-color: $sectionBackgroundColor;
     .section-head {
-        background-color: #99a0bf;
+        text-align: center;
+        background-color: #16191c;
         border-right: 1px solid $handleColor;
         height: $sectionHeadHeight;
-        padding: 1em;
+        padding: 1.1em;
         .logo.icon {
             img {
                 width: 2em;
@@ -39,11 +40,12 @@ section {
         .ui.sidebar {
             position: fixed;
             top: $sectionHeadHeight;
+            border-right: 1px solid $sectionBackgroundColor;
         }
         .sidebar.ui.inverted.pointing.menu {
             font-size: 0.8em;
             overflow: hidden;
-            background: #6a6e82;
+            background: #2e3439;
             
             width:75px;
             .item{
@@ -146,6 +148,9 @@ section {
                     height:300px;
                     overflow: scroll;
 
+                    input[type=checkbox]{
+                        margin:0px;
+                    }
                     div.file {
                         cursor:pointer;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
@@ -199,7 +204,7 @@ section {
                 }
                 .demo-container {
                     color:#fff;
-                    background-color: #004c986e;
+                    background-color: #2e3439;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 5px 3px;
@@ -307,4 +312,22 @@ header {
             background: #fff;
         }
     }
+}
+
+.panel{
+    border:0px;
+    background-color: #2e3439;
+    color: #a5aeb4;
+}
+.lobipanel>.panel-heading {
+    padding: 0px;
+}
+
+.lobipanel.panel-unpin>.panel-heading {
+    background-color: #3a4147;
+    color: #838b91;
+    border-color: #292929;
+}
+.lobipanel-minimized-toolbar {
+    background: rgba(43, 43, 43, 0.51);
 }

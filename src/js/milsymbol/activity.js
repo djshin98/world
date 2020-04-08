@@ -1,5 +1,6 @@
 class Activity{
     constructor(){
-        
+
     }
+    
 }

@@ -3,11 +3,19 @@ var { dom, get, post } = require("../util/comm");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
+var { MarkerCollection } = require("../collection/markercollection");
+
 var { JsonByFolder } = require("../repository/json-by-folder");
 var { DrawInCesium } = require("../draw/base");
-var { MariaDB } = require("../repository/maria_db");
+var { OliveDragger } = require("../ui/olive-dragger");
+require("../util/ServerAdapter");
 require("../ui/olive-input");
 require("../ui/olive-tree");
+require("../ui/olive-dialog");
+
+var {OliveVideo} = require("../ui/olive-video");
+global.OliveVideo = OliveVideo;
+
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
@@ -64,8 +72,6 @@ class Application {
         };
 
         this.map = new MilMap(options);
-        this.mariaDB = new MariaDB();
-        global.mariaDB = this.mariaDB;
         /*
         {
             map3: {
@@ -89,6 +95,7 @@ class Application {
         this.collections["ALLY"] = new KMilSymbolCollection(this.map);
         this.collections["BOMA"] = new KMilSymbolCollection(this.map);
         this.collections["ENEMY"] = new KMilSymbolCollection(this.map);
+        this.collections["MARKER"] = new MarkerCollection(this.map);
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
         this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
@@ -216,6 +223,12 @@ class Application {
     }
     getCollection(name) {
         return this.collections[name];
+    }
+    dragger(){
+        if( !Cesium.defined(this.oliveDragger) ){
+            this.oliveDragger = new OliveDragger(this);
+        }
+        return this.oliveDragger;
     }
 };
 

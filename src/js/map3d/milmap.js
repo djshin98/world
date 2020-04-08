@@ -36,7 +36,7 @@ class MilMap {
             shadows: true,
             baseLayerPicker: true,
             geocoder: false,
-            infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+            infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
             selectionIndicator: true,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,
@@ -50,7 +50,10 @@ class MilMap {
             navigation: true,
             fullscreenButton: false,
             creditsDisplay: false,
-            distanceDisplayCondition: false
+            distanceDisplayCondition: false,
+            //showRenderLoopErrors : false,
+            //shouldAnimate : true,
+            //clockViewModel: new Cesium.ClockViewModel(clock),
                 /*
                  imageryProvider: Cesium.createWorldImagery({
                      style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
@@ -162,6 +165,9 @@ class MilMap {
             //Cesium.viewerCesiumNavigationMixin(this.viewer3d,{});
             //navigationInitialization(this.options.map3.id, this.viewer3d);
         }
+    }
+    getId(){
+        return this.options.map3.id;
     }
     _showElement(ele, bshow) { if (ele) { ele.style.display = dom.trueOrundef(bshow) ? "" : "none"; } }
     show(widget, bshow) {

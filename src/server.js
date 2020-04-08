@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const server = express();
-const obj = require("../conf/server.json");
+const serverConfig = require("../conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
 
@@ -19,11 +19,15 @@ server.engine('html', require('ejs').renderFile);
 const port = process.env.PORT || 8082;
 var mysql = require('mysql');
 var mybatisMapper = require('mybatis-mapper');
-console.log(__dirname + '/js/repository/mapper/testMapper.xml');
-mybatisMapper.createMapper([__dirname + '/js/repository/mapper/testMapper.xml']);
+
+console.log(__dirname + '/conf/mapper/testMapper.xml');
+mybatisMapper.createMapper([__dirname + '/conf/mapper/testMapper.xml']);
+
 var format = { language: 'sql', indent: '  ' };
 
-var connection = mysql.createConnection(obj.DBconnectionInfo);
+console.log("config : " + "conf/server.json");
+console.dir(serverConfig);
+var connection = mysql.createConnection(serverConfig.DBconnectionInfo);
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
@@ -67,11 +71,10 @@ server.get('/default/', (req, res) => {
 server.get('/Entities/', (req, res) => {
     console.log("Entitites");
     var param = req.query.param;
-    var mapper = req.query.mapper;
     console.log(JSON.parse(param));
-    var query1 = mybatisMapper.getStatement(mapper, 'testBasic1', JSON.parse(param), format);
-    var query2 = mybatisMapper.getStatement(mapper, 'testBasic2', JSON.parse(param), format);
-    var query3 = mybatisMapper.getStatement(mapper, 'testBasic3', JSON.parse(param), format);
+    var query1 = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
+    var query2 = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
+    var query3 = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
@@ -92,4 +95,4 @@ server.get('/Entities/', (req, res) => {
 // mapper: mybatisMapper.getStatement
 
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, '0.0.0.0');

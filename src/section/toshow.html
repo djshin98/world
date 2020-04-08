@@ -17,7 +17,7 @@
         if (app.collections['ALLY'].objects.length > 0) {
             return;
         } else {
-            mariaDB.excuteQuery('Entities', {}, function(resultdata) {
+            serverAdapter.get('Entities', {}, function(resultdata) {
                 var node = [{
                     name: '아군부대',
                     id: 'ALLY',
@@ -37,21 +37,30 @@
                 var options = {};
                 for (var r in resultdata) {
                     node[index].children = resultdata[r].reduce(function(prev, curr, i) {
-                        if (curr.hasOwnProperty('ARMY_NAME')) {
+                        if (curr.hasOwnProperty('unit_name')) {
                             prev.push({
-                                name: curr.ARMY_NAME,
+                                name: curr.unit_name,
                                 cartesianVal: Cesium.Cartesian3.fromDegrees(
-                                    parseFloat(curr.BMOA_LON),
-                                    parseFloat(curr.BMOA_LAT),
+                                    parseFloat(curr.geocd_lngt),
+                                    parseFloat(curr.geocd_ltd),
                                     0
                                 ),
-                                x: curr.BMOA_LON,
-                                y: curr.BMOA_LAT,
-                                sic: curr.MIL_SYMBOL_CODE,
+                                x: curr.geocd_lngt,
+                                y: curr.geocd_ltd,
+                                sic: curr.unit_sbl_cd,
                             });
                         } else {
                             prev.push({
-                                name: curr.BMOA_ID,
+                                name: curr.bmoa_id,
+                                cartesianVal: Cesium.Cartesian3.fromDegrees(
+                                    parseFloat(curr.geocd_lngt),
+                                    parseFloat(curr.geocd_ltd),
+                                    0
+                                ),
+                                rad : curr.bmoa_rads,
+                                x: curr.geocd_lngt,
+                                y: curr.geocd_ltd,
+                                sic: curr.unit_sbl_cd
                             });
                         }
                         return prev;

@@ -64,22 +64,25 @@ class Cursor{
             if( this.labelEntity ){
                 if( this.labelEntity.ref && this.labelEntity.ref == picked.id ){
 
-                }else{
-                    var cartesian = picked.id.position._value; //this.viewer.scene.pickPosition(position);
-                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                    var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
-                    var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
-                    var heightString = cartographic.height.toFixed(2);
-    
-                    this.labelEntity.position = cartesian;
-                    this.labelEntity.label.show = true;
-                    this.labelEntity.label.text =
-                            '경도: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
-                            '\n위도: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
-                            '\n높이: ' + ('   ' + heightString).slice(-7) + 'm';
-    
-                    //this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
-                    this.labelEntity.ref = picked.id;
+                }else if(Cesium.defined(picked.id) && Cesium.defined(picked.id.position) ){
+                    if( Cesium.defined(picked.id.position._value) ){
+                        var cartesian = picked.id.position._value; //this.viewer.scene.pickPosition(position);
+                        var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                        var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+                        var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+                        var heightString = cartographic.height.toFixed(2);
+        
+                        this.labelEntity.position = cartesian;
+                        this.labelEntity.label.show = true;
+                        this.labelEntity.label.text =
+                                '경도: ' + ('   ' + longitudeString).slice(-7) + '\u00B0' +
+                                '\n위도: ' + ('   ' + latitudeString).slice(-7) + '\u00B0' +
+                                '\n높이: ' + ('   ' + heightString).slice(-7) + 'm';
+        
+                        //this.labelEntity.label.eyeOffset = new Cesium.Cartesian3(0.0, 0.0, -cartographic.height * (scene.mode === Cesium.SceneMode.SCENE2D ? 1.5 : 1.0));
+                        this.labelEntity.ref = picked.id;
+                    }
+                    
                 }
                 
             }

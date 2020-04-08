@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>합동참모본부</title>
+  <link rel="stylesheet" href="../assets/styles/reset.css">
+  <link rel="stylesheet" href="../assets/styles/common.css">
+  <link rel="stylesheet" href="../assets/styles/page1.css">
+  <script src="../assets/scripts/libs/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="header__logo">
+        <img src="../assets/images/logo.png" alt="합동참모본부">
+      </div>
+      <ul class="gnb">
+        <li class="gnb__list"><a href="#" class="gnb__anchor is-active">파일</a></li>
+        <li class="gnb__list"><a href="#" class="gnb__anchor">영상처리</a></li>
+        <li class="gnb__list"><a href="#" class="gnb__anchor">데이터셋관리</a></li>
+        <li class="gnb__list"><a href="#" class="gnb__anchor">확대/축소</a></li>
+        <li class="gnb__list"><a href="#" class="gnb__anchor">선택</a></li>
+      </ul>
+    </div>
+    <div class="contents">
+      <!-- Step 1 -->
+      <div class="empty-box">
+        <div class="box point-color" data-index="1">
+          <div class="box__header">
+            <h2 class="box__title">시한성전략표적</h2>
+            <div class="box__step">Step1</div>
+          </div>
+          <div class="box__contents">
+            <div class="table">
+              <div class="table__body">
+                <div class="table-row head">
+                  <li class="table__head-title">시점</li>
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">좌표</li>
+                  <li class="table__head-title">취약시간</li>
+                </div>
+                <!--
+                  개발 시 참고 : step별로 같이 그룹핑 될어야 될 요소 (ex: 1번 표적, 2번 표적F)들을 data-group 으로 맵핑해주세요
+                  그리고 data-group 속성이 적용된 경우 꼭 data-hover-target 속성도 같이 주셔야합니다. (data-group 없는 애들은 쓰지 마세요)
+                -->
+                <div class="table-row" data-hover-target data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-hover-target data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-hover-target data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="empty-box">
+        <div class="box" data-index="2">
+          <div class="box__header">
+            <h2 class="box__title">기상</h2>
+            <div class="box__step">Step2</div>
+          </div>
+          <div class="box__contents">
+            <div class="table">
+              <div class="table__body">
+                <div class="table-row">
+                  <li class="table__head-title">시점</li>
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">좌표</li>
+                  <li class="table__head-title">취약시간</li>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">H</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">N0000E00000</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">20분</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="empty-box">
+        <div class="box" data-index="3">
+          <div class="box__header">
+            <h2 class="box__title">무장추천</h2>
+            <div class="box__step">Step3</div>
+          </div>
+          <div class="box__contents">
+            <div class="table">
+              <div class="table__body">
+                <div class="table-row">
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">순위</li>
+                  <li class="table__head-title">타격부대</li>
+                  <li class="table__head-title">무장</li>
+                </div>
+                <!-- 개발시 유의 사항: loop 돌릴 때 table-row 외에 다른거 절대 들어가면 안됩니다. -->
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">1</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">2</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">3</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">1</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">2</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">1</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="ranking">2</div>
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">0001부대</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="empty-box">
+        <div class="box" data-index="4">
+          <div class="box__header">
+            <h2 class="box__title">부수적 피해형가 결과</h2>
+            <div class="box__step">Step4</div>
+          </div>
+          <div class="box__contents">
+            <div class="table">
+              <div class="table__body">
+                <div class="table-row">
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">무장</li>
+                  <li class="table__head-title">평가결과</li>
+                </div>
+                <!-- 개발시 유의 사항: loop 돌릴 때 table-row 외에 다른거 절대 들어가면 안됩니다. -->
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result red">1L</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text flex">
+                      <div class="result">1L</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="empty-box">
+        <div class="box" data-index="5">
+          <div class="box__header">
+            <h2 class="box__title">공역충돌</h2>
+            <div class="box__step">Step5</div>
+          </div>
+          <div class="box__contents">
+            <div class="table">
+              <div class="table__body">
+                <div class="table-row">
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">무장</li>
+                  <li class="table__head-title">충돌공역명</li>
+                </div>
+                <!-- 개발시 유의 사항: loop 돌릴 때 table-row 외에 다른거 절대 들어가면 안됩니다. -->
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="1">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="2">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+                <div class="table-row" data-group="3">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      공역1, 공역2
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 무장할당 결과 -->
+      <div class="empty-box">
+        <div class="box result-color" data-index="6">
+          <div class="box__header">
+            <h2 class="box__title">무장할당 결과</h2>
+            <div class="box__step result-step">Step6</div>
+          </div>
+          <div class="box__contents">
+            <div class="table type2">
+              <div class="table__body">
+                <div class="table-row">
+                  <li class="table__head-title">표적명</li>
+                  <li class="table__head-title">타격 부대명</li>
+                  <li class="table__head-title">타격무장</li>
+                </div>
+                <!-- 개발시 유의 사항: loop 돌릴 때 table-row 외에 다른거 절대 들어가면 안됩니다. -->
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      0001부대
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+                <div class="table-row">
+                  <div class="table__item">
+                    <div class="table__text">TEL-003</div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">
+                      0001부대
+                    </div>
+                  </div>
+                  <div class="table__item">
+                    <div class="table__text">현무1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/scripts/common.js"></script>
+</body>
+
+</html>

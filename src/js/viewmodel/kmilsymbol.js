@@ -1,12 +1,12 @@
 /* eslint-disable */
 
 var {dom} = require("../util/comm");
-var basic = require("./mil_basic");
-var emergency = require("./mil_emergency");
-var operAct = require("./mil_operAct");
-var safe = require("./mil_safe");
-var signal = require("./mil_signal");
-var weather = require("./mil_weather");
+var basic = require("../milsymbol/mil_basic");
+var emergency = require("../milsymbol/mil_emergency");
+var operAct = require("../milsymbol/mil_operAct");
+var safe = require("../milsymbol/mil_safe");
+var signal = require("../milsymbol/mil_signal");
+var weather = require("../milsymbol/mil_weather");
 
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
@@ -15,7 +15,7 @@ var codeTypes = [
     { code: "I", desc: "I:신호정보부호", standard: signal },
     { code: "O", desc: "O:안정화작전부호", standard: safe },
     { code: "E", desc: "E:비상관리부호", standard: emergency }
-]
+];
 
 
     //{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
@@ -470,7 +470,7 @@ class SymbolTest {
         option.category = "KMILSYMBOL";
         option.code = "";
         option.description = this.container.descriptionFromSIDC(option.sic);
-        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="drag(event)" src="' + imgData + '"/>';
+        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
     }
     try() {
         let output = this.create();

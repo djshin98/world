@@ -20,6 +20,14 @@ var inject = require("gulp-inject-string");
 var del = require('del');
 
 var paths = {
+    conf:{
+        src: './src/conf/**/*.*',
+        dest:'./dist/conf/'
+    },
+    popper:{
+        src: './node_modules/popper.js/dist/**/*.*',
+        dest:'./src/libs/popper/'
+    },
     bootstrap:{
         src: './node_modules/bootstrap/dist/**/*.*',
         dest:'./src/libs/bootstrap/'
@@ -44,16 +52,8 @@ var paths = {
         src: './src/css/**/*.css',
         dest: './dist/css/'
     },
-    png: {
-        src: 'src/img/**/*.png',
-        dest: 'dist/img/'
-    },
-    jpg: {
-        src: 'src/img/**/*.jpg',
-        dest: 'dist/img/'
-    },
-    gif: {
-        src: 'src/img/**/*.gif',
+    img: {
+        src: 'src/img/**/*.*',
         dest: 'dist/img/'
     },
     model: {
@@ -175,24 +175,11 @@ function js_src_b() {
 
 }
 */
-function jpg() {
-    return src(paths.jpg.src, { since: lastRun(jpg) })
-        .pipe(imagemin())
-        .pipe(dest(paths.jpg.dest));
+function img() {
+    return src(paths.img.src, { since: lastRun(img) })
+        //.pipe(imagemin())
+        .pipe(dest(paths.img.dest));
 }
-
-function png() {
-    return src(paths.png.src, { since: lastRun(png) })
-        .pipe(imagemin())
-        .pipe(dest(paths.png.dest));
-}
-
-function gif() {
-    return src(paths.gif.src, { since: lastRun(gif) })
-        .pipe(imagemin())
-        .pipe(dest(paths.gif.dest));
-}
-
 function scss() {
     return src(paths.scss.src)
         .pipe(sourcemaps.init())
@@ -236,9 +223,18 @@ function lobipanel() {
     return src(paths.lobipanel.src)
         .pipe(dest(paths.lobipanel.dest));
 }
+function popper() {
+    return src(paths.popper.src)
+        .pipe(dest(paths.popper.dest));
+}
+function conf() {
+    return src(paths.conf.src)
+        .pipe(dest(paths.conf.dest));
+}
 
 function watchFiles() {
-
+    watch(paths.conf.src, conf);
+    watch(paths.popper.src, popper);
     watch(paths.bootstrap.src, bootstrap);
     watch(paths.jquery.src, jquery);
     watch(paths.lobipanel.src, lobipanel);
@@ -249,9 +245,9 @@ function watchFiles() {
     //watch(paths.js.src, js);
     //watch(paths.js.src, js_src_w);
     watch(paths.html.src, html);
-    watch(paths.jpg.src, jpg);
-    watch(paths.png.src, png);
-    watch(paths.gif.src, gif);
+    watch(paths.img.src, img);
+    //watch(paths.png.src, png);
+    //watch(paths.gif.src, gif);
     watch(paths.libs.src, libs);
     watch(paths.worlds.src, world);
     watch(paths.serverjs.src, serverJs);
@@ -260,4 +256,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(md, bootstrap, jquery, lobipanel, libs,  jpg, png, gif, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));

@@ -13,7 +13,7 @@ module.exports = {
     context: __dirname,
     entry: {
         CesiumApp: './src/js/app/index.js',
-        KMilSymbolEditor: './src/js/milsymbol/viewmodel-kmilsymbol.js'
+        KMilSymbolEditor: './src/js/viewmodel/kmilsymbol.js'
     },
     output: {
         filename: '[name].js',
@@ -67,6 +67,6 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         port: 8081,
-        host: 'localhost'
+        host: '192.168.0.12'
     }
 };
