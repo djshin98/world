@@ -1,5 +1,5 @@
 if( !Cesium.defined($) ){
-    alert('jquery unsupported');
+    alert('jquery unsupported in OliveDragger');
 }
 class OliveDragger{
     constructor(app){
