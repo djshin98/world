@@ -22,6 +22,7 @@ var mybatisMapper = require('mybatis-mapper');
 
 console.log(__dirname + '/conf/mapper/testMapper.xml');
 mybatisMapper.createMapper([__dirname + '/conf/mapper/testMapper.xml']);
+/**추가적으로 맵퍼를 생성할 수 있다. */
 
 var format = { language: 'sql', indent: '  ' };
 
@@ -75,6 +76,7 @@ server.get('/Entities/', (req, res) => {
     var query1 = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
     var query2 = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
     var query3 = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
+    
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
