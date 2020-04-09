@@ -1,10 +1,12 @@
 var Cesium = require('cesium/Cesium');
+var { MarkerCollection,PinMarkers } = require('../collection/markercollection');
 // widget 에 대한 표준을 만든다.
 
-class DrawInCesium{
-    constructor( viewer , baseLayerPicker ){
-        this.viewer = viewer;
+class Draw{
+    constructor( map , baseLayerPicker ){
+        this.viewer = map.getView();
         this.baseLayerPicker = baseLayerPicker;
+        this.collection = new MarkerCollection(map);
         this.viewModel = {
             mode: 'view',
             enableStyle:false,
@@ -89,7 +91,7 @@ class DrawInCesium{
             return parseInt('1'.repeat(width) + '0'.repeat(width), 2);
         }
     }
-    draw( viewModel ){
+    update( viewModel ){
         this.viewModel = Object.assign(this.viewModel, viewModel );
         this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor).withAlpha(this.viewModel.lineTransparent);
         this.viewModel.faceColor = Cesium.Color.fromCssColorString(this.viewModel.faceColor).withAlpha(this.viewModel.faceTransparent);
@@ -108,6 +110,8 @@ class DrawInCesium{
 
     createPoint(worldPosition) {
         let _this = this;
+        var point = this.collection.add(worldPosition,PinMarkers.start);
+        /*
         var point = this.viewer.entities.add({
             position : worldPosition,
             point : {
@@ -117,6 +121,7 @@ class DrawInCesium{
             }
         });
         return point;
+        */
     }
     
     drawShape(positionData) {
@@ -189,39 +194,4 @@ class DrawInCesium{
     }
 
 }
-/*
-var viewer = new Cesium.Viewer('cesiumContainer',  {
-    selectionIndicator : false,
-    infoBox : false,
-    terrainProvider : Cesium.createWorldTerrain()
-});
-
-
-*/
-
-/*
-var options = [{
-    text : 'Draw Lines',
-    onselect : function() {
-        if (!Cesium.Entity.supportsPolylinesOnTerrain(viewer.scene)) {
-            window.alert('This browser does not support polylines on terrain.');
-        }
-
-        terminateShape();
-        viewModel.mode = 'line';
-    }
-}, {
-    text : 'Draw Polygons',
-    onselect : function() {
-        terminateShape();
-        viewModel.mode = 'polygon';
-    }
-}];
-
-Sandcastle.addToolbarMenu(options);
-*/
-// Zoom in to an area with mountains
-//viewer.camera.lookAt(Cesium.Cartesian3.fromDegrees(-122.2058, 46.1955, 1000.0), new Cesium.Cartesian3(5000.0, 5000.0, 5000.0));
-//viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-
-module.exports = {DrawInCesium : DrawInCesium};
+module.exports = {Draw : Draw};

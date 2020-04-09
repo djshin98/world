@@ -3,6 +3,13 @@ let { OliveEntityCollection } = require('../map3d/entity_collection');
 
 var pinBuilder = new Cesium.PinBuilder();
 
+var PinMarkers = {
+start : {name:'start',type:'text',text:'S',color:Cesium.Color.NAVY,size:48},
+center : {name:'center',type:'text',text:'C',color:Cesium.Color.DARKCYAN,size:48},
+end : {name:'end',type:'text',text:'E',color:Cesium.Color.RED,size:48},
+via : {name:'via',type:'icon',icon:'marker',color:Cesium.Color.CHOCOLATE,size:48}
+};
+
 class MarkerCollection extends OliveEntityCollection {
     constructor(map) {
         super(map);
@@ -96,5 +103,6 @@ class MarkerCollection extends OliveEntityCollection {
 };
 
 module.exports = {
-    MarkerCollection: MarkerCollection
+    MarkerCollection: MarkerCollection , 
+    PinMarkers : PinMarkers
 }

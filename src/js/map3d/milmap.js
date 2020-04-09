@@ -169,6 +169,7 @@ class MilMap {
     getId(){
         return this.options.map3.id;
     }
+    getView(){ return this.viewer3d; }
     _showElement(ele, bshow) { if (ele) { ele.style.display = dom.trueOrundef(bshow) ? "" : "none"; } }
     show(widget, bshow) {
         let _bshow = dom.trueOrundef(bshow) ? true : false;

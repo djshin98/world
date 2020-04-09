@@ -4,7 +4,7 @@ class Marker{
         this.options = Object.assign({},options);
         this.viewModel = {
             type: 'color',
-            name:'',
+            text:'',
             size: 48,
             height:0,
             color: "#ffffff",

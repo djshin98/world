@@ -6,7 +6,7 @@ var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 
 var { JsonByFolder } = require("../repository/json-by-folder");
-var { DrawInCesium } = require("../draw/base");
+var { Draw } = require("../viewmodel/draw");
 var { OliveDragger } = require("../ui/olive-dragger");
 require("../util/ServerAdapter");
 require("../ui/olive-input");
@@ -74,25 +74,7 @@ class Application {
         };
 
         this.map = new MilMap(options);
-        /*
-        {
-            map3: {
-                id: "map3d",
-                mapServiceMode:"internet", //"internet offline"
-                offlineOption:{
-                    proxy : "/GVS/proxy.jsp",
-                    map : "http://192.168.0.153:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
-                    terrain : "http://192.168.0.153:38080/tilesets/srtm/"
-                },
-                offlineBaseLayers:[
-                    { url:'http://192.168.0.153:8080/Map/Hwasung_TMS/'},
-                    { url:'http://192.168.0.153:8080/Map/Seoul_TMS/'},
-                    { url:'http://192.168.0.153:8080/Map/Daejon_TMS/'}
-                ]
-
-            }
-        });
-        */
+        
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map);
         this.collections["ALLY"] = new KMilSymbolCollection(this.map);
         this.collections["BOMA"] = new KMilSymbolCollection(this.map);
@@ -100,7 +82,7 @@ class Application {
         this.collections["MARKER"] = new MarkerCollection(this.map);
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
-        this.drawInCesium = new DrawInCesium(this.map.viewer3d, this.map.viewOption.baseLayerPicker);
+        this.draw = new Draw(this.map, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
 
         this.onResize();
@@ -127,7 +109,7 @@ class Application {
         }
     }
     draw(mode) {
-        this.drawInCesium.draw(mode);
+        this.draw.update(mode);
     }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;

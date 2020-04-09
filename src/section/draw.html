@@ -98,7 +98,7 @@
         </div>
         <div class="demo-container">
             <div>
-              <div class="label">문자</div><input type="text" data-bind="value: name" style="color:black;"/>
+              <div class="label">문자</div><input type="text" data-bind="value: text" style="color:black;"/>
             </div>
             <div class="ui inline">
                 <div class="label">크기</div><input style="width: 95px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: size, valueUpdate: 'input'"> <span data-bind="text: size">48</span>px
@@ -120,6 +120,10 @@
             <div id="olive-marker-result" style="border:1px solid #ddd;border-radius:5px;padding:10px;height:100px;background-color: white;">
                 
             </div>
+        </div>
+
+        <div class="demo-container">
+          <button class="button" onclick="new Dialog({title:'colors',url:'dialog/colors.html',height:560});">ColorTable</button>
         </div>
     </div>
 </div>
@@ -157,12 +161,12 @@
   var marker = new ViewModel_Marker({selector:"#olive-marker-result"});
   map.connectViewModel('olive-marker', {
     type: 'color',
-    name:'',
+    text:'A',
     size: 48,
     height:0,
-    color: "#ffffff",
+    color: "#da2970",
     icon:'hospital',
-    url: "",
+    url: "img/flag/KR.png",
     }, function(viewer, viewModel) {
       marker.update( viewModel );
   });  
