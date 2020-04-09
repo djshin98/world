@@ -13,6 +13,17 @@ class Camera {
     widget(callback) {
         this.cameraWidgetCallback = callback;
     }
+    cache(){
+        let carto = Cesium.Cartographic.fromCartesian(this.camera.position);
+        return { rect : this.camera.computeViewRectangle(),
+                    x : carto.longitude,
+                    y : carto.latitude
+        };
+    }
+    uncache(ca){
+        let obj = Object.assign({},ca);
+        this.camera.setView( {destination:obj} );
+    }
     load() {
         let _this = this;
         this.camera.moveEnd.addEventListener(function () {

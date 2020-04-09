@@ -161,15 +161,63 @@ class MilMap {
         }, false);
 
         if (this.viewOption.navigation && this.viewOption.navigation == true) {
-            this.viewer3d.extend(Cesium.viewerCesiumNavigationMixin, {});
+            let ctrl = this.viewer3d.extend(Cesium.viewerCesiumNavigationMixin, {});
+            console.log("ctrl");
             //Cesium.viewerCesiumNavigationMixin(this.viewer3d,{});
             //navigationInitialization(this.options.map3.id, this.viewer3d);
         }
+
+        this.viewer3d.scene.morphComplete.addEventListener(function (){
+            console.log('Morph completed...');
+            /*
+            var west = Cesium.Math.toRadians(10);
+            var east = Cesium.Math.toRadians(40);
+            var south = Cesium.Math.toRadians(35);
+            var north = Cesium.Math.toRadians(45);
+            var rectangle = new Cesium.Rectangle(west,south,east,north);    
+            window.scene.camera.viewRectangle(rectangle);
+            */
+           /*
+           if( _this.savedCameraObj ){
+            _this.oliveCamera.uncache(_this.savedCameraObj);
+            //_this.savedCameraObj = undefined;
+           }
+           */
+            if( _this.mode == "2D" || _this.mode == "2.5D" ){
+                if( _this.savedCameraObj && _this.savedCameraObj.rect ){
+                    _this.oliveCamera.uncache(_this.savedCameraObj.rect);
+                }
+            }else{
+                _this.oliveCamera.flyTo(_this.savedCameraObj.x * Cesium.Math.DEGREES_PER_RADIAN ,_this.savedCameraObj.y * Cesium.Math.DEGREES_PER_RADIAN );
+            }
+            
+            console.log('Camera view rectangle updated...');    
+        });
+
     }
     getId(){
         return this.options.map3.id;
     }
     getView(){ return this.viewer3d; }
+    setMode(m){
+        this.savedCameraObj = this.oliveCamera.cache();
+        if( m == 2 ){
+            if( map.viewer3d.scene.mode != 2 ){
+                this.viewer3d.scene.morphTo2D(2);
+                this.mode = "2D";
+            }
+        }else if( m == 2.5 ){
+            if( map.viewer3d.scene.mode != 1 ){
+                this.viewer3d.scene.morphToColumbusView(2);
+                this.mode = "2.5D";
+            }
+        }else if( m == 3 ){
+            if( map.viewer3d.scene.mode != 3 ){
+                this.viewer3d.scene.morphTo3D(2);
+                this.mode = "3D";
+            }
+        }
+    }
     _showElement(ele, bshow) { if (ele) { ele.style.display = dom.trueOrundef(bshow) ? "" : "none"; } }
     show(widget, bshow) {
         let _bshow = dom.trueOrundef(bshow) ? true : false;

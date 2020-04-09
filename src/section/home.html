@@ -35,6 +35,13 @@
 		</a>
     </div>
 -->
+    <div class="ui sub header">지도 모드</div>
+    <div id="olive-label" class="demo-container">
+        <div class="ui inline"><button class="ui primary button mini" style="color:white;" onclick="map.setMode(2)">2D</button>
+        <button class="ui second button mini"  onclick="map.setMode(2.5)" >2.5D</button>
+        <button class="ui secondary button mini" style="color:white;" onclick="map.setMode(3)" >3D</button></div>
+    </div>
+    <div class="ui horizontal divider"></div>
     <div class="ui sub header">화면 조정</div>
     <div id="olive-bloom" class="demo-container">
         <table>
@@ -75,7 +82,7 @@
     <div id="olive-label" class="demo-container">
         <div class="ui inline"><label for="olive-label-check" style="width:150px;">라벨 표시</label><input id="olive-label-check" type="checkbox" data-bind="checked: label"></div>
     </div>
-    
+    <div class="ui horizontal divider"></div>
     <div class="ui sub header">Contour</div>
     <div id="olive-contour">
         <div class="demo-container">
