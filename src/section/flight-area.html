@@ -1,4 +1,27 @@
+<style>
+#gltfviewer .cesium-widget-credits, #gltfviewer .cesium-viewer-bottom{
+		display: none;
+}
+</style>
 <div class="section-content">
+    <div id="gltfviewer" style="height:200px;width:100%;background-color:bisque;">
+
+    </div>
+    <p></p>
+    <div class="ui" style="margin-bottom:0.5em">
+        <div class="ui right">
+            <button class="ui primary button mini" onclick="gltfviewer.toggleDebugAxis()">
+                축 보이기
+            </button>
+            <button class="ui button mini" onclick="gltfviewer.toggleBoundingVolume()">
+                프레임
+            </button>
+            <button class="ui button mini" onclick="gltfviewer.showGlTF('models/GroundVehicle.glb')" >
+                열기
+            </button>
+        </div>
+    </div>
+    <div class="ui divider"></div>
     <div class="ui small buttons">
         <button class="ui button" onclick="kmzShow()">공역 보기</button>
         <div class="or"></div>
@@ -73,6 +96,6 @@
     function kmzHideForNorthKorea() {
 
     }
-
+    var gltfviewer = new GltfViewer({id:'gltfviewer'});
     //@sourceURL="flight-area.js"
 </script>

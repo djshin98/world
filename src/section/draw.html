@@ -130,8 +130,11 @@
 
 <script>
   $("#edit-mode").bind("change", function(e){
-      app.draw( $(this).val() );
+    if( Cesium.defined(app) ){ 
+      app.draw( $(this).val() ); 
       console.log( "mode : " + $(this).val() );
+    }
+      
   });
 
   map.connectViewModel('olive-draw', {
@@ -154,7 +157,10 @@
       }else{
         viewModel.enableStyle = true;
       }
-      app.draw( viewModel );
+      if( Cesium.defined(app) ){ 
+        console.log("viewmodel olive-draw " + app);
+        app.draw( viewModel ); 
+      }
       viewer.scene.requestRender();
   }); 
 

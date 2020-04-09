@@ -18,6 +18,8 @@ global.OliveVideo = OliveVideo;
 
 require("../viewmodel/Marker");
 
+require("../ui/olive-gltf");
+
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
@@ -82,7 +84,7 @@ class Application {
         this.collections["MARKER"] = new MarkerCollection(this.map);
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
-        this.draw = new Draw(this.map, this.map.viewOption.baseLayerPicker);
+        this.drawModel = new Draw(this.map, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
 
         this.onResize();
@@ -109,7 +111,7 @@ class Application {
         }
     }
     draw(mode) {
-        this.draw.update(mode);
+        this.drawModel.update(mode);
     }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
@@ -121,8 +123,8 @@ class Application {
                 { name: "Home", icon: "home", page: "section/home.html" },
                 { name: "즐겨찾기", icon: "map marker alternate", page: "section/favorite.html" },
                 /*{ name: "위치검색", icon: "search", page: "section/search.html" },*/
-                { name: "3d Map", icon: "map", page: "section/map.html" },
-                { name: "공역", icon: "fighter jet", page: "section/flight-area.html" },
+                { name: "3D Map", icon: "map", page: "section/map.html" },
+                { name: "3D 모델", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 /*{ name: "인공위성", icon: "space shuttle", page: "section/sat.html" },*/
                 { name: "시연용", icon: "play", page: "section/presentation.html" },
@@ -215,6 +217,7 @@ class Application {
         }
         return this.oliveDragger;
     }
+    
 };
 
 global.Application = Application;
