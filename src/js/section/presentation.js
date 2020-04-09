@@ -3,6 +3,8 @@ class Presentation {
     constructor() {
         this.onclick;
         this.init();
+        this.targetingDialog = [];
+        this.WeoponRecomDialog = [];
     }
     test() {
         alert("test");
@@ -60,8 +62,11 @@ class Presentation {
     RequestUnknownTgt() {
 
     }
-    ShowTgtInfo() {
 
+    ShowTgtInfo() {
+        //ShowTgtInfo()	식별된 표적의 정보를 도시한다.
+        console.log("");
+        this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }));
     }
     ResponseTgtInfoDisplay() {
 
@@ -69,12 +74,14 @@ class Presentation {
     ShowTgtListDisplay() {
 
     }
+
     ShowWeoponRecomDisplay() {
-
+        //무장추천결과값을 조회하여 도시한다.
+        console.log("");
+        this.WeoponRecomDialog.push(new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px" }));
+        $(".wpRecom").css("width", "270px"); // 팝업이 여러개 떴을때 기존에 떠있었던 table에 준 width 270px 가 먹질않는다..
     }
-    ShowColleDamageDisplay() {
-
-    }
+    ShowColleDamageDisplay() {}
     ShowACCollisionDisplay() {
 
     }
