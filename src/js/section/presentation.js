@@ -66,6 +66,9 @@ class Presentation {
 
     ShowTgtInfo() {
         //ShowTgtInfo()	식별된 표적의 정보를 도시한다.
+        serverAdapter.get('target', {}, function(resultdata) {
+            console.log(resultdata);
+        });
         console.log("");
         this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }));
     }
@@ -87,6 +90,12 @@ class Presentation {
     }
     ShowWeaponAssigmentDisplay() {
         this.WeoponAssignDialog.push(new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px" }));
+    }
+
+    addData() {
+        // 넘어온 데이터 처리가능 대신 dialog가 로딩이 끝난뒤 콜백받아서 추가해줘야 된다 $test 못찾음....
+        var $test = $(this.targetingDialog[0].instance.$body);
+        $($test[0].childNodes[2]).append("<tr><td class='thead'>제원1</td><td class='tdata'>제원1 값</td></tr>");
     }
 }
 

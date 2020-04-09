@@ -22,6 +22,7 @@ var mybatisMapper = require('mybatis-mapper');
 
 console.log(__dirname + '/conf/mapper/testMapper.xml');
 mybatisMapper.createMapper([__dirname + '/conf/mapper/testMapper.xml']);
+mybatisMapper.createMapper([__dirname + '/conf/mapper/targetMapper.xml']);
 /**추가적으로 맵퍼를 생성할 수 있다. */
 
 var format = { language: 'sql', indent: '  ' };
@@ -111,6 +112,32 @@ server.get('/enemyPre/', (req, res) => {
         res.json({ enemyPres: result });
     });
 });
+
+
+server.get('/target/', (req, res) => {
+    var param = req.query.param;
+
+    var query1 = mybatisMapper.getStatement('targetMapper', 'str_tgt', JSON.parse(param), format);
+    var query2 = mybatisMapper.getStatement('targetMapper', 'bmoa', JSON.parse(param), format);
+    var query3 = mybatisMapper.getStatement('targetMapper', 'tgt_info', JSON.parse(param), format);
+    var query4 = mybatisMapper.getStatement('targetMapper', 'enemy_unit', JSON.parse(param), format);
+
+    connection.query(query1, function(err, strTgt, fields) {
+        connection.query(query2, function(err, bmoa, fields) {
+            connection.query(query3, function(err, tgtInfo, fields) {
+                connection.query(query4, function(err, enemyUnit, fields) {
+                    if (!err) {
+                        res.json({ strTgt: strTgt, bmoa: bmoa, tgtInfo: tgtInfo, enemyUnit: enemyUnit });
+                    } else {
+                        console.log('query error : ' + err);
+                        res.send(err);
+                    }
+                });
+            });
+        });
+    });
+});
+
 // mapper: mybatisMapper.getStatement
 
 

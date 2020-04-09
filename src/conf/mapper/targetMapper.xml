@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="targetMapper">  
+  <select id="str_tgt">
+      SELECT * 
+        FROM t_waa_str_tgt
+
+  </select>
+  <select id="bmoa">
+      SELECT * 
+        FROM t_waa_bmoa
+  </select>
+  <select id="tgt_info">
+      SELECT * 
+        FROM t_waa_tgt_info
+  </select>
+  <<select id="enemy_unit">
+      SELECT *  
+        FROM t_waa_enemy_unit
+  </select>
+</mapper>
