@@ -19,6 +19,7 @@ class Section {
             get({
                 url: content.page,
                 success: function(status, statusText, data) {
+                    console.log( "loading a section page :" + content.page );
                     let tv = dom.$(_this.path.sidebar)[0];
                     tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
                         "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
@@ -44,7 +45,6 @@ class Section {
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
-
         this.options.oncomplete && this.options.oncomplete();
     }
     select(tag, name) {
