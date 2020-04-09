@@ -28,7 +28,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             image: img,
             scale: 1.0,
             position: cartesian,
-            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND ,
+            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
@@ -67,19 +67,12 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         let entity = this.addEntity({
             // position: cartesian,
-            position: new Cesium.CallbackProperty(function(time, getPos) {
-                if (options.sic === "SPAAMFB--------") {
-                    var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
-                    if (carto.height >= cartoSet.height)
-                        cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
-                }
-                /* if (options.name === "지상작전사령부") {
-                    app.collections
-                    count++;
-                    console.log(count);
-                } */
+            position: (options.sic === "SPAAMFB--------") ? new Cesium.CallbackProperty(function(time, getPos) {
+                var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+                if (carto.height >= cartoSet.height)
+                    cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
                 return cartesian;
-            }, false),
+            }, false) : cartesian,
 
             billboard: billboardOptions,
             description: new Cesium.CallbackProperty(function(time, result) {

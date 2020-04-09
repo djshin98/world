@@ -76,7 +76,7 @@ server.get('/Entities/', (req, res) => {
     var query1 = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
     var query2 = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
     var query3 = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
-    
+
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
@@ -94,6 +94,23 @@ server.get('/Entities/', (req, res) => {
     });
 });
 
+
+//------------------------------- presentation 에 필요한 쿼리 -------------------------------------
+server.get('/allyPre/', (req, res) => {
+    var param = req.query.param;
+    var query = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
+    connection.query(query, function(err, result, fields) {
+        res.json({ allyPres: result });
+    });
+});
+
+server.get('/enemyPre/', (req, res) => {
+    var param = req.query.param;
+    var query = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
+    connection.query(query, function(err, result, fields) {
+        res.json({ enemyPres: result });
+    });
+});
 // mapper: mybatisMapper.getStatement
 
 
