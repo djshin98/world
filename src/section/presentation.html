@@ -13,7 +13,24 @@ ShowACCollisionDisplay()	공역충돌결과값을 조회하여 도시한다.
 ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다. -->
 <html>
 <style>
-
+    .weopon tr th {
+        vertical-align: middle;
+        text-align: center;
+        height: 53px;
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #414b53;
+        color: #838b91;
+    }
+    
+    .weopon tr td {
+        text-align: center;
+        color: #a5aeb4;
+        height: 47px;
+        width: 0%;
+        border: 1px solid #414850;
+        background-color: #212629;
+    }
 </style>
 
 <body>
@@ -56,7 +73,7 @@ ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다.
             <td><button class="ui button mini">공역충돌결과값</button></td>
         </tr>
         <tr>
-            <td><button class="ui button mini">무장할당결과값</button></td>
+            <td><button class="ui button mini" onclick="app.presentation.ShowWeaponAssigmentDisplay()">무장할당결과값 </button></td>
         </tr>
     </table>
 </body>

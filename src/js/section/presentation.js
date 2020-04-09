@@ -5,6 +5,7 @@ class Presentation {
         this.init();
         this.targetingDialog = [];
         this.WeoponRecomDialog = [];
+        this.WeoponAssignDialog = [];
     }
     test() {
         alert("test");
@@ -79,14 +80,13 @@ class Presentation {
         //무장추천결과값을 조회하여 도시한다.
         console.log("");
         this.WeoponRecomDialog.push(new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px" }));
-        $(".wpRecom").css("width", "270px"); // 팝업이 여러개 떴을때 기존에 떠있었던 table에 준 width 270px 가 먹질않는다..
     }
     ShowColleDamageDisplay() {}
     ShowACCollisionDisplay() {
 
     }
     ShowWeaponAssigmentDisplay() {
-
+        this.WeoponAssignDialog.push(new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px" }));
     }
 }
 
