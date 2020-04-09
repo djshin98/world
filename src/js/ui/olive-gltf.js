@@ -1,4 +1,4 @@
-require('dropzone');
+var Dropzone = require('dropzone');
 
 class GltfViewer{
     constructor(options){
@@ -12,7 +12,7 @@ class GltfViewer{
         Cesium.BingMapsApi.defaultKey = "Ag-6WHiJUeX5dm4qedvjgqzGcB-mgrZe1KtjnNz-8gwzIP_8PUu9kVZUKXhuwRsX";
     
         var globe = new Cesium.Globe();
-        globe.baseColor = Cesium.Color.WHITE;
+        globe.baseColor = Cesium.Color.SLATEGREY;
     
         this.viewer = new Cesium.Viewer(this.options.id,{
             animation: false,
@@ -33,23 +33,11 @@ class GltfViewer{
             navigationHelpButton: false,
             navigationInstructionsInitiallyVisible: false
         });
-        this.viewer.scene.backgroundColor = Cesium.Color.WHITE;
+        globe.showGroundAtmosphere = true;
+        this.viewer.scene.backgroundColor = Cesium.Color.SLATEGRAY;
         this.viewer.scene.imageryLayers.removeAll();
-        /*
-        document.body.onkeydown = function(e){
-            switch((e.keyCode || e.which)){
-                case 70:
-                    toggleDebugAxis();
-                    break;
-                case 66:
-                    toggleBoundingVolume();
-                    break;
-                case 72:
-                    toggleHelpCredits();
-                    break;
-            }
-        };
-        */
+
+        this.initDropzone();
     }
 
     initDropzone(){
@@ -59,7 +47,7 @@ class GltfViewer{
             _this.showGlTF(reader.result);
         }, false);
     
-        ["div#"+this.options.id, "div#home .dragndrop"].forEach(function(container){
+        ["div#"+this.options.id].forEach(function(container){
             var dz = new Dropzone(container, { 
                 url: "#",
                 acceptedFiles: ".gltf,.glb",
@@ -68,8 +56,9 @@ class GltfViewer{
                 maxFiles: 1,
                 createImageThumbnails: false,
                 autoProcessQueue: false,
+                previewElement : "",
                 accept: function(file, done){
-                    document.getElementById("home").style.display = 'none';
+                    //document.getElementById("home").style.display = 'none';
                     reader.readAsDataURL(file);
                 }
             });
@@ -127,7 +116,7 @@ class GltfViewer{
         this.viewer.scene.primitives.removeAll();
         
         var entity = this.viewer.entities.add({
-            position : Cesium.Cartesian3.fromDegrees(0, 0, 100000000000),
+            position : Cesium.Cartesian3.fromDegrees(0, 0, 100),
             model : {
                 uri : uri,
                 minimumPixelSize : 128,

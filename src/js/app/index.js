@@ -152,7 +152,6 @@ class Application {
 
                 _this.workStatus("section", true);
 
-
                 $("input[data-olive-widget=animation]").prop("checked", _this.map.viewOption.animation);
                 $("input[data-olive-widget=timeline]").prop("checked", _this.map.viewOption.timeline);
                 $("input[data-olive-widget=fullscreen]").prop("checked", _this.map.viewOption.fullscreenButton);
@@ -166,8 +165,8 @@ class Application {
                 _this.map.show('fps', false);
                 _this.map.show('distance', false);
                 _this.presentation = new Presentation();
+                
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
-
             }
         });
     }
