@@ -4,7 +4,7 @@ var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
-
+var { Presentation } = require("../section/presentation");
 var { JsonByFolder } = require("../repository/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
 var { OliveDragger } = require("../ui/olive-dragger");
@@ -13,7 +13,7 @@ require("../ui/olive-input");
 require("../ui/olive-tree");
 require("../ui/olive-dialog");
 
-var {OliveVideo} = require("../ui/olive-video");
+var { OliveVideo } = require("../ui/olive-video");
 global.OliveVideo = OliveVideo;
 
 require("../viewmodel/Marker");
@@ -74,7 +74,7 @@ class Application {
         };
 
         this.map = new MilMap(options);
-        
+
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map);
         this.collections["ALLY"] = new KMilSymbolCollection(this.map);
         this.collections["BOMA"] = new KMilSymbolCollection(this.map);
@@ -163,6 +163,7 @@ class Application {
                 _this.map.show('toolbar', false);
                 _this.map.show('fps', false);
                 _this.map.show('distance', false);
+                _this.presentation = new Presentation();
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
 
             }
@@ -209,8 +210,8 @@ class Application {
     getCollection(name) {
         return this.collections[name];
     }
-    dragger(){
-        if( !Cesium.defined(this.oliveDragger) ){
+    dragger() {
+        if (!Cesium.defined(this.oliveDragger)) {
             this.oliveDragger = new OliveDragger(this);
         }
         return this.oliveDragger;
