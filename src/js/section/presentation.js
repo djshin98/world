@@ -7,8 +7,8 @@ class Presentation {
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
 
-        this.allyPres = new KMilSymbolCollection(map, {name:"ALLY_PRES"});
-        this.enemyPres = new KMilSymbolCollection(map, {name:"ENEMY_PRES"});
+        this.allyPres = new KMilSymbolCollection(map, { name: "ALLY_PRES" });
+        this.enemyPres = new KMilSymbolCollection(map, { name: "ENEMY_PRES" });
     }
     test() {
         alert("test");
@@ -71,8 +71,7 @@ class Presentation {
             _this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }, function(a, b) {
                 var $tbody = $('.targetPro');
                 _this.resultdata.tgtInfo.forEach(function(d, i) {
-                    if (i < 5)
-                        $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>")
+                    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
                 })
             }));
         });
@@ -103,10 +102,6 @@ class Presentation {
         var $test = $(this.targetingDialog[0].instance.$body);
         $($test[0].childNodes[2]).append("<tr><td class='thead'>제원1</td><td class='tdata'>제원1 값</td></tr>");
     }
-}
-
-module.exports = {
-    Presentation: Presentation
 }
 
 global.Presentation = Presentation;
