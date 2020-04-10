@@ -12,7 +12,6 @@ var { DrawCollection } = require("../collection/drawcollection");
 
 global.Cesium = require('cesium/Cesium');
 
-
 require('./grid/wgs84');
 
 require('cesium/Widgets/widgets.css');

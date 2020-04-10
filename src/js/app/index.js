@@ -1,4 +1,4 @@
-import { IxDatabase } from "../repository/db";
+var { IxDatabase } = require("../repository/db");
 var { dom, get, post } = require("../util/comm");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
@@ -79,13 +79,6 @@ class Application {
         };
 
         this.map = new MilMap(options);
-
-        this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map,{name:"KMILSYMBOL"});
-        this.collections["ALLY"] = new KMilSymbolCollection(this.map,{name:"ALLY"});
-        this.collections["BOMA"] = new KMilSymbolCollection(this.map,{name:"BOMA"});
-        this.collections["ENEMY"] = new KMilSymbolCollection(this.map,{name:"ENEMY"});
-        this.collections["MARKER"] = new MarkerCollection(this.map,{name:"MARKER"});
-
 
         this.map.createCollection("KMILSYMBOL", "KMilSymbol");
         this.map.createCollection("ALLY", "KMilSymbol");
