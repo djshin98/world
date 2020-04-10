@@ -13,7 +13,7 @@
       SELECT * 
         FROM t_waa_tgt_info
   </select>
-  <<select id="enemy_unit">
+  <select id="enemy_unit">
       SELECT *  
         FROM t_waa_enemy_unit
   </select>
