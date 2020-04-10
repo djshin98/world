@@ -4,7 +4,6 @@
   <select id="str_tgt">
       SELECT * 
         FROM t_waa_str_tgt
-
   </select>
   <select id="bmoa">
       SELECT * 

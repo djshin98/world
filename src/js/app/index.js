@@ -2,11 +2,16 @@ import { IxDatabase } from "../repository/db";
 var { dom, get, post } = require("../util/comm");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
+<<<<<<< HEAD
 
 var { Presentation } = require("../section/presentation");
+=======
+>>>>>>> c96a5c8962fa4ae46b77581b90bfa2751aa68513
 var { JsonByFolder } = require("../repository/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
 var { OliveDragger } = require("../ui/olive-dragger");
+var { Presentation } = require("../section/presentation");
+
 require("../util/serveradapter");
 require("../ui/olive-input");
 require("../ui/olive-tree");
@@ -55,14 +60,14 @@ class Application {
             }
         }
         this.readyFunctions = [];
-        
+
 
         this.collections = {};
         window.onresize = this.onResize;
 
-        
+
         //window.onresize();
-        
+
         this.init(options);
 
         this.section = this.createSection();
@@ -82,6 +87,7 @@ class Application {
 
         this.map = new MilMap(options);
 
+<<<<<<< HEAD
         this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map,{name:"KMILSYMBOL"});
         this.collections["ALLY"] = new KMilSymbolCollection(this.map,{name:"ALLY"});
         this.collections["BOMA"] = new KMilSymbolCollection(this.map,{name:"BOMA"});
@@ -90,13 +96,21 @@ class Application {
 
 
         this.map.appendCollection("KMILSYMBOL", "KMilSymbol");
+=======
+        // this.collections["KMILSYMBOL"] = new KMilSymbolCollection(this.map, { name: "KMILSYMBOL" });
+        // this.collections["ALLY"] = new KMilSymbolCollection(this.map, { name: "ALLY" });
+        // this.collections["BOMA"] = new KMilSymbolCollection(this.map, { name: "BOMA" });
+        // this.collections["ENEMY"] = new KMilSymbolCollection(this.map, { name: "ENEMY" });
+        // this.collections["MARKER"] = new MarkerCollection(this.map, { name: "MARKER" });
+        this.map.appendCollection(this, ["KMILSYMBOL", "ALLY", "BOMA", "ENEMY", "MARKER"]);
+>>>>>>> c96a5c8962fa4ae46b77581b90bfa2751aa68513
 
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
         this.drawModel = new Draw(this.map, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
 
-        
+
 
         global.map = this.map;
     }
@@ -130,7 +144,7 @@ class Application {
         return new Section(this, {
             contents: [
                 { name: "Home", icon: "home", page: "section/home.html" },
-                
+
                 { name: "즐겨찾기", icon: "map marker alternate", page: "section/favorite.html" },
                 //{ name: "위치검색", icon: "search", page: "section/search.html" },
                 { name: "3D Map", icon: "map", page: "section/map.html" },
@@ -142,7 +156,7 @@ class Application {
                 { name: "Entities", icon: "sitemap", page: "section/entities.html" },
                 { name: "도시요소", icon: "eye", page: "section/toshow.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
-                
+
             ],
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {
@@ -150,7 +164,7 @@ class Application {
                 });
             },
             oncomplete: function() {
-                
+
                 _this.map.oliveCamera.widget(function(obj) {
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
@@ -176,7 +190,7 @@ class Application {
                 _this.map.show('toolbar', false);
                 _this.map.show('fps', false);
                 _this.map.show('distance', false);
-                
+
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
             }
         });
@@ -202,12 +216,12 @@ class Application {
             header.style.width = viewWidth + "px";
             header.style.height = headerHeight + "px";
         */
-       
-       if( sectionView ){
-        sectionView.style.top = headerHeight + "px";
-        sectionView.style.width = width + "px";
-        sectionView.style.height = bodyHeight + "px";
-       }
+
+        if (sectionView) {
+            sectionView.style.top = headerHeight + "px";
+            sectionView.style.width = width + "px";
+            sectionView.style.height = bodyHeight + "px";
+        }
         sectionHandle.style.top = ((bodyHeight / 2) - (handleHeight / 2)) + "px";
 
         article.style.top = headerHeight + "px";
@@ -220,7 +234,7 @@ class Application {
         if (windowLayout.section.view.visible && application.section) {
             application.section.resize(width, bodyHeight);
         }
-        
+
     }
     getCollection(name) {
         return this.collections[name];
@@ -231,7 +245,7 @@ class Application {
         }
         return this.oliveDragger;
     }
-    
+
 };
 
 global.Application = Application;

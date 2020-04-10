@@ -41,7 +41,7 @@ class MilMap {
 
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
-            
+
             shadows: true,
             baseLayerPicker: true,
             geocoder: false,
@@ -54,53 +54,53 @@ class MilMap {
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
             timeline: false,
-            fps:false,
+            fps: false,
             animation: false,
             navigation: true,
             fullscreenButton: false,
             creditsDisplay: false,
             distanceDisplayCondition: false,
-            
+
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
-                /*
-                 imageryProvider: Cesium.createWorldImagery({
-                     style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-                 }),
-                  terrainProvider: Cesium.createWorldTerrain(),
-                 shadows: false,
-                 scene3DOnly: true, //3차원 화면으로 구성 // ,
-                 //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-                 animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-                 baseLayerPicker: true,
-                 geocoder: true,
-                 vrButton: false,
-                 homeButton: false,
-                 infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-                 sceneModePicker: false,
-                 selectionIndicator: false,
-                 creditsDisplay: true,
-                 //creditContainer: false,
-                 fullscreenButton: false,
-                 timeline: true,
-                 navigationHelpButton: false,
-                 terrainExaggeration: 1.0, //고도 기복 비율 조정
-                 shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-                 requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-                 // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-                 maximumRenderTimeChange: Infinity,
-                 navigationInstructionsInitiallyVisible: false, */
-                /*
-                skyBox: new Cesium.SkyBox({}),
-                skyAtmosphere: new Cesium.SkyAtmosphere(),
-                clockViewModel: new Cesium.ClockViewModel(clock),
-                contextOptions: {
-                    id: "cesiumCanvas", //must
-                    webgl: {
-                        preserveDrawingBuffer: true
-                    }
-                }*/
+            /*
+             imageryProvider: Cesium.createWorldImagery({
+                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+             }),
+              terrainProvider: Cesium.createWorldTerrain(),
+             shadows: false,
+             scene3DOnly: true, //3차원 화면으로 구성 // ,
+             //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+             animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+             baseLayerPicker: true,
+             geocoder: true,
+             vrButton: false,
+             homeButton: false,
+             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+             sceneModePicker: false,
+             selectionIndicator: false,
+             creditsDisplay: true,
+             //creditContainer: false,
+             fullscreenButton: false,
+             timeline: true,
+             navigationHelpButton: false,
+             terrainExaggeration: 1.0, //고도 기복 비율 조정
+             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+             // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+             maximumRenderTimeChange: Infinity,
+             navigationInstructionsInitiallyVisible: false, */
+            /*
+            skyBox: new Cesium.SkyBox({}),
+            skyAtmosphere: new Cesium.SkyAtmosphere(),
+            clockViewModel: new Cesium.ClockViewModel(clock),
+            contextOptions: {
+                id: "cesiumCanvas", //must
+                webgl: {
+                    preserveDrawingBuffer: true
+                }
+            }*/
         };
 
         if (this.options.map3.mapServiceMode == "internet") {
@@ -165,45 +165,45 @@ class MilMap {
                 //alert('Globe was not picked');
             }
         }, false);
-        
+
         if (this.viewOption.navigation && this.viewOption.navigation == true) {
             let ctrl = this.viewer3d.extend(Cesium.viewerCesiumNavigationMixin, {});
             console.log("ctrl");
         }
-        
 
-        this.viewer3d.scene.morphComplete.addEventListener(function (){
+
+        this.viewer3d.scene.morphComplete.addEventListener(function() {
             console.log('Morph completed...');
-            if( _this.mode == "2D" || _this.mode == "2.5D" ){
-                if( _this.savedCameraObj && _this.savedCameraObj.rect ){
+            if (_this.mode == "2D" || _this.mode == "2.5D") {
+                if (_this.savedCameraObj && _this.savedCameraObj.rect) {
                     _this.oliveCamera.uncache(_this.savedCameraObj.rect);
                 }
-            }else{
+            } else {
                 //_this.oliveCamera.flyTo(_this.savedCameraObj.x * Cesium.Math.DEGREES_PER_RADIAN ,_this.savedCameraObj.y * Cesium.Math.DEGREES_PER_RADIAN );
             }
-            
-            console.log('Camera view rectangle updated...');    
+
+            console.log('Camera view rectangle updated...');
         });
 
     }
-    getId(){
+    getId() {
         return this.options.map3.id;
     }
-    getView(){ return this.viewer3d; }
-    setMode(m){
+    getView() { return this.viewer3d; }
+    setMode(m) {
         this.savedCameraObj = this.oliveCamera.cache();
-        if( m == 2 ){
-            if( map.viewer3d.scene.mode != 2 ){
+        if (m == 2) {
+            if (map.viewer3d.scene.mode != 2) {
                 this.viewer3d.scene.morphTo2D(2);
                 this.mode = "2D";
             }
-        }else if( m == 2.5 ){
-            if( map.viewer3d.scene.mode != 1 ){
+        } else if (m == 2.5) {
+            if (map.viewer3d.scene.mode != 1) {
                 this.viewer3d.scene.morphToColumbusView(2);
                 this.mode = "2.5D";
             }
-        }else if( m == 3 ){
-            if( map.viewer3d.scene.mode != 3 ){
+        } else if (m == 3) {
+            if (map.viewer3d.scene.mode != 3) {
                 this.viewer3d.scene.morphTo3D(2);
                 this.mode = "3D";
             }
@@ -290,8 +290,8 @@ class MilMap {
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
-    contour(viewModel){
-        if( !this.contourWidget ){
+    contour(viewModel) {
+        if (!this.contourWidget) {
             this.contourWidget = new Contour(this.viewer3d);
         }
         this.contourWidget.update(viewModel);
@@ -307,29 +307,29 @@ class MilMap {
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
 
-                    let bound = new Cesium.Rectangle(112/Cesium.Math.DEGREES_PER_RADIAN,30/Cesium.Math.DEGREES_PER_RADIAN,
-                                                    148/Cesium.Math.DEGREES_PER_RADIAN,48/Cesium.Math.DEGREES_PER_RADIAN);
+                    let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
+                        148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
                     options.tilingScheme = new Cesium.GeographicTilingScheme({
-                        rectangle : bound,
-                        numberOfLevelZeroTilesX : 18,
-                        numberOfLevelZeroTilesY : 9
+                        rectangle: bound,
+                        numberOfLevelZeroTilesX: 18,
+                        numberOfLevelZeroTilesY: 9
                     });
-                    
+
                     options.tileWidth = 256;
                     options.tileHeight = 256;
                     options.cells = 0;
                     let grid = new Cesium.GridImageryProvider(options);
-                    
+
                     this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
 
                     grid.readyPromise.then(function(result) {
-                        if( result ){
-                            
+                        if (result) {
+
                         }
-                        console.log("readyPromise GridImageryProvider" );
-                        console.log("minimumLevel " + grid.minimumLevel );
-                        console.log("maximumLevel " + grid.maximumLevel );
-                        
+                        console.log("readyPromise GridImageryProvider");
+                        console.log("minimumLevel " + grid.minimumLevel);
+                        console.log("maximumLevel " + grid.maximumLevel);
+
                     });
 
                     this.__gars.layer.olive_name = "GARS";
@@ -660,6 +660,19 @@ class MilMap {
               speedSpan.innerHTML = speed.toFixed(1);
           }); */
     }
+
+    appendCollection(_this, collections) {
+        collections.forEach(function(d) {
+            switch (d) {
+                case "MARKER":
+                    _this.collections[d] = new MarkerCollection(_this.map, { name: d });
+                    break;
+                default:
+                    _this.collections[d] = new KMilSymbolCollection(_this.map, { name: d });
+                    break;
+            }
+        });
+    }
 }
 
 
@@ -688,12 +701,12 @@ function keyInput() {
             case ARROW_UP:
                 viewer.camera.moveForward(rotateAmount);
                 break;
-            /*case 81:
-                viewer.camera.moveUp(rotateAmount);
-                break;
-            case 69:
-                viewer.camera.moveDown(rotateAmount);
-                break;*/
+                /*case 81:
+                    viewer.camera.moveUp(rotateAmount);
+                    break;
+                case 69:
+                    viewer.camera.moveDown(rotateAmount);
+                    break;*/
             case ARROW_LEFT:
                 viewer.camera.moveLeft(rotateAmount);
                 break;
@@ -703,7 +716,7 @@ function keyInput() {
             case ARROW_RIGHT:
                 viewer.camera.moveRight(rotateAmount);
                 break;
-                
+
             case 107:
                 viewer.camera.zoomIn(zoomAmount);
                 break;
