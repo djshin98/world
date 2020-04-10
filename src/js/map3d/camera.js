@@ -1,8 +1,9 @@
 var { IxDatabase } = require('../repository/db');
 
 class Camera {
-    constructor(viewer) {
-        this.viewer = viewer;
+    constructor(map) {
+        this.map = map;
+        this.viewer = map.viewer3d;
         this.camera = this.viewer.scene.camera;
 
         this.db = new IxDatabase(1, "camera");
@@ -131,6 +132,22 @@ class Camera {
                 roll: this.camera.roll
             }*/
         });
+    }
+    flyOverEntity(group,id){
+        let coll = this.map.collection(group);
+
+        if( Cesium.defined(coll) ){
+            let entity = coll.get(id);
+            if( Cesium.defined(entity) ){
+                var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
+                var lon = Cesium.Math.toDegrees(carto.longitude);
+                var lat = Cesium.Math.toDegrees(carto.latitude);
+                var calcresult = {};
+                calcresult = this.cameraFocus(lon, lat);
+                this.map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
+            }
+            
+        }
     }
     turn() {
         this.turnoff();

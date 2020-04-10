@@ -149,7 +149,7 @@ class MilMap {
         });
         */
 
-        this.oliveCamera = new OliveCamera(this.viewer3d);
+        this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
 
         this.viewer3d.canvas.addEventListener('click', function(e) {

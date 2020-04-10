@@ -4,9 +4,6 @@
             <button class="ui primary button mini" onclick="toshowView()">Get</button>
         </div>
         <div class="ui right">
-            <!-- <button class="ui primary button mini" onclick="app.collections['ALLY'].removeAll()">
-                off
-            </button> -->
         </div>
     </div>
     <div id="toshow-view" class="filetree" style="height: 100%;"></div>
@@ -32,10 +29,7 @@
                 }, ];
 
     function toshowView() {
-        if (app.collections['ALLY'].objects.length > 0) {
-            return;
-        } else {
-            serverAdapter.get('Entities', {}, function(resultdata) {
+        serverAdapter.get('Entities', {}, function(resultdata) {
                 
                 var index = 0;
                 let allyCollection = map.collection('ALLY');
@@ -93,19 +87,7 @@
                             let id = $(tag).data("id");
                             let group = $(tag).data('group');
 
-                            map.entityFlyOver(group,id);
-
-                            coll = map.collection(group);
-
-                            if( Cesium.defined(coll) ){
-                                let entity = coll.get(id);
-                                var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
-                                var lon = Cesium.Math.toDegrees(carto.longitude);
-                                var lat = Cesium.Math.toDegrees(carto.latitude);
-                                var calcresult = {};
-                                calcresult = map.oliveCamera.cameraFocus(lon, lat);
-                                map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
-                            }
+                            map.oliveCamera.flyOverEntity(group,id);
 
                             //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
                             // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
@@ -143,6 +125,5 @@
                     }
                 });
             });
-        }
     }
 </script>
