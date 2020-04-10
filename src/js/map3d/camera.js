@@ -146,7 +146,6 @@ class Camera {
                 calcresult = this.cameraFocus(lon, lat);
                 this.map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
             }
-            
         }
     }
     turn() {
