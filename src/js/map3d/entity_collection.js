@@ -1,5 +1,7 @@
-class OliveEntityCollection {
+
+class OliveEntityCollection { 
     constructor(map, options) {
+        this.name = options.name;
         this.map = map;
         this.viewer = map.viewer3d;
         this.objects = [];
@@ -12,29 +14,26 @@ class OliveEntityCollection {
         this.removeAll();
     }
     ids() {
-        return this.viewer.entities.values.map(d => {
+        return this.entities.values.map(d => {
             return d.id;
         });
     }
     addEntity(opt) {
-        let entity = this.viewer.entities.add(opt);
+        let entity = this.viewer.entities.add(new Cesium.Entity(opt)); 
+        entity.category = this.name;
         this.objects.push({
             id: entity.id,
             cartesian: opt.position,
-            options: opt.billboard.options
+            options: opt.olive_option
         });
         return entity;
     }
     removeAll() {
-        this.viewer.entities.removeAll();
+        let _this = this;
+        this.objects.forEach(entity=>{
+            _this.viewer.entities.remove( _this.viewer.entities.getById(entity.id));
+        });
         this.objects = [];
-    }
-    removeCollection() {
-        for (var i = this.objects.length - 1; i >= 0; i--) {
-            this.remove(this.objects[i].id);
-        }
-        this.objects = [];
-        // this.objects = [];
     }
     get(id) {
         return this.viewer.entities.values.find((entity) => { return entity.id == id ? true : false; });
@@ -42,7 +41,7 @@ class OliveEntityCollection {
     remove(id) {
         var _this = this;
         this._removeEntity(this.get(id), entity => {
-            let fi = this.objects.findIndex(d => { return entity.id == d.id ? true : false; });
+            let fi = _this.objects.findIndex(d => { return entity.id == d.id ? true : false; });
             if (fi >= 0) {
                 let removeEnt = this.objects.splice(fi, 1);
                 if (removeEnt) {

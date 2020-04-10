@@ -6,7 +6,7 @@ class Draw{
     constructor( map , baseLayerPicker ){
         this.viewer = map.getView();
         this.baseLayerPicker = baseLayerPicker;
-        this.collection = new MarkerCollection(map);
+        this.collection = new MarkerCollection(map,{name:"DRAW"});
         this.viewModel = {
             mode: 'view',
             enableStyle:false,

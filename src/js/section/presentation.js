@@ -1,21 +1,20 @@
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 class Presentation {
-    constructor() {
+    constructor(map) {
         this.onclick;
-        this.init();
+
         this.targetingDialog = [];
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
+
+        this.allyPres = new KMilSymbolCollection(map, {name:"ALLY_PRES"});
+        this.enemyPres = new KMilSymbolCollection(map, {name:"ENEMY_PRES"});
     }
     test() {
         alert("test");
     }
-    init() {
-        app.collections["ALLY_PRES"] = new KMilSymbolCollection(app.map);
-        app.collections["ENEMY_PRES"] = new KMilSymbolCollection(app.map);
-    }
     ShowEnemyUnit() {
-        if (app.collections["ENEMY_PRES"].objects.length === 0) {
+        if (this.enemyPres.objects.length === 0) {
             let collection = app.getCollection("ENEMY_PRES");
             serverAdapter.get('enemyPre', {}, function(resultdata) {
                 var datas = resultdata.enemyPres.reduce(function(prev, curr) {
@@ -29,12 +28,12 @@ class Presentation {
                 });
             });
         } else {
-            app.collections["ENEMY_PRES"].removeCollection();
+            this.enemyPres.removeAll();
         }
 
     }
     ShowUnit() {
-        if (app.collections["ALLY_PRES"].objects.length === 0) {
+        if (this.allyPres.objects.length === 0) {
             let collection = app.getCollection("ALLY_PRES");
             serverAdapter.get('allyPre', {}, function(resultdata) {
                 var datas = resultdata.allyPres.reduce(function(prev, curr) {
@@ -48,7 +47,7 @@ class Presentation {
                 });
             });
         } else {
-            app.collections["ALLY_PRES"].removeCollection();
+            this.allyPres.removeAll();
         }
     }
     ShowEnemyOperationLine() {
@@ -66,11 +65,18 @@ class Presentation {
 
     ShowTgtInfo() {
         //ShowTgtInfo()	식별된 표적의 정보를 도시한다.
+        var _this = this;
         serverAdapter.get('target', {}, function(resultdata) {
-            console.log(resultdata);
+            _this.resultdata = resultdata;
+            _this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }, function(a, b) {
+                var $tbody = $('.targetPro');
+                _this.resultdata.tgtInfo.forEach(function(d, i) {
+                    if (i < 5)
+                        $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>")
+                })
+            }));
         });
-        console.log("");
-        this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }));
+
     }
     ResponseTgtInfoDisplay() {
 
@@ -102,3 +108,5 @@ class Presentation {
 module.exports = {
     Presentation: Presentation
 }
+
+global.Presentation = Presentation;

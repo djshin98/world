@@ -11,8 +11,8 @@ via : {name:'via',type:'icon',icon:'marker',color:Cesium.Color.CHOCOLATE,size:48
 };
 
 class MarkerCollection extends OliveEntityCollection {
-    constructor(map) {
-        super(map);
+    constructor(map,options) {
+        super(map,options);
     }
     add(cartesian, opt) {
         var options = Object.assign({
@@ -31,36 +31,39 @@ class MarkerCollection extends OliveEntityCollection {
         let _this = this;
         switch(options.type){
             case 'color':{
-                this.viewer.entities.add({
+                this.addEntity({
                     name : options.name,
                     position : cartesian,
                     billboard : {
                         image : pinBuilder.fromColor(options.color, options.size).toDataURL(),
                         verticalOrigin : Cesium.VerticalOrigin.BOTTOM
-                    }
+                    },
+                    olive_option:options
                 });
             }
             break;
             case 'text':{
-                this.viewer.entities.add({
+                this.addEntity({
                     name : options.name,
                     position : cartesian,
                     billboard : {
                         image : pinBuilder.fromText(options.text, options.color, options.size).toDataURL(),
                         verticalOrigin : Cesium.VerticalOrigin.BOTTOM
-                    }
+                    },
+                    olive_option:options
                 });
             }
             break;
             case 'icon':{
                 Cesium.when(pinBuilder.fromMakiIconId(options.icon, options.color, options.size), function(canvas) {
-                    return _this.viewer.entities.add({
+                    return _this.addEntity({
                         name : options.name,
                         position : cartesian,
                         billboard : {
                             image : canvas.toDataURL(),
                             verticalOrigin : Cesium.VerticalOrigin.BOTTOM
-                        }
+                        },
+                        olive_option:options
                     });
                 });
             }
@@ -68,13 +71,14 @@ class MarkerCollection extends OliveEntityCollection {
             case 'image':{
                 var url = Cesium.buildModuleUrl(options.url);
                 Cesium.when(pinBuilder.fromUrl(url, options.color, options.size), function(canvas) {
-                    return _this.viewer.entities.add({
+                    return _this.addEntity({
                         name : options.name,
                         position : cartesian,
                         billboard : {
                             image : canvas.toDataURL(),
                             verticalOrigin : Cesium.VerticalOrigin.BOTTOM
-                        }
+                        },
+                        olive_option:options
                     });
                 });
             }

@@ -37,10 +37,10 @@ ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다.
     <table class="present">
         <tr>
             <td>
-                <button class="ui button mini" onclick="app.presentation.ShowEnemyUnit()">적부대</button></td>
+                <button class="ui button mini" onclick="presentation.ShowEnemyUnit()">적부대</button></td>
         </tr>
         <tr>
-            <td><button class="ui button mini" onclick="app.presentation.ShowUnit()">아부대</button></td>
+            <td><button class="ui button mini" onclick="presentation.ShowUnit()">아부대</button></td>
         </tr>
         <tr>
             <td><button class="ui button mini">적전투지경선</button></td>
@@ -55,7 +55,7 @@ ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다.
             <td><button class="ui button mini">미식별 표적 처리 요청</button></td>
         </tr>
         <tr>
-            <td><button class="ui button mini" onclick="app.presentation.ShowTgtInfo()">식별된 표적의 정보</button></td>
+            <td><button class="ui button mini" onclick="presentation.ShowTgtInfo()">식별된 표적의 정보</button></td>
         </tr>
         <tr>
             <td><button class="ui button mini">무장할당 지원 AI에서 도시정보</button></td>
@@ -64,7 +64,7 @@ ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다.
             <td><button class="ui button mini">전략표적을 조회하여 화면에 도시</button></td>
         </tr>
         <tr>
-            <td><button class="ui button mini" onclick="app.presentation.ShowWeoponRecomDisplay()">무장 추천 결과값</button></td>
+            <td><button class="ui button mini" onclick="presentation.ShowWeoponRecomDisplay()">무장 추천 결과값</button></td>
         </tr>
         <tr>
             <td><button class="ui button mini">부수적 피해 평가 결과값</button></td>
@@ -73,11 +73,14 @@ ShowWeaponAssigmentDisplay()	무장할당결과값을 조회하여 도시한다.
             <td><button class="ui button mini">공역충돌결과값</button></td>
         </tr>
         <tr>
-            <td><button class="ui button mini" onclick="app.presentation.ShowWeaponAssigmentDisplay()">무장할당결과값 </button></td>
+            <td><button class="ui button mini" onclick="presentation.ShowWeaponAssigmentDisplay()">무장할당결과값 </button></td>
         </tr>
     </table>
 </body>
 <script>
+    $(function(){
+        presentation = new Presentation(map);
+    });
 </script>
 
 </html>
