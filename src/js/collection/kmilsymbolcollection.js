@@ -5,7 +5,6 @@ let { SIDC } = require("../viewmodel/kmilsymbol");
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map,options) {
         super(map,options);
-        this.simulationSeting = {};
     }
     isAirEntity(entity) {
         if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.sic) {

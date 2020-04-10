@@ -6,8 +6,11 @@ var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
 var { dom } = require("../util/comm");
 
+var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
+var { MarkerCollection } = require("../collection/markercollection");
+var { DrawCollection } = require("../collection/drawcollection");
+
 global.Cesium = require('cesium/Cesium');
-//require('./viewerCesiumNavigationMixin');
 
 
 require('./grid/wgs84');
@@ -23,6 +26,11 @@ var clock = new Cesium.Clock({
 
 class MilMap {
     constructor(options) {
+        this.collectionTypes["KMilSymbol"] = KMilSymbolCollection;
+        this.collectionTypes["Marker"] = MarkerCollection;
+        this.collectionTypes["Draw"] = DrawCollection;
+        this.collections = {};
+
         this.mode = "3D";
         this.db = new IxDatabase(1);
         this.options = Object.assign({}, options);
@@ -244,6 +252,22 @@ class MilMap {
             }
         }
     }
+    createCollection(name,type){
+        if( Cesium.defined(name) && Cesium.defined(type) && Cesium.defined(this.collectionTypes[type]) ){
+            if( !Cesium.defined(this.collections[name]) ){
+                this.collections[name] = new this.collectionTypes[type](this,{name:name});
+            }
+            return this.collections[name];
+        }
+    }
+    destroyCollection(name){
+        if( Cesium.defined(name) &&  Cesium.defined(this.collections[name]) ){
+            this.collections[name].destroy();
+            delete(this.collections[name]);
+        }
+    }
+    collection(name){ return this.collections[name]; }
+
     connectViewModel(id, viewModel, updateCallback) {
 
         Cesium.knockout.track(viewModel);

@@ -38,8 +38,8 @@
             serverAdapter.get('Entities', {}, function(resultdata) {
                 
                 var index = 0;
-                let allyCollection = app.getCollection('ALLY');
-                let enemyCollection = app.getCollection('ENEMY');
+                let allyCollection = map.collection('ALLY');
+                let enemyCollection = map.collection('ENEMY');
                 var options = {};
                 for (var r in resultdata) {
                     toShowNode[index].children = resultdata[r].reduce(function(prev, curr, i) {
@@ -95,7 +95,7 @@
 
                             map.entityFlyOver(group,id);
 
-                            coll = app.getCollection(group);
+                            coll = map.collection(group);
 
                             if( Cesium.defined(coll) ){
                                 let entity = coll.get(id);
@@ -122,7 +122,7 @@
                         if (group === "BMOA") {
                             console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
                         } else {
-                            let addCollection = app.getCollection(group);
+                            let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){
                                 addCollection.removeAll();
                                 if (checked) {

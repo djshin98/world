@@ -42,7 +42,7 @@
 
         function dragDrop(e) {
             var options = JSON.parse(decodeURIComponent(e.dataTransfer.getData("option")));
-            let kMilSymbolCollection = app.getCollection("KMILSYMBOL");
+            let kMilSymbolCollection = map.collection("KMILSYMBOL");
 
             var cartesian = map.viewOption.baseLayerPicker ? map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX - 300, e.clientY)) :
                 map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX - 300, e.clientY), map.viewer3d.scene.globe.ellipsoid);

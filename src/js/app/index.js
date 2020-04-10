@@ -2,8 +2,7 @@ import { IxDatabase } from "../repository/db";
 var { dom, get, post } = require("../util/comm");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
-var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
-var { MarkerCollection } = require("../collection/markercollection");
+
 var { Presentation } = require("../section/presentation");
 var { JsonByFolder } = require("../repository/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
@@ -90,7 +89,7 @@ class Application {
         this.collections["MARKER"] = new MarkerCollection(this.map,{name:"MARKER"});
 
 
-        //this.map.appendCollection("KMILSYMBOL", "KMilSymbol");
+        this.map.appendCollection("KMILSYMBOL", "KMilSymbol");
 
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 

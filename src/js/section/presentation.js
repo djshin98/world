@@ -15,7 +15,7 @@ class Presentation {
     }
     ShowEnemyUnit() {
         if (this.enemyPres.objects.length === 0) {
-            let collection = app.getCollection("ENEMY_PRES");
+            let collection = map.collection("ENEMY_PRES");
             serverAdapter.get('enemyPre', {}, function(resultdata) {
                 var datas = resultdata.enemyPres.reduce(function(prev, curr) {
                     var cartesian = Cesium.Cartesian3.fromDegrees(curr.geocd_lngt, curr.geocd_ltd, 0);
@@ -34,7 +34,7 @@ class Presentation {
     }
     ShowUnit() {
         if (this.allyPres.objects.length === 0) {
-            let collection = app.getCollection("ALLY_PRES");
+            let collection = map.collection("ALLY_PRES");
             serverAdapter.get('allyPre', {}, function(resultdata) {
                 var datas = resultdata.allyPres.reduce(function(prev, curr) {
                     var cartesian = Cesium.Cartesian3.fromDegrees(curr.geocd_lngt, curr.geocd_ltd, 0);

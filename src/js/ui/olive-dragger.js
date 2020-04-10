@@ -26,7 +26,7 @@ class OliveDragger{
         if( Cesium.defined(options) && Cesium.defined(options.category) ){
             switch(options.category){
                 case "KMILSYMBOL":{
-                    let kMilSymbolCollection = this.app.getCollection("KMILSYMBOL");
+                    let kMilSymbolCollection = this.map.collection("KMILSYMBOL");
     
                     var cartesian = this.map.viewOption.baseLayerPicker ? this.map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(pos.x, pos.y)) :
                         this.map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(pos.x, pos.y), this.map.viewer3d.scene.globe.ellipsoid);
@@ -35,7 +35,7 @@ class OliveDragger{
                 }
                 break;
                 case "MARKER":{
-                    let markerCollection = this.app.getCollection("MARKER");
+                    let markerCollection = this.map.collection("MARKER");
                     var cartesian = this.map.viewOption.baseLayerPicker ? this.map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(pos.x, pos.y)) :
                         this.map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(pos.x, pos.y), this.map.viewer3d.scene.globe.ellipsoid);
 
