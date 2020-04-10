@@ -23,6 +23,7 @@ var mybatisMapper = require('mybatis-mapper');
 console.log(__dirname + '/conf/mapper/testMapper.xml');
 mybatisMapper.createMapper([__dirname + '/conf/mapper/testMapper.xml']);
 mybatisMapper.createMapper([__dirname + '/conf/mapper/targetMapper.xml']);
+mybatisMapper.createMapper([__dirname + '/conf/mapper/wpRecom.xml']);
 /**추가적으로 맵퍼를 생성할 수 있다. */
 
 var format = { language: 'sql', indent: '  ' };
@@ -135,6 +136,20 @@ server.get('/target/', (req, res) => {
                 });
             });
         });
+    });
+});
+
+server.get('/wpRecom/', (req, res) => {
+    var param = req.query.param;
+    var query = mybatisMapper.getStatement('wpRecom', 'wp_recom', JSON.parse(param), format);
+
+    connection.query(query, function(err, wpRecom, fields) {
+        if (!err) {
+            res.json({ wpRecom: wpRecom });
+        } else {
+            console.log('query error : ' + err);
+            res.send(err);
+        }
     });
 });
 

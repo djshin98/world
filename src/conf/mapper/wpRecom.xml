@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wpRecom">  
+  <select id="wp_recom">
+      SELECT a.sequence_id,
+		     b.wp_name,
+		     c.unit_name
+        FROM t_waa_weapon_recom a
+   LEFT JOIN t_waa_weapon b ON a.weapon_id = b.weapon_id
+   LEFT JOIN t_waa_unit c ON a.attack_means = c.unit_id 
+  </select>
+
+  </mapper>
+
+
+
