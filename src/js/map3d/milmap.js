@@ -188,7 +188,7 @@ class MilMap {
                     _this.oliveCamera.uncache(_this.savedCameraObj.rect);
                 }
             }else{
-                _this.oliveCamera.flyTo(_this.savedCameraObj.x * Cesium.Math.DEGREES_PER_RADIAN ,_this.savedCameraObj.y * Cesium.Math.DEGREES_PER_RADIAN );
+                //_this.oliveCamera.flyTo(_this.savedCameraObj.x * Cesium.Math.DEGREES_PER_RADIAN ,_this.savedCameraObj.y * Cesium.Math.DEGREES_PER_RADIAN );
             }
             
             console.log('Camera view rectangle updated...');    

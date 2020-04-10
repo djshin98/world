@@ -44,12 +44,14 @@ class OliveTree {
                     //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
                     // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
                     //   위도거리는 어디서나 1도=111Km
-                    var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
-                    var lon = Cesium.Math.toDegrees(carto.longitude);
-                    var lat = Cesium.Math.toDegrees(carto.latitude);
-                    var calcresult = {};
-                    calcresult = map.oliveCamera.cameraFocus(lon, lat);
-                    map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
+                    if( findData && findData.cartesian ){
+                        var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
+                        var lon = Cesium.Math.toDegrees(carto.longitude);
+                        var lat = Cesium.Math.toDegrees(carto.latitude);
+                        var calcresult = {};
+                        calcresult = map.oliveCamera.cameraFocus(lon, lat);
+                        map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
+                    }
                 }
             }
         });
