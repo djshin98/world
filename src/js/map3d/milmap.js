@@ -6,11 +6,13 @@ var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
 var { dom } = require("../util/comm");
 
+global.Cesium = require('cesium/Cesium');
+
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 var { DrawCollection } = require("../collection/drawcollection");
 
-global.Cesium = require('cesium/Cesium');
+
 
 require('./grid/wgs84');
 
@@ -25,6 +27,7 @@ var clock = new Cesium.Clock({
 
 class MilMap {
     constructor(options) {
+        this.collectionTypes = {};
         this.collectionTypes["KMilSymbol"] = KMilSymbolCollection;
         this.collectionTypes["Marker"] = MarkerCollection;
         this.collectionTypes["Draw"] = DrawCollection;
