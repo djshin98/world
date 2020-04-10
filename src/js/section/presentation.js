@@ -3,6 +3,7 @@ class Presentation {
     constructor() {
         this.onclick;
         this.init();
+        this.resultdata;
         this.targetingDialog = [];
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
@@ -66,11 +67,18 @@ class Presentation {
 
     ShowTgtInfo() {
         //ShowTgtInfo()	식별된 표적의 정보를 도시한다.
+        var _this = this;
         serverAdapter.get('target', {}, function(resultdata) {
-            console.log(resultdata);
+            _this.resultdata = resultdata;
+            _this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }, function(a, b) {
+                var $tbody = $('.targetPro');
+                _this.resultdata.tgtInfo.forEach(function(d, i) {
+                    if (i < 5)
+                        $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>")
+                })
+            }));
         });
-        console.log("");
-        this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }));
+
     }
     ResponseTgtInfoDisplay() {
 
