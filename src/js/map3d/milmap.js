@@ -33,6 +33,7 @@ class MilMap {
 
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
+            
             shadows: true,
             baseLayerPicker: true,
             geocoder: false,
@@ -51,8 +52,9 @@ class MilMap {
             fullscreenButton: false,
             creditsDisplay: false,
             distanceDisplayCondition: false,
+            
             //showRenderLoopErrors : false,
-            //shouldAnimate : true,
+            //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
                 /*
                  imageryProvider: Cesium.createWorldImagery({
@@ -112,9 +114,6 @@ class MilMap {
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
 
-
-        
-
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
             this.options.map3.offlineBaseLayers.forEach(d => {
@@ -125,7 +124,6 @@ class MilMap {
         }
 
         let _this = this;
-
 
         /*
         var entity = this.viewer3d.entities.add({
@@ -159,30 +157,15 @@ class MilMap {
                 //alert('Globe was not picked');
             }
         }, false);
-
+        
         if (this.viewOption.navigation && this.viewOption.navigation == true) {
             let ctrl = this.viewer3d.extend(Cesium.viewerCesiumNavigationMixin, {});
             console.log("ctrl");
-            //Cesium.viewerCesiumNavigationMixin(this.viewer3d,{});
-            //navigationInitialization(this.options.map3.id, this.viewer3d);
         }
+        
 
         this.viewer3d.scene.morphComplete.addEventListener(function (){
             console.log('Morph completed...');
-            /*
-            var west = Cesium.Math.toRadians(10);
-            var east = Cesium.Math.toRadians(40);
-            var south = Cesium.Math.toRadians(35);
-            var north = Cesium.Math.toRadians(45);
-            var rectangle = new Cesium.Rectangle(west,south,east,north);    
-            window.scene.camera.viewRectangle(rectangle);
-            */
-           /*
-           if( _this.savedCameraObj ){
-            _this.oliveCamera.uncache(_this.savedCameraObj);
-            //_this.savedCameraObj = undefined;
-           }
-           */
             if( _this.mode == "2D" || _this.mode == "2.5D" ){
                 if( _this.savedCameraObj && _this.savedCameraObj.rect ){
                     _this.oliveCamera.uncache(_this.savedCameraObj.rect);

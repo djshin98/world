@@ -3,8 +3,8 @@ let { OliveEntityCollection } = require('../map3d/entity_collection');
 let { SIDC } = require("../viewmodel/kmilsymbol");
 
 class KMilSymbolCollection extends OliveEntityCollection {
-    constructor(map) {
-        super(map);
+    constructor(map,options) {
+        super(map,options);
         this.simulationSeting = {};
     }
     isAirEntity(entity) {
@@ -16,15 +16,14 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
     add(cartesian, options) {
         let image = new kms.Symbol(options.sic, options);
-        if (!options.description) {
-            options.description = (new SIDC(options.sic[0], options.sic)).toDescription();
-        }
-        this._add(cartesian, options, image.toDataURL());
+        let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
+        this._add(cartesian, options, desc, image.toDataURL());
     }
-    _add(cartesian, options, img) {
+    _add(cartesian, options, desc , img) {
         var _this = this;
         var billboardOptions = {
-            options: options,
+            olive_option: options,
+            olive_description:desc, 
             image: img,
             scale: 1.0,
             position: cartesian,
@@ -45,8 +44,8 @@ class KMilSymbolCollection extends OliveEntityCollection {
             cartesian = Cesium.Cartesian3.fromDegrees(longitude, latitude, 250000);
         }
         var sidc_desc = "";
-        if (options.description) {
-            sidc_desc = options.description.reduce((prev, curr) => {
+        if (desc) {
+            sidc_desc = desc.reduce((prev, curr) => {
                 return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
             }, "");
         }
@@ -89,7 +88,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
         });
 
         if (options.sic[2] == 'A') {
-            let entity_arrow = this.viewer.entities.add({
+            let entity_arrow = thi.addEntity({
                 //name : 'billboard_arrow',
                 options: { category: "KMILSYMBOL.ARROW" },
                 polyline: {
@@ -107,7 +106,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entity.subEntites = [];
             entity.subEntites.push(entity_arrow.id);
         } else if (options.sic[2] == 'P') {
-            let entity_arrow = this.viewer.entities.add({
+            let entity_arrow = thi.addEntity({
                 //name : 'billboard_arrow',
                 options: { category: "KMILSYMBOL.ARROW" },
                 polyline: {
@@ -167,9 +166,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entities.forEach(d => {
                 if (d.options.category == "KMILSYMBOL") {
                     let cartesian = new Cesium.Cartesian3(d.cartesian.x, d.cartesian.y, d.cartesian.z);
-                    let symbol = new kms.Symbol(d.options.sic, d.options);
-                    let img = symbol.toDataURL();
-                    this.add(cartesian, d.options, img);
+                    this.add(cartesian, d.options);
                     cartesians.push(cartesian);
                 }
             });

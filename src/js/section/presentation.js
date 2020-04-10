@@ -1,21 +1,19 @@
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 class Presentation {
-    constructor() {
+    constructor(map) {
         this.onclick;
-        this.init();
         this.targetingDialog = [];
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
+
+        this.allyPres = new KMilSymbolCollection(map, {name:"ALLY_PRES"});
+        this.enemyPres = new KMilSymbolCollection(map, {name:"ENEMY_PRES"});
     }
     test() {
         alert("test");
     }
-    init() {
-        app.collections["ALLY_PRES"] = new KMilSymbolCollection(app.map);
-        app.collections["ENEMY_PRES"] = new KMilSymbolCollection(app.map);
-    }
     ShowEnemyUnit() {
-        if (app.collections["ENEMY_PRES"].objects.length === 0) {
+        if (this.enemyPres.objects.length === 0) {
             let collection = app.getCollection("ENEMY_PRES");
             serverAdapter.get('enemyPre', {}, function(resultdata) {
                 var datas = resultdata.enemyPres.reduce(function(prev, curr) {
@@ -29,12 +27,12 @@ class Presentation {
                 });
             });
         } else {
-            app.collections["ENEMY_PRES"].removeCollection();
+            this.enemyPres.removeAll();
         }
 
     }
     ShowUnit() {
-        if (app.collections["ALLY_PRES"].objects.length === 0) {
+        if (this.allyPres.objects.length === 0) {
             let collection = app.getCollection("ALLY_PRES");
             serverAdapter.get('allyPre', {}, function(resultdata) {
                 var datas = resultdata.allyPres.reduce(function(prev, curr) {
@@ -48,7 +46,7 @@ class Presentation {
                 });
             });
         } else {
-            app.collections["ALLY_PRES"].removeCollection();
+            this.allyPres.removeAll();
         }
     }
     ShowEnemyOperationLine() {
@@ -102,3 +100,5 @@ class Presentation {
 module.exports = {
     Presentation: Presentation
 }
+
+global.Presentation = Presentation;

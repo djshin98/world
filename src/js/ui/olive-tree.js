@@ -122,7 +122,7 @@ class OliveTree {
                     addCollection.add(d.cartesianVal, d);
                 });
             } else {
-                app.collections[name].removeCollection();
+                app.collections[name].removeAll();
             }
         }
     }
