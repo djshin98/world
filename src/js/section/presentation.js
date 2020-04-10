@@ -2,11 +2,7 @@ var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 class Presentation {
     constructor(map) {
         this.onclick;
-<<<<<<< HEAD
-=======
-        this.init();
-        this.resultdata;
->>>>>>> 7b5e89517b69507f4516b2fa9e6f5734383600dc
+
         this.targetingDialog = [];
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
