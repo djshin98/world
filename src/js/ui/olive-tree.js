@@ -6,7 +6,7 @@ class OliveTree {
             $(this.selector).html(this._makeTree(arr, this.options));
         }
         //document.getElementById(id).innerHTML = this._makeTree(id, arr, options);
-        this.arr = arr;
+        //this.arr = arr;
         let _this = this;
         $(this.selector).treeview({
             collapsed: false
@@ -28,35 +28,14 @@ class OliveTree {
                 if (_this.options.onSelect) {
                     _this.options.onSelect('file', this, _this);
                 }
-                if (_this.selector === "#toshow-view") {
-                    var __this = this;
-                    var findData;
-                    if ($(this).closest('.collapsable').children('.folder')[0].textContent === "아군부대") {
-                        findData = app.collections["ALLY"].objects.find(function(d) {
-                            return (__this.textContent === d.options.name) ? true : false;
-                        });
-                    } else if ($(this).closest('.collapsable').children('.folder')[0].textContent === "적부대") {
-                        findData = app.collections["ENEMY"].objects.find(function(d) {
-                            return (__this.textContent === d.options.name) ? true : false;
-                        });
-                    }
-
-                    //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
-                    // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
-                    //   위도거리는 어디서나 1도=111Km
-                    var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
-                    var lon = Cesium.Math.toDegrees(carto.longitude);
-                    var lat = Cesium.Math.toDegrees(carto.latitude);
-                    var calcresult = {};
-                    calcresult = map.oliveCamera.cameraFocus(lon, lat);
-                    map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
-                }
+                
             }
         });
 
         $(this.selector + " li>input[type='checkbox']").change(function() {
-
-            _this.selectViewOnMap(this, this.className);
+            let type = ($(this).hasClass('file')) ? 'file' : 'folder';
+            if (_this.options.onChecked) {_this.options.onChecked( $(this).is(":checked"), type, $(this).next(), _this ); }
+            
             // if ($("#checkBoxId").is(":checked")) {
             //     alert("체크박스 체크했음!");
             // } else {
@@ -106,24 +85,6 @@ class OliveTree {
         } else {
             p.swapClass('collapsable', 'expandable');
             prev.swapClass('collapsable-hitarea', 'expandable-hitarea');
-        }
-    }
-    selectViewOnMap(_this, name) {
-        if (name === "BMOA") {
-            console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
-        } else {
-            if ($(_this).is(":checked")) {
-                var viewdata = this.arr.find(function(d) {
-                    return (d.id === name) ? true : false;
-                });
-                let addCollection = app.getCollection(name);
-                viewdata.children.forEach(function(d) {
-                    d.size = 30;
-                    addCollection.add(d.cartesianVal, d);
-                });
-            } else {
-                app.collections[name].removeAll();
-            }
         }
     }
 }

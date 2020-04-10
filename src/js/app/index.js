@@ -90,6 +90,8 @@ class Application {
         this.collections["MARKER"] = new MarkerCollection(this.map,{name:"MARKER"});
 
 
+        this.map.appendCollection("KMILSYMBOL", "KMilSymbol");
+        
         this.favorite = new JsonByFolder("favorite", this.collections["KMILSYMBOL"]);
 
         this.drawModel = new Draw(this.map, this.map.viewOption.baseLayerPicker);

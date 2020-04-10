@@ -17,7 +17,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
     add(cartesian, options) {
         let image = new kms.Symbol(options.sic, options);
         let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
-        this._add(cartesian, options, desc, image.toDataURL());
+        return this._add(cartesian, options, desc, image.toDataURL());
     }
     _add(cartesian, options, desc , img) {
         var _this = this;
@@ -124,6 +124,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entity.subEntites = [];
             entity.subEntites.push(entity_arrow.id);
         }
+        return entity;
         //console.log("add entity : " + entity.id);
     }
     posCollback(cartesian, target, xcount, ycount, arrLon, arrPoint) {

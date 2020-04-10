@@ -13,33 +13,39 @@
 </div>
 
 <script>
-   
+    
+    var toShowNode = [{
+                    name: '아군부대',
+                    group:'ALLY',
+                    id: 'ALLY',
+                    children: [],
+                }, {
+                    name: 'bmoa',
+                    group:'BMOA',
+                    id: 'BMOA',
+                    children: [],
+                }, {
+                    name: '적부대',
+                    group:'ENEMY',
+                    id: 'ENEMY',
+                    children: [],
+                }, ];
+
     function toshowView() {
         if (app.collections['ALLY'].objects.length > 0) {
             return;
         } else {
             serverAdapter.get('Entities', {}, function(resultdata) {
-                var node = [{
-                    name: '아군부대',
-                    id: 'ALLY',
-                    children: [],
-                }, {
-                    name: 'bmoa',
-                    id: 'BMOA',
-                    children: [],
-                }, {
-                    name: '적부대',
-                    id: 'ENEMY',
-                    children: [],
-                }, ];
+                
                 var index = 0;
                 let allyCollection = app.getCollection('ALLY');
                 let enemyCollection = app.getCollection('ENEMY');
                 var options = {};
                 for (var r in resultdata) {
-                    node[index].children = resultdata[r].reduce(function(prev, curr, i) {
+                    toShowNode[index].children = resultdata[r].reduce(function(prev, curr, i) {
                         if (curr.hasOwnProperty('unit_name')) {
                             prev.push({
+                                id: toShowNode[index].group + "_" + (i+1),
                                 name: curr.unit_name,
                                 cartesianVal: Cesium.Cartesian3.fromDegrees(
                                     parseFloat(curr.geocd_lngt),
@@ -49,6 +55,7 @@
                                 x: curr.geocd_lngt,
                                 y: curr.geocd_ltd,
                                 sic: curr.unit_sbl_cd,
+                                group: toShowNode[index].group
                             });
                         } else {
                             prev.push({
@@ -61,33 +68,80 @@
                                 rad : curr.bmoa_rads,
                                 x: curr.geocd_lngt,
                                 y: curr.geocd_ltd,
-                                sic: curr.unit_sbl_cd
+                                sic: curr.unit_sbl_cd,
+                                group: toShowNode[index].group
                             });
                         }
                         return prev;
                     }, []);
                     index++;
                 }
-                new OliveTree('#toshow-view', node, {
+                new OliveTree('#toshow-view', toShowNode, {
+                    onAttribute: function(d) {
+                        return {
+                            id: d.id,
+                            name:d.name,
+                            group : d.group
+                        };
+                    },
                     onText: function(d) {
                         return d.name;
                     },
-                });
+                    onSelect:function(type, tag, obj) {
+                        if (type == "file") {
+                            var __this = obj;
+                            let id = $(tag).data("id");
+                            let group = $(tag).data('group');
 
-                // document.querySelector("[data-content='Home']").className
-                /* node.forEach(function(n, i) {
-                                    if (i === 0) {
-                                        n.children.forEach(function(d) {
-                                            d.size = 30;
-                                            allyCollection.add(d.cartesianVal, d);
-                                        });
-                                    } else if (i === 2) {
-                                        n.children.forEach(function(d) {
-                                            d.size = 30;
-                                            enemyCollection.add(d.cartesianVal, d);
-                                        });
-                                    }
-                                }); */
+                            map.entityFlyOver(group,id);
+
+                            coll = app.getCollection(group);
+
+                            if( Cesium.defined(coll) ){
+                                let entity = coll.get(id);
+                                var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
+                                var lon = Cesium.Math.toDegrees(carto.longitude);
+                                var lat = Cesium.Math.toDegrees(carto.latitude);
+                                var calcresult = {};
+                                calcresult = map.oliveCamera.cameraFocus(lon, lat);
+                                map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
+                            }
+
+                            //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
+                            // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
+                            //   위도거리는 어디서나 1도=111Km
+                            
+                        }else if( type == "folder"){
+
+                        }
+                        
+                    },
+                    onChecked:function(checked,type,tag,obj){
+                        
+                        let group = $(tag).data('group');
+                        if (group === "BMOA") {
+                            console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
+                        } else {
+                            let addCollection = app.getCollection(group);
+                            if( Cesium.defined(addCollection) ){
+                                addCollection.removeAll();
+                                if (checked) {
+                                    var viewdata = toShowNode.find(function(d) {
+                                        return (d.id === group) ? true : false;
+                                    });
+                                    viewdata.children.forEach(function(d) {
+                                        d.size = 30;
+                                        let entity = addCollection.add(d.cartesianVal, d);
+                                        console.dir(entity);
+                                        let ele = $("#toshow-view [data-id="+d.id+"]");
+                                        ele.data("id", entity.id);
+                                    });
+                                }   
+                            }
+                        }
+                        
+                    }
+                });
             });
         }
     }
