@@ -28,35 +28,6 @@ class OliveTree {
                 if (_this.options.onSelect) {
                     _this.options.onSelect('file', this, _this);
                 }
-<<<<<<< HEAD
-                if (_this.selector === "#toshow-view") {
-                    var __this = this;
-                    var findData;
-                    if ($(this).closest('.collapsable').children('.folder')[0].textContent === "아군부대") {
-                        findData = app.collections["ALLY"].objects.find(function(d) {
-                            return (__this.textContent === d.options.name) ? true : false;
-                        });
-                    } else if ($(this).closest('.collapsable').children('.folder')[0].textContent === "적부대") {
-                        findData = app.collections["ENEMY"].objects.find(function(d) {
-                            return (__this.textContent === d.options.name) ? true : false;
-                        });
-                    }
-
-                    //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
-                    // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
-                    //   위도거리는 어디서나 1도=111Km
-                    if( findData && findData.cartesian ){
-                        var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(findData.cartesian);
-                        var lon = Cesium.Math.toDegrees(carto.longitude);
-                        var lat = Cesium.Math.toDegrees(carto.latitude);
-                        var calcresult = {};
-                        calcresult = map.oliveCamera.cameraFocus(lon, lat);
-                        map.oliveCamera.flyTo(calcresult.lon, calcresult.lat);
-                    }
-                }
-=======
-                
->>>>>>> 52d7e9927e4abb18b628ebce5906de11c84b8dfe
             }
         });
 
