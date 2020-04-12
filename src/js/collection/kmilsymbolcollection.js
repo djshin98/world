@@ -15,22 +15,45 @@ class KMilSymbolCollection extends OliveEntityCollection {
         return false;
     }
 
+    terrianFromDegrees(objs,callback){
+        let _this = this;
+        var positions = objs.map(d=>{
+            let c = CTX.cartesian(d.degree.longitude,d.degree.latitude,0);
+            let position = _this.viewer.scene.clampToHeight(c);
+            return position;
+        });
+        
+        
+        var promise = Cesium.sampleTerrain(this.viewer.terrainProvider,11, positions);
+        
+
+        Cesium.when(promise, function(updatedPositions) {
+            // ★ Correct value is about 25.3 meters.
+            // ★ However, console shows 68.71596342427405.
+            //console.log(positions[0].height);
+            //callback(positions);
+            positions.forEach((d,i)=>{
+                objs[i].degree.height = d.height;
+                callback(objs[i]);
+            })
+        });
+    }
+
     add(degree, options) {
         let image = new kms.Symbol(options.sic, options);
         let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
         return this._add(degree, options, desc, image.toDataURL());
     }
     _add(degree, options, desc , img) {
-        var _this = this;
+        
         var billboard = {
             image: img,
             scale: 1.0,
             //position: cartesian,
-            heightReference: Cesium.HeightReference.NONE,
+            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
-        let height = 200;
 
         let entityOption = {
             olive_option: options,
@@ -39,21 +62,13 @@ class KMilSymbolCollection extends OliveEntityCollection {
             description: this.callbackDescirption(options,desc,img)
         };
 
-        height = this.defaultHeight(options.sic);
-        degree.height = height;
+        let height = this.defaultHeight(options.sic);
+        
         let carto = CTX.d2r(degree);
-        let terrainHeight;// = this.viewer.scene.sampleHeight(carto,[],0.1);
-        sampleWidths.some(w=>{
-            terrainHeight = _this.viewer.scene.sampleHeight(carto,[],w);
-            if( Cesium.defined(terrainHeight) ){ return true; }
-            return false;
-        })
-        if( !Cesium.defined(terrainHeight) ){
-            terrainHeight = 1000;
-            console.error("not found terrian height " + degree.longitude +","+ degree.latitude );
-        }
+        let terrainHeight = degree.height;
         height +=  terrainHeight;
         degree.height = height;
+        console.log( "[ add entity ] terrian : "+terrainHeight+" , height : "+height );
         billboard.heightReference = Cesium.HeightReference.NONE;
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;

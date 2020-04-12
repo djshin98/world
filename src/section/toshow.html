@@ -41,8 +41,10 @@
                             prev.push({
                                 id: toShowNode[index].group + "_" + (i+1),
                                 name: curr.unit_name,
-                                x: curr.geocd_lngt,
-                                y: curr.geocd_ltd,
+                                degree : {
+                                    longitude: curr.geocd_lngt,
+                                    latitude: curr.geocd_ltd
+                                },
                                 sic: curr.unit_sbl_cd,
                                 group: toShowNode[index].group
                             });
@@ -50,8 +52,10 @@
                             prev.push({
                                 name: curr.bmoa_id,
                                 rad : curr.bmoa_rads,
-                                x: curr.geocd_lngt,
-                                y: curr.geocd_ltd,
+                                degree : {
+                                    longitude: curr.geocd_lngt,
+                                    latitude: curr.geocd_ltd
+                                },
                                 sic: curr.unit_sbl_cd,
                                 group: toShowNode[index].group
                             });
@@ -101,13 +105,21 @@
                                     var viewdata = toShowNode.find(function(d) {
                                         return (d.id === group) ? true : false;
                                     });
+                                    addCollection.terrianFromDegrees(viewdata.children,function(d){
+                                        d.size = 30;
+                                        let entity = addCollection.add(d.degree, d);
+                                        //console.dir(entity);
+                                        let ele = $("#toshow-view [data-id="+d.id+"]");
+                                        ele.data("id", entity.id);
+                                    });
+                                    /*
                                     viewdata.children.forEach(function(d) {
                                         d.size = 30;
                                         let entity = addCollection.add(CTX.degree(d.x,d.y,0), d);
                                         console.dir(entity);
                                         let ele = $("#toshow-view [data-id="+d.id+"]");
                                         ele.data("id", entity.id);
-                                    });
+                                    });*/
                                 }   
                             }
                         }

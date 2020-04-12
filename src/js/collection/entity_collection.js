@@ -110,7 +110,19 @@ class OliveEntityCollection {
         }
     }
     open(entities) {
-        
+
+    }
+    terrianFromDegrees(degrees,callback){
+        var positions = degrees.map(d=>{
+            return CTX.degree(d.longitude,d.latitude);
+        });
+        var promise = Cesium.sampleTerrainMostDetailed(this.viewer.terrainProvider, positions);
+        Cesium.when(promise, function(updatedPositions) {
+            // ★ Correct value is about 25.3 meters.
+            // ★ However, console shows 68.71596342427405.
+            console.log(positions[0].height);
+            callback(positions);
+        });
     }
 }
 

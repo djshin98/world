@@ -1,6 +1,7 @@
 var CTX = {
     viewer : null,
     debug : false,
+    terrain : true,
     degree : function(longitude,latitude,height){ return new Cesium.Cartographic(longitude, latitude, height); },
     radian : function(longitude,latitude,height){ return Cesium.Cartographic.fromDegrees(longitude, latitude, height); },
     cartesian : function(longitude,latitude,height){ return Cesium.Cartesian3.fromDegrees(longitude, latitude, height); },
@@ -41,7 +42,7 @@ var CTX = {
         return CTX.r2d(CTX.w2r(x,y));  },
     w2c : function(x,y){ 
         if( CTX.debug ){ console.log("w2c : "); console.log("x="+x+" ,y="+y); }
-        return CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid); },
+        return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x,y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid); },
 }
 /*
 baseLayerPicker true or false 따라 가져오는 함수가 다르다? 
