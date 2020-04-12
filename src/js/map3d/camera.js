@@ -115,7 +115,7 @@ class Camera {
     }
     flyTo(x, y) {
         this.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(x, y, this.distance),
+            destination: CTX.cartesian(x, y, this.distance),
             orientation: {
                 heading: this.camera.heading,
                 pitch: this.camera.pitch,

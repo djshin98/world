@@ -1,4 +1,4 @@
-const obj = require('../../../conf/server.json');
+const obj = require('../../conf/server.json');
 
 class ServerAdapter {
     constructor(options) {

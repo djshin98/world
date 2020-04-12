@@ -27,19 +27,12 @@ class OliveDragger{
             switch(options.category){
                 case "KMILSYMBOL":{
                     let kMilSymbolCollection = this.map.collection("KMILSYMBOL");
-    
-                    var cartesian = this.map.viewOption.baseLayerPicker ? this.map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(pos.x, pos.y)) :
-                        this.map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(pos.x, pos.y), this.map.viewer3d.scene.globe.ellipsoid);
-                    
-                    kMilSymbolCollection.add(cartesian, options);
+                    kMilSymbolCollection.add( CTX.w2d(pos.x,pos.y) , options);
                 }
                 break;
                 case "MARKER":{
                     let markerCollection = this.map.collection("MARKER");
-                    var cartesian = this.map.viewOption.baseLayerPicker ? this.map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(pos.x, pos.y)) :
-                        this.map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(pos.x, pos.y), this.map.viewer3d.scene.globe.ellipsoid);
-
-                    markerCollection.add( cartesian , options );
+                    markerCollection.add( CTX.w2d(pos.x,pos.y) , options );
                 }
                 break;
             }

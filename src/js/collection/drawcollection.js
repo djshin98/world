@@ -1,4 +1,4 @@
-let { OliveEntityCollection } = require('../map3d/entity_collection');
+let { OliveEntityCollection } = require('./entity_collection');
 
 class DrawCollection extends OliveEntityCollection {
     constructor(map,options) {

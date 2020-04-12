@@ -7,7 +7,7 @@ var { OliveCursor } = require('./cursor');
 var { dom } = require("../util/comm");
 
 global.Cesium = require('cesium/Cesium');
-
+var { CTX } = require("./ctx");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 var { DrawCollection } = require("../collection/drawcollection");
@@ -56,7 +56,7 @@ class MilMap {
             maximumRenderTimeChange: Infinity,
             navigationHelpButton: false,
             timeline: false,
-            fps: false,
+            fps: true,
             animation: false,
             navigation: true,
             fullscreenButton: false,
@@ -123,6 +123,8 @@ class MilMap {
             }
         }
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
+        //좌표변환 모듈부터 적용한다.
+        CTX.viewer = this.viewer3d;
 
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
@@ -135,7 +137,7 @@ class MilMap {
 
         let _this = this;
 
-        /*
+        
         var entity = this.viewer3d.entities.add({
             label:{
                 show: true,
@@ -147,7 +149,7 @@ class MilMap {
                 pixelOffset: new Cesium.Cartesian2(15,0)
             }
         });
-        */
+        
 
         this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
@@ -362,7 +364,7 @@ class MilMap {
         var maxDistance = 50000; //축소시 보여지는 최대 거리(m) 정의
         var CZMLName = [];
         var result = [];
-        result = Cesium.Cartesian3.fromDegrees(x, y, z);
+        result = CTX.cartesian(x, y, z);
         CZMLName.push({
             "id": "document",
             "name": "3D Models",
@@ -677,7 +679,7 @@ class MilMap {
     }
 }
 
-
+/*
 function keyInput() {
     const zoomAmount = 15,
         rotateAmount = 5;
@@ -703,12 +705,12 @@ function keyInput() {
             case ARROW_UP:
                 viewer.camera.moveForward(rotateAmount);
                 break;
-                /*case 81:
+                case 81:
                     viewer.camera.moveUp(rotateAmount);
                     break;
                 case 69:
                     viewer.camera.moveDown(rotateAmount);
-                    break;*/
+                    break;
             case ARROW_LEFT:
                 viewer.camera.moveLeft(rotateAmount);
                 break;
@@ -732,7 +734,7 @@ function keyInput() {
 }
 
 keyInput();
-
+*/
 module.exports = {
     MilMap: MilMap
 };

@@ -5,7 +5,7 @@ const LIST_URL = "list";
 
 class JsonByFolder{
     constructor(category, fileCollection){
-        this.db = new IxDatabase(1,category);
+        this.db = new IxDatabase(2,category);
         this.category = category;
         this.folders = [];
         this.collection = fileCollection;

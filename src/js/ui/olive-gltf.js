@@ -116,7 +116,7 @@ class GltfViewer{
         this.viewer.scene.primitives.removeAll();
         
         var entity = this.viewer.entities.add({
-            position : Cesium.Cartesian3.fromDegrees(0, 0, 100),
+            position : CTX.cartesian(0, 0, 100),
             model : {
                 uri : uri,
                 minimumPixelSize : 128,

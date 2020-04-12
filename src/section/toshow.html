@@ -41,11 +41,6 @@
                             prev.push({
                                 id: toShowNode[index].group + "_" + (i+1),
                                 name: curr.unit_name,
-                                cartesianVal: Cesium.Cartesian3.fromDegrees(
-                                    parseFloat(curr.geocd_lngt),
-                                    parseFloat(curr.geocd_ltd),
-                                    0
-                                ),
                                 x: curr.geocd_lngt,
                                 y: curr.geocd_ltd,
                                 sic: curr.unit_sbl_cd,
@@ -54,11 +49,6 @@
                         } else {
                             prev.push({
                                 name: curr.bmoa_id,
-                                cartesianVal: Cesium.Cartesian3.fromDegrees(
-                                    parseFloat(curr.geocd_lngt),
-                                    parseFloat(curr.geocd_ltd),
-                                    0
-                                ),
                                 rad : curr.bmoa_rads,
                                 x: curr.geocd_lngt,
                                 y: curr.geocd_ltd,
@@ -113,7 +103,7 @@
                                     });
                                     viewdata.children.forEach(function(d) {
                                         d.size = 30;
-                                        let entity = addCollection.add(d.cartesianVal, d);
+                                        let entity = addCollection.add(CTX.degree(d.x,d.y,0), d);
                                         console.dir(entity);
                                         let ele = $("#toshow-view [data-id="+d.id+"]");
                                         ele.data("id", entity.id);

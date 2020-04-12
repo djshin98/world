@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const server = express();
-const serverConfig = require("../conf/server.json");
+const serverConfig = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
 

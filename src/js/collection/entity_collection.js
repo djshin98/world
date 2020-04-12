@@ -18,12 +18,36 @@ class OliveEntityCollection {
             return d.id;
         });
     }
+    addCompositedEntity(opt,mainObject,subObjects){
+        Object.keys(mainObject).some(key=>{
+            opt[key] = mainObject[key];
+            return true;
+        });
+        let entity = this.addEntity(opt);
+        
+        let _this = this;
+        if( Cesium.defined(entity) ){
+            let subOption = {position:opt.position,parent:entity,polyline:subObjects[0].polyline};
+            //subOption[key] = sub[key];
+            _this.viewer.entities.add(new Cesium.Entity(subOption)); 
+            /*
+            subObjects.forEach(sub=>{
+                Object.keys(sub).some(key=>{
+                    let subOption = {position:opt.position,parent:entity};
+                    subOption[key] = sub[key];
+                    _this.viewer.entities.add(new Cesium.Entity(subOption)); 
+                    return true;
+                });
+            });*/
+        }
+        return entity;
+    }
     addEntity(opt) {
         let entity = this.viewer.entities.add(new Cesium.Entity(opt)); 
         entity.category = this.name;
         this.objects.push({
             id: entity.id,
-            cartesian: opt.position,
+            degree: opt.degree,
             options: opt.olive_option
         });
         return entity;
@@ -47,8 +71,7 @@ class OliveEntityCollection {
                 if (removeEnt) {
                     if (_this.options.onRemove) {
                         _this.options.onRemove(entity, {
-                            parent: entity,
-                            category: sub.options.category,
+                            category: entity.category,
                             longitude: longitude,
                             latitude: latitude,
                             height: height
@@ -62,52 +85,18 @@ class OliveEntityCollection {
         if (entity) {
             let _this = this;
             this.viewer.entities.remove(entity);
-            if (entity.subEntites) {
-                entity.subEntites.forEach(d => {
-                    let subent = this.get(d);
-                    let fi = this.objects.findIndex(d => { return entity.id == d.id ? true : false; });
-                    if (fi >= 0) {
-                        let removeEnt = this.objects.splice(fi, 1);
-                        if (removeEnt) {
-                            if (_this.options.onRemove) {
-                                _this.options.onRemove(entity, {
-                                    parent: entity,
-                                    category: sub.options.category,
-                                    longitude: longitude,
-                                    latitude: latitude,
-                                    height: height
-                                });
-                            }
-                        }
-                    }
-                    this._removeEntity(subent, callback ? callback.call(_this, subent) : undefined);
-                });
-            }!callback || callback.call(this, entity);
+            !callback || callback.call(this, entity);
         }
     }
     move(id, longitude, latitude, height) {
         let entity = this.get(id);
         if (entity) {
-            entity.position = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
-            if (entity.subEntites) {
-                let _this = this;
-                entity.subEntites.forEach(d => {
-                    let sub = _this.get(d);
-                    if (sub) {
-                        if (_this.options.onMove) {
-                            _this.options.onMove(sub, {
-                                parent: entity,
-                                category: sub.options.category,
-                                longitude: longitude,
-                                latitude: latitude,
-                                height: height
-                            });
-                        }
-                        if (sub.options.category == "KMILSYMBOL.ARROW") {
-                            sub.polyline.positions = Cesium.Cartesian3.fromDegreesArrayHeights([longitude, latitude, 0, longitude, latitude, height]);
-                        }
-                    }
-                });
+            entity.position = CTX.cartesian(longitude, latitude, height);
+            let fi = this.objects.findIndex(d => { return entity.id == d.id ? true : false; });
+            if (fi >= 0) {
+                this.objects[fi].degree.longitude = longitude;
+                this.objects[fi].degree.latitude = latitude;
+                this.objects[fi].degree.height = height;
             }
             if (this.options.onMove) {
                 this.options.onMove(entity, {
@@ -118,10 +107,11 @@ class OliveEntityCollection {
                     height: height
                 });
             }
-
         }
     }
-
+    open(entities) {
+        
+    }
 }
 
 module.exports = { OliveEntityCollection: OliveEntityCollection };

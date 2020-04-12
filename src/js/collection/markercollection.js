@@ -1,5 +1,5 @@
 //let {Cesium} = require('cesium/Cesium');
-let { OliveEntityCollection } = require('../map3d/entity_collection');
+let { OliveEntityCollection } = require('./entity_collection');
 
 var pinBuilder = new Cesium.PinBuilder();
 
@@ -92,13 +92,13 @@ class MarkerCollection extends OliveEntityCollection {
             let cartesians = [];
             entities.forEach(d => {
                 if (d.options.category == "MARKER") {
-                    let cartesian = new Cesium.Cartesian3(d.cartesian.x, d.cartesian.y, d.cartesian.z);
-                    _this.add(cartesian,d.options);
-                    cartesians.push(cartesian);
+                    //let cartesian = new Cesium.Cartesian3(d.cartesian.x, d.cartesian.y, d.cartesian.z);
+                    _this.add(d.degree,d.options);
+                   //cartesians.push(cartesian);
                 }
             });
 
-            let rect = Cesium.Rectangle.fromCartesianArray(cartesians);
+            //let rect = Cesium.Rectangle.fromCartesianArray(cartesians);
             //this.map.oliveCamera.flyToRectangle(rect);
         }
     }
