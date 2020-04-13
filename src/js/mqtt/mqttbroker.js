@@ -1,14 +1,17 @@
 var mqtt = require('mqtt');
 
-const serverConfig = require("../../conf/server.json");
-
-class MqttBroker{
+class MqttAdapter{
   constructor(options){
-    this.options = Object.assign({/*host:"localhost",*/listens:[]},options);
+    this.options = Object.assign({host:"localhost",port:1833,listens:[]},options);
+    /*
     if( !this.options.host ){
       this.options.host = serverConfig.MqttServer.host;
     }
-    this.client  = mqtt.connect('mqtt://' + this.options.host);
+    if( !this.options.port ){
+      this.options.port = serverConfig.MqttServer.port;
+    }
+    */
+    this.client  = mqtt.connect({host:this.options.host,port:this.options.port});
     console.log("try connect mqtt : " + this.options.host );
     let _this = this;
     this.client.on('connect', function () {
@@ -54,9 +57,11 @@ class MqttBroker{
     this.client.end();
     console.log("----end----");
   }
-}
+};
+
+
 /*
-global.broker = new MqttBroker({listens:[
+global.broker = new MqttAdapter({host:"192.168.0.79", port:1883, listens:[
   {
     topic:"#",
     onReady:function(topic){
@@ -138,6 +143,9 @@ global.broker = new MqttBroker({listens:[
 ]});
 
 broker.publish("a", "899990");
+
 */
 
+
+module.exports = { MqttAdapter : MqttAdapter };
 

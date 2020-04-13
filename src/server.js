@@ -2,9 +2,12 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const server = express();
-const serverConfig = require("./conf/server.json");
+const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
+
+const WebSocket = require('ws');
+const {MqttAdapter} = require('./js/mqtt/mqttbroker');
 
 const cors = require('cors');
 
@@ -29,8 +32,57 @@ mybatisMapper.createMapper([__dirname + '/conf/mapper/wpRecom.xml']);
 var format = { language: 'sql', indent: '  ' };
 
 console.log("config : " + "conf/server.json");
-console.dir(serverConfig);
-var connection = mysql.createConnection(serverConfig.DatabaseServer);
+console.dir(conf);
+
+const wss = new WebSocket.Server({ port: conf.WebSocket.port });
+console.log('try websocket server : ' + conf.WebSocket.port );
+wss.on('connection', function connection(ws) {
+    console.log('listening websocket server : ' + conf.WebSocket.port);
+    ws.on('message', function incoming(data) {
+        console.log('receive message in websocket server : ' + data );
+        wss.clients.forEach(function each(client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(data);
+            }
+        });
+    });
+});
+console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port );
+var mqttAdapter = new MqttAdapter({
+    host: conf.MqttServer.host, 
+    port: conf.MqttServer.port, 
+    listens:[
+        {
+            topic:"TIA.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+            }
+        },
+        {
+            topic:"WAA.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+            }
+        },
+        {
+            topic:"DSW.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+            }
+        }
+    ]
+});
+
+var connection = mysql.createConnection(conf.DatabaseServer);
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
