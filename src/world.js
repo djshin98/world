@@ -1,6 +1,7 @@
 /*eslint-env node*/
 'use strict';
 (function() {
+    var conf = require('./conf/server.json');
     var express = require('express');
     var compression = require('compression');
     var fs = require('fs');
@@ -9,11 +10,11 @@
 
     var gzipHeader = Buffer.from('1F8B08', 'hex');
 
-    console.log('ready Olive Server 1.2.2');
+    console.log('ready Olive Server 1.3.2');
 
     var yargs = require('yargs').options({
         'port': {
-            'default': 8081,
+            'default': conf.WebServer.port,
             'description': 'Port to listen on.'
         },
         'public': {
@@ -51,6 +52,7 @@
     }, true);
 
     var app = express();
+
     app.use(compression());
     app.use(function(req, res, next) {
         res.header('Access-Control-Allow-Origin', '*');

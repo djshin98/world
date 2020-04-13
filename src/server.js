@@ -2,9 +2,12 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const server = express();
-const serverConfig = require("./conf/server.json");
+const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
+
+const {WebSocketServer} = require('./js/ws/websocket_server');
+const {MqttAdapter} = require('./js/mqtt/mqttbroker');
 
 const cors = require('cors');
 
@@ -29,8 +32,55 @@ mybatisMapper.createMapper([__dirname + '/conf/mapper/wpRecom.xml']);
 var format = { language: 'sql', indent: '  ' };
 
 console.log("config : " + "conf/server.json");
-console.dir(serverConfig);
-var connection = mysql.createConnection(serverConfig.DBconnectionInfo);
+console.dir(conf);
+
+const wss = new WebSocketServer({
+    port : conf.WebSocket.port , 
+    onmessage : function(ws,data){
+        if( mqttAdapter && data ){
+            mqttAdapter.publish(data.topic, data.message );
+        }
+    }
+});
+console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port );
+var mqttAdapter = new MqttAdapter({
+    host: conf.MqttServer.host, 
+    port: conf.MqttServer.port, 
+    listens:[
+        {
+            topic:"TIA.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
+            }
+        },
+        {
+            topic:"WAA.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
+            }
+        },
+        {
+            topic:"DSW.HANDLER",
+            onReady:function(topic){
+                console.log("onready : " + topic);
+            },
+            onReceive:function(topic,message){
+                console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
+            }
+        }
+    ]
+});
+global.test = mqttAdapter;
+var connection = mysql.createConnection(conf.DatabaseServer);
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;

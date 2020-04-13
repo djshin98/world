@@ -1,6 +1,21 @@
 {
-    "serverUrl": "http://localhost:8082",
-    "DBconnectionInfo": {
+    "WebServer":{
+        "host":"localhost",
+        "port":8081
+    },
+    "WasServer":{
+        "host":"localhost",
+        "port":8082
+    },
+    "MqttServer":{
+        "host":"192.168.0.79",
+        "port":1883
+    },
+    "WebSocket":{
+        "host":"localhost",
+        "port":8083
+    },
+    "DatabaseServer": {
         "host": "175.207.13.28",
         "port": 3306,
         "user": "root",

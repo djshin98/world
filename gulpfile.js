@@ -24,6 +24,10 @@ var paths = {
         src: './src/conf/**/*.*',
         dest:'./dist/conf/'
     },
+    mqtt:{
+        src: './src/mqtt/**/*.*',
+        dest:'./dist/mqtt/'
+    },
     popper:{
         src: './node_modules/popper.js/dist/**/*.*',
         dest:'./src/libs/popper/'
@@ -85,7 +89,7 @@ var paths = {
         dest: 'dist/libs/'
     },
     worlds: {
-        src: 'world.js',
+        src: 'src/world.js',
         dest: 'dist/'
     },
     serverjs: {
@@ -231,9 +235,13 @@ function conf() {
     return src(paths.conf.src)
         .pipe(dest(paths.conf.dest));
 }
-
+function mqtt() {
+    return src(paths.mqtt.src)
+        .pipe(dest(paths.mqtt.dest));
+}
 function watchFiles() {
     watch(paths.conf.src, conf);
+    watch(paths.mqtt.src, mqtt);
     watch(paths.popper.src, popper);
     watch(paths.bootstrap.src, bootstrap);
     watch(paths.jquery.src, jquery);
@@ -256,4 +264,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf,md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,mqtt,md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));
