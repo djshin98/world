@@ -18,6 +18,7 @@ class IxDatabase {
         let open = indexedDB.open(this.databaseName, this.version);
         let _this = this;
 		open.onupgradeneeded = function() {
+			console.log('onupgradeneeded database : ' + _this.databaseName + "." +_this.version+"."+_this.storeName);
 		    let db = open.result;
             let store = db.createObjectStore(_this.storeName, {keyPath:['category','url']});
             store.createIndex("category", "category", { unique: false });
