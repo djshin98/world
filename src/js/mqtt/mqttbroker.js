@@ -73,7 +73,7 @@ global.broker = new MqttAdapter({host:"192.168.0.79", port:1883, listens:[
   },
   {
     topic:"a",
-    onReady:function(topic){
+    onReady:function(topic){/*
       console.log("onready : " + topic);
     },
     onReceive:function(topic,message){
