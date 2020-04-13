@@ -1,10 +1,10 @@
 var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://localhost')
+var client  = mqtt.connect('mqtt://192.168.0.1');
  
 client.on('connect', function () {
-  client.subscribe('presence', function (err) {
+  client.subscribe('olive', function (err) {
     if (!err) {
-      client.publish('presence', 'Hello mqtt')
+      client.publish('test/topic', 'Hello mqtt')
     }
   })
 })
@@ -14,3 +14,5 @@ client.on('message', function (topic, message) {
   console.log(message.toString())
   client.end()
 })
+
+client.publish('test/topic', 'Hello Test');
