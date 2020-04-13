@@ -53,7 +53,9 @@ class Dialog {
         }
 
         this.instance.disableTooltips();
-        this.load(this.options.url, this.callback);
+        if (this.options.hasOwnProperty('url')) {
+            this.load(this.options.url, this.callback);
+        }
 
         let _this = this;
         $("#" + this.id).on('resizeStop.lobiPanel', function(ev, lobiPanel) {
@@ -106,6 +108,15 @@ class Dialog {
 
             }
         });
+    }
+    description(pickedObject) {
+        let _this = this;
+        var description = new Cesium.CallbackProperty(function(time, result) {
+            return '<p>대한민국 군대 부호d.</p>\
+            <button>테스트</button>\
+            <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
+        }, false);
+        $("#" + _this.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()));
     }
     data(url, callback) {
         let _this = this;

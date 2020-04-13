@@ -3,10 +3,10 @@ let { OliveEntityCollection } = require('./entity_collection');
 let { SIDC } = require("../viewmodel/kmilsymbol");
 let { CTX } = require("../map3d/ctx");
 
-const sampleWidths = [0.1,1,10,100,1000,10000,100000,1000000,10000000,100000000];
+const sampleWidths = [0.1, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
 class KMilSymbolCollection extends OliveEntityCollection {
-    constructor(map,options) {
-        super(map,options);
+    constructor(map, options) {
+        super(map, options);
     }
     isAirEntity(entity) {
         if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.sic) {
@@ -15,24 +15,24 @@ class KMilSymbolCollection extends OliveEntityCollection {
         return false;
     }
 
-    terrianFromDegrees(objs,callback){
+    terrianFromDegrees(objs, callback) {
         let _this = this;
-        var positions = objs.map(d=>{
-            let c = CTX.cartesian(d.degree.longitude,d.degree.latitude,0);
+        var positions = objs.map(d => {
+            let c = CTX.cartesian(d.degree.longitude, d.degree.latitude, 0);
             let position = _this.viewer.scene.clampToHeight(c);
             return position;
         });
-        
-        
-        var promise = Cesium.sampleTerrain(this.viewer.terrainProvider,11, positions);
-        
+
+
+        var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, positions);
+
 
         Cesium.when(promise, function(updatedPositions) {
             // ★ Correct value is about 25.3 meters.
             // ★ However, console shows 68.71596342427405.
             //console.log(positions[0].height);
             //callback(positions);
-            positions.forEach((d,i)=>{
+            positions.forEach((d, i) => {
                 objs[i].degree.height = d.height;
                 callback(objs[i]);
             })
@@ -44,8 +44,8 @@ class KMilSymbolCollection extends OliveEntityCollection {
         let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
         return this._add(degree, options, desc, image.toDataURL());
     }
-    _add(degree, options, desc , img) {
-        
+    _add(degree, options, desc, img) {
+
         var billboard = {
             image: img,
             scale: 1.0,
@@ -57,27 +57,27 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
         let entityOption = {
             olive_option: options,
-            olive_description:desc, 
-            degree: degree, 
-            description: this.callbackDescirption(options,desc,img)
+            olive_description: desc,
+            degree: degree,
+            description: this.callbackDescirption(degree, options, desc, img)
         };
 
         let height = this.defaultHeight(options.sic);
-        
+
         let carto = CTX.d2r(degree);
         let terrainHeight = degree.height;
-        height +=  terrainHeight;
+        height += terrainHeight;
         degree.height = height;
-        console.log( "[ add entity ] terrian : "+terrainHeight+" , height : "+height );
+        console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
         billboard.heightReference = Cesium.HeightReference.NONE;
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;
         billboard.position = cartesian;
-        let polyline = this.cretePolylineOptions(degree,terrainHeight,height,1,this.defaultPolylineColor(options.sic));
-        return this.addCompositedEntity(entityOption,{billboard:billboard},[{polyline:polyline}]);
+        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 1, this.defaultPolylineColor(options.sic));
+        return this.addCompositedEntity(entityOption, { billboard: billboard }, [{ polyline: polyline }]);
 
     }
-    defaultHeight(sic){
+    defaultHeight(sic) {
         if (sic[2] == 'A') {
             return 6000;
         } else if (sic[2] == 'P') {
@@ -85,7 +85,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         return 20;
     }
-    defaultPolylineColor(sic){
+    defaultPolylineColor(sic) {
         if (sic[2] == 'A') {
             return Cesium.Color.CORNFLOWERBLUE;
         } else if (sic[2] == 'P') {
@@ -93,23 +93,24 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         return Cesium.Color.ANTIQUEWHITE;
     }
-    cretePolylineOptions(degree,low,high,width,color){
+    cretePolylineOptions(degree, low, high, width, color) {
         return {
             positions: Cesium.Cartesian3.fromDegreesArrayHeights([degree.longitude, degree.latitude, low,
                 degree.longitude, degree.latitude, high
             ]),
             width: width,
-            color:color,
-            classificationType:Cesium.ClassificationType.CESIUM_3D_TILE ,
-            material:new Cesium.PolylineDashMaterialProperty({
-                color : color,
-                gapColor : Cesium.Color.TRANSPARENT,
-                dashLength:16
+            color: color,
+            classificationType: Cesium.ClassificationType.CESIUM_3D_TILE,
+            material: new Cesium.PolylineDashMaterialProperty({
+                color: color,
+                gapColor: Cesium.Color.TRANSPARENT,
+                dashLength: 16
             })
         };
     }
-    callbackDescirption(options,desc,img){
+    callbackDescirption(degree, options, desc, img) {
         var sidc_desc = "";
+        var count = 0;
         if (desc) {
             sidc_desc = desc.reduce((prev, curr) => {
                 return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
@@ -117,15 +118,15 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
         return new Cesium.CallbackProperty(function(time, result) {
             return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img + '"/>\
-            <p>대한민국 군대 부호.</p>\
-            <p>부호코드 : ' + options.sic + ' </p>\
-            <p>위도 : ' + (carto.latitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
-            <p>경도 : ' + (carto.longitude * Cesium.Math.DEGREES_PER_RADIAN).toFixed(5) + ' </p>\
-            <p>고도 : ' + (carto.height).toFixed(2) + ' m</p>\
+            <p>대한민국 군대 부호코드.</p>\
+            <p>부호 : ' + options.sic + ' </p>\
+            <p>위도 : ' + (degree.latitude).toFixed(5) + ' </p>\
+            <p>경도 : ' + (degree.longitude).toFixed(5) + ' </p>\
+            <p>고도 : ' + (degree.height).toFixed(2) + ' m</p>\
             ' + sidc_desc + '\
             <button>테스트</button>\
             <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
-        }, true);
+        }, false);
     }
 
     /*
@@ -143,12 +144,12 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 [targetSet[0], 6000] // 그냥 임시로 시작지점과 같은높이로 설정
             ];
         }*/
-/*(options.sic === "SPAAMFB--------") ? new Cesium.CallbackProperty(function(time, getPos) {
-                var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
-                if (carto.height >= cartoSet.height)
-                    cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
-                return cartesian;
-            }, false) : cartesian,*/
+    /*(options.sic === "SPAAMFB--------") ? new Cesium.CallbackProperty(function(time, getPos) {
+                    var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+                    if (carto.height >= cartoSet.height)
+                        cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);
+                    return cartesian;
+                }, false) : cartesian,*/
     posCollback(cartesian, target, xcount, ycount, arrLon, arrPoint) {
         var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
         var lon = Cesium.Math.toDegrees(carto.longitude);

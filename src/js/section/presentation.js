@@ -18,7 +18,7 @@ class Presentation {
             let collection = this.enemyPres;
             serverAdapter.get('enemyPre', {}, function(resultdata) {
                 var datas = resultdata.enemyPres.reduce(function(prev, curr) {
-                    prev.push({ name: curr.unit_name, degree: { longitude: curr.geocd_lngt, latitude: curr.geocd_ltd }, sic: curr.unit_sbl_cd });
+                    prev.push({ name: curr.unit_name, longitude: curr.geocd_lngt, latitude: curr.geocd_ltd, sic: curr.unit_sbl_cd });
                     return prev
                 }, []);
 
