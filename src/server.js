@@ -6,7 +6,7 @@ const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
 
-const WebSocket = require('ws');
+const {WebSocketServer} = require('./js/ws/websocket_server');
 const {MqttAdapter} = require('./js/mqtt/mqttbroker');
 
 const cors = require('cors');
@@ -34,18 +34,13 @@ var format = { language: 'sql', indent: '  ' };
 console.log("config : " + "conf/server.json");
 console.dir(conf);
 
-const wss = new WebSocket.Server({ port: conf.WebSocket.port });
-console.log('try websocket server : ' + conf.WebSocket.port );
-wss.on('connection', function connection(ws) {
-    console.log('listening websocket server : ' + conf.WebSocket.port);
-    ws.on('message', function incoming(data) {
-        console.log('receive message in websocket server : ' + data );
-        wss.clients.forEach(function each(client) {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(data);
-            }
-        });
-    });
+const wss = new WebSocketServer({
+    port : conf.WebSocket.port , 
+    onmessage : function(ws,data){
+        if( mqttAdapter && data ){
+            mqttAdapter.publish(data.topic, data.message );
+        }
+    }
 });
 console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port );
 var mqttAdapter = new MqttAdapter({
@@ -59,6 +54,7 @@ var mqttAdapter = new MqttAdapter({
             },
             onReceive:function(topic,message){
                 console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
             }
         },
         {
@@ -68,6 +64,7 @@ var mqttAdapter = new MqttAdapter({
             },
             onReceive:function(topic,message){
                 console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
             }
         },
         {
@@ -77,11 +74,12 @@ var mqttAdapter = new MqttAdapter({
             },
             onReceive:function(topic,message){
                 console.log(topic + " received : " + message.toString() );
+                wss.publish(topic,message);
             }
         }
     ]
 });
-
+global.test = mqttAdapter;
 var connection = mysql.createConnection(conf.DatabaseServer);
 
 server.get('/map/juso/', (req, res) => {

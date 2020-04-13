@@ -33,7 +33,7 @@ class MqttAdapter{
     this.client.on('message', function (topic, message) {
       let listen = _this.options.listens.find(listen=>{ return (listen.topic == topic)?true:false; });
       if( listen ){
-        listen.onReceive(listen.topic, message);
+        listen.onReceive(listen.topic, message.toString());
       }else{
         console.log("onreceive : " + topic + " --> " + message);
       }
