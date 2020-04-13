@@ -7,8 +7,8 @@ class Presentation {
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
 
-        this.allyPres = map.createCollection("ALLY_PRES","KMilSymbol");
-        this.enemyPres = map.createCollection("ENEMY_PRES","KMilSymbol");
+        this.allyPres = map.createCollection("ALLY_PRES", "KMilSymbol");
+        this.enemyPres = map.createCollection("ENEMY_PRES", "KMilSymbol");
     }
     test() {
         alert("test");
@@ -18,11 +18,12 @@ class Presentation {
             let collection = this.enemyPres;
             serverAdapter.get('enemyPre', {}, function(resultdata) {
                 var datas = resultdata.enemyPres.reduce(function(prev, curr) {
-                    var cartesian = Cesium.Cartesian3.fromDegrees(curr.geocd_lngt, curr.geocd_ltd, 0);
-                    prev.push({ name: curr.unit_name, cartesianVal: cartesian, sic: curr.unit_sbl_cd });
+                    prev.push({ name: curr.unit_name, degree: { longitude: curr.geocd_lngt, latitude: curr.geocd_ltd }, sic: curr.unit_sbl_cd });
                     return prev
                 }, []);
-                datas.forEach(function(d) {
+
+
+                collection.terrianFromDegrees(datas, function(d) {
                     d.size = 30;
                     collection.add(d.cartesianVal, d);
                 });
