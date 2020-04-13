@@ -1,6 +1,8 @@
 /*eslint-env node*/
 'use strict';
 (function() {
+    var conf = require('./conf/server.json');
+    const WebSocket = require('ws');
     var express = require('express');
     var compression = require('compression');
     var fs = require('fs');
@@ -13,7 +15,7 @@
 
     var yargs = require('yargs').options({
         'port': {
-            'default': 8081,
+            'default': conf.WebServer.port,
             'description': 'Port to listen on.'
         },
         'public': {
@@ -51,6 +53,21 @@
     }, true);
 
     var app = express();
+
+    const wss = new WebSocket.Server({ port: conf.WebSocket.port });
+    console.log('try websocket server : ' + conf.WebSocket.port );
+    wss.on('connection', function connection(ws) {
+        console.log('listening websocket server : ' + conf.WebSocket.port);
+        ws.on('message', function incoming(data) {
+            console.log('receive message in websocket server : ' + data );
+            wss.clients.forEach(function each(client) {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    client.send(data);
+                }
+            });
+        });
+    });
+
     app.use(compression());
     app.use(function(req, res, next) {
         res.header('Access-Control-Allow-Origin', '*');

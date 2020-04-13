@@ -3,7 +3,7 @@
         "host":"localhost",
         "port":8081
     },
-    "WasSocket":{
+    "WasServer":{
         "host":"localhost",
         "port":8082
     },

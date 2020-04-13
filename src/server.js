@@ -30,7 +30,7 @@ var format = { language: 'sql', indent: '  ' };
 
 console.log("config : " + "conf/server.json");
 console.dir(serverConfig);
-var connection = mysql.createConnection(serverConfig.DBconnectionInfo);
+var connection = mysql.createConnection(serverConfig.DatabaseServer);
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;
