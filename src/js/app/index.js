@@ -1,5 +1,6 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get, post } = require("../util/comm");
+var { WebSocketBroker } = require("../ws/websocket_broker");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
 
@@ -22,6 +23,8 @@ require("../ui/olive-gltf");
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
+
+const config = require("../../conf/server.json");
 
 class Application {
     constructor(options) {
@@ -74,11 +77,112 @@ class Application {
     }
     init(options) {
         var _this = this;
+
+        _this.dialog = {};
+        _this.dialogFunc = {
+            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    $(body).find("[data-key=test]").text('msg');
+                    $(body).find("[data-key=value]").text(data);
+                }
+                var $tbody = $('.targetPro');
+                //resultdata.tgtInfo.forEach(function(d, i) {
+                //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
+                //})
+            },function(){_this.dialog.tia = undefined; }) },
+            waa : function(data){ return new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    
+                }
+            },function(){_this.dialog.waa = undefined; }) },
+            dsw : function(data){ return new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    
+                }
+                var $tbody = $('.weopon');
+                //resultdata.wpRecom.forEach(function(d, i) {
+                //    if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
+                //})
+            },function(){_this.dialog.dsw = undefined; }) }
+        }
+
         dom.$("#door-handle")[0].onclick = function(e) {
             _this.section.showView(!_this.windowLayout.section.view.visible);
         };
 
         this.map = new MilMap(options);
+        this.websocket = new WebSocketBroker({
+            host : config.WebSocket.host,
+            port : config.WebSocket.port,
+            uri : '',
+            onclose : function(){
+
+            },
+            onmessage : function(data){
+                
+                if( data && data.topic ){
+                    switch(data.topic){
+                        case 'TIA.HANDLER': //표적식별
+                            if( !Cesium.defined(_this.dialog.tia) ){
+                                _this.dialog.tia = _this.dialogFunc.tia(data.message);
+                            }else{
+                                let dlg = _this.dialog.tia;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
+                            console.log( data.topic + "> " + data.message );
+                        break;
+                        case 'WAA.HANDLER': //무장할당 
+                            if( !Cesium.defined(_this.dialog.waa) ){
+                                _this.dialog.waa = _this.dialogFunc.waa(data.message);
+                            }else{
+                                let dlg = _this.dialog.waa;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
+                            console.log( data.topic + "> " + data.message );
+                        break;
+                        case 'DSW.HANDLER': //시연용
+                            if( !Cesium.defined(_this.dialog.dsw) ){
+                                _this.dialog.dsw = _this.dialogFunc.dsw(data.message);
+                            }else{
+                                let dlg = _this.dialog.dsw;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
+                            console.log( data.topic + "> " + data.message );
+                        break;
+                    }
+                }
+            }
+        });
 
         this.map.createCollection("KMILSYMBOL", "KMilSymbol");
         this.map.createCollection("ALLY", "KMilSymbol");

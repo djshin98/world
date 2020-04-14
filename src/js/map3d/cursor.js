@@ -53,10 +53,11 @@ class Cursor {
                     //entity.label.show = false;
                 }
                 var pickedObject = _this.viewer.scene.pick(movement.position);
+
                 if (Cesium.defined(pickedObject)) {
-                    var d = new Dialog({ width: "300px", height: "500px" });
-                    var description = pickedObject.id._description;
-                    $("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
+                    //var d = new Dialog({ width: "300px", height: "500px" });
+                    //var description = pickedObject.id._description;
+                    //$("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
                 }
                 // (pickedObject.id._description)
                 // _this.getSelectedObjFromPoint(movement.position, longitude, latitude);

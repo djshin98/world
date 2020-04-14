@@ -47,7 +47,7 @@ class MilMap {
             shadows: true,
             baseLayerPicker: true,
             geocoder: false,
-            infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
+            infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
             selectionIndicator: true,
             homeButton: false,
             navigationInstructionsInitiallyVisible: false,

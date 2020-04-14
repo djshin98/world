@@ -19,12 +19,13 @@ class Dialog {
             width: "fit-content",
             height: "fit-content",
             position: increasePosition(20, 20, 400, 600),
-            url: "README.html"
+            url: "README.html",
+            show: true
         }, options);
         this.callback = callback;
         var response = { data: "sample" };
         this.id = "olive-dialog-" + (oliveDialog++);
-        let html = "<div id='" + this.id + "' class='panel panel-default'>" + "<div class='panel-heading'>" +
+        let html = "<div id='" + this.id + "' class='panel panel-default' style='dispaly:none;'>" + "<div class='panel-heading'>" +
             "<div class='panel-title'><h4>" + this.options.title + "</h4></div>" +
             "</div><div class='panel-body'>" + response.data + "</div></div>";
 
@@ -69,6 +70,12 @@ class Dialog {
             let h = _this.instance.getHeight();
             window.console.log("l size : " + w + " , " + h);
         });
+
+        if( this.options.show == true ){
+            this.show();
+        }else{
+            this.hide();
+        }
     }
     destroy() {
         if (this.instance) {
@@ -77,10 +84,15 @@ class Dialog {
         }
         $("#" + this.id).remove();
     }
+    show() { if (this.instance) { $("#" + this.id).show(); } }
+    hide() { if (this.instance) { $("#" + this.id).hide(); } }
     minimize() { if (this.instance) this.instance.minimize(); }
     maximize() { if (this.instance) this.instance.maximize(); }
     fullscreen() { if (this.instance) this.instance.toFullScreen(); }
     bringToFront() { if (this.instance) this.instance.bringToFront(); }
+    isMinimized() { return (this.instance) ? this.instance.isMinimized() : false; }
+    isOnFullScreen() { return (this.instance) ? this.instance.isOnFullScreen() : false; }
+    isPinned() { return (this.instance) ? this.instance.isPinned() : false; }
     load(url, callback) {
         let _this = this;
         get({
@@ -106,6 +118,9 @@ class Dialog {
                     $("#" + _this.id + ">.panel-body").width(_this.options.width);
                 }
 
+                if( _this.options.data ){
+                    _this.set(_this.options.data);
+                }
             }
         });
     }
@@ -128,6 +143,11 @@ class Dialog {
                 }
             }
         });
+    }
+    set(message){
+        if( this.callback ){
+            this.callback(this,$("#" + this.id + ">.panel-body"),message);
+        }
     }
 }
 

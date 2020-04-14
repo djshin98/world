@@ -3,7 +3,6 @@ let { OliveEntityCollection } = require('./entity_collection');
 let { SIDC } = require("../viewmodel/kmilsymbol");
 let { CTX } = require("../map3d/ctx");
 
-const sampleWidths = [0.1, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map, options) {
         super(map, options);
@@ -18,14 +17,13 @@ class KMilSymbolCollection extends OliveEntityCollection {
     terrianFromDegrees(objs, callback) {
         let _this = this;
         var positions = objs.map(d => {
-            let c = CTX.cartesian(d.degree.longitude, d.degree.latitude, 0);
-            let position = _this.viewer.scene.clampToHeight(c);
-            return position;
+            let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);
+            //let position = _this.viewer.scene.clampToHeight(c);
+            return c;
         });
 
 
         var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, positions);
-
 
         Cesium.when(promise, function(updatedPositions) {
             // ★ Correct value is about 25.3 meters.
@@ -50,7 +48,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             image: img,
             scale: 1.0,
             //position: cartesian,
-            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
@@ -69,13 +67,24 @@ class KMilSymbolCollection extends OliveEntityCollection {
         height += terrainHeight;
         degree.height = height;
         console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
-        billboard.heightReference = Cesium.HeightReference.NONE;
+        billboard.heightReference = this.defaultHRef(options.sic);
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;
         billboard.position = cartesian;
-        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 1, this.defaultPolylineColor(options.sic));
-        return this.addCompositedEntity(entityOption, { billboard: billboard }, [{ polyline: polyline }]);
+        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.sic));
+        //entityOption.polyline = polyline;
+        //entityOption.billboard = billboard;
+        return this.addCompositedEntity(entityOption, { billboard: billboard, }, [{ polyline: polyline }]);
+        //return this.addEntity(entityOption);
 
+    }
+    defaultHRef(sic){
+        if (sic[2] == 'A') {
+            return Cesium.HeightReference.NONE;
+        } else if (sic[2] == 'P') {
+            return Cesium.HeightReference.NONE;
+        }
+        return Cesium.HeightReference.NONE;
     }
     defaultHeight(sic) {
         if (sic[2] == 'A') {
@@ -83,7 +92,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
         } else if (sic[2] == 'P') {
             return 250000;
         }
-        return 20;
+        return 100;
     }
     defaultPolylineColor(sic) {
         if (sic[2] == 'A') {
@@ -100,7 +109,10 @@ class KMilSymbolCollection extends OliveEntityCollection {
             ]),
             width: width,
             color: color,
-            classificationType: Cesium.ClassificationType.CESIUM_3D_TILE,
+            //classificationType: Cesium.ClassificationType.CESIUM_3D_TILE,
+            //heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            //followSurface : new Cesium.ConstantProperty(false),
+            //clampToGround:true,
             material: new Cesium.PolylineDashMaterialProperty({
                 color: color,
                 gapColor: Cesium.Color.TRANSPARENT,

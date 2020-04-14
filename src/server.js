@@ -48,7 +48,7 @@ var mqttAdapter = new MqttAdapter({
     port: conf.MqttServer.port, 
     listens:[
         {
-            topic:"TIA.HANDLER", //표적식별
+            topic:"TIA.HANDLER",  //표적식별
             onReady:function(topic){
                 console.log("onready : " + topic);
             },
