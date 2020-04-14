@@ -90,16 +90,34 @@ class Application {
 
             },
             onmessage : function(data){
+                _this.dialog = {
+                    tia : new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px", show:false }, function(a, b) {
+                        var $tbody = $('.targetPro');
+                        resultdata.tgtInfo.forEach(function(d, i) {
+                            if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
+                        })
+                    }),
+                    waa : new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px", show:false }),
+                    dsw : new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px", show:false }, function(a, b) {
+                        var $tbody = $('.weopon');
+                        resultdata.wpRecom.forEach(function(d, i) {
+                            if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
+                        })
+                    })
+                }
                 if( data && data.topic ){
                     switch(data.topic){
-                        case 'TIA.HANDLER': 
-                        console.log( data.topic + "> " + data.message );
+                        case 'TIA.HANDLER': //표적식별
+                            _this.dialog.tia.show();
+                            console.log( data.topic + "> " + data.message );
                         break;
-                        case 'WAA.HANDLER': 
-                        console.log( data.topic + "> " + data.message );
+                        case 'WAA.HANDLER': //무장할당 
+                            _this.dialog.waa.show();
+                            console.log( data.topic + "> " + data.message );
                         break;
-                        case 'DSW.HANDLER': 
-                        console.log( data.topic + "> " + data.message );
+                        case 'DSW.HANDLER': //시연용
+                            _this.dialog.dsw.show();
+                            console.log( data.topic + "> " + data.message );
                         break;
                     }
                 }

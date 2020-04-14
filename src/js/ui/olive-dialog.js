@@ -19,12 +19,13 @@ class Dialog {
             width: "fit-content",
             height: "fit-content",
             position: increasePosition(20, 20, 400, 600),
-            url: "README.html"
+            url: "README.html",
+            show: true
         }, options);
         this.callback = callback;
         var response = { data: "sample" };
         this.id = "olive-dialog-" + (oliveDialog++);
-        let html = "<div id='" + this.id + "' class='panel panel-default'>" + "<div class='panel-heading'>" +
+        let html = "<div id='" + this.id + "' class='panel panel-default' style='dispaly:none;'>" + "<div class='panel-heading'>" +
             "<div class='panel-title'><h4>" + this.options.title + "</h4></div>" +
             "</div><div class='panel-body'>" + response.data + "</div></div>";
 
