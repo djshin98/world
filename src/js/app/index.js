@@ -77,6 +77,25 @@ class Application {
     }
     init(options) {
         var _this = this;
+
+        _this.dialog = {
+            tia : new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "220px", show:false }, function(obj,body,data) {
+                var $tbody = $('.targetPro');
+                //resultdata.tgtInfo.forEach(function(d, i) {
+                //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
+                //})
+            }),
+            waa : new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px",height: "250px", show:false }, function(obj,body,data) {
+                
+            }),
+            dsw : new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px",height: "250px", show:false }, function(obj,body,data) {
+                var $tbody = $('.weopon');
+                //resultdata.wpRecom.forEach(function(d, i) {
+                //    if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
+                //})
+            })
+        }
+
         dom.$("#door-handle")[0].onclick = function(e) {
             _this.section.showView(!_this.windowLayout.section.view.visible);
         };
@@ -90,33 +109,22 @@ class Application {
 
             },
             onmessage : function(data){
-                _this.dialog = {
-                    tia : new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px", show:false }, function(a, b) {
-                        var $tbody = $('.targetPro');
-                        resultdata.tgtInfo.forEach(function(d, i) {
-                            if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
-                        })
-                    }),
-                    waa : new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px", show:false }),
-                    dsw : new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px", show:false }, function(a, b) {
-                        var $tbody = $('.weopon');
-                        resultdata.wpRecom.forEach(function(d, i) {
-                            if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
-                        })
-                    })
-                }
+                
                 if( data && data.topic ){
                     switch(data.topic){
                         case 'TIA.HANDLER': //표적식별
                             _this.dialog.tia.show();
+                            _this.dialog.tia.set(data.message);
                             console.log( data.topic + "> " + data.message );
                         break;
                         case 'WAA.HANDLER': //무장할당 
                             _this.dialog.waa.show();
+                            _this.dialog.waa.set(data.message);
                             console.log( data.topic + "> " + data.message );
                         break;
                         case 'DSW.HANDLER': //시연용
                             _this.dialog.dsw.show();
+                            _this.dialog.dsw.set(data.message);
                             console.log( data.topic + "> " + data.message );
                         break;
                     }

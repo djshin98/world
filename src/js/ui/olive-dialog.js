@@ -70,6 +70,12 @@ class Dialog {
             let h = _this.instance.getHeight();
             window.console.log("l size : " + w + " , " + h);
         });
+
+        if( this.options.show == true ){
+            this.show();
+        }else{
+            this.hide();
+        }
     }
     destroy() {
         if (this.instance) {
@@ -78,6 +84,8 @@ class Dialog {
         }
         $("#" + this.id).remove();
     }
+    show(){ if (this.instance) { $("#" + this.id).show(); } }
+    hide(){ if (this.instance) { $("#" + this.id).hide(); } }
     minimize() { if (this.instance) this.instance.minimize(); }
     maximize() { if (this.instance) this.instance.maximize(); }
     fullscreen() { if (this.instance) this.instance.toFullScreen(); }
@@ -129,6 +137,11 @@ class Dialog {
                 }
             }
         });
+    }
+    set(message){
+        if( this.callback ){
+            this.callback(this,$("#" + _this.id + ">.panel-body"),message);
+        }
     }
 }
 
