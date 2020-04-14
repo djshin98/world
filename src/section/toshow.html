@@ -105,9 +105,10 @@
                                     var viewdata = toShowNode.find(function(d) {
                                         return (d.id === group) ? true : false;
                                     });
+                                    
                                     addCollection.terrianFromDegrees(viewdata.children,function(d){
                                         d.size = 30;
-                                        let entity = addCollection.add(d.degree, d);
+                                        let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,d.degree.height), d);
                                         //console.dir(entity);
                                         let ele = $("#toshow-view [data-id="+d.id+"]");
                                         ele.data("id", entity.id);
@@ -115,11 +116,12 @@
                                     /*
                                     viewdata.children.forEach(function(d) {
                                         d.size = 30;
-                                        let entity = addCollection.add(CTX.degree(d.x,d.y,0), d);
+                                        let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,0), d);
                                         console.dir(entity);
                                         let ele = $("#toshow-view [data-id="+d.id+"]");
                                         ele.data("id", entity.id);
-                                    });*/
+                                    });
+                                    */
                                 }   
                             }
                         }
