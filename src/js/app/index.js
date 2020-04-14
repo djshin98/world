@@ -1,5 +1,6 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get, post } = require("../util/comm");
+var { WebSocketBroker } = require("../ws/websocket_broker");
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
 
@@ -22,6 +23,8 @@ require("../ui/olive-gltf");
 global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
+
+const config = require("../../conf/server.json");
 
 class Application {
     constructor(options) {
@@ -79,6 +82,29 @@ class Application {
         };
 
         this.map = new MilMap(options);
+        this.websocket = new WebSocketBroker({
+            host : config.WebSocket.host,
+            port : config.WebSocket.port,
+            uri : '',
+            onclose : function(){
+
+            },
+            onmessage : function(data){
+                if( data && data.topic ){
+                    switch(data.topic){
+                        case 'TIA.HANDLER': 
+                        console.log( data.topic + "> " + data.message );
+                        break;
+                        case 'WAA.HANDLER': 
+                        console.log( data.topic + "> " + data.message );
+                        break;
+                        case 'DSW.HANDLER': 
+                        console.log( data.topic + "> " + data.message );
+                        break;
+                    }
+                }
+            }
+        });
 
         this.map.createCollection("KMILSYMBOL", "KMilSymbol");
         this.map.createCollection("ALLY", "KMilSymbol");
