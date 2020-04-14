@@ -59,8 +59,8 @@ class MqttAdapter{
   }
 };
 
-
 /*
+
 global.broker = new MqttAdapter({host:"192.168.0.79", port:1883, listens:[
   {
     topic:"#",
@@ -141,9 +141,8 @@ global.broker = new MqttAdapter({host:"192.168.0.79", port:1883, listens:[
     }
   }
 ]});
-
-broker.publish("a", "899990");
-
+//888887
+broker.publish("a", "1");
 */
 
 

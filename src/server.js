@@ -48,7 +48,7 @@ var mqttAdapter = new MqttAdapter({
     port: conf.MqttServer.port, 
     listens:[
         {
-            topic:"TIA.HANDLER",
+            topic:"TIA.HANDLER", //표적식별
             onReady:function(topic){
                 console.log("onready : " + topic);
             },
@@ -58,7 +58,7 @@ var mqttAdapter = new MqttAdapter({
             }
         },
         {
-            topic:"WAA.HANDLER",
+            topic:"WAA.HANDLER", //무장할당
             onReady:function(topic){
                 console.log("onready : " + topic);
             },
@@ -68,7 +68,7 @@ var mqttAdapter = new MqttAdapter({
             }
         },
         {
-            topic:"DSW.HANDLER",
+            topic:"DSW.HANDLER", //상황도
             onReady:function(topic){
                 console.log("onready : " + topic);
             },
