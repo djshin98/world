@@ -84,15 +84,15 @@ class Dialog {
         }
         $("#" + this.id).remove();
     }
-    show(){ if (this.instance) { $("#" + this.id).show(); } }
-    hide(){ if (this.instance) { $("#" + this.id).hide(); } }
+    show() { if (this.instance) { $("#" + this.id).show(); } }
+    hide() { if (this.instance) { $("#" + this.id).hide(); } }
     minimize() { if (this.instance) this.instance.minimize(); }
     maximize() { if (this.instance) this.instance.maximize(); }
     fullscreen() { if (this.instance) this.instance.toFullScreen(); }
     bringToFront() { if (this.instance) this.instance.bringToFront(); }
-    isMinimized(){ return (this.instance) ? this.instance.isMinimized() : false; }
-    isOnFullScreen(){ return (this.instance) ? this.instance.isOnFullScreen() : false; }
-    isPinned(){ return (this.instance) ? this.instance.isPinned() : false; }
+    isMinimized() { return (this.instance) ? this.instance.isMinimized() : false; }
+    isOnFullScreen() { return (this.instance) ? this.instance.isOnFullScreen() : false; }
+    isPinned() { return (this.instance) ? this.instance.isPinned() : false; }
     load(url, callback) {
         let _this = this;
         get({
