@@ -90,6 +90,9 @@ class Dialog {
     maximize() { if (this.instance) this.instance.maximize(); }
     fullscreen() { if (this.instance) this.instance.toFullScreen(); }
     bringToFront() { if (this.instance) this.instance.bringToFront(); }
+    isMinimized(){ return (this.instance) ? this.instance.isMinimized() : false; }
+    isOnFullScreen(){ return (this.instance) ? this.instance.isOnFullScreen() : false; }
+    isPinned(){ return (this.instance) ? this.instance.isPinned() : false; }
     load(url, callback) {
         let _this = this;
         get({
@@ -115,6 +118,9 @@ class Dialog {
                     $("#" + _this.id + ">.panel-body").width(_this.options.width);
                 }
 
+                if( _this.options.data ){
+                    _this.set(_this.options.data);
+                }
             }
         });
     }
@@ -140,7 +146,7 @@ class Dialog {
     }
     set(message){
         if( this.callback ){
-            this.callback(this,$("#" + _this.id + ">.panel-body"),message);
+            this.callback(this,$("#" + this.id + ">.panel-body"),message);
         }
     }
 }

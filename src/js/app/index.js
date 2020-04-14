@@ -78,22 +78,32 @@ class Application {
     init(options) {
         var _this = this;
 
-        _this.dialog = {
-            tia : new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "220px", show:false }, function(obj,body,data) {
+        _this.dialog = {};
+        _this.dialogFunc = {
+            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    $(body).find("[data-key=test]").text('msg');
+                    $(body).find("[data-key=value]").text(data);
+                }
                 var $tbody = $('.targetPro');
                 //resultdata.tgtInfo.forEach(function(d, i) {
                 //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
                 //})
-            }),
-            waa : new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px",height: "250px", show:false }, function(obj,body,data) {
-                
-            }),
-            dsw : new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px",height: "250px", show:false }, function(obj,body,data) {
+            },function(){_this.dialog.tia = undefined; }) },
+            waa : function(data){ return new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    
+                }
+            },function(){_this.dialog.waa = undefined; }) },
+            dsw : function(data){ return new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    
+                }
                 var $tbody = $('.weopon');
                 //resultdata.wpRecom.forEach(function(d, i) {
                 //    if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
                 //})
-            })
+            },function(){_this.dialog.dsw = undefined; }) }
         }
 
         dom.$("#door-handle")[0].onclick = function(e) {
@@ -113,18 +123,60 @@ class Application {
                 if( data && data.topic ){
                     switch(data.topic){
                         case 'TIA.HANDLER': //표적식별
-                            _this.dialog.tia.show();
-                            _this.dialog.tia.set(data.message);
+                            if( !Cesium.defined(_this.dialog.tia) ){
+                                _this.dialog.tia = _this.dialogFunc.tia(data.message);
+                            }else{
+                                let dlg = _this.dialog.tia;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
                             console.log( data.topic + "> " + data.message );
                         break;
                         case 'WAA.HANDLER': //무장할당 
-                            _this.dialog.waa.show();
-                            _this.dialog.waa.set(data.message);
+                            if( !Cesium.defined(_this.dialog.waa) ){
+                                _this.dialog.waa = _this.dialogFunc.waa(data.message);
+                            }else{
+                                let dlg = _this.dialog.waa;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
                             console.log( data.topic + "> " + data.message );
                         break;
                         case 'DSW.HANDLER': //시연용
-                            _this.dialog.dsw.show();
-                            _this.dialog.dsw.set(data.message);
+                            if( !Cesium.defined(_this.dialog.dsw) ){
+                                _this.dialog.dsw = _this.dialogFunc.dsw(data.message);
+                            }else{
+                                let dlg = _this.dialog.dsw;
+                                dlg.set(data.message);
+                                dlg.show();
+                                if( dlg.isMinimized() ){
+                                    dlg.maximize();
+                                }else if( dlg.isOnFullScreen() ){
+                                    dlg.unpin();
+                                }else if( dlg.isPinned() ){
+                                    dlg.unpin();
+                                }
+                                dlg.bringToFront();
+                            }
+                            
                             console.log( data.topic + "> " + data.message );
                         break;
                     }
