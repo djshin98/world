@@ -60,6 +60,10 @@ var paths = {
         src: './src/**/*.md',
         dest: './dist/doc/'
     },
+    widget_scss: {
+        src: './src/widget/scss/**/*.scss',
+        dest: './dist/css/'
+    },
     scss: {
         src: './src/scss/**/*.scss',
         dest: './src/css/'
@@ -203,7 +207,13 @@ function scss() {
         .pipe(sourcemaps.write())
         .pipe(dest(paths.scss.dest));
 }
-
+function widget_scss(){
+    return src(paths.widget_scss.src)
+        .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write())
+        .pipe(dest(paths.widget_scss.dest));
+}
 function css() {
     return src(paths.css.src)
         .pipe(concat('main.css')) //병합하고
@@ -276,6 +286,8 @@ function watchFiles() {
     watch(paths.lobipanel.src, lobipanel);
     watch(paths.md.src, md);
 
+    
+    watch(paths.widget_scss.src, widget_scss);
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
     //watch(paths.js.src, js);
@@ -292,4 +304,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, widget_scss,scss, css, models, html, world, serverJs, mapperxmls));

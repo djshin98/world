@@ -195,8 +195,6 @@ class Application {
         this.drawModel = new Draw(this.map, this.map.viewOption.baseLayerPicker);
         this.workStatus("map3d", true);
 
-        
-
         global.map = this.map;
     }
     workStatus(name, bcomplete) {

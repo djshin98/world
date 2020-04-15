@@ -62,6 +62,16 @@
                             backgroundColor: new Cesium.Color( 1,1,1,1 ),
                             color: new Cesium.Color( 1,1,1,0 ) });
                     */
+
+                    if( map.viewOption.infoBox == true ){
+                        map.viewer3d.infoBox.frame.removeAttribute('sandbox');
+                        var cssLink = document.createElement("link");
+                        cssLink.href = Cesium.buildModuleUrl('css/infobox.css');
+                        cssLink.rel = "stylesheet";
+                        cssLink.type = "text/css";
+                        map.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
+                    }
+
                     console.log("success end");
                 }
             });
