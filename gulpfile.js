@@ -28,6 +28,14 @@ var paths = {
         src: './src/mqtt/**/*.*',
         dest:'./dist/mqtt/'
     },
+    mqtt_broker:{
+        src: './src/js/mqtt/mqttbroker.js',
+        dest:'./dist/js/mqtt/'
+    },
+    ws_broker:{
+        src: './src/js/ws/websocket_server.js',
+        dest:'./dist/js/ws/'
+    },
     batch:{
         src: './src/*.bat',
         dest:'./dist/'
@@ -243,6 +251,14 @@ function mqtt() {
     return src(paths.mqtt.src)
         .pipe(dest(paths.mqtt.dest));
 }
+function mqtt_broker() {
+    return src(paths.mqtt_broker.src)
+        .pipe(dest(paths.mqtt_broker.dest));
+}
+function ws_broker() {
+    return src(paths.ws_broker.src)
+        .pipe(dest(paths.ws_broker.dest));
+}
 function batch() {
     return src(paths.batch.src)
         .pipe(dest(paths.batch.dest));
@@ -250,6 +266,9 @@ function batch() {
 function watchFiles() {
     watch(paths.conf.src, conf);
     watch(paths.mqtt.src, mqtt);
+    watch(paths.mqtt_broker.src, mqtt_broker);
+    watch(paths.ws_broker.src, ws_broker);
+    
     watch(paths.batch.src, batch);
     watch(paths.popper.src, popper);
     watch(paths.bootstrap.src, bootstrap);
@@ -273,4 +292,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf,mqtt,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, scss, css, models, html, world, serverJs, mapperxmls));

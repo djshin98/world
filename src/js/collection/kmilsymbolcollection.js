@@ -66,7 +66,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
         let terrainHeight = degree.height;
         height += terrainHeight;
         degree.height = height;
-        console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
+        //console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
         billboard.heightReference = this.defaultHRef(options.sic);
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;

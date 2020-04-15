@@ -8,7 +8,7 @@
         "port":8082
     },
     "MqttServer":{
-        "host":"192.168.0.79",
+        "host":"localhost",
         "port":1883
     },
     "WebSocket":{

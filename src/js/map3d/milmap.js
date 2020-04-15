@@ -125,6 +125,15 @@ class MilMap {
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
+        /*
+        if( this.viewOption.infoBox == true ){
+            var cssLink = document.createElement("link");
+            cssLink.href = buildModuleUrl('Path/To/Your/CSS/File.css');
+            cssLink.rel = "stylesheet";
+            cssLink.type = "text/css";
+            this.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
+        }
+        */
 
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;

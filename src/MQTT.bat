@@ -1,0 +1,1 @@
+.\\mqtt\\mosquitto\\mosquitto.exe -v
