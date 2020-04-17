@@ -15,7 +15,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             fillColor : Cesium.Color.YELLOW,
             outlineColor : Cesium.Color.BLACK,
             outlineWidth : 2.0,
-            verticalOrigin : Cesium.VerticalOrigin.TOP,
+            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
             distanceDisplayCondition : new Cesium.DistanceDisplayCondition(0, 100000)
         }
     }
@@ -52,12 +52,12 @@ class KMilSymbolCollection extends OliveEntityCollection {
     add(degree, options) {
         let image = new kms.Symbol(options.sic, options);
         let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
-        return this._add(degree, options, desc, image.toDataURL());
+        return this._add(degree, options, desc, image );
     }
     _add(degree, options, desc, img) {
 
         var billboard = {
-            image: img,
+            image: img.toDataURL(),
             scale: 1.0,
             //position: cartesian,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
@@ -76,7 +76,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entityOption.label = {
                 text : options.name,
                 eyeOffset : this.labelOptions.eyeOffset,
-                pixelOffset : this.labelOptions.pixelOffset,
+                pixelOffset : new Cesium.Cartesian2(0, -(img.height+10)), // this.labelOptions.pixelOffset,
                 font: this.labelOptions.font,
                 style : this.labelOptions.style,
                 fillColor : this.labelOptions.fillColor,
@@ -155,7 +155,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             }, "");
         }
         return new Cesium.CallbackProperty(function(time, result) {
-            return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img + '"/>\
+            return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img.toDataURL() + '"/>\
             <p>대한민국 군대 부호코드.</p>\
             <p>부호 : ' + options.sic + ' </p>\
             <p>위도 : ' + (degree.latitude).toFixed(5) + ' </p>\
