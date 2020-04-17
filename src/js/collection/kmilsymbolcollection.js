@@ -6,6 +6,18 @@ let { CTX } = require("../map3d/ctx");
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map, options) {
         super(map, options);
+
+        this.labelOptions = {
+            //eyeOffset : new Cesium.Cartesian3(0, -1, -500),
+            pixelOffset : new Cesium.Cartesian2(0, -80),
+            font: '18px Helvetica', //font : '16px 굴림체',
+            style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+            fillColor : Cesium.Color.YELLOW,
+            outlineColor : Cesium.Color.BLACK,
+            outlineWidth : 2.0,
+            verticalOrigin : Cesium.VerticalOrigin.TOP,
+            distanceDisplayCondition : new Cesium.DistanceDisplayCondition(0, 100000)
+        }
     }
     isAirEntity(entity) {
         if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.sic) {
@@ -59,7 +71,21 @@ class KMilSymbolCollection extends OliveEntityCollection {
             degree: degree,
             description: this.callbackDescirption(degree, options, desc, img)
         };
-
+        if( options.name ){
+            entityOption.name = options.name;
+            entityOption.label = {
+                text : options.name,
+                eyeOffset : this.labelOptions.eyeOffset,
+                pixelOffset : this.labelOptions.pixelOffset,
+                font: this.labelOptions.font,
+                style : this.labelOptions.style,
+                fillColor : this.labelOptions.fillColor,
+                outlineColor : this.labelOptions.outlineColor,
+                outlineWidth : this.labelOptions.outlineWidth,
+                verticalOrigin : this.labelOptions.verticalOrigin,
+                distanceDisplayCondition : this.labelOptions.distanceDisplayCondition,
+            }
+        }
         let height = this.defaultHeight(options.sic);
 
         let carto = CTX.d2r(degree);
