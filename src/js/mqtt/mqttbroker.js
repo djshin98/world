@@ -59,6 +59,10 @@ class MqttAdapter{
   }
 };
 
+var data = {cmd:"DET_TIA", token:"1234", org_image:"D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png"};
+var data = {cmd:"REQ_TIA", token:"1234", org_image:"D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png"};
+var data = {cmd:"RES_TIA", token:"1234", idx:"dbkey", org_image:"D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png"};
+
 /*
 
 global.broker = new MqttAdapter({host:"192.168.0.79", port:1883, listens:[

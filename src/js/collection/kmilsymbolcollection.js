@@ -76,7 +76,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             entityOption.label = {
                 text : options.name,
                 eyeOffset : this.labelOptions.eyeOffset,
-                pixelOffset : new Cesium.Cartesian2(0, -(img.height+10)), // this.labelOptions.pixelOffset,
+                pixelOffset : new Cesium.Cartesian2(0, -(img.height+30)), // this.labelOptions.pixelOffset,
                 font: this.labelOptions.font,
                 style : this.labelOptions.style,
                 fillColor : this.labelOptions.fillColor,
@@ -100,7 +100,19 @@ class KMilSymbolCollection extends OliveEntityCollection {
         let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.sic));
         //entityOption.polyline = polyline;
         //entityOption.billboard = billboard;
-        return this.addCompositedEntity(entityOption, { billboard: billboard, }, [{ polyline: polyline }]);
+        let ellipse = {
+            //coordinates : Cesium.Rectangle.fromDegrees(-110.0, 15.0, -80.0, 20.0),
+            material : 'Assets/Textures/maki/cross.png',
+            semiMajorAxis : 10.0,
+            semiMinorAxis : 10.0,
+            heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+            outline : true,
+            outlineColor : Cesium.Color.WHITE,
+            outlineWidth : 12.0,
+            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 2000)
+        }
+
+        return this.addCompositedEntity(entityOption, { billboard: billboard, }, [{ polyline: polyline , ellipse : ellipse }]);
         //return this.addEntity(entityOption);
 
     }

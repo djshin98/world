@@ -149,6 +149,17 @@ class Dialog {
             this.callback(this,$("#" + this.id + ">.panel-body"),message);
         }
     }
+    front(){
+        this.show();
+        if( this.isMinimized() ){
+            this.maximize();
+        }else if( this.isOnFullScreen() ){
+            this.unpin();
+        }else if( this.isPinned() ){
+            this.unpin();
+        }
+        this.bringToFront();                       
+    }
 }
 
 global.Dialog = Dialog;

@@ -27,18 +27,18 @@ class OliveEntityCollection {
         
         let _this = this;
         if( Cesium.defined(entity) ){
-            let subOption = {position:opt.position,parent:entity,polyline:subObjects[0].polyline};
+            //let subOption = {position:opt.position,parent:entity,polyline:subObjects[0].polyline};
             //subOption[key] = sub[key];
-            _this.viewer.entities.add(new Cesium.Entity(subOption)); 
-            /*
+            //_this.viewer.entities.add(new Cesium.Entity(subOption)); 
+            
             subObjects.forEach(sub=>{
-                Object.keys(sub).some(key=>{
+                Object.keys(sub).every(key=>{
                     let subOption = {position:opt.position,parent:entity};
                     subOption[key] = sub[key];
                     _this.viewer.entities.add(new Cesium.Entity(subOption)); 
                     return true;
                 });
-            });*/
+            });
         }
         return entity;
     }

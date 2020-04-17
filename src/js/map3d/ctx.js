@@ -2,6 +2,17 @@ var CTX = {
     viewer : null,
     debug : false,
     terrain : true,
+    NEstr2d : function(str){
+        let index = str.indexOf("N");
+        if( index == 0 ){
+            let e = str.indexOf("E");
+            if( e > 0){
+                let longitude = parseFloat(str.substr(1,e));
+                let latitude = parseFloat(str.substr(e+1));
+                return new Cesium.Cartographic(longitude, latitude,0); 
+            }
+        }
+    },
     degree : function(longitude,latitude,height){ return new Cesium.Cartographic(longitude, latitude, height); },
     radian : function(longitude,latitude,height){ return Cesium.Cartographic.fromDegrees(longitude, latitude, height); },
     cartesian : function(longitude,latitude,height){ return Cesium.Cartesian3.fromDegrees(longitude, latitude, height); },

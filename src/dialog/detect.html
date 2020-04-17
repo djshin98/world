@@ -1,0 +1,42 @@
+<style>
+    .targetPro .thead {
+        vertical-align: middle;
+        text-align: center;
+        height: 33px;
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #414b53;
+        color: #838b91;
+        width: 25%;
+    }
+    
+    .targetPro .tdata {
+        text-align: center;
+        color: #a5aeb4;
+        width: 45%;
+        border: 1px solid #414850;
+        background-color: #212629;
+    }
+</style>
+
+<table class="targetPro" style="width: 270px;">
+    <tr>
+        <td class="thead">탐지명</td>
+        <td class="thead" data-key="org_image" ></td>
+        <td class="thead">경도</td>
+        <td class="thead" data-key="longitude" ></td>
+        <td class="thead">위도</td>
+        <td class="thead" data-key="latitude" ></td>
+    </tr>
+    <tr>
+        <td class="thead" >탐지 이미지</td>
+        <td class="tdata" colspan="5" data-key="base64"></td>
+    </tr>
+    <tr>
+        <td class="thead">요청</td>
+        <td class="thead">요청</td>
+        <td class="thead" ><button data-button="onrequest" >표적식별 요청</button></td>
+        <td class="thead">무시</td>
+        <td class="tdata"><button data-button="oncancel" >표적탐지 무시</button></td>
+    </tr>
+</table>

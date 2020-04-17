@@ -9,6 +9,8 @@ var fs = require("fs");
 const {WebSocketServer} = require('./js/ws/websocket_server');
 const {MqttAdapter} = require('./js/mqtt/mqttbroker');
 
+const {FileWatcher} = require('./js/watch/filewatcher');
+
 const cors = require('cors');
 
 server.use(bodyParser.json());
@@ -81,6 +83,15 @@ var mqttAdapter = new MqttAdapter({
 });
 global.test = mqttAdapter;
 var connection = mysql.createConnection(conf.DatabaseServer);
+
+console.log('try file watcher : ' + 'D:/mapx/ccai/tia/org_images' );
+var fsWatcher = new FileWatcher({
+    folder : 'D:/mapx/ccai/tia/org_images',
+    watch : function(filename, act, data){
+        var data = {cmd:"DET_TIA", token:"1234", org_image: filename, act : act, base64: data };
+        mqttAdapter.publish("TIA.HANDLER",data);
+    }
+});
 
 server.get('/map/juso/', (req, res) => {
     var url = req.query.url;

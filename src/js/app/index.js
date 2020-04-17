@@ -80,6 +80,27 @@ class Application {
 
         _this.dialog = {};
         _this.dialogFunc = {
+            det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
+                if( data ){
+                    $(body).find("[data-key=org_image]").text(data.org_image);
+
+                    let index = data.org_image.indexOf("N");
+                    let lastIndex = data.org_image.lastIndexOf(".");
+                    if( index >= 0 && lastIndex > 0 && index < lastIndex ){
+                        let str = data.org_image.substr( index, lastIndex);
+                        let coord = CTX.NEstr2d(str);
+                        $(body).find("[data-key=longitude]").text(coord.longitude);
+                        $(body).find("[data-key=latitude]").text(coord.latitude);
+                    }
+                }
+
+                $(body).find("[data-key=base64]").html( "<img src='" + data.base64 + "' />");
+                let buttons = $(body).find("button");
+
+                //resultdata.tgtInfo.forEach(function(d, i) {
+                //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
+                //})
+            },function(){_this.dialog.det = undefined; }) },
             tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
                 if( data ){
                     $(body).find("[data-key=test]").text('msg');
@@ -121,63 +142,48 @@ class Application {
             onmessage : function(data){
                 
                 if( data && data.topic ){
+                    let jsonMessage = JSON.parse( data.message );
                     switch(data.topic){
                         case 'TIA.HANDLER': //표적식별
-                            if( !Cesium.defined(_this.dialog.tia) ){
-                                _this.dialog.tia = _this.dialogFunc.tia(data.message);
-                            }else{
-                                let dlg = _this.dialog.tia;
-                                dlg.set(data.message);
-                                dlg.show();
-                                if( dlg.isMinimized() ){
-                                    dlg.maximize();
-                                }else if( dlg.isOnFullScreen() ){
-                                    dlg.unpin();
-                                }else if( dlg.isPinned() ){
-                                    dlg.unpin();
+                            if( jsonMessage.cmd == "REQ_TIA"){
+                                if( !Cesium.defined(_this.dialog.tia) ){
+                                    _this.dialog.tia = _this.dialogFunc.tia(jsonMessage);
+                                }else{
+                                    let dlg = _this.dialog.tia;
+                                    dlg.set(jsonMessage);
+                                    dlg.front();
                                 }
-                                dlg.bringToFront();
+                            }else if( jsonMessage.cmd == "DET_TIA"){
+                                if( !Cesium.defined(_this.dialog.det) ){
+                                    _this.dialog.det = _this.dialogFunc.det(jsonMessage);
+                                }else{
+                                    let dlg = _this.dialog.det;
+                                    dlg.set(jsonMessage);
+                                    dlg.front();
+                                }
                             }
-                            
-                            console.log( data.topic + "> " + data.message );
                         break;
                         case 'WAA.HANDLER': //무장할당 
                             if( !Cesium.defined(_this.dialog.waa) ){
-                                _this.dialog.waa = _this.dialogFunc.waa(data.message);
+                                _this.dialog.waa = _this.dialogFunc.waa(jsonMessage);
                             }else{
                                 let dlg = _this.dialog.waa;
-                                dlg.set(data.message);
-                                dlg.show();
-                                if( dlg.isMinimized() ){
-                                    dlg.maximize();
-                                }else if( dlg.isOnFullScreen() ){
-                                    dlg.unpin();
-                                }else if( dlg.isPinned() ){
-                                    dlg.unpin();
-                                }
-                                dlg.bringToFront();
+                                dlg.set(jsonMessage);
+                                dlg.front();
                             }
                             
-                            console.log( data.topic + "> " + data.message );
+                            //console.log( data.topic + "> " + jsonMessage );
                         break;
                         case 'DSW.HANDLER': //시연용
                             if( !Cesium.defined(_this.dialog.dsw) ){
-                                _this.dialog.dsw = _this.dialogFunc.dsw(data.message);
+                                _this.dialog.dsw = _this.dialogFunc.dsw(jsonMessage);
                             }else{
                                 let dlg = _this.dialog.dsw;
-                                dlg.set(data.message);
-                                dlg.show();
-                                if( dlg.isMinimized() ){
-                                    dlg.maximize();
-                                }else if( dlg.isOnFullScreen() ){
-                                    dlg.unpin();
-                                }else if( dlg.isPinned() ){
-                                    dlg.unpin();
-                                }
-                                dlg.bringToFront();
+                                dlg.set(jsonMessage);
+                                dlg.front();
                             }
                             
-                            console.log( data.topic + "> " + data.message );
+                            //console.log( data.topic + "> " + data.message );
                         break;
                     }
                 }
