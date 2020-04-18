@@ -102,13 +102,18 @@ class KMilSymbolCollection extends OliveEntityCollection {
         //entityOption.billboard = billboard;
         let ellipse = {
             //coordinates : Cesium.Rectangle.fromDegrees(-110.0, 15.0, -80.0, 20.0),
-            material : 'Assets/Textures/maki/cross.png',
+            //material : 'Assets/Textures/maki/cross.png',
+            material : 'img/pos2.png',
             semiMajorAxis : 10.0,
             semiMinorAxis : 10.0,
             heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+            /*
+            fill:true,
+            color: Cesium.Color.WHITE,
             outline : true,
             outlineColor : Cesium.Color.WHITE,
             outlineWidth : 12.0,
+            */
             distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 2000)
         }
 

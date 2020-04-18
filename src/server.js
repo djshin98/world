@@ -44,6 +44,7 @@ const wss = new WebSocketServer({
         }
     }
 });
+
 console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port );
 var mqttAdapter = new MqttAdapter({
     host: conf.MqttServer.host, 
@@ -55,7 +56,7 @@ var mqttAdapter = new MqttAdapter({
                 console.log("onready : " + topic);
             },
             onReceive:function(topic,message){
-                console.log(topic + " received : " + message.toString() );
+                //console.log(topic + " received : " + message.toString() );
                 wss.publish(topic,message);
             }
         },
@@ -65,7 +66,7 @@ var mqttAdapter = new MqttAdapter({
                 console.log("onready : " + topic);
             },
             onReceive:function(topic,message){
-                console.log(topic + " received : " + message.toString() );
+                //console.log(topic + " received : " + message.toString() );
                 wss.publish(topic,message);
             }
         },
@@ -75,7 +76,7 @@ var mqttAdapter = new MqttAdapter({
                 console.log("onready : " + topic);
             },
             onReceive:function(topic,message){
-                console.log(topic + " received : " + message.toString() );
+                //console.log(topic + " received : " + message.toString() );
                 wss.publish(topic,message);
             }
         }
@@ -85,10 +86,26 @@ global.test = mqttAdapter;
 var connection = mysql.createConnection(conf.DatabaseServer);
 
 console.log('try file watcher : ' + 'D:/mapx/ccai/tia/org_images' );
+
 var fsWatcher = new FileWatcher({
     folder : 'D:/mapx/ccai/tia/org_images',
     watch : function(filename, act, data){
+
+        let index = filename.lastIndexOf("N");
+        let lastIndex = filename.lastIndexOf(".");
         var data = {cmd:"DET_TIA", token:"1234", org_image: filename, act : act, base64: data };
+
+        if( index >= 0 && lastIndex > 0 && index < lastIndex ){
+            let str = data.org_image.substr( index+1, lastIndex);
+            index = str.lastIndexOf("E");
+            if( index > 0 ){
+                let longitude = parseFloat(str.substr(0,index));
+                let latitude = parseFloat(str.substr(index+1));
+
+                data.longitude = longitude;
+                data.latitude = latitude;
+            }
+        }
         mqttAdapter.publish("TIA.HANDLER",data);
     }
 });

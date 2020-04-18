@@ -18,25 +18,18 @@
         background-color: #212629;
     }
 </style>
-
-<table class="targetPro" style="width: 270px;">
-    <tr>
-        <td class="thead">탐지명</td>
-        <td class="thead" data-key="org_image" ></td>
-        <td class="thead">경도</td>
-        <td class="thead" data-key="longitude" ></td>
-        <td class="thead">위도</td>
-        <td class="thead" data-key="latitude" ></td>
-    </tr>
-    <tr>
-        <td class="thead" >탐지 이미지</td>
-        <td class="tdata" colspan="5" data-key="base64"></td>
-    </tr>
-    <tr>
-        <td class="thead">요청</td>
-        <td class="thead">요청</td>
-        <td class="thead" ><button data-button="onrequest" >표적식별 요청</button></td>
-        <td class="thead">무시</td>
-        <td class="tdata"><button data-button="oncancel" >표적탐지 무시</button></td>
-    </tr>
+<div>
+    <label for="" style="margin-right: 10px;" >경도</label ><span data-key="longitude" style="margin-right: 50px;" ></span>
+    <label for="" style="margin-right: 10px;">위도</label ><span data-key="latitude" style="margin-right: 50px;" ></span>
+</div>
+<div data-key="base64">
+</div>
+<div style="text-align: center;padding: 1em;">
+    <button class="ui primary button">
+        표적식별 요청
+    </button>
+    <button class="ui button">
+        무시
+    </button>
+</div>
 </table>

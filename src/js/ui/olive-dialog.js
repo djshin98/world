@@ -12,7 +12,7 @@ function increasePosition(incX, incY, maxX, maxY) {
     return oliveLastPosition;
 }
 class Dialog {
-    constructor(options, callback) {
+    constructor(options, callback, onclose) {
         this.options = Object.assign({
             parent: "body",
             title: "no title",
@@ -23,6 +23,7 @@ class Dialog {
             show: true
         }, options);
         this.callback = callback;
+        this.onclose = onclose;
         var response = { data: "sample" };
         this.id = "olive-dialog-" + (oliveDialog++);
         let html = "<div id='" + this.id + "' class='panel panel-default' style='dispaly:none;'>" + "<div class='panel-heading'>" +
@@ -71,6 +72,11 @@ class Dialog {
             window.console.log("l size : " + w + " , " + h);
         });
 
+        $("#" + this.id).on('onClose.lobiPanel', function(ev, lobiPanel) {
+            if( _this.onclose ){
+                _this.onclose();
+            }
+        });
         if( this.options.show == true ){
             this.show();
         }else{

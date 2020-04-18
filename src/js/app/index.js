@@ -80,22 +80,22 @@ class Application {
 
         _this.dialog = {};
         _this.dialogFunc = {
-            det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
+            det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", width: "450px",height: "400px", show:true, data:data }, function(obj,body,data) {
                 if( data ){
                     $(body).find("[data-key=org_image]").text(data.org_image);
 
-                    let index = data.org_image.indexOf("N");
-                    let lastIndex = data.org_image.lastIndexOf(".");
-                    if( index >= 0 && lastIndex > 0 && index < lastIndex ){
-                        let str = data.org_image.substr( index, lastIndex);
-                        let coord = CTX.NEstr2d(str);
-                        $(body).find("[data-key=longitude]").text(coord.longitude);
-                        $(body).find("[data-key=latitude]").text(coord.latitude);
-                    }
-                }
+                    if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
+                    if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
 
-                $(body).find("[data-key=base64]").html( "<img src='" + data.base64 + "' />");
-                let buttons = $(body).find("button");
+                    if( data.act == "del" ){
+                        $(body).find("[data-key=base64]").text( "");
+                    }else if( data.base64 ){
+                        $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                    }
+                    
+                    let buttons = $(body).find("button");
+                }
+                
 
                 //resultdata.tgtInfo.forEach(function(d, i) {
                 //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
@@ -160,6 +160,9 @@ class Application {
                                     let dlg = _this.dialog.det;
                                     dlg.set(jsonMessage);
                                     dlg.front();
+                                }
+                                if( jsonMessage.longitude && jsonMessage.latitude ){
+                                    _this.map.oliveCamera.flyTo( jsonMessage.longitude, jsonMessage.latitude );
                                 }
                             }
                         break;
