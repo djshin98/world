@@ -17,4 +17,9 @@
       SELECT *  
         FROM t_waa_enemy_unit
   </select>
+<select id="tia_predict">
+      SELECT *  
+        FROM t_tia_predict where idx = #{idx}
+  </select>
+  
 </mapper>

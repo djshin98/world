@@ -5,6 +5,7 @@ const server = express();
 const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
+var {base64_encode} = require("./image");
 
 const {WebSocketServer} = require('./js/ws/websocket_server');
 const {MqttAdapter} = require('./js/mqtt/mqttbroker');
@@ -57,7 +58,19 @@ var mqttAdapter = new MqttAdapter({
             },
             onReceive:function(topic,message){
                 //console.log(topic + " received : " + message.toString() );
-                wss.publish(topic,message);
+                if( message.cmd == "RES_TIA"){
+                    let q = mybatisMapper.getStatement('targetMapper', 'tia_predict', {idx:message.idx}, format);
+                    connection.query(query3, function(err, result, fields) {
+                        if (!err) {
+                            message.predict_img = base64_encode(result.predict_img);
+                            wss.publish(topic,message);
+                        } else {
+                            console.log('query error : ' + err);
+                        }
+                    });
+                }else{
+                    wss.publish(topic,message);
+                }
             }
         },
         {
