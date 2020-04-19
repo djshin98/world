@@ -1,4 +1,5 @@
 var { dom, get, post } = require("../util/comm");
+var { Block } = require("../core/block");
 
 var oliveDialog = 1;
 var oliveLastPosition = { x: 10, y: 10 };
@@ -11,8 +12,9 @@ function increasePosition(incX, incY, maxX, maxY) {
     if (oliveLastPosition.y > maxY) { oliveLastPosition.y = 10; }
     return oliveLastPosition;
 }
-class Dialog {
-    constructor(options, callback, onclose) {
+class Dialog extends Block{
+    constructor(options) {
+        super();
         this.options = Object.assign({
             parent: "body",
             title: "no title",
@@ -20,10 +22,11 @@ class Dialog {
             height: "fit-content",
             position: increasePosition(20, 20, 400, 600),
             url: "README.html",
-            show: true
+            show: true,
+            oninit:undefined,
+            onclose:undefined,
+            onset:undefined,
         }, options);
-        this.callback = callback;
-        this.onclose = onclose;
         var response = { data: "sample" };
         this.id = "olive-dialog-" + (oliveDialog++);
         let html = "<div id='" + this.id + "' class='panel panel-default' style='dispaly:none;'>" + "<div class='panel-heading'>" +
@@ -56,7 +59,7 @@ class Dialog {
 
         this.instance.disableTooltips();
         if (this.options.hasOwnProperty('url')) {
-            this.load(this.options.url, this.callback);
+            this.load(this.options.url, this.options.oninit );
         }
 
         let _this = this;
@@ -73,9 +76,10 @@ class Dialog {
         });
 
         $("#" + this.id).on('onClose.lobiPanel', function(ev, lobiPanel) {
-            if( _this.onclose ){
-                _this.onclose();
+            if( _this.options.onclose ){
+                _this.options.onclose();
             }
+            _this.destroy();
         });
         if( this.options.show == true ){
             this.show();
@@ -84,6 +88,8 @@ class Dialog {
         }
     }
     destroy() {
+        super.destroy();
+
         if (this.instance) {
             this.instance.destroy();
             this.instance = undefined;
@@ -145,14 +151,16 @@ class Dialog {
             url: this.options.url,
             success: function(status, statusText, data) {
                 if (callback) {
-                    callback(_this, $("#" + _this.id + ">.panel-body"));
+                    callback(_this, $("#" + _this.id + ">.panel-body"),data);
+                }else if( _this.options.onset ){
+                    _this.options.onset(_this, $("#" + _this.id + ">.panel-body"),data);
                 }
             }
         });
     }
     set(message){
-        if( this.callback ){
-            this.callback(this,$("#" + this.id + ">.panel-body"),message);
+        if( this.options.onset ){
+            this.options.onset(this,$("#" + this.id + ">.panel-body"),message);
         }
     }
     front(){

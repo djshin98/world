@@ -2,6 +2,7 @@
 let { OliveEntityCollection } = require('./entity_collection');
 let { SIDC } = require("../viewmodel/kmilsymbol");
 let { CTX } = require("../map3d/ctx");
+let { OliveDescription } = require("../ui/olive-description");
 
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map, options) {
@@ -44,7 +45,10 @@ class KMilSymbolCollection extends OliveEntityCollection {
             //callback(positions);
             positions.forEach((d, i) => {
                 objs[i].degree.height = d.height;
-                callback(objs[i]);
+                if( callback ){
+                    callback(objs[i], _this);
+                }
+                
             })
         });
     }
@@ -69,7 +73,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             olive_option: options,
             olive_description: desc,
             degree: degree,
-            description: this.callbackDescirption(degree, options, desc, img)
+            description: this.createDescirption(degree, options, desc, img) //this.callbackDescirption(degree, options, desc, img)
         };
         if( options.name ){
             entityOption.name = options.name;
@@ -182,6 +186,35 @@ class KMilSymbolCollection extends OliveEntityCollection {
             <button>테스트</button>\
             <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
         }, false);
+    }
+
+    createDescirption(degree, options, desc, img) {
+        let opt = Object.assign({},options);
+        opt.degree = degree;
+        opt.desc = desc;
+        opt.icon = img;
+        return new OliveDescription(opt);
+        /*
+        var sidc_desc = "";
+        var count = 0;
+        if (desc) {
+            sidc_desc = desc.reduce((prev, curr) => {
+                return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
+            }, "");
+        }
+        var strhtml;
+        return new Cesium.CallbackProperty(function(time, result) {
+            return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img.toDataURL() + '"/>\
+            <p>대한민국 군대 부호코드.</p>\
+            <p>부호 : ' + options.sic + ' </p>\
+            <p>위도 : ' + (degree.latitude).toFixed(5) + ' </p>\
+            <p>경도 : ' + (degree.longitude).toFixed(5) + ' </p>\
+            <p>고도 : ' + (degree.height).toFixed(2) + ' m</p>\
+            ' + sidc_desc + '\
+            <button>테스트</button>\
+            <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
+        }, false);
+        */
     }
 
     /*

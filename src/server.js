@@ -85,15 +85,15 @@ var mqttAdapter = new MqttAdapter({
 global.test = mqttAdapter;
 var connection = mysql.createConnection(conf.DatabaseServer);
 
-console.log('try file watcher : ' + 'D:/mapx/ccai/tia/org_images' );
+console.log('try file watcher : ' + conf.MqttServer["watch-folder"] );
 
 var fsWatcher = new FileWatcher({
-    folder : 'D:/mapx/ccai/tia/org_images',
+    folder : conf.MqttServer["watch-folder"],
     watch : function(filename, act, data){
 
         let index = filename.lastIndexOf("N");
         let lastIndex = filename.lastIndexOf(".");
-        var data = {cmd:"DET_TIA", token:"1234", org_image: filename, act : act, base64: data };
+        var data = {cmd:"DET_TIA", org_image: filename, act : act, base64: data };
 
         if( index >= 0 && lastIndex > 0 && index < lastIndex ){
             let str = data.org_image.substr( index+1, lastIndex);

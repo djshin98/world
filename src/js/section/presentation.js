@@ -69,12 +69,13 @@ class Presentation {
         var _this = this;
         serverAdapter.get('target', {}, function(resultdata) {
             var resultdata = resultdata;
-            _this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px" }, function(a, b) {
+            _this.targetingDialog.push(new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",
+                onset : function(obj, tag) {
                 var $tbody = $('.targetPro');
                 resultdata.tgtInfo.forEach(function(d, i) {
                     if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
-                })
-            }));
+                });
+            }}));
         });
 
     }
@@ -90,12 +91,13 @@ class Presentation {
         var _this = this;
         serverAdapter.get('wpRecom', {}, function(resultdata) {
             var resultdata = resultdata;
-            _this.targetingDialog.push(new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px" }, function(a, b) {
+            _this.targetingDialog.push(new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", 
+                width: "300px", onset : function(obj,tag,data) {
                 var $tbody = $('.weopon');
                 resultdata.wpRecom.forEach(function(d, i) {
                     if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
-                })
-            }));
+                });
+            }}));
         });
     }
     ShowColleDamageDisplay() {}

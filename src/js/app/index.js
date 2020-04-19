@@ -80,51 +80,139 @@ class Application {
 
         _this.dialog = {};
         _this.dialogFunc = {
-            det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", width: "450px",height: "400px", show:true, data:data }, function(obj,body,data) {
-                if( data ){
-                    $(body).find("[data-key=org_image]").text(data.org_image);
+            det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", 
+                    width: "450px",height: "400px", show:true, data:data, 
+                    onset : function(obj,body,data) {
+                        if( data ){
+                            $(body).find("[data-key=org_image]").text(data.org_image);
 
-                    if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
-                    if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
+                            if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
+                            if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
 
-                    if( data.act == "del" ){
-                        $(body).find("[data-key=base64]").text( "");
-                    }else if( data.base64 ){
-                        $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                            if( data.act == "del" ){
+                                $(body).find("[data-key=base64]").text( "");
+                            }else if( data.base64 ){
+                                $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                            }
+                            obj.setVariable("org_image", data.org_image);
+                            obj.setVariable("token", dom.guid());
+                        }
+                    },
+                    onclose : function(){
+                        _this.dialog.det = undefined; 
+                    },
+                    oninit : function(obj,body){
+                        let req = $(body).find("button[data-key=req]");
+                        req.unbind('click');
+                        req.bind('click', function(){
+                            //{"cmd":"REQ_TIA", "token":"유니크한 값", "org_image":"D:\mapx\ccai\tia\org_images\1586832548849_blob.png"} 
+                            //cmd  : REQ_TIA 고정  
+                            //token : 요청에 대한 유니크한 값 
+                            //org_image : 요청 이미지 full path  
+                            _this.websocket.send('TIA.HANDLER',{
+                                cmd:"REQ_TIA",
+                                token: obj.getVariable("token"),
+                                org_image: obj.getVariable("org_image")
+                            });
+                        });
+                        let cancel = $(body).find("button[data-key=cancel]");
+                        cancel.unbind('click');
+                        cancel.bind('click', function(){
+                            obj.destroy();
+                            _this.dialog.det = undefined; 
+                        });
+                    },
+                })},
+            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", 
+                width: "300px",height: "160px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        $(body).find("[data-key=org_image]").text(data.org_image);
+
+                        if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
+                        if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
+
+                        if( data.act == "del" ){
+                            $(body).find("[data-key=base64]").text( "");
+                        }else if( data.base64 ){
+                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                        }
                     }
-                    
-                    let buttons = $(body).find("button");
-                }
-                
+                },
+                onclose : function(){_this.dialog.tia = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            waa : function(data){ return new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        $(body).find("[data-key=org_image]").text(data.org_image);
 
-                //resultdata.tgtInfo.forEach(function(d, i) {
-                //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
-                //})
-            },function(){_this.dialog.det = undefined; }) },
-            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", width: "300px",height: "160px", show:true, data:data }, function(obj,body,data) {
-                if( data ){
-                    $(body).find("[data-key=test]").text('msg');
-                    $(body).find("[data-key=value]").text(data);
-                }
-                var $tbody = $('.targetPro');
-                //resultdata.tgtInfo.forEach(function(d, i) {
-                //    if (i < 5) $tbody.append("<tr><td class='thead'>제원" + i + "</td><td class='tdata'>" + d.wp_name + "</td></tr>");
-                //})
-            },function(){_this.dialog.tia = undefined; }) },
-            waa : function(data){ return new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
-                if( data ){
-                    
-                }
-            },function(){_this.dialog.waa = undefined; }) },
-            dsw : function(data){ return new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", width: "300px",height: "200px", show:true, data:data }, function(obj,body,data) {
-                if( data ){
-                    
-                }
-                var $tbody = $('.weopon');
-                //resultdata.wpRecom.forEach(function(d, i) {
-                //    if (i < 5) $tbody.append("<tr><td>" + d.sequence_id + "</td><td>" + d.unit_name + "</td><td>" + d.wp_name + "</td></tr>");
-                //})
-            },function(){_this.dialog.dsw = undefined; }) }
+                        if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
+                        if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
+
+                        if( data.act == "del" ){
+                            $(body).find("[data-key=base64]").text( "");
+                        }else if( data.base64 ){
+                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                        }
+                    }
+                },
+                onclose : function(){_this.dialog.waa = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            dsw : function(data){ return new Dialog({ title: '무장 추천 결과값', url: "dialog/weoponRecom.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        $(body).find("[data-key=org_image]").text(data.org_image);
+
+                        if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
+                        if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
+
+                        if( data.act == "del" ){
+                            $(body).find("[data-key=base64]").text( "");
+                        }else if( data.base64 ){
+                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                        }
+                    }
+                },
+                onclose : function(){_this.dialog.dsw = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })}
         }
 
         dom.$("#door-handle")[0].onclick = function(e) {
@@ -145,7 +233,7 @@ class Application {
                     let jsonMessage = JSON.parse( data.message );
                     switch(data.topic){
                         case 'TIA.HANDLER': //표적식별
-                            if( jsonMessage.cmd == "REQ_TIA"){
+                            if( jsonMessage.cmd == "RES_TIA"){
                                 if( !Cesium.defined(_this.dialog.tia) ){
                                     _this.dialog.tia = _this.dialogFunc.tia(jsonMessage);
                                 }else{
@@ -154,15 +242,31 @@ class Application {
                                     dlg.front();
                                 }
                             }else if( jsonMessage.cmd == "DET_TIA"){
-                                if( !Cesium.defined(_this.dialog.det) ){
-                                    _this.dialog.det = _this.dialogFunc.det(jsonMessage);
-                                }else{
-                                    let dlg = _this.dialog.det;
-                                    dlg.set(jsonMessage);
-                                    dlg.front();
-                                }
-                                if( jsonMessage.longitude && jsonMessage.latitude ){
-                                    _this.map.oliveCamera.flyTo( jsonMessage.longitude, jsonMessage.latitude );
+                                if( jsonMessage.act && jsonMessage.act != "del" ){
+                                    if( !Cesium.defined(_this.dialog.det) ){
+                                        _this.dialog.det = _this.dialogFunc.det(jsonMessage);
+                                    }else{
+                                        let dlg = _this.dialog.det;
+                                        dlg.set(jsonMessage);
+                                        dlg.front();
+                                    }
+                                    if( jsonMessage.longitude && jsonMessage.latitude ){
+                                        let col = _this.map.collection("KMILSYMBOL");
+                                        if( col ){
+                                            col.terrianFromDegrees([{
+                                                degree : {
+                                                    longitude : jsonMessage.longitude,
+                                                    latitude : jsonMessage.latitude
+                                                },
+                                                sic : "SPZP----------G"
+                                            }],function(d,collection){
+                                                d.size = 30;
+                                                let entity = collection.add(CTX.degree(d.degree.longitude,d.degree.latitude,d.degree.height), d);
+                                                _this.dialog.det.setVariable( "entity" , {id:entity.id});
+                                                _this.map.oliveCamera.flyOverEntity("KMILSYMBOL", entity.id);
+                                            });
+                                        }
+                                    }
                                 }
                             }
                         break;
