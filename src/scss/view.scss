@@ -337,4 +337,12 @@ header {
 .lobipanel-minimized-toolbar {
     background: rgba(43, 43, 43, 0.51);
 }
-
+.cesium-infoBox-iframe{
+    height:auto;
+}
+.cesium-infoBox-description table {
+    color: #edffff;
+    list-style: cambodian;
+    border: 1px solid #959595;
+    font-size: 14px;
+}

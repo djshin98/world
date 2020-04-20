@@ -3,7 +3,7 @@ var {base64_encode} = require("./image");
 
 class FileWatcher{
     constructor(options){
-        this.options = Object.assign({folder:'.'},options);
+        this.options = Object.assign({folder:'.',folderDivider:'\\'},options);
         this.fileWatchs = [];
         let _this = this;
         fs.watch(this.options.folder, function (event, filename) {
@@ -12,7 +12,7 @@ class FileWatcher{
             console.log('event is: ' + event + "( " + filename + " )");
         
             if (filename) {
-                let path = _this.options.folder + "/" + filename;
+                let path = _this.options.folder + _this.options.folderDivider + filename;
                 if( _this.options.watch ){
                     if( event == "rename" ){
                         

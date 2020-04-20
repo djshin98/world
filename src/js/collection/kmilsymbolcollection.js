@@ -172,21 +172,38 @@ class KMilSymbolCollection extends OliveEntityCollection {
         var count = 0;
         if (desc) {
             sidc_desc = desc.reduce((prev, curr) => {
-                if( prev.length > 0 ) return prev;
-                return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
+                return prev + " " + curr.value;
+                //if( prev.length > 0 ) return prev;
+                //return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
             }, "");
         }
         return new Cesium.CallbackProperty(function(time, result) {
-            return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img.toDataURL() + '"/>\
-            <div class="inline" ><span>부대명 : ' + ((options.name) ? options.name : '알수없음')  + ' </span>\
-            <span>&nbsp;부호 : ' + options.sic + ' </span></div>\
-            <div class="inline" ><span>위도 : ' + (degree.latitude).toFixed(5) + ' </span>\
-            <span>&nbsp;경도 : ' + (degree.longitude).toFixed(5) + ' </span></div>\
-            <div class="inline" ><span>고도 : ' + (degree.height).toFixed(2) + ' m</span></div>\
-            ' + sidc_desc ;
+            let css = '<style>.cesium-infoBox-description table{\
+                color: #edffff;\
+                border-collapse:collapse;\
+                border: 1px solid #565656;\
+                font-size: 14px;\
+            }\
+            .cesium-infoBox-description th{\
+                color:#aaa;\
+                border: 1px solid #565656;\
+                text-align:right;\
+            }\
+            .cesium-infoBox-description td{\
+                border: 1px solid #565656;\
+                text-align:center;\
+            }</style>';
+
+            return css + '<table><tbody><tr><td rowspan="3"><img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/></td>\
+            <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음')  + ' </span></td>\
+            <th><span>부호</span></th><td><span>' + options.sic + ' </span></td></tr>\
+            <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\
+            <th><span>경도</span></th><td><span>' + (degree.longitude).toFixed(5) + ' </span></td></tr>\
+            <tr><th><span>고도</span></th><td><span>' + (degree.height).toFixed(2) + ' m</span></td><td></td></tr>\
+            <tr><th><span>설명</span></th><td colspan="4" ><span>' + sidc_desc +' </span></td></tr></tbody></table>';
             /*<button>테스트</button>\
             <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';*/
-        }, false);
+        }, true);
     }
 
     createDescirption(degree, options, desc, img) {

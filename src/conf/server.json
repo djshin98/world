@@ -10,7 +10,7 @@
     "MqttServer":{
         "host":"175.207.13.28",
         "port":1883,
-        "watch-folder":"D:/mapx/ccai/tia/org_images"
+        "watch-folder":"D:\\mapx\\ccai\\tia\\org_images"
     },
     "WebSocket":{
         "host":"localhost",

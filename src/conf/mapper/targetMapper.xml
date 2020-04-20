@@ -21,8 +21,10 @@
       SELECT *  
         FROM t_tia_predict where idx = #{idx}
   </select>
-  <select id="tia_tgt_info">
-      SELECT * 
-        FROM t_tia_tgt_info where idx = #{idx}
+  <select id="res_tia">
+      SELECT p.idx as idx, p.predict_img as pimage, p.equ_id as equ_id, p.org_token as token, 
+        t.equ_name as name, t.equ_mil_name as mil_name, t.equ_type as type, t.equ_length as length,
+        t.equ_width as width, t.equ_height as height, t.equ_mil_image as image, t.unit_sbl_cd as sidc
+        FROM t_tia_tgt_info t , t_tia_predict p where p.idx = #{idx} and p.equ_id = t.equ_id
   </select>
 </mapper>

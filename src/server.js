@@ -44,7 +44,7 @@ const wss = new WebSocketServer({
             let msg = JSON.parse(data);
             //테스트 용도
             msg.message.cmd = "RES_TIA";
-            msg.message.idx = 1;
+            msg.message.index = 20;
             //
             mqttAdapter.publish(msg.topic, msg.message );
         }
@@ -65,7 +65,7 @@ var mqttAdapter = new MqttAdapter({
                 message = JSON.parse(message);
                 //console.log(topic + " received : " + message.toString() );
                 if( message.cmd == "RES_TIA"){
-                    let q = mybatisMapper.getStatement('targetMapper', 'tia_tgt_info', {idx:message.idx}, format);
+                    let q = mybatisMapper.getStatement('targetMapper', 'res_tia', {idx:message.index}, format);
                     connection.query(q, function(err, result, fields) {
                         if (!err) {
                             message = Object.assign(message,result);
