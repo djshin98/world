@@ -96,6 +96,8 @@ class Application {
                             }
                             obj.setVariable("org_image", data.org_image);
                             obj.setVariable("token", dom.guid());
+                            obj.setVariable("longitude", data.longitude);
+                            obj.setVariable("latitude", data.latitude);
 
                             if( data.longitude && data.latitude ){
                                 _this.addEntityAndFly(_this.map.collection("KMILSYMBOL"),data.longitude,data.latitude,  
@@ -120,11 +122,14 @@ class Application {
                             let msg = {
                                 cmd:"REQ_TIA",
                                 token: obj.getVariable("token"),
-                                org_image: obj.getVariable("org_image")
+                                org_image: obj.getVariable("org_image"),
+                                longitude: obj.getVariable("longitude"),
+                                latitude: obj.getVariable("latitude")
                             };
 
                             let entity = obj.getVariable( "entity");
                             if( entity ){ msg.entity=entity.id }
+
                             _this.websocket.send('TIA.HANDLER',msg);
                         });
                         let cancel = $(body).find("button[data-key=cancel]");
@@ -151,13 +156,15 @@ class Application {
                         }
                         let col = _this.map.collection("KMILSYMBOL");
                         if( col ){
-                            if( _this.dialog.det ){
+                            if( data.entity ){
+                                col.remove( data.entity );
+                            }else if( _this.dialog.det ){
                                 let entity = _this.dialog.det.getVariable( "entity" );
                                 if( entity ){
                                     col.remove( entity.id );
                                 }
                             }
-                            _this.addEntityAndFly(col,jsonMessage.longitude,jsonMessage.latitude, "SPZP----------G",
+                            _this.addEntityAndFly(col,data.longitude,data.latitude,data.sidc,
                                 (entity)=>{
                                     _this.dialog.det.setVariable( "entity" , {id:entity.id});
                                 }
@@ -167,10 +174,21 @@ class Application {
                 },
                 onclose : function(){_this.dialog.tia = undefined; },
                 oninit : function(obj,body){
-                    let req = $(body).find("button[data-key=req]");
+                    let req = $(body).find("button[data-key=req0]");
                     req.unbind('click');
                     req.bind('click', function(){
-                            alert('req');
+                        let msg = {
+                            cmd:"REQ_WAA",
+                            token: obj.getVariable("token"),
+                            org_image: obj.getVariable("org_image"),
+                            longitude: obj.getVariable("longitude"),
+                            latitude: obj.getVariable("latitude")
+                        };
+
+                        let entity = obj.getVariable( "entity");
+                        if( entity ){ msg.entity=entity.id }
+
+                        _this.websocket.send('WAA.HANDLER',msg);
                     });
                     let cancel = $(body).find("button[data-key=cancel]");
                     cancel.unbind('click');
@@ -256,7 +274,7 @@ class Application {
             onmessage : function(data){
                 
                 if( data && data.topic ){
-                    let jsonMessage = JSON.parse( data.message );
+                    let jsonMessage = (typeof(data.message) == "object") ? data.message : JSON.parse( data.message );
                     switch(data.topic){
                         case 'TIA.HANDLER': //표적식별
                             if( jsonMessage.cmd == "RES_TIA"){

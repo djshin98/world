@@ -42,6 +42,10 @@ const wss = new WebSocketServer({
     onmessage : function(ws,data){
         if( mqttAdapter && data ){
             let msg = JSON.parse(data);
+            //테스트 용도
+            msg.message.cmd = "RES_TIA";
+            msg.message.idx = 1;
+            //
             mqttAdapter.publish(msg.topic, msg.message );
         }
     }
@@ -58,17 +62,22 @@ var mqttAdapter = new MqttAdapter({
                 console.log("onready : " + topic);
             },
             onReceive:function(topic,message){
+                message = JSON.parse(message);
                 //console.log(topic + " received : " + message.toString() );
                 if( message.cmd == "RES_TIA"){
-                    let q = mybatisMapper.getStatement('targetMapper', 'tia_predict', {idx:message.idx}, format);
-                    connection.query(query3, function(err, result, fields) {
+                    let q = mybatisMapper.getStatement('targetMapper', 'tia_tgt_info', {idx:message.idx}, format);
+                    connection.query(q, function(err, result, fields) {
                         if (!err) {
-                            message.predict_img = base64_encode(result.predict_img);
+                            message = Object.assign(message,result);
+                            result.equ_mil_img = "D:/mapx/ccai/tia/org_images/N127E37.jpg";
+                            message.equ_mil_img_base64 = base64_encode(result.equ_mil_img);
                             wss.publish(topic,message);
                         } else {
                             console.log('query error : ' + err);
                         }
                     });
+                }else if( message.cmd == "REQ_TIA"){
+
                 }else{
                     wss.publish(topic,message);
                 }

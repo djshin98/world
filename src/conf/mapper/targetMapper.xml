@@ -21,5 +21,8 @@
       SELECT *  
         FROM t_tia_predict where idx = #{idx}
   </select>
-  
+  <select id="tia_tgt_info">
+      SELECT * 
+        FROM t_tia_tgt_info where idx = #{idx}
+  </select>
 </mapper>

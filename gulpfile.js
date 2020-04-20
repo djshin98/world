@@ -28,6 +28,10 @@ var paths = {
         src: './src/mqtt/**/*.*',
         dest:'./dist/mqtt/'
     },
+    watch_brokder:{
+        src: './src/js/watch/**/*.*',
+        dest:'./dist/js/watch/'
+    },
     mqtt_broker:{
         src: './src/js/mqtt/mqttbroker.js',
         dest:'./dist/js/mqtt/'
@@ -265,6 +269,11 @@ function mqtt_broker() {
     return src(paths.mqtt_broker.src)
         .pipe(dest(paths.mqtt_broker.dest));
 }
+function watch_brokder() {
+    return src(paths.watch_brokder.src)
+        .pipe(dest(paths.watch_brokder.dest));
+}
+
 function ws_broker() {
     return src(paths.ws_broker.src)
         .pipe(dest(paths.ws_broker.dest));
@@ -277,6 +286,8 @@ function watchFiles() {
     watch(paths.conf.src, conf);
     watch(paths.mqtt.src, mqtt);
     watch(paths.mqtt_broker.src, mqtt_broker);
+    watch(paths.watch_brokder.src, watch_brokder);
+    
     watch(paths.ws_broker.src, ws_broker);
     
     watch(paths.batch.src, batch);
@@ -304,4 +315,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, widget_scss,scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,watch_brokder,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, widget_scss,scss, css, models, html, world, serverJs, mapperxmls));
