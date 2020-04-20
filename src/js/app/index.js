@@ -141,18 +141,19 @@ class Application {
                     },
                 })},
             tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/detect_res.html", 
-                width: "300px",height: "160px", show:true, data:data, 
+                width: "450px",height: "480px", show:true, data:data, 
                 onset : function(obj,body,data) {
-                    if( data ){
-                        $(body).find("[data-key=org_image]").text(data.org_image);
+                    if( data && data.results && data.results.length > 0 ){
+                        let d = data.results[0];
+                        $(body).find("[data-key=org_image]").text(d.equ_mil_image);
 
                         if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
                         if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
 
-                        if( data.act == "del" ){
+                        if( d.equ_mil_image_base64 ){
+                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + d.equ_mil_image_base64 + "' />");
+                        }else{
                             $(body).find("[data-key=base64]").text( "");
-                        }else if( data.base64 ){
-                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
                         }
                         let col = _this.map.collection("KMILSYMBOL");
                         if( col ){
@@ -164,7 +165,7 @@ class Application {
                                     col.remove( entity.id );
                                 }
                             }
-                            _this.addEntityAndFly(col,data.longitude,data.latitude,data.sidc,
+                            _this.addEntityAndFly(col,data.longitude,data.latitude,d.unit_sbl_cd,
                                 (entity)=>{
                                     _this.dialog.det.setVariable( "entity" , {id:entity.id});
                                 }
@@ -174,22 +175,25 @@ class Application {
                 },
                 onclose : function(){_this.dialog.tia = undefined; },
                 oninit : function(obj,body){
-                    let req = $(body).find("button[data-key=req0]");
-                    req.unbind('click');
-                    req.bind('click', function(){
-                        let msg = {
-                            cmd:"REQ_WAA",
-                            token: obj.getVariable("token"),
-                            org_image: obj.getVariable("org_image"),
-                            longitude: obj.getVariable("longitude"),
-                            latitude: obj.getVariable("latitude")
-                        };
-
-                        let entity = obj.getVariable( "entity");
-                        if( entity ){ msg.entity=entity.id }
-
-                        _this.websocket.send('WAA.HANDLER',msg);
+                    ["req0","req1","req2","req3","req4"].forEach((key,i)=>{
+                        let req = $(body).find("button[data-key="+key+"]");
+                        req.unbind('click');
+                        req.bind('click', function(){
+                            let msg = {
+                                cmd:"REQ_WAA",
+                                type:i,
+                                token: obj.getVariable("token"),
+                                longitude: obj.getVariable("longitude"),
+                                latitude: obj.getVariable("latitude")
+                            };
+    
+                            let entity = obj.getVariable( "entity");
+                            if( entity ){ msg.entity=entity.id }
+    
+                            _this.websocket.send('WAA.HANDLER',msg);
+                        });
                     });
+                    
                     let cancel = $(body).find("button[data-key=cancel]");
                     cancel.unbind('click');
                     cancel.bind('click', function(){

@@ -69,10 +69,13 @@ var mqttAdapter = new MqttAdapter({
                     connection.query(q, function(err, result, fields) {
                         if (!err) {
                             message = Object.assign(message,result);
-                            result.equ_mil_img = "D:/mapx/ccai/tia/org_images/N127E37.jpg";
-                            message.equ_mil_img_base64 = base64_encode(result.equ_mil_img);
+                            message.results = result;
+                            message.results.forEach(r=>{
+                                r.equ_mil_image = "D:/mapx/ccai/tia/org_images/N126E37.jpg";
+                                r.equ_mil_image_base64 = base64_encode(r.equ_mil_image);
+                            });
                             wss.publish(topic,message);
-                        } else {
+                        } else {r
                             console.log('query error : ' + err);
                         }
                     });

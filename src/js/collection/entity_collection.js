@@ -35,7 +35,8 @@ class OliveEntityCollection {
                 Object.keys(sub).every(key=>{
                     let subOption = {position:opt.position,parent:entity};
                     subOption[key] = sub[key];
-                    _this.viewer.entities.add(new Cesium.Entity(subOption)); 
+                    let subEntity = _this.viewer.entities.add(new Cesium.Entity(subOption)); 
+                    subEntity.category = _this.name;
                     return true;
                 });
             });
@@ -79,6 +80,9 @@ class OliveEntityCollection {
                     }
                 }
             }
+            let subs = _this.viewer.entities.values.filter(e=>{ 
+                return (e.parent && e.parent.id == entity.id && e.category && e.category == _this.name)?true:false });
+            subs.forEach(e=>{ _this.viewer.entities.remove(e); console.log( "remove sub : " + e.id ); });
         });
     }
     _removeEntity(entity, callback) {
