@@ -5,8 +5,8 @@ const extTypes = ["data:image/png;base64,",
                 "data:image/jpeg;base64,",
                 "data:image/jpeg;base64,",
                 "data:image/gif;base64,"];
-                
-exports.base64_encode = function(file){
+
+function base64_encode(file){
     if( file ){
         let lowfile = file.toLowerCase();
         let index = lowfile.lastIndexOf(".");
@@ -19,3 +19,5 @@ exports.base64_encode = function(file){
         }
     }
 };
+
+module.exports = {base64_encode:base64_encode}

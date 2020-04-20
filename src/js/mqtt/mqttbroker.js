@@ -47,6 +47,7 @@ class MqttAdapter{
         if( typeof( msg ) == "object" ){
           msg = JSON.stringify(msg);
         }
+        console.log("publish :" + channel + " = " + msg.substr(0,20) );
         this.client.publish(channel,msg);
         return true;
       }

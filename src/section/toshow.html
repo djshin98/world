@@ -81,7 +81,7 @@
                             let id = $(tag).data("id");
                             let group = $(tag).data('group');
 
-                            map.oliveCamera.flyOverEntity(group,id);
+                            map.oliveCamera.flyOverEntity(map.collection(group),id);
 
                             //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
                             // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))

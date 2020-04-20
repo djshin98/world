@@ -96,6 +96,14 @@ class Application {
                             }
                             obj.setVariable("org_image", data.org_image);
                             obj.setVariable("token", dom.guid());
+
+                            if( data.longitude && data.latitude ){
+                                _this.addEntityAndFly(_this.map.collection("KMILSYMBOL"),data.longitude,data.latitude,  
+                                    "SPZP----------G",(entity)=>{
+                                        obj.setVariable( "entity" , {id:entity.id});
+                                    }
+                                );
+                            }
                         }
                     },
                     onclose : function(){
@@ -109,11 +117,15 @@ class Application {
                             //cmd  : REQ_TIA 고정  
                             //token : 요청에 대한 유니크한 값 
                             //org_image : 요청 이미지 full path  
-                            _this.websocket.send('TIA.HANDLER',{
+                            let msg = {
                                 cmd:"REQ_TIA",
                                 token: obj.getVariable("token"),
                                 org_image: obj.getVariable("org_image")
-                            });
+                            };
+
+                            let entity = obj.getVariable( "entity");
+                            if( entity ){ msg.entity=entity.id }
+                            _this.websocket.send('TIA.HANDLER',msg);
                         });
                         let cancel = $(body).find("button[data-key=cancel]");
                         cancel.unbind('click');
@@ -123,7 +135,7 @@ class Application {
                         });
                     },
                 })},
-            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/target.html", 
+            tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/detect_res.html", 
                 width: "300px",height: "160px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
@@ -136,6 +148,20 @@ class Application {
                             $(body).find("[data-key=base64]").text( "");
                         }else if( data.base64 ){
                             $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                        }
+                        let col = _this.map.collection("KMILSYMBOL");
+                        if( col ){
+                            if( _this.dialog.det ){
+                                let entity = _this.dialog.det.getVariable( "entity" );
+                                if( entity ){
+                                    col.remove( entity.id );
+                                }
+                            }
+                            _this.addEntityAndFly(col,jsonMessage.longitude,jsonMessage.latitude, "SPZP----------G",
+                                (entity)=>{
+                                    _this.dialog.det.setVariable( "entity" , {id:entity.id});
+                                }
+                            );
                         }
                     }
                 },
@@ -249,23 +275,6 @@ class Application {
                                         let dlg = _this.dialog.det;
                                         dlg.set(jsonMessage);
                                         dlg.front();
-                                    }
-                                    if( jsonMessage.longitude && jsonMessage.latitude ){
-                                        let col = _this.map.collection("KMILSYMBOL");
-                                        if( col ){
-                                            col.terrianFromDegrees([{
-                                                degree : {
-                                                    longitude : jsonMessage.longitude,
-                                                    latitude : jsonMessage.latitude
-                                                },
-                                                sic : "SPZP----------G"
-                                            }],function(d,collection){
-                                                d.size = 30;
-                                                let entity = collection.add(CTX.degree(d.degree.longitude,d.degree.latitude,d.degree.height), d);
-                                                _this.dialog.det.setVariable( "entity" , {id:entity.id});
-                                                _this.map.oliveCamera.flyOverEntity("KMILSYMBOL", entity.id);
-                                            });
-                                        }
                                     }
                                 }
                             }
@@ -438,7 +447,28 @@ class Application {
         }
         return this.oliveDragger;
     }
-    
+    addEntityAndFly(col,longitude,latitude, sic,callback){
+        let _this = this;
+        if( col ){
+            col.terrianFromDegrees([{
+                degree : {
+                    longitude : longitude,
+                    latitude : latitude
+                },
+                sic : sic
+            }],function(d,collection){
+                d.size = 30;
+                let entity = collection.add(CTX.degree(d.degree.longitude,d.degree.latitude,d.degree.height), d);
+                if( entity ){
+                    if( callback ){
+                        callback( entity );
+                    }
+                    _this.map.oliveCamera.flyOverEntity(collection, entity.id);
+                }
+            });
+        }
+    }
+                                            
 };
 
 global.Application = Application;

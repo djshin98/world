@@ -73,7 +73,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             olive_option: options,
             olive_description: desc,
             degree: degree,
-            description: this.createDescirption(degree, options, desc, img) //this.callbackDescirption(degree, options, desc, img)
+            description: this.callbackDescirption(degree, options, desc, img) //this.createDescirption(degree, options, desc, img)
         };
         if( options.name ){
             entityOption.name = options.name;
@@ -172,19 +172,20 @@ class KMilSymbolCollection extends OliveEntityCollection {
         var count = 0;
         if (desc) {
             sidc_desc = desc.reduce((prev, curr) => {
+                if( prev.length > 0 ) return prev;
                 return prev + "<p>" + curr.name + " : " + curr.value + " </p>";
             }, "");
         }
         return new Cesium.CallbackProperty(function(time, result) {
             return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img.toDataURL() + '"/>\
-            <p>대한민국 군대 부호코드.</p>\
-            <p>부호 : ' + options.sic + ' </p>\
-            <p>위도 : ' + (degree.latitude).toFixed(5) + ' </p>\
-            <p>경도 : ' + (degree.longitude).toFixed(5) + ' </p>\
-            <p>고도 : ' + (degree.height).toFixed(2) + ' m</p>\
-            ' + sidc_desc + '\
-            <button>테스트</button>\
-            <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';
+            <div class="inline" ><span>부대명 : ' + ((options.name) ? options.name : '알수없음')  + ' </span>\
+            <span>&nbsp;부호 : ' + options.sic + ' </span></div>\
+            <div class="inline" ><span>위도 : ' + (degree.latitude).toFixed(5) + ' </span>\
+            <span>&nbsp;경도 : ' + (degree.longitude).toFixed(5) + ' </span></div>\
+            <div class="inline" ><span>고도 : ' + (degree.height).toFixed(2) + ' m</span></div>\
+            ' + sidc_desc ;
+            /*<button>테스트</button>\
+            <p>Source: <a style="color: WHITE" target="_blank" href="http://en.wikipedia.org/wiki/KMilsymbol">Wikpedia</a></p>';*/
         }, false);
     }
 

@@ -133,9 +133,7 @@ class Camera {
             }*/
         });
     }
-    flyOverEntity(group,id){
-        let coll = this.map.collection(group);
-
+    flyOverEntity(coll,id){
         if( Cesium.defined(coll) ){
             let entity = coll.get(id);
             if( Cesium.defined(entity) ){

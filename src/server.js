@@ -5,7 +5,7 @@ const server = express();
 const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
-var {base64_encode} = require("./image");
+var {base64_encode} = require("./js/watch/image");
 
 const {WebSocketServer} = require('./js/ws/websocket_server');
 const {MqttAdapter} = require('./js/mqtt/mqttbroker');
@@ -41,7 +41,8 @@ const wss = new WebSocketServer({
     port : conf.WebSocket.port , 
     onmessage : function(ws,data){
         if( mqttAdapter && data ){
-            mqttAdapter.publish(data.topic, data.message );
+            let msg = JSON.parse(data);
+            mqttAdapter.publish(msg.topic, msg.message );
         }
     }
 });
