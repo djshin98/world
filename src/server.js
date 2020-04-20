@@ -71,8 +71,8 @@ var mqttAdapter = new MqttAdapter({
                             message = Object.assign(message,result);
                             message.results = result;
                             message.results.forEach(r=>{
-                                r.equ_mil_image = "D:/mapx/ccai/tia/org_images/N126E37.jpg";
-                                r.equ_mil_image_base64 = base64_encode(r.equ_mil_image);
+                                //r.mil_image = "D:/mapx/ccai/tia/org_images/N126E37.jpg";
+                                r.base64 = base64_encode(r.mil_image);
                             });
                             wss.publish(topic,message);
                         } else {r

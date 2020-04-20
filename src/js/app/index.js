@@ -95,14 +95,13 @@ class Application {
                                 $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
                             }
                             obj.setVariable("org_image", data.org_image);
-                            obj.setVariable("token", dom.guid());
                             obj.setVariable("longitude", data.longitude);
                             obj.setVariable("latitude", data.latitude);
 
                             if( data.longitude && data.latitude ){
                                 _this.addEntityAndFly(_this.map.collection("KMILSYMBOL"),data.longitude,data.latitude,  
                                     "SPZP----------G",(entity)=>{
-                                        obj.setVariable( "entity" , {id:entity.id});
+                                        obj.setVariable( "token" , entity.id);
                                     }
                                 );
                             }
@@ -145,27 +144,27 @@ class Application {
                 onset : function(obj,body,data) {
                     if( data && data.results && data.results.length > 0 ){
                         let d = data.results[0];
-                        $(body).find("[data-key=org_image]").text(d.equ_mil_image);
+                        $(body).find("[data-key=org_image]").text(d.mil_image);
 
                         if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
                         if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
 
-                        if( d.equ_mil_image_base64 ){
-                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + d.equ_mil_image_base64 + "' />");
+                        if( d.base64 ){
+                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + d.base64 + "' />");
                         }else{
                             $(body).find("[data-key=base64]").text( "");
                         }
                         let col = _this.map.collection("KMILSYMBOL");
                         if( col ){
-                            if( data.entity ){
-                                col.remove( data.entity );
+                            if( data.token ){
+                                col.remove( data.token );
                             }else if( _this.dialog.det ){
                                 let entity = _this.dialog.det.getVariable( "entity" );
                                 if( entity ){
                                     col.remove( entity.id );
                                 }
                             }
-                            _this.addEntityAndFly(col,data.longitude,data.latitude,d.unit_sbl_cd,
+                            _this.addEntityAndFly(col,data.longitude,data.latitude,d.sidc,
                                 (entity)=>{
                                     _this.dialog.det.setVariable( "entity" , {id:entity.id});
                                 }
