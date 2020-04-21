@@ -1,5 +1,9 @@
 var Cesium = require('cesium/Cesium');
-var { MarkerCollection,PinMarkers } = require('../collection/markercollection');
+
+var { MarkerCollection } = require('../collection/markercollection');
+var { DrawCollection,PinMarkers } = require('../collection/drawcollection');
+
+
 // widget 에 대한 표준을 만든다.
 
 class Draw{
@@ -110,7 +114,7 @@ class Draw{
 
     createPoint(worldPosition) {
         let _this = this;
-        var point = this.collection.add(worldPosition,PinMarkers.start);
+        var point = this.collection.add( CTX.c2d(worldPosition),PinMarkers.start);
         /*
         var point = this.viewer.entities.add({
             position : worldPosition,
