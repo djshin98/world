@@ -1,5 +1,6 @@
 //let {Cesium} = require('cesium/Cesium');
 let { OliveEntityCollection } = require('./entity_collection');
+let { CTX } = require('../map3d/ctx');
 
 var pinBuilder = new Cesium.PinBuilder();
 
@@ -25,6 +26,7 @@ class MarkerCollection extends OliveEntityCollection {
             size:48,
         },opt);
 
+        options.degree = { longitude : cartesian.longitude , latitude : cartesian.latitude , height : cartesian.height };
         if( typeof(options.color) == "string" ){
             options.color = Cesium.Color.fromCssColorString(options.color);
         }
@@ -33,10 +35,11 @@ class MarkerCollection extends OliveEntityCollection {
             case 'color':{
                 this.addEntity({
                     name : options.name,
-                    position : cartesian,
+                    position : CTX.d2c(cartesian),
                     billboard : {
                         image : pinBuilder.fromColor(options.color, options.size).toDataURL(),
-                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
                     },
                     olive_option:options
                 });
@@ -45,10 +48,11 @@ class MarkerCollection extends OliveEntityCollection {
             case 'text':{
                 this.addEntity({
                     name : options.name,
-                    position : cartesian,
+                    position : CTX.d2c(cartesian),
                     billboard : {
                         image : pinBuilder.fromText(options.text, options.color, options.size).toDataURL(),
-                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
                     },
                     olive_option:options
                 });
@@ -58,10 +62,11 @@ class MarkerCollection extends OliveEntityCollection {
                 Cesium.when(pinBuilder.fromMakiIconId(options.icon, options.color, options.size), function(canvas) {
                     return _this.addEntity({
                         name : options.name,
-                        position : cartesian,
+                        position : CTX.d2c(cartesian),
                         billboard : {
                             image : canvas.toDataURL(),
-                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                            heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
                         },
                         olive_option:options
                     });
@@ -73,10 +78,11 @@ class MarkerCollection extends OliveEntityCollection {
                 Cesium.when(pinBuilder.fromUrl(url, options.color, options.size), function(canvas) {
                     return _this.addEntity({
                         name : options.name,
-                        position : cartesian,
+                        position : CTX.d2c(cartesian),
                         billboard : {
                             image : canvas.toDataURL(),
-                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+                            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+                            heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
                         },
                         olive_option:options
                     });
