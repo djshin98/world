@@ -9,7 +9,6 @@ var {base64_encode} = require("./js/watch/image");
 
 const {WebSocketServer} = require('./js/ws/websocket_server');
 const {MqttAdapter} = require('./js/mqtt/mqttbroker');
-
 const {FileWatcher} = require('./js/watch/filewatcher');
 
 const cors = require('cors');
@@ -72,7 +71,7 @@ var mqttAdapter = new MqttAdapter({
                             message.results = result;
                             message.results.forEach(r=>{
                                 //r.mil_image = "D:/mapx/ccai/tia/org_images/N126E37.jpg";
-                                r.base64 = base64_encode(r.mil_image);
+                                r.base64 = base64_encode(r.image);
                             });
                             wss.publish(topic,message);
                         } else {r

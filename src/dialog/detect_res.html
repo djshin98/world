@@ -2,13 +2,46 @@
 button{
     margin-top:0.5em;
 }
-
+    .targetPro .thead {
+        vertical-align: middle;
+        text-align: center;
+        height: 33px;
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #414b53;
+        color: #838b91;
+        width: 25%;
+    }
+    
+    .targetPro .tdata {
+        text-align: center;
+        color: #a5aeb4;
+        width: 45%;
+        border: 1px solid #414850;
+        background-color: #212629;
+    }
 </style>
 <div>
     <label for="" style="margin-right: 10px;" >경도</label ><span data-key="longitude" style="margin-right: 50px;" ></span>
     <label for="" style="margin-right: 10px;">위도</label ><span data-key="latitude" style="margin-right: 50px;" ></span>
 </div>
 <div data-key="base64">
+</div>
+<div style="padding: 0.5em;">
+<table class="targetPro" style="width: 270px;">
+    <tr>
+        <td class="thead">표적명</td>
+        <td class="tdata">무수단 TEL</td>
+    </tr>
+    <tr>
+        <td class="thead" data-key="test">제원1</td>
+        <td class="tdata" data-key="value">제원1 값</td>
+    </tr>
+    <tr>
+        <td class="thead">제원2</td>
+        <td class="tdata">제원2 값</td>
+    </tr>
+</table>
 </div>
 <div style="padding: 0.5em;">
     <button class="ui primary button" data-key="req0" >
