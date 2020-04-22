@@ -10,7 +10,8 @@ class Draw{
     constructor( map , baseLayerPicker ){
         this.viewer = map.getView();
         this.baseLayerPicker = baseLayerPicker;
-        this.collection = new MarkerCollection(map,{name:"DRAW"});
+        this.markerCollection = new MarkerCollection(map,{name:"DRAW"});
+        this.drawCollection = new DrawCollection(map,{name:"DRAW"});
         this.viewModel = {
             mode: 'view',
             enableStyle:false,
@@ -30,7 +31,7 @@ class Draw{
         if (!this.viewer.scene.pickPositionSupported) {
             window.alert('This browser does not support pickPosition.');
         }
-
+        this.index = 1;
         this.activeShapePoints = [];
         this.activeShape;
         this.floatingPoint;
@@ -119,8 +120,19 @@ class Draw{
     }
 
     createPoint(worldPosition) {
-        let _this = this;
-        var point = this.collection.add( CTX.c2d(worldPosition),PinMarkers.start);
+        let pin = PinMarkers.start;
+        if (this.viewModel.mode === 'ellipse') {
+            pin = PinMarkers.center;
+            if( this.activeShapePoints.length > 0 ){
+                pin = PinMarkers.end;
+            }
+        }else{
+            if( this.activeShapePoints.length > 0 ){
+                pin = PinMarkers.via;
+            }
+        }
+        
+        var point = this.markerCollection.add( CTX.c2d(worldPosition),pin);
         /*
         var point = this.viewer.entities.add({
             position : worldPosition,
@@ -150,12 +162,12 @@ class Draw{
                     dashPattern: _this.dashPatternFromString(_this.viewModel.lineStyle,_this.viewModel.lineWidth)
                 });
             }
-            shape = this.viewer.entities.add({
+            shape = this.drawCollection.add(this.index,{
                 polyline : option
             });
 
         }else if (this.viewModel.mode === 'polygon') {
-            shape = this.viewer.entities.add({
+            shape = this.drawCollection.add(this.index,{
                 polygon: {
                     hierarchy: positionData,
                     material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
@@ -164,7 +176,7 @@ class Draw{
         }else if (this.viewModel.mode === 'ellipse') {
             if( positionData && positionData.length > 1 ){
                 var distance = Cesium.Cartesian3.distance(positionData[0], positionData[positionData.length-1]);
-                shape = this.viewer.entities.add({
+                shape = this.drawCollection.add(this.index,{
                     position: positionData[0],
                     ellipse: {
                         semiMinorAxis : distance,
@@ -176,14 +188,14 @@ class Draw{
                 });
             }
         }else if (this.viewModel.mode === 'dom') {
-            shape = this.viewer.entities.add({
+            shape = this.drawCollection.add(this.index,{
                 polygon: {
                     hierarchy: positionData,
                     material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
                 }
             });
         }else if (this.viewModel.mode === 'rought') {
-            shape = this.viewer.entities.add({
+            shape = this.drawCollection.add(this.index,{
                 polygon: {
                     hierarchy: positionData,
                     material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
@@ -196,11 +208,12 @@ class Draw{
     terminateShape() {
         //this.activeShapePoints.pop();
         this.drawShape(this.activeShapePoints);
-        this.viewer.entities.remove(this.floatingPoint);
-        this.viewer.entities.remove(this.activeShape);
+        this.drawCollection.remove(this.floatingPoint);
+        this.drawCollection.remove(this.activeShape);
         this.floatingPoint = undefined;
         this.activeShape = undefined;
         this.activeShapePoints = [];
+        this.index++;
     }
 
 }

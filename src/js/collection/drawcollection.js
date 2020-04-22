@@ -10,22 +10,43 @@ end : {name:'end',type:'text',text:'E',color:Cesium.Color.RED,size:48},
 via : {name:'via',type:'icon',icon:'marker',color:Cesium.Color.CHOCOLATE,size:48}
 };
 
-class DrawCollection extends OliveEntityCollection {
+class DrawCollection {
     constructor(map,options) {
-        super(map,options);
+        this.name = options.name;
+        this.map = map;
+        this.viewer = map.viewer3d;
+        this.options = Object.assign({}, options);
     }
-    add(cartesian, opt) {
-        var point = this.viewer.entities.add({
-            position : worldPosition,
-            point : opt
+    entities() {
+        return this.viewer.entities;
+    }
+    close() {
+        this.viewer.entities.removeAll();
+    }
+    add(id,option) {
+        var ent = this.viewer.entities.add(option
             /*
             {
                 color : _this.viewModel.shapeColor,
                 pixelSize : _this.viewModel.shapeSize,
                 heightReference: Cesium.HeightReference.NONE
             }*/
-        });
-        return point;
+        );
+        ent.category = this.name;
+        ent.drawId = id;
+        return ent;
+    }
+    get(id) {
+        return this.viewer.entities.values.filter((entity) => { return (entity.category == this.name && entity.drawId == id) ? true : false; });
+    }
+    remove(idOrEntity) {
+        if(idOrEntity){
+            if( typeof(idOrEntity) == "string" ){
+
+            }else if( typeof(idOrEntity) == "object" ){
+                
+            }
+        }
     }
 }
 module.exports = {

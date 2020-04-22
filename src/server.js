@@ -42,8 +42,10 @@ const wss = new WebSocketServer({
         if( mqttAdapter && data ){
             let msg = JSON.parse(data);
             //테스트 용도
+            
             msg.message.cmd = "RES_TIA";
-            msg.message.index = 20;
+            msg.message.index = 2;
+            
             //
             mqttAdapter.publish(msg.topic, msg.message );
         }
@@ -124,8 +126,8 @@ var fsWatcher = new FileWatcher({
             let str = data.org_image.substr( index+1, lastIndex);
             index = str.lastIndexOf("E");
             if( index > 0 ){
-                let longitude = parseFloat(str.substr(0,index));
-                let latitude = parseFloat(str.substr(index+1));
+                let latitude = parseFloat(str.substr(0,index));
+                let longitude = parseFloat(str.substr(index+1));
 
                 data.longitude = longitude;
                 data.latitude = latitude;

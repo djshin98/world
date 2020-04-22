@@ -10,13 +10,13 @@ button{
         font-weight: 500;
         background-color: #414b53;
         color: #838b91;
-        width: 25%;
+        width: 80px;
     }
     
     .targetPro .tdata {
         text-align: center;
         color: #a5aeb4;
-        width: 45%;
+        width: 80px;
         border: 1px solid #414850;
         background-color: #212629;
     }
@@ -28,39 +28,37 @@ button{
 <div data-key="base64">
 </div>
 <div style="padding: 0.5em;">
-<table class="targetPro" style="width: 270px;">
+<table class="targetPro" width="450px" >
     <tr>
-        <td class="thead">표적명</td>
-        <td class="tdata">무수단 TEL</td>
+        <td class="thead" width="200px" data-key="symbol" colspan="2" rowspan="2"></td>
+        <td class="thead" width="60px" >부호</td>
+        <td class="tdata" width="140px" data-key="sidc"></td>
     </tr>
     <tr>
-        <td class="thead" data-key="test">제원1</td>
-        <td class="tdata" data-key="value">제원1 값</td>
+        <td class="thead" >장비분류</td>
+        <td class="tdata" data-key="type" ></td>
     </tr>
     <tr>
-        <td class="thead">제원2</td>
-        <td class="tdata">제원2 값</td>
+        <td class="thead" width="80px" >장비 ID</td>
+        <td class="tdata" data-key="equ_id"></td>
+        <td class="thead" width="60px" >장비명</td>
+        <td class="tdata" width="140px" data-key="name" ></td>
+    </tr>
+    <tr>
+        <td class="thead">전장</td>
+        <td class="tdata" data-key="length" ></td>
+        <td class="thead">전폭</td>
+        <td class="tdata" data-key="width" ></td>
+    </tr>
+    <tr>
+        <td class="thead">전고</td>
+        <td class="tdata" data-key="height" ></td>
+        <td class="thead"></td>
+        <td class="tdata"></td>
     </tr>
 </table>
 </div>
 <div style="padding: 0.5em;">
-    <button class="ui primary button" data-key="req0" >
-        표적정보수신
-    </button>
-    <button class="ui primary button" data-key="req1" >
-        무장추천
-    </button>
-    <button class="ui primary button" data-key="req2" >
-        부수적 피해평가
-    </button>
-</div>
-<div style="padding: 0.5em;">
-    <button class="ui primary button" data-key="req3" >
-        공역충돌
-    </button>
-    <button class="ui primary button" data-key="req4" >
-        무장할당
-    </button>
     <button class="ui button" data-key="cancel" >
         취소
     </button>

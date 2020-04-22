@@ -81,7 +81,7 @@ class Application {
         _this.dialog = {};
         _this.dialogFunc = {
             det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", 
-                    width: "450px",height: "400px", show:true, data:data, 
+                    width: "250px",height: "230px", show:true, data:data, 
                     onset : function(obj,body,data) {
                         if( data ){
                             $(body).find("[data-key=org_image]").text(data.org_image);
@@ -92,7 +92,9 @@ class Application {
                             if( data.act == "del" ){
                                 $(body).find("[data-key=base64]").text( "");
                             }else if( data.base64 ){
-                                $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
+                                var symbol = new ms.Symbol("SPZP----------G", {});
+                                var src = symbol.toDataURL();
+                                $(body).find("[data-key=base64]").html( "<img width='100' src='" + src + "' />");
                             }
                             obj.setVariable("org_image", data.org_image);
                             obj.setVariable("longitude", data.longitude);
@@ -140,7 +142,7 @@ class Application {
                     },
                 })},
             tia : function(data){ return new Dialog({ title: '표적식별', url: "dialog/detect_res.html", 
-                width: "450px",height: "480px", show:true, data:data, 
+                width: "490px",height: "610px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data && data.results && data.results.length > 0 ){
                         let d = data.results[0];
@@ -154,6 +156,20 @@ class Application {
                         }else{
                             $(body).find("[data-key=base64]").text( "");
                         }
+
+                        if( d.sidc ){
+                            var symbol = new ms.Symbol(d.sidc, {});
+                            var src = symbol.toDataURL();
+                            $(body).find("[data-key=symbol]").html( "<img width='40' src='" + src + "' />");
+                            $(body).find("[data-key=sidc]").text(d.sidc);
+                        }
+                        $(body).find("[data-key=type]").text(d.type);
+                        $(body).find("[data-key=name]").text(d.name);
+                        $(body).find("[data-key=width]").text(d.width);
+                        $(body).find("[data-key=length]").text(d.length);
+                        $(body).find("[data-key=height]").text(d.height);
+                        $(body).find("[data-key=equ_id]").text(d.equ_id);
+
                         let col = _this.map.collection("KMILSYMBOL");
                         if( col ){
                             if( data.token ){
@@ -174,6 +190,7 @@ class Application {
                 },
                 onclose : function(){_this.dialog.tia = undefined; },
                 oninit : function(obj,body){
+                    /*
                     ["req0","req1","req2","req3","req4"].forEach((key,i)=>{
                         let req = $(body).find("button[data-key="+key+"]");
                         req.unbind('click');
@@ -192,7 +209,7 @@ class Application {
                             _this.websocket.send('WAA.HANDLER',msg);
                         });
                     });
-                    
+                    */
                     let cancel = $(body).find("button[data-key=cancel]");
                     cancel.unbind('click');
                     cancel.bind('click', function(){
@@ -200,20 +217,115 @@ class Application {
                     });
                 },
             })},
-            waa : function(data){ return new Dialog({ title: '무장 할당 결과값', url: "dialog/weoponAssign.html", 
+            waa0 : function(data){ return new Dialog({ title: '무장 할당 결과값 0', url: "dialog/target0.html", 
                 width: "300px",height: "200px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        $(body).find("[data-key=org_image]").text(data.org_image);
-
-                        if( data.longitude ){ $(body).find("[data-key=longitude]").text(""+data.longitude); }
-                        if( data.latitude ){ $(body).find("[data-key=latitude]").text(""+data.latitude); }
-
-                        if( data.act == "del" ){
-                            $(body).find("[data-key=base64]").text( "");
-                        }else if( data.base64 ){
-                            $(body).find("[data-key=base64]").html( "<img width='400' src='" + data.base64 + "' />");
-                        }
+                        let str = "";
+                        Object.keys(data).forEach(key=>{
+                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+                        });
+                        $(body).find("tbody").html(str);
+                    }
+                },
+                onclose : function(){_this.dialog.waa = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            waa1 : function(data){ return new Dialog({ title: '무장 할당 결과값 1', url: "dialog/target1.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        let str = "";
+                        Object.keys(data).forEach(key=>{
+                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+                        });
+                        $(body).find("tbody").html(str);
+                    }
+                },
+                onclose : function(){_this.dialog.waa = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            waa2 : function(data){ return new Dialog({ title: '무장 할당 결과값 2', url: "dialog/target2.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        let str = "";
+                        Object.keys(data).forEach(key=>{
+                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+                        });
+                        $(body).find("tbody").html(str);
+                    }
+                },
+                onclose : function(){_this.dialog.waa = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            waa3 : function(data){ return new Dialog({ title: '무장 할당 결과값 3', url: "dialog/target3.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        let str = "";
+                        Object.keys(data).forEach(key=>{
+                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+                        });
+                        $(body).find("tbody").html(str);
+                    }
+                },
+                onclose : function(){_this.dialog.waa = undefined; },
+                oninit : function(obj,body){
+                    let req = $(body).find("button[data-key=req]");
+                    req.unbind('click');
+                    req.bind('click', function(){
+                            alert('req');
+                    });
+                    let cancel = $(body).find("button[data-key=cancel]");
+                    cancel.unbind('click');
+                    cancel.bind('click', function(){
+                            alert('cancel');
+                    });
+                },
+            })},
+            waa4 : function(data){ return new Dialog({ title: '무장 할당 결과값 4', url: "dialog/target4.html", 
+                width: "300px",height: "200px", show:true, data:data, 
+                onset : function(obj,body,data) {
+                    if( data ){
+                        let str = "";
+                        Object.keys(data).forEach(key=>{
+                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+                        });
+                        $(body).find("tbody").html(str);
                     }
                 },
                 onclose : function(){_this.dialog.waa = undefined; },
@@ -301,14 +413,19 @@ class Application {
                             }
                         break;
                         case 'WAA.HANDLER': //무장할당 
-                            if( !Cesium.defined(_this.dialog.waa) ){
-                                _this.dialog.waa = _this.dialogFunc.waa(jsonMessage);
+                            if( jsonMessage.type && jsonMessage.type != null ){
+                                let type = jsonMessage.type;
+                                let dlgkey = "waa" + type;
+                                if( !Cesium.defined(_this.dialog[dlgkey]) ){
+                                    _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+                                }else{
+                                    let dlg = _this.dialog[dlgkey];
+                                    dlg.set(jsonMessage);
+                                    dlg.front();
+                                }
                             }else{
-                                let dlg = _this.dialog.waa;
-                                dlg.set(jsonMessage);
-                                dlg.front();
+                                alert( "invalid message \n" + data );
                             }
-                            
                             //console.log( data.topic + "> " + jsonMessage );
                         break;
                         case 'DSW.HANDLER': //시연용
