@@ -45,24 +45,8 @@ class Draw{
             //console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-            var earthPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :  
-                        _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
-
-            if (Cesium.defined(earthPosition)) {
-                if (_this.activeShapePoints.length === 0) {
-                    _this.floatingPoint = _this.createPoint(earthPosition);
-                    _this.activeShapePoints.push(earthPosition);
-                    var dynamicPositions = new Cesium.CallbackProperty(function () {
-                        if (_this.viewModel.mode === 'polygon') {
-                            return new Cesium.PolygonHierarchy(_this.activeShapePoints);
-                        }
-                        return _this.activeShapePoints;
-                    }, false);
-                    _this.activeShape = _this.drawShape(dynamicPositions);
-                }
-                _this.activeShapePoints.push(earthPosition);
-                _this.createPoint(earthPosition);
-            }
+            _this.appendPoint(event);
+            
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         
         this.handler.setInputAction(function(event) {
@@ -80,9 +64,31 @@ class Draw{
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         
         this.handler.setInputAction(function(event) {
+            //_this.appendPoint(event);
             _this.terminateShape();
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
+    }
+    appendPoint(event){
+        let _this = this;
+        var earthPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :  
+                _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+
+        if (Cesium.defined(earthPosition)) {
+        if (_this.activeShapePoints.length === 0) {
+            _this.floatingPoint = _this.createPoint(earthPosition);
+            _this.activeShapePoints.push(earthPosition);
+            var dynamicPositions = new Cesium.CallbackProperty(function () {
+                if (_this.viewModel.mode === 'polygon') {
+                    return new Cesium.PolygonHierarchy(_this.activeShapePoints);
+                }
+                return _this.activeShapePoints;
+            }, false);
+            _this.activeShape = _this.drawShape(dynamicPositions);
+        }
+        _this.activeShapePoints.push(earthPosition);
+        _this.createPoint(earthPosition);
+        }
     }
     dashPatternFromString(str,width){
         if( str == "line"){
@@ -188,7 +194,7 @@ class Draw{
     }
 
     terminateShape() {
-        this.activeShapePoints.pop();
+        //this.activeShapePoints.pop();
         this.drawShape(this.activeShapePoints);
         this.viewer.entities.remove(this.floatingPoint);
         this.viewer.entities.remove(this.activeShape);
