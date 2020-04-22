@@ -1,5 +1,6 @@
 var mqtt = require('mqtt');
-
+var Iconv  = require('iconv').Iconv;
+var iconv = new Iconv('EUC-KR','UTF-8');
 class MqttAdapter{
   constructor(options){
     this.options = Object.assign({host:"localhost",port:1833,listens:[]},options);
@@ -33,7 +34,9 @@ class MqttAdapter{
     this.client.on('message', function (topic, message) {
       let listen = _this.options.listens.find(listen=>{ return (listen.topic == topic)?true:false; });
       if( listen ){
-        listen.onReceive(listen.topic, message.toString());
+        let s = iconv.convert(message);
+        let msg = s.toString();
+        listen.onReceive(listen.topic, msg);
       }else{
         console.log("onreceive : " + topic + " --> " + message);
       }

@@ -133,6 +133,10 @@ class Camera {
             }*/
         });
     }
+    flyOver(lon,lat){
+        let c = this.cameraFocus(lon,lat);
+        this.flyTo(c.lon,c.lat);
+    }
     flyOverEntity(coll,id){
         if( Cesium.defined(coll) ){
             let entity = coll.get(id);

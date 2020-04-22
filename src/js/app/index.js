@@ -26,6 +26,28 @@ global.tx = { get: get, post: post };
 
 const config = require("../../conf/server.json");
 
+function makeTable(data){
+    let str = "";
+    Object.keys(data).forEach(key=>{
+        var sub = data[key];
+        if( typeof(sub) == "object" ){
+            let tbl = "";
+            
+            sub.forEach(subitem=>{
+                tbl += "<table><tbody>";
+                tbl += makeTable(subitem);
+                tbl +="</tbody></table>";
+            });
+            str += "<tr><td class='thead'>"+key+"</td><td >"+tbl+"</td></tr>";
+        }else{
+            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
+        }
+    });   
+    return str;                 
+}
+
+var targetRefs;
+var targetExtras;
 class Application {
     constructor(options) {
         this.workStatus("section", false);
@@ -81,7 +103,7 @@ class Application {
         _this.dialog = {};
         _this.dialogFunc = {
             det : function(data){ return new Dialog({ title: '표적탐지', url: "dialog/detect.html", 
-                    width: "250px",height: "230px", show:true, data:data, 
+                    width: "350px",height: "300px", show:true, data:data, 
                     onset : function(obj,body,data) {
                         if( data ){
                             $(body).find("[data-key=org_image]").text(data.org_image);
@@ -101,10 +123,10 @@ class Application {
                             obj.setVariable("latitude", data.latitude);
 
                             if( data.longitude && data.latitude ){
-                                _this.addEntityAndFly(_this.map.collection("KMILSYMBOL"),data.longitude,data.latitude,  
+                                _this.addEntity(_this.map.collection("KMILSYMBOL"),data.longitude,data.latitude,  
                                     "SPZP----------G",(entity)=>{
                                         obj.setVariable( "token" , entity.id);
-                                    }
+                                    },true
                                 );
                             }
                         }
@@ -157,6 +179,8 @@ class Application {
                             $(body).find("[data-key=base64]").text( "");
                         }
 
+                        $(body).find("td[data-token="+data.token+"]").css("background-color","");
+
                         if( d.sidc ){
                             var symbol = new ms.Symbol(d.sidc, {});
                             var src = symbol.toDataURL();
@@ -180,10 +204,10 @@ class Application {
                                     col.remove( entity.id );
                                 }
                             }
-                            _this.addEntityAndFly(col,data.longitude,data.latitude,d.sidc,
+                            _this.addEntity(col,data.longitude,data.latitude,d.sidc,
                                 (entity)=>{
                                     _this.dialog.det.setVariable( "entity" , {id:entity.id});
-                                }
+                                }, true
                             );
                         }
                     }
@@ -217,14 +241,46 @@ class Application {
                     });
                 },
             })},
-            waa0 : function(data){ return new Dialog({ title: '무장 할당 결과값 0', url: "dialog/target0.html", 
-                width: "300px",height: "200px", show:true, data:data, 
+            waa0 : function(data){ return new Dialog({ title: '시한성 전략 표적', url: "dialog/target0.html", 
+                width: "600px",height: "350px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        let str = "";
-                        Object.keys(data).forEach(key=>{
-                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
-                        });
+                        let str = ""; //makeTable(data);
+                        
+                        if( data.data ){
+                            data.data.forEach(row=>{
+                                if( !Cesium.defined(row.t_id) || row.t_id.length == 0 ){
+                                    if( row.lon && row.lat ){
+                                        _this.addEntity(_this.map.collection("KMILSYMBOL"),parseFloat(row.lon),parseFloat(row.lat),  
+                                            "SPZP----------G",(entity)=>{
+                                                let ustr = "<tr onclick=\"map.oliveCamera.flyOver("+row.lon+","+row.lat+")\">";
+                                                ustr += "<td class='tdata'>"+row.dt+"</td>";
+                                                ustr += "<td class='tdata' data-token='"+entity.id+"' onclick=\"app.reqUnknown('"+entity.id+"',"+row.lon+","+row.lat+")\" style='background-color:red;'>미확인</td>";
+                                                ustr += "<td class='tdata' >"+row.lon+"</td>";
+                                                ustr += "<td class='tdata' >"+row.lat+"</td>";
+                                                ustr += "<td class='tdata'>"+row.wt+"</td>";
+                                                ustr += "</tr>";
+                                                $(body).find("tbody").append(ustr);
+                                            }, false
+                                        );
+                                    }
+                                }else{
+                                    str += "<tr onclick=\"app.popupTarget('"+row.t_id+"');map.oliveCamera.flyOver("+row.lon+","+row.lat+");\">";
+                                    str += "<td class='tdata'>"+row.dt+"</td>";
+                                    str += "<td class='tdata'>"+row.t_id+"</td>";
+                                    str += "<td class='tdata' >"+row.lon+"</td>";
+                                    str += "<td class='tdata' >"+row.lat+"</td>";
+                                    str += "<td class='tdata'>"+row.wt+"</td>";
+                                    str += "</tr>";
+
+                                    if( row.lon && row.lat ){
+                                        _this.addEntity(_this.map.collection("KMILSYMBOL"),parseFloat(row.lon),parseFloat(row.lat),row.code,
+                                        (entity)=>{}, false);
+                                    }
+                                    
+                                }
+                            });
+                        }
                         $(body).find("tbody").html(str);
                     }
                 },
@@ -242,14 +298,22 @@ class Application {
                     });
                 },
             })},
-            waa1 : function(data){ return new Dialog({ title: '무장 할당 결과값 1', url: "dialog/target1.html", 
-                width: "300px",height: "200px", show:true, data:data, 
+            waa1 : function(data){ return new Dialog({ title: '무장 추천', url: "dialog/target1.html", 
+                width: "490px",height: "220px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        let str = "";
-                        Object.keys(data).forEach(key=>{
-                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
-                        });
+                        let str = ""; //makeTable(data);
+                        
+                        if( data.data ){
+                            data.data.forEach(row=>{
+                                str += "<tr onclick=\"map.oliveCamera.flyOver("+row.lon+","+row.lat+")\">";
+                                str += "<td class='tdata'>"+row.t_id+"</td>";
+                                str += "<td class='tdata'>"+row.weapon+"</td>";
+                                str += "<td class='tdata' >"+row.unit+"</td>";
+                                str += "<td class='tdata' >"+row.rank+"</td>";
+                                str += "</tr>";
+                            });
+                        }
                         $(body).find("tbody").html(str);
                     }
                 },
@@ -267,14 +331,26 @@ class Application {
                     });
                 },
             })},
-            waa2 : function(data){ return new Dialog({ title: '무장 할당 결과값 2', url: "dialog/target2.html", 
-                width: "300px",height: "200px", show:true, data:data, 
+            waa2 : function(data){ return new Dialog({ title: '부수적 피해평가 결과', url: "dialog/target2.html", 
+                width: "520px",height: "620px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        let str = "";
-                        Object.keys(data).forEach(key=>{
-                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
-                        });
+                        let str = "";//makeTable(data);
+                        if( data.data ){
+                            
+                            data.data.forEach(row=>{
+                                str += "<tr onclick=\"map.oliveCamera.flyOver("+row.lon+","+row.lat+")\">";
+                                str += "<td class='tdata'>"+row.t_id+"</td>";
+                                str += "<td class='tdata'>"+row.weapon+"</td>";
+                                str += "<td class='tdata'>"+row.unit+"</td>";
+                                str += "<td class='tdata'>"+row.rank+"</td>";
+                                str += "<td class='tdata'>"+row.result+"</td>"; 
+                                str += "</tr>";
+
+                                _this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
+                            });
+
+                        }
                         $(body).find("tbody").html(str);
                     }
                 },
@@ -292,14 +368,23 @@ class Application {
                     });
                 },
             })},
-            waa3 : function(data){ return new Dialog({ title: '무장 할당 결과값 3', url: "dialog/target3.html", 
-                width: "300px",height: "200px", show:true, data:data, 
+            waa3 : function(data){ return new Dialog({ title: '공역 충돌', url: "dialog/target3.html", 
+                width: "580px",height: "700px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        let str = "";
-                        Object.keys(data).forEach(key=>{
-                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
-                        });
+                        let str = "";//makeTable(data);
+                        if( data.data ){
+                            
+                            data.data.forEach(row=>{
+                                str += "<tr>";
+                                str += "<td class='tdata'>"+row.t_id+"</td>";
+                                str += "<td class='tdata'>"+row.weapon+"</td>";
+                                str += "<td class='tdata'>"+row.unit+"</td>";
+                                str += "<td class='tdata'>"+row.ac_cal+"</td>";
+                                str += "<td class='tdata'>"+row.rank+"</td>";
+                                str += "</tr>";
+                            });
+                        }
                         $(body).find("tbody").html(str);
                     }
                 },
@@ -317,14 +402,21 @@ class Application {
                     });
                 },
             })},
-            waa4 : function(data){ return new Dialog({ title: '무장 할당 결과값 4', url: "dialog/target4.html", 
-                width: "300px",height: "200px", show:true, data:data, 
+            waa4 : function(data){ return new Dialog({ title: '무장 할당 결과', url: "dialog/target4.html", 
+                width: "390px",height: "300px", show:true, data:data, 
                 onset : function(obj,body,data) {
                     if( data ){
-                        let str = "";
-                        Object.keys(data).forEach(key=>{
-                            str += "<tr><td class='thead'>"+key+"</td><td class='tdata'>"+data[key]+"</td></tr>";
-                        });
+                        let str = "";//makeTable(data);
+                        if( data.data ){
+                            
+                            data.data.forEach(row=>{
+                                str += "<tr>";
+                                str += "<td class='tdata'>"+row.t_id+"</td>";
+                                str += "<td class='tdata'>"+row.weapon+"</td>";
+                                str += "<td class='tdata'>"+row.unit+"</td>";
+                                str += "</tr>";
+                            });
+                        }
                         $(body).find("tbody").html(str);
                     }
                 },
@@ -413,16 +505,31 @@ class Application {
                             }
                         break;
                         case 'WAA.HANDLER': //무장할당 
-                            if( jsonMessage.type && jsonMessage.type != null ){
+                            if( Cesium.defined(jsonMessage.type) && jsonMessage.type != null ){
                                 let type = jsonMessage.type;
-                                let dlgkey = "waa" + type;
-                                if( !Cesium.defined(_this.dialog[dlgkey]) ){
-                                    _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+                                if( type == 1 ){
+                                    targetRefs = jsonMessage;
+                                }else if( type == 2 ){
+                                    targetExtras = jsonMessage;
+                                   
+                                    if( targetExtras && targetExtras.data ){
+                                        targetExtras.data.sort((a,b)=>{ return b.rad - a.rad; });
+                                        targetExtras.data.forEach(row=>{
+                                            _this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
+                                        });
+                                    }
+                                    
                                 }else{
-                                    let dlg = _this.dialog[dlgkey];
-                                    dlg.set(jsonMessage);
-                                    dlg.front();
+                                    let dlgkey = "waa" + type;
+                                    if( !Cesium.defined(_this.dialog[dlgkey]) ){
+                                        _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+                                    }else{
+                                        let dlg = _this.dialog[dlgkey];
+                                        dlg.set(jsonMessage);
+                                        dlg.front();
+                                    }
                                 }
+                                
                             }else{
                                 alert( "invalid message \n" + data );
                             }
@@ -449,6 +556,7 @@ class Application {
         this.map.createCollection("BOMA", "KMilSymbol");
         this.map.createCollection("ENEMY", "KMilSymbol");
         this.map.createCollection("MARKER", "Marker");
+        this.map.createCollection("EXTRA", "Draw");
 
         this.favorite = new JsonByFolder("favorite", this.map.collection("KMILSYMBOL") );
 
@@ -585,7 +693,56 @@ class Application {
         }
         return this.oliveDragger;
     }
-    addEntityAndFly(col,longitude,latitude, sic,callback){
+    drawRad(lon,lat,result,rad){
+        let color = Cesium.Color.LIME.withAlpha(0.9);
+        if( result == "1L" ){ color = Cesium.Color.LIME.withAlpha(0.9); }
+        else if( result == "2L" ){ color = Cesium.Color.AQUAMARINE.withAlpha(0.9); }
+        else if( result == "3L" ){ color = Cesium.Color.AQUA.withAlpha(0.9); }
+        else if( result == "4L" ){ Cesium.Color.MEDIUMPURPLE.withAlpha(0.9); }
+        else if( result == "5L" ){ Cesium.Color.FUCHSIA.withAlpha(0.9); }
+        else if( result == "5H" ){ color = Cesium.Color.CRIMSON.withAlpha(0.9); }
+        let col = this.map.collection("EXTRA");
+        if( col ){
+            let shape = col.add(1,{
+                position: CTX.d2c(CTX.degree(lon,lat,0)),
+                ellipse: {
+                    semiMinorAxis : rad,
+                    semiMajorAxis : rad,
+                    //hierarchy: positionData,
+                    fill:true,
+                    material: new Cesium.ColorMaterialProperty(color)
+                }
+            });
+        }
+        
+    }
+    popupTarget(tid){
+        if( targetRefs && targetRefs.data ){
+            let _this = this;
+            let type = 1;
+            let dlgkey = "waa" + type;
+            let jsonMessage = Object.assign({},targetRefs);
+            jsonMessage.data = jsonMessage.data.filter((d)=>{ return d.t_id == tid ? true : false; });
+            if( !Cesium.defined(_this.dialog[dlgkey]) ){
+                _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+            }else{
+                let dlg = _this.dialog[dlgkey];
+                dlg.set(jsonMessage);
+                dlg.front();
+            }
+        }
+    }
+    reqUnknown(token,longitude,latitude){
+        let msg = {
+            cmd:"REQ_TIA",
+            token: token,
+            org_image: "D:\\mapx\\ccai\\tia\\org_images\\47.jpg",
+            longitude: longitude,
+            latitude: latitude
+        };
+        this.websocket.send('TIA.HANDLER',msg);
+    }
+    addEntity(col,longitude,latitude, sic,callback,bfly){
         let _this = this;
         if( col ){
             col.terrianFromDegrees([{
@@ -601,7 +758,9 @@ class Application {
                     if( callback ){
                         callback( entity );
                     }
-                    _this.map.oliveCamera.flyOverEntity(collection, entity.id);
+                    if( bfly && bfly == true ){
+                        _this.map.oliveCamera.flyOverEntity(collection, entity.id);
+                    }
                 }
             });
         }
