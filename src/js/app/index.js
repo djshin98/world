@@ -704,17 +704,6 @@ class Application {
         else if( result == "5H" ){ color = Cesium.Color.CRIMSON.withAlpha(transparent); }
         let col = this.map.collection("EXTRA");
         if( col ){
-            let shape = col.add(1,{
-                position: CTX.d2c(CTX.degree(lon,lat,0)),
-                ellipse: {
-                    semiMinorAxis : rad,
-                    semiMajorAxis : rad,
-                    //hierarchy: positionData,
-                    fill:true,
-                    material: new Cesium.ColorMaterialProperty(color)
-                }
-            });
-
             if( rad > 0 ){
                 col.add(1,{
                     position: CTX.d2c(CTX.degree(lon,lat,0)),
