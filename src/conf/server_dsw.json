@@ -1,0 +1,26 @@
+{
+    "WebServer":{
+        "host":"192.168.1.101",
+        "port":8081
+    },
+    "WasServer":{
+        "host":"192.168.1.101",
+        "port":8082
+    },
+    "MqttServer":{
+        "host":"192.168.1.101",
+        "port":1883,
+        "watch-folder":"D:\\mapx\\tia\\org_images"
+    },
+    "WebSocket":{
+        "host":"192.168.1.101",
+        "port":8083
+    },
+    "DatabaseServer": {
+        "host": "192.168.1.101",
+        "port": 3306,
+        "user": "root",
+        "password": "qwe123!@#",
+        "database": "ccai"
+    }
+}
