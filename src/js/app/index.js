@@ -694,13 +694,14 @@ class Application {
         return this.oliveDragger;
     }
     drawRad(lon,lat,result,rad){
-        let color = Cesium.Color.LIME.withAlpha(0.9);
-        if( result == "1L" ){ color = Cesium.Color.LIME.withAlpha(0.9); }
-        else if( result == "2L" ){ color = Cesium.Color.AQUAMARINE.withAlpha(0.9); }
-        else if( result == "3L" ){ color = Cesium.Color.AQUA.withAlpha(0.9); }
-        else if( result == "4L" ){ Cesium.Color.MEDIUMPURPLE.withAlpha(0.9); }
-        else if( result == "5L" ){ Cesium.Color.FUCHSIA.withAlpha(0.9); }
-        else if( result == "5H" ){ color = Cesium.Color.CRIMSON.withAlpha(0.9); }
+        let transparent = 0.6;
+        let color = Cesium.Color.LIME.withAlpha(transparent);
+        if( result == "1L" ){ color = Cesium.Color.LIME.withAlpha(transparent); }
+        else if( result == "2L" ){ color = Cesium.Color.AQUAMARINE.withAlpha(transparent); }
+        else if( result == "3L" ){ color = Cesium.Color.AQUA.withAlpha(transparent); }
+        else if( result == "4L" ){ color = Cesium.Color.MEDIUMPURPLE.withAlpha(transparent); }
+        else if( result == "5L" ){ color = Cesium.Color.FUCHSIA.withAlpha(transparent); }
+        else if( result == "5H" ){ color = Cesium.Color.CRIMSON.withAlpha(transparent); }
         let col = this.map.collection("EXTRA");
         if( col ){
             let shape = col.add(1,{
@@ -713,6 +714,25 @@ class Application {
                     material: new Cesium.ColorMaterialProperty(color)
                 }
             });
+
+            if( rad > 0 ){
+                col.add(1,{
+                    position: CTX.d2c(CTX.degree(lon,lat,0)),
+                    ellipse: {
+                        semiMinorAxis : rad,
+                        semiMajorAxis : rad,
+                        //hierarchy: positionData,
+                        fill:true,
+                        outline:true,
+                        outlineColor:Cesium.Color.WHITE,
+                        outlineWidth:1,
+                        material: new Cesium.ColorMaterialProperty(color),
+                        extrudedHeight:100,
+                        heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                    }
+                });
+            }
+
         }
         
     }

@@ -104,10 +104,29 @@ class Draw{
     }
     update( viewModel ){
         this.viewModel = Object.assign(this.viewModel, viewModel );
-        this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor).withAlpha(this.viewModel.lineTransparent);
-        this.viewModel.faceColor = Cesium.Color.fromCssColorString(this.viewModel.faceColor).withAlpha(this.viewModel.faceTransparent);
-        this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
-        this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
+        if( this.viewModel.lineColor && typeof(this.viewModel.lineColor) == "string"){
+            this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor);
+        }
+        if( this.viewModel.faceColor && typeof(this.viewModel.faceColor) == "string"){
+            this.viewModel.faceColor = Cesium.Color.fromCssColorString(this.viewModel.faceColor);
+        }
+        if( this.viewModel.frameColor && typeof(this.viewModel.frameColor) == "string"){
+            this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
+        }
+        if( this.viewModel.shapeColor && typeof(this.viewModel.shapeColor) == "string"){
+            this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
+        }
+        if( this.viewModel.faceTransparent && typeof(this.viewModel.faceTransparent) == "string"){
+            this.viewModel.faceTransparent = parseFloat(this.viewModel.faceTransparent) / 100;
+        }
+        if( this.viewModel.lineTransparent && typeof(this.viewModel.lineTransparent) == "string"){
+            this.viewModel.lineTransparent = parseFloat(this.viewModel.lineTransparent) / 100;
+        }
+
+        this.viewModel.lineColor = this.viewModel.lineColor.withAlpha(this.viewModel.lineTransparent);
+        this.viewModel.faceColor = this.viewModel.faceColor.withAlpha(this.viewModel.faceTransparent);
+        //this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
+        //this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
         
         if( this.viewModel.mode == "view" ){
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
@@ -176,16 +195,23 @@ class Draw{
         }else if (this.viewModel.mode === 'ellipse') {
             if( positionData && positionData.length > 1 ){
                 var distance = Cesium.Cartesian3.distance(positionData[0], positionData[positionData.length-1]);
-                shape = this.drawCollection.add(this.index,{
-                    position: positionData[0],
-                    ellipse: {
-                        semiMinorAxis : distance,
-                        semiMajorAxis : distance,
-                        //hierarchy: positionData,
-                        fill:true,
-                        material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
-                    }
-                });
+                if( distance > 0 ){
+                    shape = this.drawCollection.add(this.index,{
+                        position: positionData[0],
+                        ellipse: {
+                            semiMinorAxis : distance,
+                            semiMajorAxis : distance,
+                            //hierarchy: positionData,
+                            fill:true,
+                            outline:true,
+                            outlineColor:this.viewModel.lineColor,
+                            outlineWidth:this.viewModel.lineWidth,
+                            material: new Cesium.ColorMaterialProperty(this.viewModel.faceColor),
+                            extrudedHeight:100,
+                            heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                        }
+                    });
+                }
             }
         }else if (this.viewModel.mode === 'dom') {
             shape = this.drawCollection.add(this.index,{
