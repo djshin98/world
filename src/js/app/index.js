@@ -552,9 +552,6 @@ class Application {
         });
 
         this.map.createCollection("KMILSYMBOL", "KMilSymbol");
-        this.map.createCollection("ALLY", "KMilSymbol");
-        this.map.createCollection("BOMA", "KMilSymbol");
-        this.map.createCollection("ENEMY", "KMilSymbol");
         this.map.createCollection("MARKER", "Marker");
         this.map.createCollection("EXTRA", "Draw");
 
