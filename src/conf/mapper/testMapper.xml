@@ -13,4 +13,8 @@
       SELECT * 
         FROM t_waa_enemy_unit
   </select>
+  <select id="aircraft">
+    SELECT * 
+      FROM t_waa_aircraft
+</select>
 </mapper>

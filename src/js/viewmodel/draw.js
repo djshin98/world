@@ -214,12 +214,42 @@ class Draw{
                 }
             }
         }else if (this.viewModel.mode === 'dom') {
-            shape = this.drawCollection.add(this.index,{
-                polygon: {
-                    hierarchy: positionData,
-                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
+            if( positionData && positionData.length > 1 ){
+                var distance = Cesium.Cartesian3.distance(positionData[0], positionData[positionData.length-1]);
+                if( distance > 0 ){
+                    shape = this.drawCollection.add(this.index,{
+                        position: positionData[0],
+                        ellipsoid: {
+                            radii: new Cesium.Cartesian3(distance,distance,distance),
+                            innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
+                            /*
+                            innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
+                            minimumClock: 0,
+                            maximumClock: 2*Cesium.Math.PI/2,
+                            minimumCone:0,
+                            maximumCone:Cesium.Math.PI/2,
+                            heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND,
+                            outline:true,
+                            outlineColor:this.viewModel.lineColor,
+                            stackPartitions:64,
+                            slicePartitions:64,
+                            subdivisions:128,
+                            */
+                            stackPartitions:64,
+                            slicePartitions:64,
+                            subdivisions:64,
+                            minimumCone:Cesium.Math.PI/4,
+                            maximumCone:Cesium.Math.PI/2.5,
+                            minimumClock: (2*Cesium.Math.PI)*0.125,
+                            maximumClock: (2*Cesium.Math.PI)*0.375,
+                            outline:true,
+                            outlineColor:this.viewModel.lineColor,
+                            material: this.viewModel.faceColor,
+                            heightReference:Cesium.HeightReference.NONE 
+                        }
+                    });
                 }
-            });
+            }
         }else if (this.viewModel.mode === 'rought') {
             shape = this.drawCollection.add(this.index,{
                 polygon: {

@@ -9,6 +9,7 @@
       SELECT * 
         FROM t_waa_bmoa
   </select>
+  
   <select id="tgt_info">
       SELECT * 
         FROM t_waa_tgt_info

@@ -11,11 +11,25 @@
 
 <script>
     
+    function unitParse(parent,arr){
+        !arr || arr.
+        prev.push({
+            id: parent.group + "_" + (i+1),
+                                name: curr.unit_name,
+                                degree : {
+                                    longitude: curr.geocd_lngt,
+                                    latitude: curr.geocd_ltd
+                                },
+                                sic: curr.unit_sbl_cd,
+                                group: toShowNode[index].group
+                            });
+    }
     var toShowNode = [{
                     name: '아군부대',
                     group:'ALLY',
                     id: 'ALLY',
                     children: [],
+                    parse:function(parent,arr){ unitParse(parent,arr); }
                 }, {
                     name: 'bmoa',
                     group:'BMOA',
@@ -26,14 +40,29 @@
                     group:'ENEMY',
                     id: 'ENEMY',
                     children: [],
+                },{
+                    name: '비행부대',
+                    group:'AIRCRAFT',
+                    id: 'AIRCRAFT',
+                    children: [],
+                },{
+                    name: '함선',
+                    group:'SHIP',
+                    id: 'SHIP',
+                    children: [],
                 }, ];
+
+    this.map.createCollection("ALLY", "KMilSymbol");
+    this.map.createCollection("BOMA", "KMilSymbol");
+    this.map.createCollection("ENEMY", "KMilSymbol");
+    this.map.createCollection("AIRCRAFT", "KMilSymbol");
+    this.map.createCollection("SHIP", "KMilSymbol");
+        
 
     function toshowView() {
         serverAdapter.get('Entities', {}, function(resultdata) {
                 
                 var index = 0;
-                let allyCollection = map.collection('ALLY');
-                let enemyCollection = map.collection('ENEMY');
                 var options = {};
                 for (var r in resultdata) {
                     toShowNode[index].children = resultdata[r].reduce(function(prev, curr, i) {

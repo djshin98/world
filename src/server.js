@@ -189,25 +189,37 @@ server.get('/Entities/', (req, res) => {
     console.log("Entitites");
     var param = req.query.param;
     console.log(JSON.parse(param));
-    var query1 = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
-    var query2 = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
-    var query3 = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
-
+    var queryAlly = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
+    var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
+    var queryEnemy = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
+    var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
-    connection.query(query1, function(err, result1, fields) {
-        connection.query(query2, function(err, result2, fields) {
-            connection.query(query3, function(err, result3, fields) {
-                if (!err) {
-                    res.json({ ally: result1, bmoa: result2, enemy: result3 });
-                } else {
-                    console.log('query error : ' + err);
-                    res.send(err);
-                }
-            });
-        });
+    retObj = {};
+    function completeJob(obj){
+        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft ){
+            res.json(retObj);
+        }
+    }
+    connection.query(queryAlly, function(err, result, fields) {    
+        if (!err) { retObj.ally = result;  } else { retObj.ally = []; console.log('query error : ' + err); }
+        completeJob(retObj);
     });
+    connection.query(queryBmoa, function(err, result, fields) {
+        if (!err) { retObj.bmoa = result; } else { retObj.bmoa = []; console.log('query error : ' + err); }
+        completeJob(retObj);
+    });
+    connection.query(queryEnemy, function(err, result, fields) {
+        if (!err) { retObj.enemy = result; } else { retObj.enemy = []; console.log('query error : ' + err); }
+        completeJob(retObj);
+    });
+    connection.query(queryAir, function(err, result, fields) {
+        if (!err) { retObj.aircraft = result; } else { retObj.aircraft = []; console.log('query error : ' + err); }
+        completeJob(retObj);
+    });
+
+
 });
 
 
