@@ -12,7 +12,7 @@ module.exports = {
     mode: "development",
     context: __dirname,
     entry: {
-        CesiumApp: './src/js/app/index.js',
+        MapX3D: './src/js/app/index.js',
         KMilSymbolEditor: './src/js/viewmodel/kmilsymbol.js'
     },
     output: {
