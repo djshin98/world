@@ -4,13 +4,7 @@
       <div class="ui inline">
         <div class="ui ">
             <label>편집 모드
-            <select class="dropdown" data-bind="value: mode, valueUpdate: 'select'">
-              <option value="view">View</option>
-              <option value="line">Draw Line</option>
-              <option value="polygon">Draw Polygon</option>
-              <option value="ellipse">Draw Circle</option>
-              <option value="dom">Draw Dom</option>
-              <option value="rect">Draw Rect</option>
+            <select id="draw-mode" class="dropdown" data-bind="value: mode, valueUpdate: 'select'">
             </select></label>
         </div>
       </div>
@@ -132,7 +126,15 @@
       app.draw( $(this).val() ); 
       console.log( "mode : " + $(this).val() );
     }
-      
+    
+    
+    
+  });
+
+  var select = $("#draw-mode");
+    select.append("<option value='view'>선택</option>");
+    app.drawList().forEach(row=>{
+      select.append("<option value='"+row.key+"'>"+row.name+"</option>");
   });
 
   map.connectViewModel('olive-draw', {

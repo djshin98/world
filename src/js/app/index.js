@@ -584,6 +584,9 @@ class Application {
     draw(mode) {
         this.drawModel.update(mode);
     }
+    drawList(){
+        return this.drawModel.getHandlerList();
+    }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
     }

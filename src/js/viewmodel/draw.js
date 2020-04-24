@@ -3,7 +3,19 @@ var Cesium = require('cesium/Cesium');
 var { MarkerCollection } = require('../collection/markercollection');
 var { DrawCollection,PinMarkers } = require('../collection/drawcollection');
 
+var { Circle } = require('../map3d/draw/circle');
+var { Dom } = require('../map3d/draw/dom');
+var { Line } = require('../map3d/draw/line');
+var { Polygon } = require('../map3d/draw/polygon');
+var { Radar } = require('../map3d/draw/radar');
 
+var drawLinker = {
+    circle : { name : "원" , createFunc : function(){ return new Circle(); }},
+    dom : { name : "탐지영역" , createFunc : function(){ return new Dom(); }},
+    line : { name : "선" , createFunc : function(){ return new Line(); }},
+    polygon : { name : "다각형" , createFunc : function(){ return new Polygon(); }},
+    radar : { name : "레이더" , createFunc : function(){ return new Radar(); }},
+}
 // widget 에 대한 표준을 만든다.
 
 class Draw{
@@ -91,17 +103,6 @@ class Draw{
         _this.createPoint(earthPosition);
         }
     }
-    dashPatternFromString(str,width){
-        if( str == "line"){
-            return parseInt('11111111111', 2);
-        }else if( str == "dot"){
-            return parseInt('1'.repeat(width), 2);
-        }else if( str == "long-dot"){
-            return parseInt('1'.repeat(width*2), 2);
-        }else if( str == "dot-dot-line"){
-            return parseInt('1'.repeat(width) + '0'.repeat(width), 2);
-        }
-    }
     update( viewModel ){
         this.viewModel = Object.assign(this.viewModel, viewModel );
         if( this.viewModel.lineColor && typeof(this.viewModel.lineColor) == "string"){
@@ -135,130 +136,31 @@ class Draw{
         }else{
             this.init();
             this.terminateShape();
+
+            this.activeDrawHandler = this.getHandler(this.viewModel.mode);
         }        
     }
-
-    createPoint(worldPosition) {
-        let pin = PinMarkers.start;
-        if (this.viewModel.mode === 'ellipse') {
-            pin = PinMarkers.center;
-            if( this.activeShapePoints.length > 0 ){
-                pin = PinMarkers.end;
-            }
-        }else{
-            if( this.activeShapePoints.length > 0 ){
-                pin = PinMarkers.via;
-            }
+    getHandler(name){
+        if( Cesium.defined(drawLinker[name]) ){
+            return drawLinker[name].createFunc();
         }
-        
-        var point = this.markerCollection.add( CTX.c2d(worldPosition),pin);
-        /*
-        var point = this.viewer.entities.add({
-            position : worldPosition,
-            point : {
-                color : _this.viewModel.shapeColor,
-                pixelSize : _this.viewModel.shapeSize,
-                heightReference: Cesium.HeightReference.NONE
-            }
+    }
+    getHandlerList(){
+        return Object.keys(drawLinker).map(name=>{
+            return { key:name, name:drawLinker[name].name };
         });
-        return point;
-        */
+    }
+    createPoint(worldPosition) {
+        if( Cesium.defined(this.activeDrawHandler) ){
+            let pin = this.activeDrawHandler.pin(this.activeShapePoints.length);
+            var point = this.markerCollection.add( CTX.c2d(worldPosition),pin);
+        }
     }
     
     drawShape(positionData) {
-        var shape;
-        if(this.viewModel.mode === 'line') {
-            let _this = this;
-            let option = {
-                positions : positionData,
-                clampToGround : true,
-                color : _this.viewModel.lineColor,
-                width : _this.viewModel.lineWidth
-            };
-            if( this.viewModel.lineStyle != "line"){
-                option.material = new Cesium.PolylineDashMaterialProperty({
-                    color : _this.viewModel.lineColor,
-                    dashPattern: _this.dashPatternFromString(_this.viewModel.lineStyle,_this.viewModel.lineWidth)
-                });
-            }
-            shape = this.drawCollection.add(this.index,{
-                polyline : option
-            });
-
-        }else if (this.viewModel.mode === 'polygon') {
-            shape = this.drawCollection.add(this.index,{
-                polygon: {
-                    hierarchy: positionData,
-                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
-                }
-            });
-        }else if (this.viewModel.mode === 'ellipse') {
-            if( positionData && positionData.length > 1 ){
-                var distance = Cesium.Cartesian3.distance(positionData[0], positionData[positionData.length-1]);
-                if( distance > 0 ){
-                    shape = this.drawCollection.add(this.index,{
-                        position: positionData[0],
-                        ellipse: {
-                            semiMinorAxis : distance,
-                            semiMajorAxis : distance,
-                            //hierarchy: positionData,
-                            fill:true,
-                            outline:true,
-                            outlineColor:this.viewModel.lineColor,
-                            outlineWidth:this.viewModel.lineWidth,
-                            material: new Cesium.ColorMaterialProperty(this.viewModel.faceColor),
-                            extrudedHeight:100,
-                            heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
-                        }
-                    });
-                }
-            }
-        }else if (this.viewModel.mode === 'dom') {
-            if( positionData && positionData.length > 1 ){
-                var distance = Cesium.Cartesian3.distance(positionData[0], positionData[positionData.length-1]);
-                if( distance > 0 ){
-                    shape = this.drawCollection.add(this.index,{
-                        position: positionData[0],
-                        ellipsoid: {
-                            radii: new Cesium.Cartesian3(distance,distance,distance),
-                            innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
-                            /*
-                            innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
-                            minimumClock: 0,
-                            maximumClock: 2*Cesium.Math.PI/2,
-                            minimumCone:0,
-                            maximumCone:Cesium.Math.PI/2,
-                            heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND,
-                            outline:true,
-                            outlineColor:this.viewModel.lineColor,
-                            stackPartitions:64,
-                            slicePartitions:64,
-                            subdivisions:128,
-                            */
-                            stackPartitions:64,
-                            slicePartitions:64,
-                            subdivisions:64,
-                            minimumCone:Cesium.Math.PI/4,
-                            maximumCone:Cesium.Math.PI/2.5,
-                            minimumClock: (2*Cesium.Math.PI)*0.125,
-                            maximumClock: (2*Cesium.Math.PI)*0.375,
-                            outline:true,
-                            outlineColor:this.viewModel.lineColor,
-                            material: this.viewModel.faceColor,
-                            heightReference:Cesium.HeightReference.NONE 
-                        }
-                    });
-                }
-            }
-        }else if (this.viewModel.mode === 'rought') {
-            shape = this.drawCollection.add(this.index,{
-                polygon: {
-                    hierarchy: positionData,
-                    material: new Cesium.ColorMaterialProperty(Cesium.Color.WHITE.withAlpha(0.7))
-                }
-            });
+        if( Cesium.defined(this.activeDrawHandler) ){
+            return this.activeDrawHandler.create(this.drawCollection,positionData,this.viewModel);
         }
-        return shape;
     }
 
     terminateShape() {
