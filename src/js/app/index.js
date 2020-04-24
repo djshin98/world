@@ -733,9 +733,7 @@ class Application {
                     }
                 });
             }
-
         }
-        
     }
     popupTarget(tid){
         if( targetRefs && targetRefs.data ){
