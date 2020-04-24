@@ -1,5 +1,5 @@
 var { DrawObject } = require('./drawobject');
-class Line extends DrawObject{
+class ArrowLine extends DrawObject{
     constructor(){
         super(2);
     }
@@ -17,7 +17,7 @@ class Line extends DrawObject{
                     dashPattern: this.dashPatternFromString(viewModel.lineStyle,viewModel.lineWidth)
                 });
             }else{
-                option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
+                option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
             }
             return collection.add(this.index,{
                 polyline : option
@@ -25,4 +25,4 @@ class Line extends DrawObject{
         }
     }
 }
-module.exports = { Line:Line };
+module.exports = { ArrowLine:ArrowLine };

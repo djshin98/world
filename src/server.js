@@ -193,6 +193,7 @@ server.get('/Entities/', (req, res) => {
     var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
     var queryEnemy = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
     var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
+    var queryShip = mybatisMapper.getStatement('testMapper', 'ship', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
     //동시에 실행시키는 방법 생각해보자...
@@ -218,14 +219,11 @@ server.get('/Entities/', (req, res) => {
         if (!err) { retObj.aircraft = result; } else { retObj.aircraft = []; console.log('query error : ' + err); }
         completeJob(retObj);
     });
-    connection.query(queryAir, function(err, result, fields) {
+    connection.query(queryShip, function(err, result, fields) {
         if (!err) { retObj.ship = result; } else { retObj.ship = []; console.log('query error : ' + err); }
         completeJob(retObj);
     });
-
-
 });
-
 
 //------------------------------- presentation 에 필요한 쿼리 -------------------------------------
 server.get('/allyPre/', (req, res) => {

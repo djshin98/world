@@ -9,6 +9,9 @@ var { Line } = require('../draw/line');
 var { Polygon } = require('../draw/polygon');
 var { Radar } = require('../draw/radar');
 var { Box } = require('../draw/box');
+var { Bmoa } = require('../draw/bmoa');
+var { ArrowLine } = require('../draw/arrowline');
+var { MilLine1 } = require('../draw/milline1');
 
 var drawLinker = {
     circle : { name : "원" , createFunc : function(){ return new Circle(); }},
@@ -17,6 +20,9 @@ var drawLinker = {
     polygon : { name : "다각형" , createFunc : function(){ return new Polygon(); }},
     radar : { name : "레이더" , createFunc : function(){ return new Radar(); }},
     box : { name : "공역박스" , createFunc : function(){ return new Box(); }},
+    bmoa : { name : "BMOA" , createFunc : function(){ return new Bmoa(); }},
+    arrowline : { name : "화살표" , createFunc : function(){ return new ArrowLine(); }},
+    milline1 : { name : "군사분계선" , createFunc : function(){ return new MilLine1(); }},
 }
 // widget 에 대한 표준을 만든다.
 

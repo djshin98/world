@@ -17,7 +17,7 @@
     SELECT * 
       FROM t_waa_aircraft
   </select>
-  <select id="aircraft">
+  <select id="ship">
       SELECT * 
         FROM t_waa_ship
   </select>

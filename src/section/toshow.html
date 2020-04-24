@@ -46,6 +46,19 @@
             });
         });
     }
+    function aircraftParse(parent,arr){
+        !arr || arr.forEach((row,i)=>{
+            parent.children.push({
+                id: row.air_id,
+                name: row.air_name,
+                unit : row.unit_id,
+                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                sic: row.unit_sbl_cd,
+                area: row.air_area_id,
+                group: parent.group
+            });
+        });
+    }
     var toShowNode = [{
                     name: '아군부대',
                     group:'ally',
@@ -73,7 +86,7 @@
                     collection:"KMilSymbol",
                     id: 'AIRCRAFT',
                     children: [],
-                    parse:(parent,arr)=>{ shipParse(parent,arr); }
+                    parse:(parent,arr)=>{ aircraftParse(parent,arr); }
                 },{
                     name: '함선',
                     group:'ship',
@@ -90,6 +103,7 @@
                 if( data[g.group] && g.parse ){
                     g.parse(g,data[g.group]);
                 }
+                console.dir(g);
             });  
             new OliveTree('#toshow-view', toShowNode, {
                 onAttribute: function(d) {
@@ -129,7 +143,7 @@
                                 addCollection.removeAll();
                                 if (checked) {
                                     var viewdata = toShowNode.find(function(d) {
-                                        return (d.id === group) ? true : false;
+                                        return (d.group === group) ? true : false;
                                     });
                                     
                                     addCollection.terrianFromDegrees(viewdata.children,function(d){

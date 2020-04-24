@@ -1,5 +1,5 @@
 var { DrawObject } = require('./drawobject');
-class Line extends DrawObject{
+class MilLine1 extends DrawObject{
     constructor(){
         super(2);
     }
@@ -8,21 +8,28 @@ class Line extends DrawObject{
             let option = {
                 positions : points,
                 clampToGround : true,
-                color : viewModel.lineColor,
-                width : viewModel.lineWidth
+                color : viewModel.faceColor,
+                width : viewModel.lineWidth,
+                fill : true,
+                outline : true,
+                outlineWidth : 3,
+                outlineColor : viewModel.lineColor,
+                cornerType: Cesium.CornerType.ROUNDED,
+                classificationType : Cesium.ClassificationType.TERRAIN
             };
+
             if( viewModel.lineStyle != "line"){
                 option.material = new Cesium.PolylineDashMaterialProperty({
-                    color : viewModel.lineColor,
+                    color : viewModel.faceColor,
                     dashPattern: this.dashPatternFromString(viewModel.lineStyle,viewModel.lineWidth)
                 });
             }else{
-                option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
+                option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
             }
             return collection.add(this.index,{
-                polyline : option
+                corridor : option
             });
         }
     }
 }
-module.exports = { Line:Line };
+module.exports = { MilLine1:MilLine1 };
