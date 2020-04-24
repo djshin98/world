@@ -20,6 +20,9 @@
       <div class="ui inline">
         <div class="label">선 투명도</div><input style="width: 75px" type="range" min="1.0" max="100.0" step="1.0" data-bind="value: lineTransparent, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: lineTransparent">1</span>%
       </div>  
+      <div class="ui inline">
+        <div class="label">크기</div><input style="width: 75px" type="range" min="1.0" max="1000.0" step="1.0" data-bind="value: size, valueUpdate: 'input', enable: enableStyle"> <span data-bind="text: size">1</span>m
+      </div>
     </div>
 
     <div class="demo-container">
@@ -144,6 +147,7 @@
         lineColor: "#ffffff",
         lineTransparent: 1,
         lineStyle:'line',
+        size:10,
         faceColor: "#ffffff",
         faceTransparent: 1,
         frameEnable:false,
@@ -159,7 +163,7 @@
       }
       if( Cesium.defined(app) ){ 
         console.log("viewmodel olive-draw " + app);
-        app.draw( viewModel ); 
+        app.draw( viewModel );
       }
       viewer.scene.requestRender();
   }); 

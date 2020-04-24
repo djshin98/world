@@ -1,4 +1,5 @@
 var fs = require("fs");
+const path = require('path');
 
 const extNames = [".png",".jpg",".jpeg",".gif"];
 const extTypes = ["data:image/png;base64,",
@@ -20,4 +21,23 @@ function base64_encode(file){
     }
 };
 
-module.exports = {base64_encode:base64_encode}
+function dir(directoryPath,callback){
+    fs.readdir(directoryPath, function (err, files) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        if( callback ){
+            callback(files.filter(function (file) {
+                let iext = file.lastIndexOf(".");
+                if( iext > 0 && extNames.includes(file.substr(iext)) ){
+                    return true;
+                }
+                return false; 
+            }));
+        }
+    });
+};
+
+module.exports = {base64_encode:base64_encode,dir:dir};

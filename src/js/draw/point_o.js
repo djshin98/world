@@ -1,30 +1,30 @@
 var { DrawObject } = require('./drawobject');
-class ShootingLine extends DrawObject{
+class PointO extends DrawObject{
     constructor(){
-        super(3);
+        super(1);
     }
     create(collection,points,viewModel){
         if( points && points.length && points.length >= this.minPointCount ){
-            var distance = Cesium.Cartesian3.distance(points[0], points[points.length-1]);
-            if( distance > 0 ){
-                return collection.add(this.index,{
-                    position: points[0],
+            
+            let distance = viewModel.size;
+            points.forEach(point=>{
+                collection.add(this.index,{
+                    position: point,
                     ellipse: {
                         semiMinorAxis : distance,
                         semiMajorAxis : distance,
-                        //hierarchy: positionData,
-                        rotation: (2*Cesium.Math.PI)*0.125,
-                        stRotation: (2*Cesium.Math.PI)*0.375,
                         fill:true,
+                        material: 'Assets/Textures/maki/cross.png', //new Cesium.ImageMaterialProperty({image:'Assets/Textures/maki/'}), //viewModel.faceColor, //new Cesium.ColorMaterialProperty(viewModel.faceColor),
                         outline:true,
                         outlineColor:viewModel.lineColor,
                         outlineWidth:viewModel.lineWidth,
-                        material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
+                        
                         heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
                     }
                 });
-            }
+            });
+            
         }
     }
 }
-module.exports = { ShootingLine:ShootingLine };
+module.exports = { PointO:PointO };

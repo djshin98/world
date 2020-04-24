@@ -14,6 +14,9 @@ var { ArrowLine } = require('../draw/arrowline');
 var { MilLine1 } = require('../draw/milline1');
 var { ShootingLine } = require('../draw/shootingline');
 var { Rectangle } = require('../draw/rectangle');
+var { PointO } = require('../draw/point_o');
+var { PointX } = require('../draw/point_x');
+
 ShootingLine
 var drawLinker = {
     circle : { name : "원" , createFunc : function(){ return new Circle(); }},
@@ -27,6 +30,8 @@ var drawLinker = {
     arrowline : { name : "화살표" , createFunc : function(){ return new ArrowLine(); }},
     milline1 : { name : "군사분계선" , createFunc : function(){ return new MilLine1(); }},
     shootingline : { name : "사격선" , createFunc : function(){ return new ShootingLine(); }},
+    o : { name : "O" , createFunc : function(){ return new PointO(); }},
+    x : { name : "X" , createFunc : function(){ return new PointX(); }},
 }
 // widget 에 대한 표준을 만든다.
 
@@ -97,25 +102,27 @@ class Draw{
     appendPoint(event){
         let _this = this;
         var earthPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :  
-                _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+            _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
 
         if (Cesium.defined(earthPosition)) {
-        if (_this.activeShapePoints.length === 0) {
-            _this.floatingPoint = _this.createPoint(earthPosition);
+            if (_this.activeShapePoints.length === 0) {
+                _this.floatingPoint = _this.createPoint(earthPosition);
+                _this.activeShapePoints.push(earthPosition);
+                var dynamicPositions = new Cesium.CallbackProperty(function () {
+                    if (_this.viewModel.mode === 'polygon') {
+                        return new Cesium.PolygonHierarchy(_this.activeShapePoints);
+                    }
+                    return _this.activeShapePoints;
+                }, false);
+                _this.activeShape = _this.drawShape(dynamicPositions);
+            }
             _this.activeShapePoints.push(earthPosition);
-            var dynamicPositions = new Cesium.CallbackProperty(function () {
-                if (_this.viewModel.mode === 'polygon') {
-                    return new Cesium.PolygonHierarchy(_this.activeShapePoints);
-                }
-                return _this.activeShapePoints;
-            }, false);
-            _this.activeShape = _this.drawShape(dynamicPositions);
-        }
-        _this.activeShapePoints.push(earthPosition);
-        _this.createPoint(earthPosition);
+            _this.createPoint(earthPosition);
         }
     }
     update( viewModel ){
+        var currentMode = this.viewModel.mode;
+
         this.viewModel = Object.assign(this.viewModel, viewModel );
         if( this.viewModel.lineColor && typeof(this.viewModel.lineColor) == "string"){
             this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor);
@@ -136,6 +143,12 @@ class Draw{
             this.viewModel.lineTransparent = parseFloat(this.viewModel.lineTransparent) / 100;
         }
 
+        if( typeof(this.viewModel.size) == "string" ){
+            this.viewModel.size = parseInt(this.viewModel.size);
+        }
+        if( typeof(this.viewModel.shapeSize) == "string" ){
+            this.viewModel.shapeSize = parseInt(this.viewModel.shapeSize);
+        }
         this.viewModel.lineColor = this.viewModel.lineColor.withAlpha(this.viewModel.lineTransparent);
         this.viewModel.faceColor = this.viewModel.faceColor.withAlpha(this.viewModel.faceTransparent);
         //this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
@@ -145,7 +158,7 @@ class Draw{
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
-        }else{
+        }else if(currentMode != this.viewModel.mode ){
             this.init();
             this.terminateShape();
 
@@ -165,10 +178,9 @@ class Draw{
     createPoint(worldPosition) {
         if( Cesium.defined(this.activeDrawHandler) ){
             let pin = this.activeDrawHandler.pin(this.activeShapePoints.length);
-            var point = this.markerCollection.add( CTX.c2d(worldPosition),pin);
+            return this.markerCollection.add( CTX.c2d(worldPosition),pin);
         }
     }
-    
     drawShape(positionData) {
         if( Cesium.defined(this.activeDrawHandler) ){
             return this.activeDrawHandler.create(this.drawCollection,positionData,this.viewModel);

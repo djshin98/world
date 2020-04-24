@@ -274,19 +274,28 @@ class MilMap {
 
     connectViewModel(id, viewModel, updateCallback) {
 
-        Cesium.knockout.track(viewModel);
-        Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
-        var _viewModel = viewModel;
         var _this = this;
 
-        for (var name in viewModel) {
-            if (viewModel.hasOwnProperty(name)) {
-                Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
-                    updateCallback(_this.viewer3d, _viewModel, newValue);
-                });
+        this.db.get("viewmodel",id,function (result) {
+            if (result && result.value) {
+                viewModel = Object.assign(viewModel,result.value);
             }
-        }
-        updateCallback(this.viewer3d, viewModel);
+            Cesium.knockout.track(viewModel);
+            Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
+            var _viewModel = viewModel;
+        
+            for (var name in viewModel) {
+                if (viewModel.hasOwnProperty(name)) {
+                    Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
+                        updateCallback(_this.viewer3d, _viewModel, newValue);
+                        _this.db.set("viewmodel",id,_viewModel);
+                    });
+                }
+            }
+            updateCallback(_this.viewer3d, viewModel);
+        });
+        
+        
     }
     widget(name, bshow) {
 
