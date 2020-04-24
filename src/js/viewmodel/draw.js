@@ -172,6 +172,7 @@ class Draw{
         this.activeShape = undefined;
         this.activeShapePoints = [];
         this.index++;
+        this.markerCollection.removeAll();
     }
 
 }
