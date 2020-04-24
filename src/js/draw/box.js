@@ -10,16 +10,13 @@ class Box extends DrawObject{
                 return collection.add(this.index,{
                     position: points[0],
                     box: {
-                        semiMinorAxis : distance,
-                        semiMajorAxis : distance,
-                        //hierarchy: positionData,
+                        dimensions : new Cesium.ConstantProperty(new Cesium.Cartesian3(1500, 1500, 1500)),
                         fill:true,
                         outline:true,
                         outlineColor:viewModel.lineColor,
                         outlineWidth:viewModel.lineWidth, 
                         material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
-                        extrudedHeight:100,
-                        heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                        heightReference:Cesium.HeightReference.NONE 
                     }
                 });
             }
