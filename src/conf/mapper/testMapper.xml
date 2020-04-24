@@ -16,5 +16,9 @@
   <select id="aircraft">
     SELECT * 
       FROM t_waa_aircraft
-</select>
+  </select>
+  <select id="aircraft">
+      SELECT * 
+        FROM t_waa_ship
+  </select>
 </mapper>

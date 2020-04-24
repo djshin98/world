@@ -12,99 +12,97 @@
 <script>
     
     function unitParse(parent,arr){
-        !arr || arr.
-        prev.push({
-            id: parent.group + "_" + (i+1),
-                                name: curr.unit_name,
-                                degree : {
-                                    longitude: curr.geocd_lngt,
-                                    latitude: curr.geocd_ltd
-                                },
-                                sic: curr.unit_sbl_cd,
-                                group: toShowNode[index].group
-                            });
+        !arr || arr.forEach((row,i)=>{
+            parent.children.push({
+                id: parent.group + "_" + (i+1),
+                name: row.unit_name,
+                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                sic: row.unit_sbl_cd,
+                group: parent.group
+            });
+        });
+    }
+    function bmoaParse(parent,arr){
+        !arr || arr.forEach((row,i)=>{
+            parent.children.push({
+                id: row.bmoa_id,
+                name: row.bmoa_id,
+                rad : row.bmoa_rads,
+                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                sic: row.unit_sbl_cd,
+                group: parent.group
+            });
+        });
+    }
+    function shipParse(parent,arr){
+        !arr || arr.forEach((row,i)=>{
+            parent.children.push({
+                id: row.ship_id,
+                name: row.ship_name,
+                unit : row.unit_id,
+                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                sic: row.unit_sbl_cd,
+                group: parent.group
+            });
+        });
     }
     var toShowNode = [{
                     name: '아군부대',
-                    group:'ALLY',
+                    group:'ally',
+                    collection:"KMilSymbol",
                     id: 'ALLY',
                     children: [],
-                    parse:function(parent,arr){ unitParse(parent,arr); }
+                    parse:(parent,arr)=>{ unitParse(parent,arr); }
                 }, {
-                    name: 'bmoa',
-                    group:'BMOA',
+                    name: '탄도미사일작전구역',
+                    group:'bmoa',
+                    collection:"Draw",
                     id: 'BMOA',
                     children: [],
+                    parse:(parent,arr)=>{ bmoaParse(parent,arr); }
                 }, {
                     name: '적부대',
-                    group:'ENEMY',
+                    group:'enemy',
+                    collection:"KMilSymbol",
                     id: 'ENEMY',
                     children: [],
+                    parse:(parent,arr)=>{ unitParse(parent,arr); }
                 },{
                     name: '비행부대',
-                    group:'AIRCRAFT',
+                    group:'aircraft',
+                    collection:"KMilSymbol",
                     id: 'AIRCRAFT',
                     children: [],
+                    parse:(parent,arr)=>{ shipParse(parent,arr); }
                 },{
                     name: '함선',
-                    group:'SHIP',
+                    group:'ship',
+                    collection:"KMilSymbol",
                     id: 'SHIP',
                     children: [],
+                    parse:(parent,arr)=>{ shipParse(parent,arr); }
                 }, ];
 
-    this.map.createCollection("ALLY", "KMilSymbol");
-    this.map.createCollection("BOMA", "KMilSymbol");
-    this.map.createCollection("ENEMY", "KMilSymbol");
-    this.map.createCollection("AIRCRAFT", "KMilSymbol");
-    this.map.createCollection("SHIP", "KMilSymbol");
-        
-
     function toshowView() {
-        serverAdapter.get('Entities', {}, function(resultdata) {
-                
-                var index = 0;
-                var options = {};
-                for (var r in resultdata) {
-                    toShowNode[index].children = resultdata[r].reduce(function(prev, curr, i) {
-                        if (curr.hasOwnProperty('unit_name')) {
-                            prev.push({
-                                id: toShowNode[index].group + "_" + (i+1),
-                                name: curr.unit_name,
-                                degree : {
-                                    longitude: curr.geocd_lngt,
-                                    latitude: curr.geocd_ltd
-                                },
-                                sic: curr.unit_sbl_cd,
-                                group: toShowNode[index].group
-                            });
-                        } else {
-                            prev.push({
-                                name: curr.bmoa_id,
-                                rad : curr.bmoa_rads,
-                                degree : {
-                                    longitude: curr.geocd_lngt,
-                                    latitude: curr.geocd_ltd
-                                },
-                                sic: curr.unit_sbl_cd,
-                                group: toShowNode[index].group
-                            });
-                        }
-                        return prev;
-                    }, []);
-                    index++;
+        serverAdapter.get('Entities', {}, function(data) {
+            toShowNode.forEach((g)=>{
+                if( !map.collection(g.group) ){map.createCollection(g.group, g.collection);}
+                if( data[g.group] && g.parse ){
+                    g.parse(g,data[g.group]);
                 }
-                new OliveTree('#toshow-view', toShowNode, {
-                    onAttribute: function(d) {
-                        return {
+            });  
+            new OliveTree('#toshow-view', toShowNode, {
+                onAttribute: function(d) {
+                    return {
                             id: d.id,
                             name:d.name,
                             group : d.group
-                        };
-                    },
-                    onText: function(d) {
-                        return d.name;
-                    },
-                    onSelect:function(type, tag, obj) {
+                    };
+                },
+                onText: function(d) {
+                    return d.name;
+                },
+                onSelect:function(type, tag, obj) {
                         if (type == "file") {
                             var __this = obj;
                             let id = $(tag).data("id");
@@ -119,13 +117,12 @@
                         }else if( type == "folder"){
 
                         }
-                        
-                    },
-                    onChecked:function(checked,type,tag,obj){
-                        
-                        let group = $(tag).data('group');
-                        if (group === "BMOA") {
+                },
+                onChecked:function(checked,type,tag,obj){
+                    let group = $(tag).data('group');
+                        if (group === "bmoa") {
                             console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
+                            let addCollection = map.collection(group);
                         } else {
                             let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){
@@ -153,10 +150,11 @@
                                     */
                                 }   
                             }
-                        }
+                        }    
                         
-                    }
-                });
-            });
+                        
+                }
+            });    
+        });
     }
 </script>

@@ -198,7 +198,7 @@ server.get('/Entities/', (req, res) => {
     //동시에 실행시키는 방법 생각해보자...
     retObj = {};
     function completeJob(obj){
-        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft ){
+        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship ){
             res.json(retObj);
         }
     }
@@ -216,6 +216,10 @@ server.get('/Entities/', (req, res) => {
     });
     connection.query(queryAir, function(err, result, fields) {
         if (!err) { retObj.aircraft = result; } else { retObj.aircraft = []; console.log('query error : ' + err); }
+        completeJob(retObj);
+    });
+    connection.query(queryAir, function(err, result, fields) {
+        if (!err) { retObj.ship = result; } else { retObj.ship = []; console.log('query error : ' + err); }
         completeJob(retObj);
     });
 
