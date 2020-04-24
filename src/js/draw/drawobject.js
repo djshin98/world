@@ -1,4 +1,4 @@
-var { PinMarkers } = require('../../collection/drawcollection');
+var { PinMarkers } = require('../collection/drawcollection');
 var drawIndex = 1;
 class DrawObject{
     constructor(minPointCount){

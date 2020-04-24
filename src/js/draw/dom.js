@@ -11,21 +11,6 @@ class Dom extends DrawObject{
                     position: points[0],
                     ellipsoid: {
                         radii: new Cesium.Cartesian3(distance,distance,distance),
-                        //innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
-                        /*
-                        innerRadii: new Cesium.Cartesian3(distance/2,distance/2,distance/2),
-                        minimumClock: 0,
-                        maximumClock: 2*Cesium.Math.PI/2,
-                        minimumCone:0,
-                        maximumCone:Cesium.Math.PI/2,
-                        heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND,
-                        outline:true,
-                        outlineColor:viewModel.lineColor,
-                        stackPartitions:64,
-                        slicePartitions:64,
-                        subdivisions:128,
-                        */
-                        
                         outline:true,
                         outlineColor:viewModel.lineColor,
                         material: viewModel.faceColor,

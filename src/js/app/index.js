@@ -705,6 +705,7 @@ class Application {
         let col = this.map.collection("EXTRA");
         if( col ){
             if( rad > 0 ){
+                /*
                 col.add(1,{
                     position: CTX.d2c(CTX.degree(lon,lat,0)),
                     ellipse: {
@@ -718,6 +719,17 @@ class Application {
                         material: new Cesium.ColorMaterialProperty(color),
                         extrudedHeight:100,
                         heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                    }
+                });*/
+                let distance = rad;
+                col.add(1,{
+                    position: CTX.d2c(CTX.degree(lon,lat,0)),
+                    ellipsoid: {
+                        radii: new Cesium.Cartesian3(distance,distance,distance),
+                        outline:true,
+                        outlineColor:Cesium.Color.WHITE,
+                        material: new Cesium.ColorMaterialProperty(color),
+                        heightReference:Cesium.HeightReference.NONE 
                     }
                 });
             }
