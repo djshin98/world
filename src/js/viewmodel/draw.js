@@ -3,11 +3,12 @@ var Cesium = require('cesium/Cesium');
 var { MarkerCollection } = require('../collection/markercollection');
 var { DrawCollection,PinMarkers } = require('../collection/drawcollection');
 
-var { Circle } = require('../map3d/draw/circle');
-var { Dom } = require('../map3d/draw/dom');
-var { Line } = require('../map3d/draw/line');
-var { Polygon } = require('../map3d/draw/polygon');
-var { Radar } = require('../map3d/draw/radar');
+var { Circle } = require('../draw/circle');
+var { Dom } = require('../draw/dom');
+var { Line } = require('../draw/line');
+var { Polygon } = require('../draw/polygon');
+var { Radar } = require('../draw/radar');
+var { Box } = require('../draw/box');
 
 var drawLinker = {
     circle : { name : "원" , createFunc : function(){ return new Circle(); }},
@@ -15,6 +16,7 @@ var drawLinker = {
     line : { name : "선" , createFunc : function(){ return new Line(); }},
     polygon : { name : "다각형" , createFunc : function(){ return new Polygon(); }},
     radar : { name : "레이더" , createFunc : function(){ return new Radar(); }},
+    box : { name : "공역박스" , createFunc : function(){ return new Box(); }},
 }
 // widget 에 대한 표준을 만든다.
 

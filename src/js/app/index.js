@@ -48,6 +48,7 @@ function makeTable(data){
 
 var targetRefs;
 var targetExtras;
+var targetAirCollision;
 class Application {
     constructor(options) {
         this.workStatus("section", false);
@@ -519,6 +520,15 @@ class Application {
                                         });
                                     }
                                     
+                                }else if( type == 3 ){
+                                    targetAirCollision = jsonMessage;
+                                   
+                                    if( targetAirCollision && targetAirCollision.data ){
+                                        targetAirCollision.data.forEach(row=>{
+                                            //_this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
+                                        });
+                                    }
+                                    
                                 }else{
                                     let dlgkey = "waa" + type;
                                     if( !Cesium.defined(_this.dialog[dlgkey]) ){
@@ -705,6 +715,7 @@ class Application {
         let col = this.map.collection("EXTRA");
         if( col ){
             if( rad > 0 ){
+                /*
                 col.add(1,{
                     position: CTX.d2c(CTX.degree(lon,lat,0)),
                     ellipse: {
@@ -719,11 +730,20 @@ class Application {
                         extrudedHeight:100,
                         heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
                     }
+                });*/
+                let distance = rad;
+                col.add(1,{
+                    position: CTX.d2c(CTX.degree(lon,lat,0)),
+                    ellipsoid: {
+                        radii: new Cesium.Cartesian3(distance,distance,distance),
+                        outline:true,
+                        outlineColor:Cesium.Color.WHITE,
+                        material: new Cesium.ColorMaterialProperty(color),
+                        heightReference:Cesium.HeightReference.NONE 
+                    }
                 });
             }
-
         }
-        
     }
     popupTarget(tid){
         if( targetRefs && targetRefs.data ){
