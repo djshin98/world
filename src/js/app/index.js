@@ -48,6 +48,7 @@ function makeTable(data){
 
 var targetRefs;
 var targetExtras;
+var targetAirCollision;
 class Application {
     constructor(options) {
         this.workStatus("section", false);
@@ -516,6 +517,15 @@ class Application {
                                         targetExtras.data.sort((a,b)=>{ return b.rad - a.rad; });
                                         targetExtras.data.forEach(row=>{
                                             _this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
+                                        });
+                                    }
+                                    
+                                }else if( type == 3 ){
+                                    targetAirCollision = jsonMessage;
+                                   
+                                    if( targetAirCollision && targetAirCollision.data ){
+                                        targetAirCollision.data.forEach(row=>{
+                                            //_this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
                                         });
                                     }
                                     
