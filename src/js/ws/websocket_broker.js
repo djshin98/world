@@ -1,5 +1,3 @@
-//const WebSocket = require('ws');
-
 const BROKER_INNER_TOPIC = "__websocket_broker__";
 class WebSocketBroker{
     constructor(options){
@@ -9,6 +7,9 @@ class WebSocketBroker{
         let _this = this;
         this.ws.onopen = function open() {
             _this.send(BROKER_INNER_TOPIC,"open");
+            console.log('-------------------------------------------------------------------------' );
+            console.log('|                 WebSocketBroker( version 1.1.2)                       |' );
+            console.log('-------------------------------------------------------------------------' );
         };
 
         this.ws.onclose = function close() {

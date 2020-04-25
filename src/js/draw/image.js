@@ -1,7 +1,10 @@
 var { DrawObject } = require('./drawobject');
-class PointO extends DrawObject{
+class Image extends DrawObject{
     constructor(){
         super(1);
+    }
+    pin(drawLength){
+        return {name:'image',type:'image',url: "img/maki/marker.png",color:Cesium.Color.NAVY,size:48};
     }
     create(collection,points,viewModel){
         if( points && points.length && points.length >= this.minPointCount ){
@@ -14,7 +17,7 @@ class PointO extends DrawObject{
                         semiMinorAxis : distance,
                         semiMajorAxis : distance,
                         fill:true,
-                        material: viewModel.faceColor,
+                        material: viewModel.image,
                         outline:true,
                         outlineColor:viewModel.lineColor,
                         outlineWidth:viewModel.lineWidth,
@@ -27,4 +30,4 @@ class PointO extends DrawObject{
         }
     }
 }
-module.exports = { PointO:PointO };
+module.exports = { Image:Image };

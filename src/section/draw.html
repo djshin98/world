@@ -8,6 +8,13 @@
             </select></label>
         </div>
       </div>
+      <div class="ui inline">
+        <div class="ui ">
+            <label>이미지
+            <select id="draw-image" class="dropdown" data-bind="value: image, valueUpdate: 'select'">
+            </select></label>
+        </div>
+      </div>
       <div>
           <input style="display:none;" type="checkbox" data-bind="checked: enableStyle" />
       </div>
@@ -139,7 +146,12 @@
     app.drawList().forEach(row=>{
       select.append("<option value='"+row.key+"'>"+row.name+"</option>");
   });
-
+  serverAdapter.get('images', {url:'img/maki'}, function(data) {
+    let selectImg = $("#draw-image");
+    data.result.forEach(row=>{
+      selectImg.append("<option value='img/maki/"+row+"'>"+row+"</option>");
+    });
+  });
   map.connectViewModel('olive-draw', {
         mode: 'view',
         enableStyle:false,
@@ -154,7 +166,8 @@
         frameColor: "#ffffff",
         shapeStyle: 'point',
         shapeColor: "#ffffff",
-        shapeSize: 5
+        shapeSize: 5,
+        image:''
     }, function(viewer, viewModel) {
       if( viewModel.mode == 'view' ){
         viewModel.enableStyle = false;

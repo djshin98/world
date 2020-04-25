@@ -7,6 +7,7 @@ class Circle extends DrawObject{
         if( points && points.length && points.length >= this.minPointCount ){
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length-1]);
             if( distance > 0 ){
+                
                 return collection.add(this.index,{
                     position: points[0],
                     ellipse: {
