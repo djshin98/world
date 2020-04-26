@@ -4,6 +4,7 @@ var { MarkerCollection } = require('../collection/markercollection');
 var { DrawCollection,PinMarkers } = require('../collection/drawcollection');
 
 var { Circle } = require('../draw/circle');
+var { AirCircle } = require('../draw/aircircle');
 var { Dom } = require('../draw/dom');
 var { Line } = require('../draw/line');
 var { Polygon } = require('../draw/polygon');
@@ -27,6 +28,7 @@ var drawLinker = {
     radar : { name : "레이더" , createFunc : function(){ return new Radar(); }},
     box : { name : "공역박스" , createFunc : function(){ return new Box(); }},
     aa_rect : { name : "공역박스2" , createFunc : function(){ return new Rectangle(); }},
+    aa_circle : { name : "공역원" , createFunc : function(){ return new AirCircle(); }},
     bmoa : { name : "BMOA" , createFunc : function(){ return new Bmoa(); }},
     arrowline : { name : "화살표" , createFunc : function(){ return new ArrowLine(); }},
     milline1 : { name : "군사분계선" , createFunc : function(){ return new MilLine1(); }},
@@ -156,6 +158,10 @@ class Draw{
         //this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
         //this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
         
+        if( typeof(this.viewModel.lineWidth) == "string" ){
+            this.viewModel.lineWidth = parseInt(this.viewModel.lineWidth);
+        }
+
         if( this.viewModel.mode == "view" ){
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -167,6 +173,7 @@ class Draw{
             this.activeDrawHandler = this.getHandler(this.viewModel.mode);
         }        
     }
+
     getHandler(name){
         if( Cesium.defined(drawLinker[name]) ){
             return drawLinker[name].createFunc();

@@ -135,8 +135,21 @@
                 onChecked:function(checked,type,tag,obj){
                     let group = $(tag).data('group');
                         if (group === "bmoa") {
-                            console.log("지도에 뿌릴 데이터가 정의되면 처리하도록 하겠습니다.");
                             let addCollection = map.collection(group);
+                            if( Cesium.defined(addCollection) ){
+                                addCollection.removeAll();
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
+                                });
+                                if( viewdata && viewdata.children ){
+                                    viewdata.children.forEach(row=>{
+                                        app.drawObject("bmoa").type1(addCollection,row.degree,row.rad*1000,{
+                                            faceColor: "#ffffff",faceTransparent: 0.5,
+                                            lineColor: "#954045",
+                                            text:row.name});
+                                    });
+                                }
+                            }
                         } else {
                             let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){

@@ -11,14 +11,8 @@ class ArrowLine extends DrawObject{
                 color : viewModel.lineColor,
                 width : viewModel.lineWidth
             };
-            if( viewModel.lineStyle != "line"){
-                option.material = new Cesium.PolylineDashMaterialProperty({
-                    color : viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle,viewModel.lineWidth)
-                });
-            }else{
-                option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
-            }
+            
+            option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
             return collection.add(this.index,{
                 polyline : option
             });

@@ -19,11 +19,10 @@ class PointO extends DrawObject{
                         outlineColor:viewModel.lineColor,
                         outlineWidth:viewModel.lineWidth,
                         
-                        heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                        heightReference:Cesium.HeightReference.CLAMP_TO_GROUND 
                     }
                 });
             });
-            
         }
     }
 }

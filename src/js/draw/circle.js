@@ -13,7 +13,6 @@ class Circle extends DrawObject{
                     ellipse: {
                         semiMinorAxis : distance,
                         semiMajorAxis : distance,
-                        //hierarchy: positionData,
                         fill:true,
                         outline:true,
                         outlineColor:viewModel.lineColor,

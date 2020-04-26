@@ -66,6 +66,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
             //position: cartesian,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+            eyeOffset : CTX.c(0,0,-500),
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.5, 8.0e6, 0.0)
         };
 

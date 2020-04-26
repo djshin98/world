@@ -41,12 +41,24 @@ class DrawCollection {
     }
     remove(idOrEntity) {
         if(idOrEntity){
-            if( typeof(idOrEntity) == "string" ){
-
+            if( typeof(idOrEntity) == "number" ){
+                let ents = this.get(idOrEntity);
+                ents.forEach(ent=>{
+                    _this.viewer.entities.remove(ent);
+                });
+            }else if(typeof(idOrEntity) == "string"){
+                _this.viewer.entities.remove(idOrEntity);
             }else if( typeof(idOrEntity) == "object" ){
-                
+                this.viewer.entities.remove(idOrEntity);
             }
         }
+    }
+    removeAll() {
+        let _this = this;
+        let list = this.viewer.entities.values.filter((entity) => { return (entity.category == _this.name) ? true : false; });
+        list.forEach(ent=>{
+            _this.viewer.entities.remove(ent);
+        });
     }
 }
 module.exports = {

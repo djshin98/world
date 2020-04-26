@@ -5,30 +5,43 @@ class MilLine1 extends DrawObject{
     }
     create(collection,points,viewModel){
         if( points && points.length >= this.minPointCount ){
+            collection.add(this.index,{
+                polyline : {
+                    positions : points,
+                    clampToGround : true,
+                    material : viewModel.frameColor,
+                    width : 3,
+                }
+            });
+
             let option = {
                 positions : points,
                 clampToGround : true,
                 color : viewModel.faceColor,
                 width : viewModel.lineWidth,
-                fill : true,
-                outline : true,
-                outlineWidth : 3,
-                outlineColor : viewModel.lineColor,
-                cornerType: Cesium.CornerType.ROUNDED,
-                classificationType : Cesium.ClassificationType.TERRAIN
+                cornerType: Cesium.CornerType.ROUNDED
             };
 
+            option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
+            
+            collection.add(this.index,{
+                polyline : option
+            });
+
+            option.width = viewModel.lineWidth*2;
             if( viewModel.lineStyle != "line"){
                 option.material = new Cesium.PolylineDashMaterialProperty({
-                    color : viewModel.faceColor,
+                    color : viewModel.lineColor,
                     dashPattern: this.dashPatternFromString(viewModel.lineStyle,viewModel.lineWidth)
                 });
             }else{
-                option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
+                option.material = viewModel.lineColor;
             }
+
             return collection.add(this.index,{
-                corridor : option
+                polyline : option
             });
+
         }
     }
 }

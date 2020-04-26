@@ -597,6 +597,9 @@ class Application {
     drawList(){
         return this.drawModel.getHandlerList();
     }
+    drawObject(name){
+        return this.drawModel.getHandler(name);
+    }
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
     }
