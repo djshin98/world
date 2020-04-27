@@ -59,6 +59,21 @@
             });
         });
     }
+    function airAreaParse(parent,arr){
+        !arr || arr.forEach((row,i)=>{
+            parent.children.push({
+                id: row.air_area_id,
+                name: row.air_area_id,
+                unit : row.air_area_id,
+                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                radius: row.air_area_rads,
+                altitude: row.air_op_altitude,
+                height: row.air_op_height,
+                group: parent.group
+            });
+        });
+    }
+    
     var toShowNode = [{
                     name: '아군부대',
                     group:'ally',
@@ -94,7 +109,14 @@
                     id: 'SHIP',
                     children: [],
                     parse:(parent,arr)=>{ shipParse(parent,arr); }
-                }, ];
+                },,{
+                    name: '공역',
+                    group:'airarea',
+                    collection:"KMilSymbol",
+                    id: 'AIRAREA',
+                    children: [],
+                    parse:(parent,arr)=>{ airAreaParse(parent,arr); }
+                } ];
 
     function toshowView() {
         serverAdapter.get('Entities', {}, function(data) {
@@ -150,6 +172,23 @@
                                     });
                                 }
                             }
+                        }else if( group == "airarea" ){
+                            let addCollection = map.collection(group);
+                            if( Cesium.defined(addCollection) ){
+                                addCollection.removeAll();
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
+                                });
+                                if( viewdata && viewdata.children ){
+                                    viewdata.children.forEach(row=>{
+                                        app.drawObject("bmoa").type1(addCollection,row.degree,row.rad*1000,{
+                                            faceColor: "#ffffff",faceTransparent: 0.5,
+                                            lineColor: "#954045",
+                                            text:row.name});
+                                    });
+                                }
+                            }
+                        }
                         } else {
                             let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){

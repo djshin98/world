@@ -27,7 +27,7 @@ class AirCircle extends DrawObject{
             }
         }
     }
-    createType(collection,point,radus,minHeight,maxHeight,viewModel){
+    type1(collection,point,radus,minHeight,maxHeight,viewModel){
         if( collection ){
             return collection.add(this.index,{
                 position: points[0],
@@ -39,8 +39,8 @@ class AirCircle extends DrawObject{
                     outlineColor:viewModel.lineColor,
                     outlineWidth:viewModel.lineWidth,
                     material: viewModel.faceColor,
-                    height:1000,
-                    extrudedHeight:3000,
+                    height:minHeight,
+                    extrudedHeight:maxHeight,
                     extrudedHeightReference: Cesium.HeightReference.NONE,
                     heightReference: Cesium.HeightReference.NONE 
                 }

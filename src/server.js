@@ -195,12 +195,13 @@ server.get('/Entities/', (req, res) => {
     var queryEnemy = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
     var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
     var queryShip = mybatisMapper.getStatement('testMapper', 'ship', JSON.parse(param), format);
+    var queryAirArea = mybatisMapper.getStatement('testMapper', 'air_area', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
-    //동시에 실행시키는 방법 생각해보자...
+    
     retObj = {};
     function completeJob(obj){
-        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship ){
+        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship && retObj.airArea ){
             res.json(retObj);
         }
     }
@@ -222,6 +223,10 @@ server.get('/Entities/', (req, res) => {
     });
     connection.query(queryShip, function(err, result, fields) {
         if (!err) { retObj.ship = result; } else { retObj.ship = []; console.log('query error : ' + err); }
+        completeJob(retObj);
+    });
+    connection.query(queryAirArea, function(err, result, fields) {
+        if (!err) { retObj.airArea = result; } else { retObj.airArea = []; console.log('query error : ' + err); }
         completeJob(retObj);
     });
 });

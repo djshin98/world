@@ -21,4 +21,8 @@
       SELECT * 
         FROM t_waa_ship
   </select>
+  <select id="air_area">
+      SELECT * 
+        FROM t_waa_air_area
+  </select>
 </mapper>
