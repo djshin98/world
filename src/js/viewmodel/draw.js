@@ -18,6 +18,7 @@ var { Rectangle } = require('../draw/rectangle');
 var { PointO } = require('../draw/point_o');
 var { PointX } = require('../draw/point_x');
 var { Image } = require('../draw/image');
+var { ImageLine } = require('../draw/imageline');
 var { Point } = require('../draw/point');
 
 var drawLinker = {
@@ -36,6 +37,7 @@ var drawLinker = {
     o : { name : "O" , createFunc : function(){ return new PointO(); }},
     x : { name : "X" , createFunc : function(){ return new PointX(); }},
     image : { name : "이미지" , createFunc : function(){ return new Image(); }},
+    imageline : { name : "이미지선" , createFunc : function(){ return new ImageLine(); }},
     point : { name : "점" , createFunc : function(){ return new Point(); }},
 }
 // widget 에 대한 표준을 만든다.

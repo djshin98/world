@@ -10,9 +10,8 @@ class Point extends DrawObject{
             points.forEach(point=>{
                 collection.add(this.index,{
                     position: point,
-                    ellipse: {
-                        semiMinorAxis : distance,
-                        semiMajorAxis : distance,
+                    point: {
+                        pixelSize:distance,
                         fill:true,
                         material: viewModel.faceColor,
                         outline:true,
