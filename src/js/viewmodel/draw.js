@@ -3,6 +3,7 @@ var Cesium = require('cesium/Cesium');
 var { MarkerCollection } = require('../collection/markercollection');
 var { DrawCollection,PinMarkers } = require('../collection/drawcollection');
 
+var { setDrawViewModel } = require('../draw/drawobject');
 var { Circle } = require('../draw/circle');
 var { AirCircle } = require('../draw/aircircle');
 var { Dom } = require('../draw/dom');
@@ -130,40 +131,7 @@ class Draw{
     update( viewModel ){
         var currentMode = this.viewModel.mode;
 
-        this.viewModel = Object.assign(this.viewModel, viewModel );
-        if( this.viewModel.lineColor && typeof(this.viewModel.lineColor) == "string"){
-            this.viewModel.lineColor = Cesium.Color.fromCssColorString(this.viewModel.lineColor);
-        }
-        if( this.viewModel.faceColor && typeof(this.viewModel.faceColor) == "string"){
-            this.viewModel.faceColor = Cesium.Color.fromCssColorString(this.viewModel.faceColor);
-        }
-        if( this.viewModel.frameColor && typeof(this.viewModel.frameColor) == "string"){
-            this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
-        }
-        if( this.viewModel.shapeColor && typeof(this.viewModel.shapeColor) == "string"){
-            this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
-        }
-        if( this.viewModel.faceTransparent && typeof(this.viewModel.faceTransparent) == "string"){
-            this.viewModel.faceTransparent = parseFloat(this.viewModel.faceTransparent) / 100;
-        }
-        if( this.viewModel.lineTransparent && typeof(this.viewModel.lineTransparent) == "string"){
-            this.viewModel.lineTransparent = parseFloat(this.viewModel.lineTransparent) / 100;
-        }
-
-        if( typeof(this.viewModel.size) == "string" ){
-            this.viewModel.size = parseInt(this.viewModel.size);
-        }
-        if( typeof(this.viewModel.shapeSize) == "string" ){
-            this.viewModel.shapeSize = parseInt(this.viewModel.shapeSize);
-        }
-        this.viewModel.lineColor = this.viewModel.lineColor.withAlpha(this.viewModel.lineTransparent);
-        this.viewModel.faceColor = this.viewModel.faceColor.withAlpha(this.viewModel.faceTransparent);
-        //this.viewModel.frameColor = Cesium.Color.fromCssColorString(this.viewModel.frameColor);
-        //this.viewModel.shapeColor = Cesium.Color.fromCssColorString(this.viewModel.shapeColor);
-        
-        if( typeof(this.viewModel.lineWidth) == "string" ){
-            this.viewModel.lineWidth = parseInt(this.viewModel.lineWidth);
-        }
+        this.viewModel = setDrawViewModel(this.viewModel,viewModel);
 
         if( this.viewModel.mode == "view" ){
             this.handler.removeInputAction(Cesium.ScreenSpaceEventType.RIGHT_CLICK);

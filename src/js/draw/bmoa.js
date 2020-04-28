@@ -31,30 +31,18 @@ class Bmoa extends DrawObject{
             }
         }
     }
-    type1(collection,point,distance,viewModel){
-        point = CTX.d2c(point);
-        viewModel = Object.assign({
-            faceColor: Cesium.Color.WHITE,
+    type1(collection,name,lnglat,distance,_viewModel){
+        let point = CTX.d2c(lnglat);
+        let viewModel = this.setViewModel({
+            faceColor: Cesium.Color.BLUE,
             faceTransparent: 0.6,
             lineColor: Cesium.Color.YELLOW,
-            lineTransparent: 0.6},viewModel);
-
-        if( viewModel.faceColor && typeof(viewModel.faceColor) == "string"){
-            viewModel.faceColor = Cesium.Color.fromCssColorString(viewModel.faceColor);
-        }
-        if( viewModel.faceTransparent ){
-            viewModel.faceColor = viewModel.faceColor.withAlpha(viewModel.faceTransparent);
-        }
-
-        if( viewModel.lineColor && typeof(viewModel.lineColor) == "string"){
-            viewModel.lineColor = Cesium.Color.fromCssColorString(viewModel.lineColor);
-        }
-        if( viewModel.lineTransparent ){
-            viewModel.lineColor = viewModel.lineColor.withAlpha(viewModel.lineTransparent);
-        }
+            lineTransparent: 0.6}, Cesium.defined(_viewModel) ?_viewModel:{});
         
         let option = {
             position: point,
+            name:name,
+            description:this.callbackDescirption(lnglat,{name:name},[]),
             ellipse: {
                 semiMinorAxis : distance,
                 semiMajorAxis : distance,
@@ -64,9 +52,9 @@ class Bmoa extends DrawObject{
             }
         };
 
-        if( viewModel.text ){
+        if( Cesium.defined(name) && name.length > 0 ){
             option.label = {
-                text : viewModel.text,
+                text : name,
                 fillColor : viewModel.lineColor,
                 eyeOffset : CTX.c(0,0,-2000),
                 verticalOrigin : Cesium.VerticalOrigin.BOTTOM,	

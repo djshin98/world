@@ -1,7 +1,7 @@
 class OliveTree {
     constructor(selector, arr, option) {
         this.selector = selector;
-        this.options = Object.assign({}, option);
+        this.options = Object.assign({collapsed: true}, option);
         if (arr) {
             $(this.selector).html(this._makeTree(arr, this.options));
         }
@@ -9,7 +9,7 @@ class OliveTree {
         //this.arr = arr;
         let _this = this;
         $(this.selector).treeview({
-            collapsed: false
+            collapsed: this.options.collapsed
         });
         $(this.selector + " li>div.folder").unbind();
         $(this.selector + " li>div.file").unbind();
@@ -54,7 +54,7 @@ class OliveTree {
 
             if (d.children && d.children.length > 0) {
                 if (_this.selector === "#toshow-view") {
-                    str += '<li><input type="checkbox" class="' + d.id + '"/>';
+                    str += '<li><input type="checkbox" id="' + d.id + '"/>';
                     str += '<div class="folder"' + _this._toHtmlAttribute(attr) + 'style="display: inline-block;">' + text + '</div>';
                     str += '<ul>';
                     str += _this._makeTree(d.children, options);

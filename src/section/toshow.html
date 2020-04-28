@@ -65,7 +65,7 @@
                 id: row.air_area_id,
                 name: row.air_area_id,
                 unit : row.air_area_id,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                degree : {longitude: row.geocd_lngt, latitude: row.geocd_ltd},
                 radius: row.air_area_rads,
                 altitude: row.air_op_altitude,
                 height: row.air_op_height,
@@ -109,10 +109,10 @@
                     id: 'SHIP',
                     children: [],
                     parse:(parent,arr)=>{ shipParse(parent,arr); }
-                },,{
+                },{
                     name: '공역',
-                    group:'airarea',
-                    collection:"KMilSymbol",
+                    group:'airArea',
+                    collection:"Draw",
                     id: 'AIRAREA',
                     children: [],
                     parse:(parent,arr)=>{ airAreaParse(parent,arr); }
@@ -165,31 +165,29 @@
                                 });
                                 if( viewdata && viewdata.children ){
                                     viewdata.children.forEach(row=>{
-                                        app.drawObject("bmoa").type1(addCollection,row.degree,row.rad*1000,{
-                                            faceColor: "#ffffff",faceTransparent: 0.5,
-                                            lineColor: "#954045",
-                                            text:row.name});
+                                        app.drawObject("bmoa").type1(addCollection,row.name,row.degree,row.rad*1000,
+                                            { faceColor: "#ffffff",faceTransparent: 0.5,lineColor: "#954045",lineTransparent: 0.5});
                                     });
                                 }
                             }
-                        }else if( group == "airarea" ){
+                        }else if( group === "airArea" ){
                             let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){
                                 addCollection.removeAll();
-                                var viewdata = toShowNode.find(function(d) {
-                                    return (d.group === group) ? true : false;
-                                });
-                                if( viewdata && viewdata.children ){
-                                    viewdata.children.forEach(row=>{
-                                        app.drawObject("aa_circle").type1(addCollection,row.degree,row.rad*1000,{
-                                            faceColor: "#ffffff",faceTransparent: 0.5,
-                                            lineColor: "#954045",
-                                            text:row.name});
+                                if( checked ){
+                                    var viewdata = toShowNode.find(function(d) {
+                                        return (d.group === group) ? true : false;
                                     });
+                                    if( viewdata && viewdata.children ){
+                                        viewdata.children.forEach(row=>{
+                                            radius: row.air_area_rads,
+                                            app.drawObject("aa_circle").type1(addCollection,row.name,row.degree,row.radius*1000,row.altitude,row.height,
+                                                { faceColor: "#ffffff",faceTransparent: 0.5,lineColor: "#954045",lineTransparent: 0.5});
+                                        });
+                                    }
                                 }
                             }
-                        }
-                        } else {
+                        }else {
                             let addCollection = map.collection(group);
                             if( Cesium.defined(addCollection) ){
                                 addCollection.removeAll();
