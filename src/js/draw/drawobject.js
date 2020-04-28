@@ -135,8 +135,8 @@ class DrawObject{
         }
         return parseInt('11111111111', 2);
     }
-    setViewModel(viewModel){
-        return setDrawViewModel({},viewModel);
+    setViewModel(defaultVM,viewModel){
+        return setDrawViewModel(defaultVM,viewModel);
     }
     callbackDescirption(degree, options, desc, img) {
         var sidc_desc = "";

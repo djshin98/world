@@ -37,7 +37,7 @@ class AirCircle extends DrawObject{
                 lineColor: Cesium.Color.YELLOW,
                 lineTransparent: 0.6}, _viewModel);
 
-            return collection.add(this.index,{
+            let option = {
                 position: point,
                 name:name,
                 description:this.callbackDescirption(lnglat,{name:name},[]),
@@ -54,7 +54,20 @@ class AirCircle extends DrawObject{
                     extrudedHeightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND 
                 }
-            });
+            };
+
+            if( Cesium.defined(name) && name.length > 0 ){
+                option.label = {
+                    text : name,
+                    fillColor : viewModel.lineColor,
+                    //pixelOffset : new Cesium.Cartesian2(0, -20),
+                    //eyeOffset : CTX.c(0,minHeight+maxHeight+1000,-200),
+                    verticalOrigin : Cesium.VerticalOrigin.BOTTOM,	
+                    heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                }
+            }
+    
+            return collection.add(this.index,option);
         }
     }
 }
