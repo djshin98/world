@@ -41,7 +41,7 @@ var drawLinker = {
     image: { name: "이미지", createFunc: function() { return new Image(); } },
     imageline: { name: "이미지선", createFunc: function() { return new ImageLine(); } },
     point: { name: "점", createFunc: function() { return new Point(); } },
-    aa_rect: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
+    aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
 }
 
 // widget 에 대한 표준을 만든다.

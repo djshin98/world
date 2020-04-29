@@ -10,6 +10,15 @@
 </div>
 
 <script>
+    function parseEN(s){
+        if( s ){
+            let nidx = s.indexOf("N");
+            let eidx = s.indexOf("E");
+            if( nidx > 0 && eidx > 0 ){
+                return { longitude : parseFloat(s.substr(0,eidx)), latitude : parseFloat(s.substr(eidx+1,nidx-eidx-1)) };
+            }
+        }
+    }
     function unitParse(parent, arr) {
         !arr || arr.forEach((row, i) => {
             parent.children.push({
@@ -85,8 +94,8 @@
                     latitude: row.geocd_ltd
                 },
                 radius: row.air_area_rads,
-                altitude: row.air_op_altitude,
-                height: row.air_op_height,
+                altitude: parseFloat(row.air_op_altitude)*1000,
+                height: parseFloat(row.air_op_height)*1000,
                 group: parent.group
             });
         });
@@ -99,13 +108,13 @@
                 name: row.ac_name,
                 unit: row.air_area_id,
                 degree: {
-                    lb: parseEN(ac_co_lb),
-                    lu: parseEN(ac_co_lu),
-                    rb: parseEN(ac_co_rb),
-                    ru: parseEN(ac_co_ru),
+                    lb: parseEN(row.ac_co_lb),
+                    lu: parseEN(row.ac_co_lu),
+                    rb: parseEN(row.ac_co_rb),
+                    ru: parseEN(row.ac_co_ru),
                 },
-                altitude: row.max_alt,
-                height: row.min_alt,
+                altitude: row.min_alt,
+                height: row.max_alt,
                 group: parent.group
             });
         });
@@ -265,7 +274,7 @@
                                 if (viewdata && viewdata.children) {
                                     viewdata.children.forEach(row => {
                                         radius: row.air_area_rads,
-                                        app.drawObject("aa_rect").type1(addCollection, row.name, row.degree, row.altitude, row.height, {
+                                        app.drawObject("aa_box").type1(addCollection, row.name, row.degree, row.altitude, row.height, {
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#954045",

@@ -1,36 +1,31 @@
 var { DrawObject } = require('./drawobject');
 class AirBox extends DrawObject {
     constructor() {
-        super(2);
+        super(3);
     }
     create(collection, points, viewModel) {
         if (points && points.length && points.length >= this.minPointCount) {
-            var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
-            if (distance > 0) {
-
-                return collection.add(this.index, {
-                    position: points[0],
-                    ellipse: {
-                        semiMinorAxis: distance,
-                        semiMajorAxis: distance,
-                        fill: true,
-                        outline: true,
-                        outlineColor: viewModel.lineColor,
-                        outlineWidth: viewModel.lineWidth,
-                        material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
-                        height: 1000,
-                        extrudedHeight: 3000,
-                        extrudedHeightReference: Cesium.HeightReference.NONE,
-                        heightReference: Cesium.HeightReference.NONE
-                    }
-                });
-            }
+            return collection.add(this.index, {
+                position: points[0],
+                polygon: {
+                    hierarchy: points,
+                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
+                    fill: true,
+                    outline: true,
+                    outlineColor: viewModel.lineColor,
+                    outlineWidth: viewModel.lineWidth,
+                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
+                    height: 10000,
+                    extrudedHeight: 30000,
+                    extrudedHeightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                    heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+                }
+            });
         }
     }
     type1(collection, name, degree, minHeight, maxHeight, _viewModel) {
         if (collection) {
-            lnglat.height = minHeight;
-            let point = CTX.d2c(lnglat);
+            let points = [CTX.d2c(degree.lb),CTX.d2c(degree.lu),CTX.d2c(degree.rb),CTX.d2c(degree.ru)];
             let viewModel = this.setViewModel({
                 faceColor: Cesium.Color.WHITE,
                 faceTransparent: 0.6,
@@ -39,19 +34,17 @@ class AirBox extends DrawObject {
             }, _viewModel);
 
             let option = {
-                position: point,
-                name: name,
-                description: this.callbackDescirption(lnglat, { name: name }, []),
-                ellipse: {
-                    semiMinorAxis: radus,
-                    semiMajorAxis: radus,
+                position: points[0],
+                polygon: {
+                    hierarchy: points,
+                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
                     fill: true,
                     outline: true,
                     outlineColor: viewModel.lineColor,
                     outlineWidth: viewModel.lineWidth,
-                    material: viewModel.faceColor,
+                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
                     height: minHeight,
-                    extrudedHeight: minHeight + maxHeight + 1000,
+                    extrudedHeight: maxHeight,
                     extrudedHeightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                 }
