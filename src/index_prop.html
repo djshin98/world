@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olive 3D version 0.2</title>
     <link rel="icon" href="img/olive.png">
-    
-    <link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css"/>
-    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="libs/lobipanel/css/lobipanel.min.css"/>
+
+    <link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libs/lobipanel/css/lobipanel.min.css" />
 
     <script src="libs/jquery/jquery.min.js"></script>
     <script src="libs/jquery-ui/jquery-ui.min.js"></script>
-    <script src="libs/popper/umd/popper.min.js" ></script>
+    <script src="libs/popper/umd/popper.min.js"></script>
     <script src="libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="libs/lobipanel/js/lobipanel.min.js"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="libs/semantic_ui/semantic.css">
     <script src="libs/semantic_ui/semantic.js"></script>
     <link rel="stylesheet" href="css/main.css">
@@ -46,7 +46,7 @@
 
             var cartesian = map.viewOption.baseLayerPicker ? map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(e.clientX - 300, e.clientY)) :
                 map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(e.clientX - 300, e.clientY), map.viewer3d.scene.globe.ellipsoid);
-            
+
             kMilSymbolCollection.add(cartesian, options);
 
         }
@@ -58,18 +58,18 @@
                     mapServiceMode: "offline", //"internet offline"
                     offlineOption: {
                         proxy: "/GVS/proxy.jsp",
-                        map: "http://192.168.0.101:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
-                        terrain: "http://192.168.0.101:38080/tilesets/srtm/"
+                        map: "http://192.168.1.101:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
+                        terrain: "http://192.168.1.101:38080/tilesets/srtm/"
                     },
                     offlineBaseLayers: [{
-                        url: 'http://192.168.0.101:8080/Map/Hwasung_TMS/'
+                        url: 'http://192.168.1.101:8080/Map/Hwasung_TMS/'
                     }, {
-                        url: 'http://192.168.0.101:8080/Map/Seoul_TMS/'
+                        url: 'http://192.168.1.101:8080/Map/Seoul_TMS/'
                     }, {
-                        url: 'http://192.168.0.101:8080/Map/Daejon_TMS/'
+                        url: 'http://192.168.1.101:8080/Map/Daejon_TMS/'
                     }]
                 },
-                success : function(map){
+                success: function(map) {
                     //map.contour(true);
                     //viewer.scene.globe.enableLighting = true;
                     //updateMaterial(viewer);
@@ -86,7 +86,6 @@
                 }
             });
         });
-
     </script>
 </head>
 
@@ -157,7 +156,7 @@
         </div>
 
     </div>
-    
+
     <!--
     <script src="./libs/navigation/Cesium-Navigation.js"></script>
     <link rel="stylesheet" type="text/css" href="./libs/navigation/Cesium-Navigation.css" />

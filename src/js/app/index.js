@@ -261,8 +261,8 @@ class Application {
                 return new Dialog({
                     title: '시한성 전략 표적',
                     url: "dialog/target0.html",
-                    width: "730px",
-                    height: "350px",
+                    width: "750px",
+                    height: "400px",
                     show: true,
                     data: data,
                     onset: function(obj, body, data) {
@@ -289,7 +289,7 @@ class Application {
                                             );
                                         }
                                     } else {
-                                        str += "<tr onclick=\"app.popupTarget('" + row.t_id + "');map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ");\">";
+                                        str += "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ");\">";
                                         str += "<td class='tdata'>" + row.dt + "</td>";
                                         str += "<td class='tdata'>" + row.t_id + "</td>";
                                         str += "<td class='tdata' >" + row.lon + "</td>";
@@ -506,7 +506,7 @@ class Application {
                                     str += "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
                                     str += "<td class='tdata'>" + row.t_id + "</td>";
                                     str += "<td class='tdata'>" + row.weapon + "</td>";
-                                    str += "<td class='tdata' >" + row.unit + "</td>";
+                                    str += "<td class='tdata' >" + row.unit_name + "</td>";
                                     str += "</tr>";
                                 });
                             }
@@ -657,7 +657,7 @@ class Application {
 
                                 if (type == 1) {
                                     targetRefs = jsonMessage;
-                                    $(body).find("button[data-token=ref]").prop('disabled', false);
+                                    $("button[data-token=ref]").prop('disabled', false);
                                 } else if (type == 2) {
                                     targetExtras = jsonMessage;
 
@@ -702,7 +702,7 @@ class Application {
 
                                 } else if (type == 4) {
                                     targetAlignRefs = jsonMessage;
-                                    $(body).find("button[data-token=align]").prop('disabled', false);
+                                    $("button[data-token=align]").prop('disabled', false);
                                 } else {
                                     let dlgkey = "waa" + type;
                                     if (!Cesium.defined(_this.dialog[dlgkey])) {
