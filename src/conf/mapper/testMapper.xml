@@ -25,4 +25,7 @@
       SELECT * 
         FROM t_waa_air_area
   </select>
+  <select id="air_control">
+      SELECT * FROM t_waa_air_control
+  </select>
 </mapper>

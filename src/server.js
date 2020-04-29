@@ -5,11 +5,11 @@ const server = express();
 const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
-var {base64_encode,dir} = require("./js/watch/image");
+var { base64_encode, dir } = require("./js/watch/image");
 
-const {WebSocketServer} = require('./js/ws/websocket_server');
-const {MqttAdapter} = require('./js/mqtt/mqttbroker');
-const {FileWatcher} = require('./js/watch/filewatcher');
+const { WebSocketServer } = require('./js/ws/websocket_server');
+const { MqttAdapter } = require('./js/mqtt/mqttbroker');
+const { FileWatcher } = require('./js/watch/filewatcher');
 
 const cors = require('cors');
 
@@ -37,76 +37,76 @@ console.log("config : " + "conf/server.json");
 console.dir(conf);
 
 const wss = new WebSocketServer({
-    port : conf.WebSocket.port , 
-    onmessage : function(ws,data){
-        if( mqttAdapter && data ){
+    port: conf.WebSocket.port,
+    onmessage: function(ws, data) {
+        if (mqttAdapter && data) {
             let msg = JSON.parse(data);
             //테스트 용도
-            
+
             //msg.message.cmd = "RES_TIA";
             //msg.message.index = 2;
-            
+
             //
-            mqttAdapter.publish(msg.topic, msg.message );
+            mqttAdapter.publish(msg.topic, msg.message);
 
             //mqttAdapter.publish("WAA.HANDLER", test4);
         }
     }
 });
 
-console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port );
+console.log('try mqtt brokder : ' + conf.MqttServer.host + ":" + conf.MqttServer.port);
 var mqttAdapter = new MqttAdapter({
-    host: conf.MqttServer.host, 
-    port: conf.MqttServer.port, 
-    listens:[
-        {
-            topic:"TIA.HANDLER",  //표적식별
-            onReady:function(topic){
+    host: conf.MqttServer.host,
+    port: conf.MqttServer.port,
+    listens: [{
+            topic: "TIA.HANDLER", //표적식별
+            onReady: function(topic) {
                 console.log("onready : " + topic);
             },
-            onReceive:function(topic,message){
+            onReceive: function(topic, message) {
                 message = JSON.parse(message);
                 //console.log(topic + " received : " + message.toString() );
-                if( message.cmd == "RES_TIA"){
-                    let q = mybatisMapper.getStatement('targetMapper', 'res_tia', {idx:message.index}, format);
+                if (message.cmd == "RES_TIA") {
+                    let q = mybatisMapper.getStatement('targetMapper', 'res_tia', { idx: message.index }, format);
                     connection.query(q, function(err, result, fields) {
                         if (!err) {
-                            message = Object.assign(message,result);
+                            message = Object.assign(message, result);
                             message.results = result;
-                            message.results.forEach(r=>{
+                            message.results.forEach(r => {
                                 //r.mil_image = "D:/mapx/ccai/tia/org_images/N126E37.jpg";
                                 r.base64 = base64_encode(r.image);
                             });
-                            wss.publish(topic,message);
-                        } else {r
+                            wss.publish(topic, message);
+                        } else {
+                            r
                             console.log('query error : ' + err);
                         }
                     });
-                }else if( message.cmd == "REQ_TIA"){
+                } else if (message.cmd == "REQ_TIA") {
 
-                }else{
-                    wss.publish(topic,message);
+                } else {
+                    wss.publish(topic, message);
                 }
             }
         },
         {
-            topic:"WAA.HANDLER", //무장할당
-            onReady:function(topic){
+            topic: "WAA.HANDLER", //무장할당
+            onReady: function(topic) {
                 console.log("onready : " + topic);
             },
-            onReceive:function(topic,message){
+            onReceive: function(topic, message) {
                 //console.log(topic + " received : " + message.toString() );
-                wss.publish(topic,message);
+                wss.publish(topic, message);
             }
         },
         {
-            topic:"DSW.HANDLER", //상황도
-            onReady:function(topic){
+            topic: "DSW.HANDLER", //상황도
+            onReady: function(topic) {
                 console.log("onready : " + topic);
             },
-            onReceive:function(topic,message){
+            onReceive: function(topic, message) {
                 //console.log(topic + " received : " + message.toString() );
-                wss.publish(topic,message);
+                wss.publish(topic, message);
             }
         }
     ]
@@ -114,28 +114,28 @@ var mqttAdapter = new MqttAdapter({
 global.test = mqttAdapter;
 var connection = mysql.createConnection(conf.DatabaseServer);
 
-console.log('try file watcher : ' + conf.MqttServer["watch-folder"] );
+console.log('try file watcher : ' + conf.MqttServer["watch-folder"]);
 
 var fsWatcher = new FileWatcher({
-    folder : conf.MqttServer["watch-folder"],
-    watch : function(filename, act, data){
+    folder: conf.MqttServer["watch-folder"],
+    watch: function(filename, act, data) {
 
         let index = filename.lastIndexOf("N");
         let lastIndex = filename.lastIndexOf(".");
-        var data = {cmd:"DET_TIA", org_image: filename, act : act, base64: data };
+        var data = { cmd: "DET_TIA", org_image: filename, act: act, base64: data };
 
-        if( index >= 0 && lastIndex > 0 && index < lastIndex ){
-            let str = data.org_image.substr( index+1, lastIndex);
+        if (index >= 0 && lastIndex > 0 && index < lastIndex) {
+            let str = data.org_image.substr(index + 1, lastIndex);
             index = str.lastIndexOf("E");
-            if( index > 0 ){
-                let latitude = parseFloat(str.substr(0,index));
-                let longitude = parseFloat(str.substr(index+1));
+            if (index > 0) {
+                let latitude = parseFloat(str.substr(0, index));
+                let longitude = parseFloat(str.substr(index + 1));
 
                 data.longitude = longitude;
                 data.latitude = latitude;
             }
         }
-        mqttAdapter.publish("TIA.HANDLER",data);
+        mqttAdapter.publish("TIA.HANDLER", data);
     }
 });
 
@@ -181,8 +181,8 @@ server.get('/default/', (req, res) => {
 server.get('/images/', (req, res) => {
     var param = req.query.param;
     let data = JSON.parse(param);
-    dir( __dirname + "/" + data.url , function(array){
-        res.json({ result: array }); 
+    dir(__dirname + "/" + data.url, function(array) {
+        res.json({ result: array });
     });
 });
 
@@ -196,37 +196,64 @@ server.get('/Entities/', (req, res) => {
     var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
     var queryShip = mybatisMapper.getStatement('testMapper', 'ship', JSON.parse(param), format);
     var queryAirArea = mybatisMapper.getStatement('testMapper', 'air_area', JSON.parse(param), format);
+    var queryAirControl = mybatisMapper.getStatement('testMapper', 'air_control', JSON.parse(param), format);
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
-    
+
     retObj = {};
-    function completeJob(obj){
-        if( retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship && retObj.airArea ){
+
+    function completeJob(obj) {
+        if (retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship && retObj.airArea && retObj.airControl) {
             res.json(retObj);
         }
     }
-    connection.query(queryAlly, function(err, result, fields) {    
-        if (!err) { retObj.ally = result;  } else { retObj.ally = []; console.log('query error : ' + err); }
+    connection.query(queryAlly, function(err, result, fields) {
+        if (!err) { retObj.ally = result; } else {
+            retObj.ally = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
     connection.query(queryBmoa, function(err, result, fields) {
-        if (!err) { retObj.bmoa = result; } else { retObj.bmoa = []; console.log('query error : ' + err); }
+        if (!err) { retObj.bmoa = result; } else {
+            retObj.bmoa = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
     connection.query(queryEnemy, function(err, result, fields) {
-        if (!err) { retObj.enemy = result; } else { retObj.enemy = []; console.log('query error : ' + err); }
+        if (!err) { retObj.enemy = result; } else {
+            retObj.enemy = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
     connection.query(queryAir, function(err, result, fields) {
-        if (!err) { retObj.aircraft = result; } else { retObj.aircraft = []; console.log('query error : ' + err); }
+        if (!err) { retObj.aircraft = result; } else {
+            retObj.aircraft = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
     connection.query(queryShip, function(err, result, fields) {
-        if (!err) { retObj.ship = result; } else { retObj.ship = []; console.log('query error : ' + err); }
+        if (!err) { retObj.ship = result; } else {
+            retObj.ship = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
     connection.query(queryAirArea, function(err, result, fields) {
-        if (!err) { retObj.airArea = result; } else { retObj.airArea = []; console.log('query error : ' + err); }
+        if (!err) { retObj.airArea = result; } else {
+            retObj.airArea = [];
+            console.log('query error : ' + err);
+        }
+        completeJob(retObj);
+    });
+    connection.query(queryAirControl, function(err, result, fields) {
+        if (!err) { retObj.airControl = result; } else {
+            retObj.airControl = [];
+            console.log('query error : ' + err);
+        }
         completeJob(retObj);
     });
 });
