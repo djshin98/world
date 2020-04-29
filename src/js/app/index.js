@@ -281,8 +281,8 @@ class Application {
                                                     ustr += "<td class='tdata' >" + row.lon + "</td>";
                                                     ustr += "<td class='tdata' >" + row.lat + "</td>";
                                                     ustr += "<td class='tdata'>" + row.wt + "</td>";
-                                                    ustr += "<td class='tdata'><button onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                                    ustr += "<td class='tdata'><button onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                                    ustr += "<td class='tdata'><button data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                                    ustr += "<td class='tdata'><button data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                                     ustr += "</tr>";
                                                     $(body).find("tbody").append(ustr);
                                                 }, false
@@ -295,8 +295,8 @@ class Application {
                                         str += "<td class='tdata' >" + row.lon + "</td>";
                                         str += "<td class='tdata' >" + row.lat + "</td>";
                                         str += "<td class='tdata'>" + row.wt + "</td>";
-                                        str += "<td class='tdata'><button onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                        str += "<td class='tdata'><button onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                        str += "<td class='tdata'><button data-token='ref' disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                        str += "<td class='tdata'><button data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
@@ -657,6 +657,7 @@ class Application {
 
                                 if (type == 1) {
                                     targetRefs = jsonMessage;
+                                    $(body).find("button[data-token=ref]").prop('disabled', false);
                                 } else if (type == 2) {
                                     targetExtras = jsonMessage;
 
@@ -701,6 +702,7 @@ class Application {
 
                                 } else if (type == 4) {
                                     targetAlignRefs = jsonMessage;
+                                    $(body).find("button[data-token=align]").prop('disabled', false);
                                 } else {
                                     let dlgkey = "waa" + type;
                                     if (!Cesium.defined(_this.dialog[dlgkey])) {
