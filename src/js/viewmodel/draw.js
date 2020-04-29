@@ -22,6 +22,7 @@ var { Image } = require('../draw/image');
 var { ImageLine } = require('../draw/imageline');
 var { Point } = require('../draw/point');
 var { AirBox } = require('../draw/airbox');
+var { Parabola } = require('../draw/parabola');
 
 var drawLinker = {
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -42,6 +43,7 @@ var drawLinker = {
     imageline: { name: "이미지선", createFunc: function() { return new ImageLine(); } },
     point: { name: "점", createFunc: function() { return new Point(); } },
     aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
+    parabola: { name: "포곡선", createFunc: function() { return new Parabola(); } },
 }
 
 // widget 에 대한 표준을 만든다.

@@ -565,13 +565,17 @@ class Application {
                             if (Cesium.defined(jsonMessage.type) && jsonMessage.type != null) {
                                 let type = jsonMessage.type;
                                 if (type == 0) {
+                                    
                                     serverAdapter.get('type0', {}, function(resultdata) {
-
+                                        var addCollection = map.collection("type0");
+                                        if( !Cesium.defined(addCollection) ){
+                                            addCollection = map.createCollection("type0","Draw");
+                                        }
                                         addCollection.removeAll();
                                         var viewdata = resultdata.bmoa;
                                         if (viewdata) {
                                             viewdata.forEach(row => {
-                                                app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.rad * 1000, {
+                                                app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
                                                     faceColor: "#ffffff",
                                                     faceTransparent: 0.5,
                                                     lineColor: "#ff0000",
@@ -580,15 +584,24 @@ class Application {
                                             });
                                         }
 
-                                        var datas = resultdata.allyPres.reduce(function(prev, curr) {
-                                            var cartesian = Cesium.Cartesian3.fromDegrees(curr.geocd_lngt, curr.geocd_ltd, 0);
-                                            prev.push({ name: curr.unit_name, cartesianVal: cartesian, sic: curr.unit_sbl_cd });
-                                            return prev
-                                        }, []);
-                                        datas.forEach(function(d) {
-                                            d.size = 30;
-                                            collection.add(d.cartesianVal, d);
-                                        });
+                                        var airCollection = map.collection("type0:air");
+                                        if( !Cesium.defined(airCollection) ){
+                                            airCollection = map.createCollection("type0:air","KMilSymbol");
+                                        }
+                                        airCollection.removeAll();
+
+                                        viewdata = resultdata.aircraft;
+                                        if (viewdata) {
+
+                                            airCollection.terrianFromDegrees(viewdata, function(d) {
+                                                d.size = 30;
+                                                let entity = addCollection.add(CTX.degree(d.lng, d.lat, d.height), d);
+                                                //console.dir(entity);
+                                                //let ele = $("#toshow-view [data-id=" + d.id + "]");
+                                                //ele.data("id", entity.id);
+                                            });
+                                        }
+
                                     });
                                 } else if (type == 1) {
                                     targetRefs = jsonMessage;
