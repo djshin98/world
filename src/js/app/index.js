@@ -49,6 +49,7 @@ function makeTable(data) {
 var targetRefs;
 var targetExtras;
 var targetAirCollision;
+var targetAlignRefs;
 class Application {
     constructor(options) {
         this.workStatus("section", false);
@@ -260,7 +261,7 @@ class Application {
                 return new Dialog({
                     title: '시한성 전략 표적',
                     url: "dialog/target0.html",
-                    width: "600px",
+                    width: "730px",
                     height: "350px",
                     show: true,
                     data: data,
@@ -280,6 +281,8 @@ class Application {
                                                     ustr += "<td class='tdata' >" + row.lon + "</td>";
                                                     ustr += "<td class='tdata' >" + row.lat + "</td>";
                                                     ustr += "<td class='tdata'>" + row.wt + "</td>";
+                                                    ustr += "<td class='tdata'><button onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                                    ustr += "<td class='tdata'><button onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                                     ustr += "</tr>";
                                                     $(body).find("tbody").append(ustr);
                                                 }, false
@@ -292,6 +295,8 @@ class Application {
                                         str += "<td class='tdata' >" + row.lon + "</td>";
                                         str += "<td class='tdata' >" + row.lat + "</td>";
                                         str += "<td class='tdata'>" + row.wt + "</td>";
+                                        str += "<td class='tdata'><button onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                        str += "<td class='tdata'><button onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
@@ -484,6 +489,45 @@ class Application {
                     },
                 })
             },
+            waa5: function(data) {
+                return new Dialog({
+                    title: '무장 할당',
+                    url: "dialog/target5.html",
+                    width: "390px",
+                    height: "220px",
+                    show: true,
+                    data: data,
+                    onset: function(obj, body, data) {
+                        if (data) {
+                            let str = ""; //makeTable(data);
+
+                            if (data.data) {
+                                data.data.forEach(row => {
+                                    str += "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
+                                    str += "<td class='tdata'>" + row.t_id + "</td>";
+                                    str += "<td class='tdata'>" + row.weapon + "</td>";
+                                    str += "<td class='tdata' >" + row.unit + "</td>";
+                                    str += "</tr>";
+                                });
+                            }
+                            $(body).find("tbody").html(str);
+                        }
+                    },
+                    onclose: function() { _this.dialog.waa = undefined; },
+                    oninit: function(obj, body) {
+                        let req = $(body).find("button[data-key=req]");
+                        req.unbind('click');
+                        req.bind('click', function() {
+                            alert('req');
+                        });
+                        let cancel = $(body).find("button[data-key=cancel]");
+                        cancel.unbind('click');
+                        cancel.bind('click', function() {
+                            alert('cancel');
+                        });
+                    },
+                })
+            },
             dsw: function(data) {
                 return new Dialog({
                     title: '무장 추천 결과값',
@@ -565,16 +609,17 @@ class Application {
                             if (Cesium.defined(jsonMessage.type) && jsonMessage.type != null) {
                                 let type = jsonMessage.type;
                                 if (type == 0) {
-                                    
+
                                     serverAdapter.get('type0', {}, function(resultdata) {
                                         var addCollection = map.collection("type0");
-                                        if( !Cesium.defined(addCollection) ){
-                                            addCollection = map.createCollection("type0","Draw");
+                                        if (!Cesium.defined(addCollection)) {
+                                            addCollection = map.createCollection("type0", "Draw");
                                         }
                                         addCollection.removeAll();
                                         var viewdata = resultdata.bmoa;
                                         if (viewdata) {
                                             viewdata.forEach(row => {
+                                                row.degree = { longitude: row.geocd_lngt, latitude: row.geocd_ltd };
                                                 app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
                                                     faceColor: "#ffffff",
                                                     faceTransparent: 0.5,
@@ -585,17 +630,22 @@ class Application {
                                         }
 
                                         var airCollection = map.collection("type0:air");
-                                        if( !Cesium.defined(airCollection) ){
-                                            airCollection = map.createCollection("type0:air","KMilSymbol");
+                                        if (!Cesium.defined(airCollection)) {
+                                            airCollection = map.createCollection("type0:air", "KMilSymbol");
                                         }
                                         airCollection.removeAll();
 
                                         viewdata = resultdata.aircraft;
                                         if (viewdata) {
-
+                                            viewdata.forEach(d => {
+                                                d.degree = {
+                                                    longitude: d.lng,
+                                                    latitude: d.lat
+                                                };
+                                            })
                                             airCollection.terrianFromDegrees(viewdata, function(d) {
                                                 d.size = 30;
-                                                let entity = addCollection.add(CTX.degree(d.lng, d.lat, d.height), d);
+                                                let entity = airCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, parseFloat(d.height) * 1000), d);
                                                 //console.dir(entity);
                                                 //let ele = $("#toshow-view [data-id=" + d.id + "]");
                                                 //ele.data("id", entity.id);
@@ -603,7 +653,9 @@ class Application {
                                         }
 
                                     });
-                                } else if (type == 1) {
+                                }
+
+                                if (type == 1) {
                                     targetRefs = jsonMessage;
                                 } else if (type == 2) {
                                     targetExtras = jsonMessage;
@@ -619,11 +671,36 @@ class Application {
                                     targetAirCollision = jsonMessage;
 
                                     if (targetAirCollision && targetAirCollision.data) {
+
+                                        var aaCollection = map.collection("type3:aa");
+                                        if (!Cesium.defined(aaCollection)) {
+                                            aaCollection = map.createCollection("type3:aa", "Draw");
+                                        }
+                                        aaCollection.removeAll();
+
                                         targetAirCollision.data.forEach(row => {
+                                            if (row.ac) {
+                                                row.ac.forEach(d => {
+                                                    d.degree = {
+                                                        lb: _this.parseEN(d.lb),
+                                                        lu: _this.parseEN(d.lu),
+                                                        rb: _this.parseEN(d.rb),
+                                                        ru: _this.parseEN(d.ru)
+                                                    }
+                                                    _this.drawObject("aa_box").type1(aaCollection, d.name, d.degree, parseFloat(d.min) * 1000, parseFloat(d.max) * 1000, {
+                                                        faceColor: "#ffffff",
+                                                        faceTransparent: 0.5,
+                                                        lineColor: "#954045",
+                                                        lineTransparent: 1
+                                                    });
+                                                });
+                                            }
                                             //_this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
                                         });
                                     }
 
+                                } else if (type == 4) {
+                                    targetAlignRefs = jsonMessage;
                                 } else {
                                     let dlgkey = "waa" + type;
                                     if (!Cesium.defined(_this.dialog[dlgkey])) {
@@ -808,22 +885,23 @@ class Application {
         let col = this.map.collection("EXTRA");
         if (col) {
             if (rad > 0) {
-                /*
-                col.add(1,{
-                    position: CTX.d2c(CTX.degree(lon,lat,0)),
+
+                col.add(1, {
+                    position: CTX.d2c(CTX.degree(lon, lat, 0)),
                     ellipse: {
-                        semiMinorAxis : rad,
-                        semiMajorAxis : rad,
+                        semiMinorAxis: rad,
+                        semiMajorAxis: rad,
                         //hierarchy: positionData,
-                        fill:true,
-                        outline:true,
-                        outlineColor:Cesium.Color.WHITE,
-                        outlineWidth:1,
+                        fill: true,
+                        outline: true,
+                        outlineColor: Cesium.Color.WHITE,
+                        outlineWidth: 1,
                         material: new Cesium.ColorMaterialProperty(color),
-                        extrudedHeight:100,
-                        heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                        //extrudedHeight: 100,
+                        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                     }
-                });*/
+                });
+                /*
                 let distance = rad;
                 col.add(1, {
                     position: CTX.d2c(CTX.degree(lon, lat, 0)),
@@ -834,7 +912,7 @@ class Application {
                         material: new Cesium.ColorMaterialProperty(color),
                         heightReference: Cesium.HeightReference.NONE
                     }
-                });
+                });*/
             }
         }
     }
@@ -844,6 +922,22 @@ class Application {
             let type = 1;
             let dlgkey = "waa" + type;
             let jsonMessage = Object.assign({}, targetRefs);
+            jsonMessage.data = jsonMessage.data.filter((d) => { return d.t_id == tid ? true : false; });
+            if (!Cesium.defined(_this.dialog[dlgkey])) {
+                _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+            } else {
+                let dlg = _this.dialog[dlgkey];
+                dlg.set(jsonMessage);
+                dlg.front();
+            }
+        }
+    }
+    popupTargetAlign(tid) {
+        if (targetAlignRefs && targetAlignRefs.data) {
+            let _this = this;
+            let type = 1;
+            let dlgkey = "waa5";
+            let jsonMessage = Object.assign({}, targetAlignRefs);
             jsonMessage.data = jsonMessage.data.filter((d) => { return d.t_id == tid ? true : false; });
             if (!Cesium.defined(_this.dialog[dlgkey])) {
                 _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
@@ -887,7 +981,18 @@ class Application {
             });
         }
     }
-
+    parseEN(s) {
+        if (s) {
+            let nidx = s.indexOf("N");
+            let eidx = s.indexOf("E");
+            if (nidx > 0 && eidx > 0) {
+                return {
+                    longitude: parseFloat(s.substr(0, eidx)),
+                    latitude: parseFloat(s.substr(eidx + 1, nidx - eidx - 1))
+                };
+            }
+        }
+    }
 };
 
 global.Application = Application;

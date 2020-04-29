@@ -37,22 +37,25 @@
             });
         });
     }
+
     function unitParse(parent, arr) {
         !arr || arr.forEach((row, i) => {
-            let myparent = parent.children.find((group)=>{ return row.unit_s_cd == group.id ? true : false ; });
-            if( myparent ){
-                myparent.children.push({
-                id: myparent.group + "_" + (i + 1),
-                name: row.unit_name,
-                degree: {
-                    longitude: row.geocd_lngt,
-                    latitude: row.geocd_ltd
-                },
-                sic: row.unit_sbl_cd,
-                group: myparent.group
+            let myparent = parent.children.find((group) => {
+                return row.unit_s_cd == group.id ? true : false;
             });
+            if (myparent) {
+                myparent.children.push({
+                    id: myparent.group + "_" + (i + 1),
+                    name: row.unit_name,
+                    degree: {
+                        longitude: row.geocd_lngt,
+                        latitude: row.geocd_ltd
+                    },
+                    sic: row.unit_sbl_cd,
+                    group: myparent.group
+                });
             }
-            
+
         });
     }
 
@@ -146,13 +149,37 @@
         group: 'ally',
         collection: "KMilSymbol",
         id: 'ALLY',
-        children: [
-            {name: '작전사령부',group:'ally-J', id: 'J',collection: "KMilSymbol",children: []},
-            {name: '대대',group:'ally-F',id: 'F',collection: "KMilSymbol",children: []},
-            {name: '여단',group:'ally-H',id: 'H',collection: "KMilSymbol",children: []},
-            {name: '중대',group:'ally-E',id: 'E',collection: "KMilSymbol",children: []},
-            {name: '비행단',group:'ally-I',id: 'I',collection: "KMilSymbol",children: []}
-        ],
+        children: [{
+            name: '군단급이상',
+            group: 'ally-J',
+            id: 'J',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '여단',
+            group: 'ally-H',
+            id: 'H',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '대대',
+            group: 'ally-F',
+            id: 'F',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '중대',
+            group: 'ally-E',
+            id: 'E',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '함대사/비행(사)단',
+            group: 'ally-I',
+            id: 'I',
+            collection: "KMilSymbol",
+            children: []
+        }],
         parse: (parent, arr) => {
             unitParse(parent, arr);
         }
@@ -175,7 +202,7 @@
             unitNParse(parent, arr);
         }
     }, {
-        name: '비행부대',
+        name: '항공기',
         group: 'aircraft',
         collection: "KMilSymbol",
         id: 'AIRCRAFT',
@@ -256,7 +283,7 @@
                         let addCollection = map.collection(group);
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
-                            if( checked ){
+                            if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
                                 });
@@ -271,7 +298,7 @@
                                     });
                                 }
                             }
-                            
+
                         }
                     } else if (group === "airArea") {
                         let addCollection = map.collection(group);
@@ -320,23 +347,23 @@
                         let groups = group.split('-');
                         let addCollection = map.collection(group);
                         var viewdata;
-                        if( groups.length > 1 ){
-                            viewdata = groups.reduce((prev,curr)=>{
-                                if( !prev ){
+                        if (groups.length > 1) {
+                            viewdata = groups.reduce((prev, curr) => {
+                                if (!prev) {
                                     return toShowNode.find(function(d) {
                                         return (d.group === groups[0]) ? true : false;
                                     });
                                 }
                                 return prev.children.find(function(d) {
-                                    return (d.group === prev.group +"-" + curr) ? true : false;
+                                    return (d.group === prev.group + "-" + curr) ? true : false;
                                 });
-                            },null);
-                        }else{
+                            }, null);
+                        } else {
                             viewdata = toShowNode.find(function(d) {
                                 return (d.group === group) ? true : false;
                             });
                         }
-                        
+
                         console.dir(viewdata);
                         if (!Cesium.defined(addCollection) && viewdata) {
                             addCollection = map.createCollection(group, viewdata.collection);
@@ -346,7 +373,7 @@
                             addCollection.removeAll();
                             if (checked) {
                                 //var viewdata = toShowNode.find(function(d) {
-                                 //   return (d.group === group) ? true : false;
+                                //   return (d.group === group) ? true : false;
                                 //});
 
                                 addCollection.terrianFromDegrees(viewdata.children, function(d) {

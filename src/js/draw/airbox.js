@@ -55,6 +55,7 @@ class AirBox extends DrawObject {
                 option.label = {
                     text: name,
                     fillColor: viewModel.lineColor,
+                    font: '18px Helvetica', //font : '16px 굴림체',
                     //pixelOffset : new Cesium.Cartesian2(0, -20),
                     //eyeOffset : CTX.c(0,minHeight+maxHeight+1000,-200),
                     height: maxHeight,
