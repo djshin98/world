@@ -25,7 +25,7 @@ class AirBox extends DrawObject {
     }
     type1(collection, name, degree, minHeight, maxHeight, _viewModel) {
         if (collection) {
-            let points = [CTX.d2c(degree.lb),CTX.d2c(degree.lu),CTX.d2c(degree.rb),CTX.d2c(degree.ru)];
+            let points = [CTX.d2c(degree.lb), CTX.d2c(degree.lu), CTX.d2c(degree.ru), CTX.d2c(degree.rb)];
             let viewModel = this.setViewModel({
                 faceColor: Cesium.Color.WHITE,
                 faceTransparent: 0.6,
@@ -35,6 +35,7 @@ class AirBox extends DrawObject {
 
             let option = {
                 position: points[0],
+                name: name,
                 polygon: {
                     hierarchy: points,
                     material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
@@ -56,6 +57,7 @@ class AirBox extends DrawObject {
                     fillColor: viewModel.lineColor,
                     //pixelOffset : new Cesium.Cartesian2(0, -20),
                     //eyeOffset : CTX.c(0,minHeight+maxHeight+1000,-200),
+                    height: maxHeight,
                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                 }

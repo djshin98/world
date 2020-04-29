@@ -95,7 +95,6 @@ var mqttAdapter = new MqttAdapter({
                 console.log("onready : " + topic);
             },
             onReceive: function(topic, message) {
-                //console.log(topic + " received : " + message.toString() );
                 wss.publish(topic, message);
             }
         },
@@ -252,6 +251,37 @@ server.get('/Entities/', (req, res) => {
     connection.query(queryAirControl, function(err, result, fields) {
         if (!err) { retObj.airControl = result; } else {
             retObj.airControl = [];
+            console.log('query error : ' + err);
+        }
+        completeJob(retObj);
+    });
+});
+
+
+server.get('/type0/', (req, res) => {
+    console.log("type0");
+    var param = req.query.param;
+    console.log(JSON.parse(param));
+    var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
+    var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
+
+    retObj = {};
+
+    function completeJob(obj) {
+        if (retObj.bmoa && retObj.aircraft) {
+            res.json(retObj);
+        }
+    }
+    connection.query(queryBmoa, function(err, result, fields) {
+        if (!err) { retObj.bmoa = result; } else {
+            retObj.bmoa = [];
+            console.log('query error : ' + err);
+        }
+        completeJob(retObj);
+    });
+    connection.query(queryAir, function(err, result, fields) {
+        if (!err) { retObj.aircraft = result; } else {
+            retObj.aircraft = [];
             console.log('query error : ' + err);
         }
         completeJob(retObj);

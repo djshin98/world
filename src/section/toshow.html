@@ -10,15 +10,19 @@
 </div>
 
 <script>
-    function parseEN(s){
-        if( s ){
+    function parseEN(s) {
+        if (s) {
             let nidx = s.indexOf("N");
             let eidx = s.indexOf("E");
-            if( nidx > 0 && eidx > 0 ){
-                return { longitude : parseFloat(s.substr(0,eidx)), latitude : parseFloat(s.substr(eidx+1,nidx-eidx-1)) };
+            if (nidx > 0 && eidx > 0) {
+                return {
+                    longitude: parseFloat(s.substr(0, eidx)),
+                    latitude: parseFloat(s.substr(eidx + 1, nidx - eidx - 1))
+                };
             }
         }
     }
+
     function unitParse(parent, arr) {
         !arr || arr.forEach((row, i) => {
             parent.children.push({
@@ -94,8 +98,8 @@
                     latitude: row.geocd_ltd
                 },
                 radius: row.air_area_rads,
-                altitude: parseFloat(row.air_op_altitude)*1000,
-                height: parseFloat(row.air_op_height)*1000,
+                altitude: row.air_op_altitude,
+                height: row.air_op_height,
                 group: parent.group
             });
         });
@@ -113,8 +117,8 @@
                     rb: parseEN(row.ac_co_rb),
                     ru: parseEN(row.ac_co_ru),
                 },
-                altitude: row.min_alt,
-                height: row.max_alt,
+                altitude: parseFloat(row.min_alt) * 1000,
+                height: parseFloat(row.max_alt) * 1000,
                 group: parent.group
             });
         });
@@ -165,7 +169,7 @@
             shipParse(parent, arr);
         }
     }, {
-        name: '항공기 작전 공역',
+        name: '공역 통제',
         group: 'airControl',
         collection: "Draw",
         id: 'AIRCONTROL',
@@ -174,7 +178,7 @@
             airControlParse(parent, arr);
         }
     }, {
-        name: '공역 통제',
+        name: '항공기 작전 공역',
         group: 'airArea',
         collection: "Draw",
         id: 'AIRAREA',
@@ -278,7 +282,7 @@
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#954045",
-                                            lineTransparent: 0.5
+                                            lineTransparent: 1
                                         });
                                     });
                                 }
