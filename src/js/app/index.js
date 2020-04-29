@@ -281,8 +281,8 @@ class Application {
                                                     ustr += "<td class='tdata' >" + row.lon + "</td>";
                                                     ustr += "<td class='tdata' >" + row.lat + "</td>";
                                                     ustr += "<td class='tdata'>" + row.wt + "</td>";
-                                                    ustr += "<td class='tdata'><button data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                                    ustr += "<td class='tdata'><button data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                                    ustr += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                                    ustr += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                                     ustr += "</tr>";
                                                     $(body).find("tbody").append(ustr);
                                                 }, false
@@ -295,8 +295,8 @@ class Application {
                                         str += "<td class='tdata' >" + row.lon + "</td>";
                                         str += "<td class='tdata' >" + row.lat + "</td>";
                                         str += "<td class='tdata'>" + row.wt + "</td>";
-                                        str += "<td class='tdata'><button data-token='ref' disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                        str += "<td class='tdata'><button data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                        str += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                        str += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
