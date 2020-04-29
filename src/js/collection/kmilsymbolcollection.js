@@ -29,28 +29,32 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
     terrianFromDegrees(objs, callback) {
         let _this = this;
-        var positions = objs.map(d => {
-            let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);
-            //let position = _this.viewer.scene.clampToHeight(c);
-            return c;
-        });
-
-
-        var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, positions);
-
-        Cesium.when(promise, function(updatedPositions) {
-            // ★ Correct value is about 25.3 meters.
-            // ★ However, console shows 68.71596342427405.
-            //console.log(positions[0].height);
-            //callback(positions);
-            positions.forEach((d, i) => {
-                objs[i].degree.height = d.height;
-                if( callback ){
-                    callback(objs[i], _this);
-                }
-                
-            })
-        });
+        let selObj = objs.filter(d=>{ return Cesium.defined(d.degree)?true:false; });
+        if( selObj.length > 0 ){
+            var positions = selObj.map(d => {
+                let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);
+                //let position = _this.viewer.scene.clampToHeight(c);
+                return c;
+            });
+    
+    
+            var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, positions);
+    
+            Cesium.when(promise, function(updatedPositions) {
+                // ★ Correct value is about 25.3 meters.
+                // ★ However, console shows 68.71596342427405.
+                //console.log(positions[0].height);
+                //callback(positions);
+                positions.forEach((d, i) => {
+                    selObj[i].degree.height = d.height;
+                    if( callback ){
+                        callback(selObj[i], _this);
+                    }
+                    
+                })
+            });
+        }
+        
     }
 
     add(degree, options) {

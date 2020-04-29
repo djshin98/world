@@ -263,7 +263,7 @@ server.get('/type0/', (req, res) => {
     var param = req.query.param;
     console.log(JSON.parse(param));
     var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
-    var queryAir = mybatisMapper.getStatement('testMapper', 'aircraft', JSON.parse(param), format);
+    var queryAir = mybatisMapper.getStatement('testMapper', 'air_type0', JSON.parse(param), format);
 
     retObj = {};
 

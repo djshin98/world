@@ -23,7 +23,7 @@
         }
     }
 
-    function unitParse(parent, arr) {
+    function unitNParse(parent, arr) {
         !arr || arr.forEach((row, i) => {
             parent.children.push({
                 id: parent.group + "_" + (i + 1),
@@ -35,6 +35,24 @@
                 sic: row.unit_sbl_cd,
                 group: parent.group
             });
+        });
+    }
+    function unitParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
+            let myparent = parent.children.find((group)=>{ return row.unit_s_cd == group.id ? true : false ; });
+            if( myparent ){
+                myparent.children.push({
+                id: myparent.group + "_" + (i + 1),
+                name: row.unit_name,
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
+                sic: row.unit_sbl_cd,
+                group: myparent.group
+            });
+            }
+            
         });
     }
 
@@ -128,7 +146,13 @@
         group: 'ally',
         collection: "KMilSymbol",
         id: 'ALLY',
-        children: [],
+        children: [
+            {name: '작전사령부',group:'ally-J', id: 'J',collection: "KMilSymbol",children: []},
+            {name: '대대',group:'ally-F',id: 'F',collection: "KMilSymbol",children: []},
+            {name: '여단',group:'ally-H',id: 'H',collection: "KMilSymbol",children: []},
+            {name: '중대',group:'ally-E',id: 'E',collection: "KMilSymbol",children: []},
+            {name: '비행단',group:'ally-I',id: 'I',collection: "KMilSymbol",children: []}
+        ],
         parse: (parent, arr) => {
             unitParse(parent, arr);
         }
@@ -148,7 +172,7 @@
         id: 'ENEMY',
         children: [],
         parse: (parent, arr) => {
-            unitParse(parent, arr);
+            unitNParse(parent, arr);
         }
     }, {
         name: '비행부대',
@@ -232,22 +256,26 @@
                         let addCollection = map.collection(group);
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
-                            var viewdata = toShowNode.find(function(d) {
-                                return (d.group === group) ? true : false;
-                            });
-                            if (viewdata && viewdata.children) {
-                                viewdata.children.forEach(row => {
-                                    app.drawObject("bmoa").type1(addCollection, row.name, row.degree, row.rad * 1000, {
-                                        faceColor: "#ffffff",
-                                        faceTransparent: 0.5,
-                                        lineColor: "#ff0000",
-                                        lineTransparent: 1
-                                    });
+                            if( checked ){
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
                                 });
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        app.drawObject("bmoa").type1(addCollection, row.name, row.degree, row.rad * 1000, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#ff0000",
+                                            lineTransparent: 1
+                                        });
+                                    });
+                                }
                             }
+                            
                         }
                     } else if (group === "airArea") {
                         let addCollection = map.collection(group);
+
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
                             if (checked) {
@@ -289,13 +317,37 @@
                             }
                         }
                     } else {
+                        let groups = group.split('-');
                         let addCollection = map.collection(group);
+                        var viewdata;
+                        if( groups.length > 1 ){
+                            viewdata = groups.reduce((prev,curr)=>{
+                                if( !prev ){
+                                    return toShowNode.find(function(d) {
+                                        return (d.group === groups[0]) ? true : false;
+                                    });
+                                }
+                                return prev.children.find(function(d) {
+                                    return (d.group === prev.group +"-" + curr) ? true : false;
+                                });
+                            },null);
+                        }else{
+                            viewdata = toShowNode.find(function(d) {
+                                return (d.group === group) ? true : false;
+                            });
+                        }
+                        
+                        console.dir(viewdata);
+                        if (!Cesium.defined(addCollection) && viewdata) {
+                            addCollection = map.createCollection(group, viewdata.collection);
+                        }
+
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
                             if (checked) {
-                                var viewdata = toShowNode.find(function(d) {
-                                    return (d.group === group) ? true : false;
-                                });
+                                //var viewdata = toShowNode.find(function(d) {
+                                 //   return (d.group === group) ? true : false;
+                                //});
 
                                 addCollection.terrianFromDegrees(viewdata.children, function(d) {
                                     d.size = 30;

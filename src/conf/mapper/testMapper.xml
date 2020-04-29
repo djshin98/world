@@ -28,4 +28,7 @@
   <select id="air_control">
       SELECT * FROM t_waa_air_control
   </select>
+  <select id="air_type0">
+    SELECT o.air_id as id , o.air_op_hei as height, a.unit_id as unit, a.air_name as name, a.geocd_lngt as lng, a.geocd_ltd as lat, a.unit_sbl_cd as sic FROM t_waa_aircraft a, t_waa_op_air o WHERE o.air_id = a.air_id
+  </select>
 </mapper>
