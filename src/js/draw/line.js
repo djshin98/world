@@ -1,28 +1,28 @@
 var { DrawObject } = require('./drawobject');
-class Line extends DrawObject{
-    constructor(){
+class Line extends DrawObject {
+    constructor() {
         super(2);
     }
-    create(collection,points,viewModel){
-        if( points && points.length >= this.minPointCount ){
+    create(collection, points, viewModel) {
+        if (points && points.length >= this.minPointCount) {
             let option = {
-                positions : points,
-                clampToGround : true,
-                color : viewModel.lineColor,
-                width : viewModel.lineWidth
+                positions: points,
+                clampToGround: true,
+                color: viewModel.lineColor,
+                width: viewModel.lineWidth
             };
-            if( viewModel.lineStyle != "line"){
+            if (viewModel.lineStyle != "line") {
                 option.material = new Cesium.PolylineDashMaterialProperty({
-                    color : viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle,viewModel.lineWidth)
+                    color: viewModel.lineColor,
+                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, viewModel.lineWidth)
                 });
-            }else{
+            } else {
                 option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
             }
-            return collection.add(this.index,{
-                polyline : option
+            return collection.add(this.index, {
+                polyline: option
             });
         }
     }
 }
-module.exports = { Line:Line };
+module.exports = { Line: Line };

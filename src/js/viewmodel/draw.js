@@ -23,6 +23,7 @@ var { ImageLine } = require('../draw/imageline');
 var { Point } = require('../draw/point');
 var { AirBox } = require('../draw/airbox');
 var { Parabola } = require('../draw/parabola');
+var { Quadratic } = require('../draw/quadratic');
 
 var drawLinker = {
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -43,7 +44,8 @@ var drawLinker = {
     imageline: { name: "이미지선", createFunc: function() { return new ImageLine(); } },
     point: { name: "점", createFunc: function() { return new Point(); } },
     aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
-    parabola: { name: "포곡선", createFunc: function() { return new Parabola(); } },
+    parabola: { name: "포곡선(sin)", createFunc: function() { return new Parabola(); } },
+    quadratic: { name: "포곡선(quadratic)", createFunc: function() { return new Quadratic(); } },
 }
 
 // widget 에 대한 표준을 만든다.
@@ -61,6 +63,7 @@ class Draw {
             lineColor: Cesium.Color.WHITE,
             lineTransparent: 1,
             lineStyle: 'line',
+            size: 5,
             faceColor: Cesium.Color.WHITE,
             faceTransparent: 1,
             frameEnable: false,
@@ -128,9 +131,10 @@ class Draw {
                     return _this.activeShapePoints;
                 }, false);
                 _this.activeShape = _this.drawShape(dynamicPositions);
+            } else {
+                _this.activeShapePoints.push(earthPosition);
+                _this.createPoint(earthPosition);
             }
-            _this.activeShapePoints.push(earthPosition);
-            _this.createPoint(earthPosition);
         }
     }
     update(viewModel) {

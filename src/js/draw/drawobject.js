@@ -41,6 +41,10 @@ function setDrawViewModel(defaultViewModel, viewModel) {
     _viewModel.frameEnable = Cesium.defined(viewModel.frameEnable) ? viewModel.frameEnable : _viewModel.frameEnable;
     _viewModel.shapeStyle = Cesium.defined(viewModel.shapeStyle) ? viewModel.shapeStyle : _viewModel.shapeStyle;
 
+    _viewModel.size = Cesium.defined(viewModel.size) ? parseInt(viewModel.size) : _viewModel.size;
+    _viewModel.shapeSize = Cesium.defined(viewModel.shapeSize) ? parseInt(viewModel.shapeSize) : _viewModel.shapeSize;
+    _viewModel.lineWidth = Cesium.defined(viewModel.lineWidth) ? parseInt(viewModel.lineWidth) : _viewModel.lineWidth;
+
     if (Cesium.defined(viewModel.lineColor)) {
         if (typeof(viewModel.lineColor) == "string") {
             _viewModel.lineColor = Cesium.Color.fromCssColorString(viewModel.lineColor);
