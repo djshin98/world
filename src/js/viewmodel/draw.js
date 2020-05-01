@@ -24,6 +24,8 @@ var { Point } = require('../draw/point');
 var { AirBox } = require('../draw/airbox');
 var { Parabola } = require('../draw/parabola');
 var { Quadratic } = require('../draw/quadratic');
+var { Air2Earth } = require('../draw/air2earth');
+var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 
 var drawLinker = {
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -46,6 +48,8 @@ var drawLinker = {
     aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
     parabola: { name: "포곡선(sin)", createFunc: function() { return new Parabola(); } },
     quadratic: { name: "포곡선(quadratic)", createFunc: function() { return new Quadratic(); } },
+    air2earth: { name: "공대지(quadratic)", createFunc: function() { return new Air2Earth(); } },
+    visibilityAnalysys: { name: "가시권분석", createFunc: function() { return new VisibilityAnalysys(); } },
 }
 
 // widget 에 대한 표준을 만든다.

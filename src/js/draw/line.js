@@ -14,7 +14,7 @@ class Line extends DrawObject {
             if (viewModel.lineStyle != "line") {
                 option.material = new Cesium.PolylineDashMaterialProperty({
                     color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, viewModel.lineWidth)
+                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, (viewModel.lineWidth) % 8)
                 });
             } else {
                 option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);

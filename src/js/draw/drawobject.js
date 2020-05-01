@@ -44,6 +44,7 @@ function setDrawViewModel(defaultViewModel, viewModel) {
     _viewModel.size = Cesium.defined(viewModel.size) ? parseInt(viewModel.size) : _viewModel.size;
     _viewModel.shapeSize = Cesium.defined(viewModel.shapeSize) ? parseInt(viewModel.shapeSize) : _viewModel.shapeSize;
     _viewModel.lineWidth = Cesium.defined(viewModel.lineWidth) ? parseInt(viewModel.lineWidth) : _viewModel.lineWidth;
+    _viewModel.image = viewModel.image;
 
     if (Cesium.defined(viewModel.lineColor)) {
         if (typeof(viewModel.lineColor) == "string") {
@@ -136,9 +137,10 @@ class DrawObject {
         if (str == "line") {
             return parseInt('11111111111', 2);
         } else if (str == "dot") {
-            return parseInt('1'.repeat(width), 2);
+            let v = '1'.repeat(width);
+            return parseInt(v, 2);
         } else if (str == "long-dot") {
-            return parseInt('1'.repeat(width * 2), 2);
+            return parseInt('1'.repeat(width), 2);
         } else if (str == "dot-dot-line") {
             return parseInt('1'.repeat(width) + '0'.repeat(width), 2);
         }

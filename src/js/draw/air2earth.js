@@ -2,7 +2,7 @@ var { DrawObject } = require('./drawobject');
 var { ParabolaUtil } = require('./util');
 var { CTX } = require("../map3d/ctx");
 
-class Quadratic extends DrawObject {
+class Air2Earth extends DrawObject {
     constructor() {
         super(2);
     }
@@ -15,29 +15,10 @@ class Quadratic extends DrawObject {
             let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
             let distrance = CTX.distanceD(degrees.start, degrees.end);
             height = distrance / 2;
-            let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
-            console.log("polylinePoints length : " + polylinePoints.points.length);
+            let polylinePoints = ParabolaUtil.quadraticHalf(degrees, 100, true);
 
-            let heightMeterial;
-            if (viewModel.lineStyle != "line") {
-                heightMeterial = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, 4)
-                });
-            } else {
-                heightMeterial = new Cesium.ColorMaterialProperty(viewModel.lineColor);
-            }
-
-            collection.add(this.index, {
-                polyline: {
-                    positions: polylinePoints.center,
-                    color: viewModel.lineColor,
-                    width: 1,
-                    material: heightMeterial
-                }
-            });
             if (viewModel.frameEnable === true) {
-                polylinePoints.points.forEach(p => {
+                polylinePoints.forEach(p => {
                     collection.add(this.index, {
                         position: p,
                         point: {
@@ -53,14 +34,14 @@ class Quadratic extends DrawObject {
                 });
             } else {
                 let option = {
-                    positions: polylinePoints.points.reverse(),
+                    positions: polylinePoints.reverse(),
                     color: viewModel.lineColor,
                     width: viewModel.lineWidth,
                     material: new Cesium.PolylineGlowMaterialProperty({
                             //color: viewModel.lineColor,
                             glowPower: 0.3,
                             taperPower: 0.3,
-                            color: Cesium.Color.PALEGOLDENROD
+                            color: Cesium.Color.MEDIUMTURQUOISE
                         })
                         //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                 };
@@ -138,4 +119,4 @@ class Quadratic extends DrawObject {
     }
 }
 
-module.exports = { Quadratic: Quadratic };
+module.exports = { Air2Earth: Air2Earth };
