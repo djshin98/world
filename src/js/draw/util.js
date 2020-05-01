@@ -121,8 +121,6 @@ var ParabolaUtil = {
         console.log("q:" + height);
         console.log("s:" + degrees.start.height + " , e:" + degrees.end.height + ", max:" + maxHeight);
 
-        //degrees.start.height
-        //degrees.end.height
         return { points: points, center: center };
     },
     quadraticHalf: function(degrees, divide) {
