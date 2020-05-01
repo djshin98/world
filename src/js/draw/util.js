@@ -67,9 +67,9 @@ var ParabolaUtil = {
         let y0 = 0;
         let x1 = 0;
         let y1 = 0;
-        //let ratio = 180 / divide;
-        let deltaLon = (degrees.end.longitude - degrees.start.longitude) / divide; //경도 방향 이동량
-        let deltaLat = (degrees.end.latitude - degrees.start.latitude) / divide; //위도 방향 이동량
+
+        let deltaLon = (degrees.end.longitude - degrees.start.longitude) / divide; //경도 방향 단위
+        let deltaLat = (degrees.end.latitude - degrees.start.latitude) / divide; //위도 방향 단위
 
         var points = [];
         let maxHeight = 0;
@@ -79,6 +79,7 @@ var ParabolaUtil = {
             y0 = degrees.start.height;
             x1 = degrees.end.longitude;
             y1 = degrees.end.height;
+
         } else {
             brefLongitude = false;
             x0 = degrees.start.latitude;
@@ -86,21 +87,28 @@ var ParabolaUtil = {
             x1 = degrees.end.latitude;
             y1 = degrees.end.height;
         }
-        /*
-        let r = (Math.sqrt(y1) / Math.sqrt(y0));
-        let dist = (x1 - x0);
-        let distr = (dist * r) / 2;
-        let p = (x0 + distr);
-        */
-        let clng = (degrees.end.longitude + degrees.start.longitude) / 2;
-        let clat = (degrees.end.latitude + degrees.start.latitude) / 2;
+        let distance = x1 - x0;
+        let r = Math.sqrt(q - y0) / Math.sqrt(q - y1);
+        let p0 = (distance * r) / (1 + r);
+        let p = x0 + p0;
+        let a = (y0 - q) / Math.pow(x0 - p, 2);
+        let cratio = p0 / distance;
+
+        let clng = 0; //degrees.start.longitude + (distance * cratio);
+        let clat = 0; //degrees.start.latitude + (distance * cratio);
+        if (brefLongitude) {
+            clng = degrees.start.longitude + (distance * cratio);
+            let distance1 = degrees.end.latitude - degrees.start.latitude;
+            clat = degrees.start.latitude + (distance1 * cratio);
+        } else {
+            clat = degrees.start.latitude + (distance * cratio);
+            let distance1 = degrees.end.longitude - degrees.start.longitude;
+            clng = degrees.start.longitude + (distance1 * cratio);
+        }
         let center = [
-            //CTX.cartesian(clng, clat, ParabolaUtil.height(clng, clat)),
             ParabolaUtil.cartesianSurfaceHeight(clng, clat),
             CTX.cartesian(clng, clat, q)
         ];
-        p = (x0 + x1) / 2;
-        let a = (y0 - q) / Math.pow(x0 - p, 2);
 
         for (var i = 0; i <= divide; i++) {
             let lon = degrees.start.longitude + (deltaLon * i);
@@ -108,10 +116,7 @@ var ParabolaUtil = {
             let val = brefLongitude ? lon : lat;
             let h = a * Math.pow(val - p, 2) + q;
             maxHeight = Math.max(maxHeight, h);
-            //console.log("lon : " + lon + "lat : " + lat + " : " + h);
             points.push(CTX.cartesian(lon, lat, h));
-            //points.push(CTX.degree(lon, lat, h));
-            //points.push({ longitude: lon, latitude: lat, height: h });
         }
         console.log("q:" + height);
         console.log("s:" + degrees.start.height + " , e:" + degrees.end.height + ", max:" + maxHeight);
@@ -119,24 +124,6 @@ var ParabolaUtil = {
         //degrees.start.height
         //degrees.end.height
         return { points: points, center: center };
-
-
-
-        /*
-            let y1 = a * Math.pow(x1 - p) + q;
-            y1 = ((y - q)/Math.pow(x - p))* Math.pow(x1 - p) + q;
-            y1-q = ((y - q)/Math.pow(x - p))* Math.pow(x1 - p);
-            (y1-q)/(y - q) = Math.pow(x1 - p) / Math.pow(x - p);
-            Math.sqrt((y1-q)/(y - q)) = (x1-p)/(x-p);
-            Math.sqrt((y1-q)/(y - q)) * (x-p) = (x1-p);
-            let yq = Math.sqrt((y1-q)/(y - q));
-            (yq * x) - (yq * p) = x1 -p;
-            (1 - yq) * p = x1 - (yq*x);
-           
-            p = (x1 -(yq*x))/(1 - yq);
-             */
-        //let p = 
-
     },
     quadraticHalf: function(degrees, divide) {
 
@@ -196,19 +183,30 @@ var VisibilityUtil = {
 
         start.height += height;
         let split = 10;
-        let div = { lon: (end.longitude - start.longitude) / split, lat: (end.latitude - start.latitude) / split };
-        let polyline = [];
+
+
         let center = CTX.cartesian(start.longitude, start.latitude, start.height);
 
         let THETA = Math.PI / 180;
-        for (var i = 0; i < 360; i++) {
+        for (var i = 0; i < 360; i += 2) {
+            let polyline = [];
             theta = THETA * i;
             let r = VisibilityUtil.rotate(start, end, theta);
-            polyline.push(center);
-            polyline.push(CTX.cartesian(r.longitude, r.latitude, r.height));
-            polylines.push(polyline);
+            polylines.push(VisibilityUtil.divide(start, r, split));
+            //polyline.push(center);
+            //polyline.push(CTX.cartesian(r.longitude, r.latitude, r.height));
+            //polylines.push(polyline);
         }
         return polylines;
+    },
+    divide: function(start, end, split) {
+        let polyline = [];
+        let lon = (end.longitude - start.longitude) / split;
+        let lat = (end.latitude - start.latitude) / split;
+        for (var i = 0; i < split; i++) {
+            polyline.push(CTX.cartesian(start.longitude + lon * i, start.latitude + lat * i, start.height));
+        }
+        return polyline;
     },
     rotate: function(start, end, theta) {
         x = end.longitude - start.longitude;

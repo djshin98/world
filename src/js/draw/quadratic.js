@@ -14,7 +14,7 @@ class Quadratic extends DrawObject {
             }
             let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
             let distrance = CTX.distanceD(degrees.start, degrees.end);
-            height = distrance / 2;
+            //height = distrance / 2;
             let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
             console.log("polylinePoints length : " + polylinePoints.points.length);
 
