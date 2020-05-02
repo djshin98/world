@@ -125,7 +125,7 @@ class MilMap {
         this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
-        
+
         if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
             this.options.map3.offlineBaseLayers.forEach(d => {
@@ -137,19 +137,19 @@ class MilMap {
 
         let _this = this;
 
-        
+
         var entity = this.viewer3d.entities.add({
-            label:{
+            label: {
                 show: true,
-                showBackground:true,
+                showBackground: true,
                 backgroundColor: Cesium.Color.BLACK,
-                font:'25px sans-serif',
+                font: '25px sans-serif',
                 horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
                 verticalOrigin: Cesium.VerticalOrigin.TOP,
-                pixelOffset: new Cesium.Cartesian2(15,0)
+                pixelOffset: new Cesium.Cartesian2(15, 0)
             }
         });
-        
+
 
         this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
@@ -256,46 +256,46 @@ class MilMap {
             }
         }
     }
-    createCollection(name,type){
-        if( Cesium.defined(name) && Cesium.defined(type) && Cesium.defined(this.collectionTypes[type]) ){
-            if( !Cesium.defined(this.collections[name]) ){
-                this.collections[name] = new this.collectionTypes[type](this,{name:name});
+    createCollection(name, type) {
+        if (Cesium.defined(name) && Cesium.defined(type) && Cesium.defined(this.collectionTypes[type])) {
+            if (!Cesium.defined(this.collections[name])) {
+                this.collections[name] = new this.collectionTypes[type](this, { name: name });
             }
             return this.collections[name];
         }
     }
-    destroyCollection(name){
-        if( Cesium.defined(name) &&  Cesium.defined(this.collections[name]) ){
+    destroyCollection(name) {
+        if (Cesium.defined(name) && Cesium.defined(this.collections[name])) {
             this.collections[name].destroy();
             delete(this.collections[name]);
         }
     }
-    collection(name){ return this.collections[name]; }
+    collection(name) { return this.collections[name]; }
 
     connectViewModel(id, viewModel, updateCallback) {
 
         var _this = this;
 
-        this.db.get("viewmodel",id,function (result) {
+        this.db.get("viewmodel", id, function(result) {
             if (result && result.value) {
-                viewModel = Object.assign(viewModel,result.value);
+                viewModel = Object.assign(viewModel, result.value);
             }
             Cesium.knockout.track(viewModel);
             Cesium.knockout.applyBindings(viewModel, document.getElementById(id));
             var _viewModel = viewModel;
-        
+
             for (var name in viewModel) {
                 if (viewModel.hasOwnProperty(name)) {
                     Cesium.knockout.getObservable(viewModel, name).subscribe(function(newValue) {
                         updateCallback(_this.viewer3d, _viewModel, newValue);
-                        _this.db.set("viewmodel",id,_viewModel);
+                        _this.db.set("viewmodel", id, _viewModel);
                     });
                 }
             }
             updateCallback(_this.viewer3d, viewModel);
         });
-        
-        
+
+
     }
     widget(name, bshow) {
 
@@ -308,6 +308,18 @@ class MilMap {
             this.contourWidget = new Contour(this.viewer3d);
         }
         this.contourWidget.update(viewModel);
+    }
+    terrianFromDegrees(degrees, callback) {
+        var positions = degrees.map(d => {
+            return CTX.degree(d.longitude, d.latitude);
+        });
+        var promise = Cesium.sampleTerrainMostDetailed(this.viewer3d.terrainProvider, positions);
+        Cesium.when(promise, function(updatedPositions) {
+            // ★ Correct value is about 25.3 meters.
+            // ★ However, console shows 68.71596342427405.
+            //console.log(positions[0].height);
+            callback(positions);
+        });
     }
     gridGARS(bshow, options) {
 

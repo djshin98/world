@@ -1,5 +1,4 @@
-
-class OliveEntityCollection { 
+class OliveEntityCollection {
     constructor(map, options) {
         this.name = options.name;
         this.map = map;
@@ -18,24 +17,24 @@ class OliveEntityCollection {
             return d.id;
         });
     }
-    addCompositedEntity(opt,mainObject,subObjects){
-        Object.keys(mainObject).some(key=>{
+    addCompositedEntity(opt, mainObject, subObjects) {
+        Object.keys(mainObject).some(key => {
             opt[key] = mainObject[key];
             return true;
         });
         let entity = this.addEntity(opt);
-        
+
         let _this = this;
-        if( Cesium.defined(entity) ){
+        if (Cesium.defined(entity)) {
             //let subOption = {position:opt.position,parent:entity,polyline:subObjects[0].polyline};
             //subOption[key] = sub[key];
             //_this.viewer.entities.add(new Cesium.Entity(subOption)); 
-            
-            subObjects.forEach(sub=>{
-                Object.keys(sub).every(key=>{
-                    let subOption = {position:opt.position,parent:entity};
+
+            subObjects.forEach(sub => {
+                Object.keys(sub).every(key => {
+                    let subOption = { position: opt.position, parent: entity };
                     subOption[key] = sub[key];
-                    let subEntity = _this.viewer.entities.add(new Cesium.Entity(subOption)); 
+                    let subEntity = _this.viewer.entities.add(new Cesium.Entity(subOption));
                     subEntity.category = _this.name;
                     return true;
                 });
@@ -44,7 +43,7 @@ class OliveEntityCollection {
         return entity;
     }
     addEntity(opt) {
-        let entity = this.viewer.entities.add(new Cesium.Entity(opt)); 
+        let entity = this.viewer.entities.add(new Cesium.Entity(opt));
         entity.category = this.name;
         this.objects.push({
             id: entity.id,
@@ -55,8 +54,8 @@ class OliveEntityCollection {
     }
     removeAll() {
         let _this = this;
-        this.objects.forEach(entity=>{
-            _this.viewer.entities.remove( _this.viewer.entities.getById(entity.id));
+        this.objects.forEach(entity => {
+            _this.viewer.entities.remove(_this.viewer.entities.getById(entity.id));
         });
         this.objects = [];
     }
@@ -80,9 +79,11 @@ class OliveEntityCollection {
                     }
                 }
             }
-            let subs = _this.viewer.entities.values.filter(e=>{ 
-                return (e.parent && e.parent.id == entity.id && e.category && e.category == _this.name)?true:false });
-            subs.forEach(e=>{ _this.viewer.entities.remove(e); console.log( "remove sub : " + e.id ); });
+            let subs = _this.viewer.entities.values.filter(e => {
+                return (e.parent && e.parent.id == entity.id && e.category && e.category == _this.name) ? true : false
+            });
+            subs.forEach(e => { _this.viewer.entities.remove(e);
+                console.log("remove sub : " + e.id); });
         });
     }
     _removeEntity(entity, callback) {
@@ -116,9 +117,9 @@ class OliveEntityCollection {
     open(entities) {
 
     }
-    terrianFromDegrees(degrees,callback){
-        var positions = degrees.map(d=>{
-            return CTX.degree(d.longitude,d.latitude);
+    terrianFromDegrees(degrees, callback) {
+        var positions = degrees.map(d => {
+            return CTX.degree(d.longitude, d.latitude);
         });
         var promise = Cesium.sampleTerrainMostDetailed(this.viewer.terrainProvider, positions);
         Cesium.when(promise, function(updatedPositions) {

@@ -220,31 +220,28 @@ var VisibilityUtil = {
             let r = LineUtil.rotate(center, end, THETA * i);
 
             let polyline = LineUtil.divide(center, r, options.divide);
-            if (options.terrian == true) {
-                VisibilityUtil.terrianEI(polyline);
-            }
-            polyline = CTX.d2cA(polyline);
+            //if (options.terrian == true) {
+            //    VisibilityUtil.terrianEI(polyline);
+            //}
+            //polyline = CTX.d2cA(polyline);
             polylines.push(polyline);
         }
         return polylines;
     },
+    // ★ 최초의 정점의 높이는 고정시키고, 다른 정점들중 tanθ 값이 제일 큰 값으로 변경한다. 
     terrianEI: function(polyline) {
         let len = polyline.length;
         if (len > 1) {
-            let deltaLon = (polyline[len - 1].longitude - polyline[0].longitude);
-            let deltaLat = (polyline[len - 1].latitude - polyline[0].latitude);
-            let distanceUnit = (Math.abs(deltaLon) > Math.abs(deltaLat)) ? deltaLon / (len - 1) : deltaLat / (len - 1);
+            let distanceUnit = CTX.distanceR(polyline[0], polyline[len - 1]) / (len - 1);
             let maxTheta = -Infinity;
             polyline.forEach((point, i) => {
                 if (i > 0) {
-                    let h = SurfaceUtil.height(point.longitude, point.latitude, point.height);
-                    let vector = (point.height > h) ? -1 : 1;
-                    maxTheta = Math.max(maxTheta, vector * h / (distanceUnit * i));
+                    maxTheta = Math.max(maxTheta, (point.height - polyline[0].height) / (distanceUnit * i));
                 }
             });
             polyline.forEach((point, i) => {
                 if (i > 0) {
-                    point.height = maxTheta * (distanceUnit * i);
+                    point.height = maxTheta * (distanceUnit * i) + polyline[0].height;
                 }
             });
         }

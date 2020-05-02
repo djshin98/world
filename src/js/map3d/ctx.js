@@ -36,6 +36,7 @@ var CTX = {
             }
             return Cesium.Cartesian3.fromRadians(r.longitude, r.latitude, r.height);
         },
+        r2cA: function(rs) { return rs.map(r => { return CTX.r2c(r); }); },
         r2w: function(r) {
             if (CTX.debug) {
                 console.log("r2w : ");

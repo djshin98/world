@@ -4,14 +4,14 @@ let { CTX } = require('../map3d/ctx');
 var pinBuilder = new Cesium.PinBuilder();
 
 var PinMarkers = {
-start : {name:'start',type:'text',text:'S',color:Cesium.Color.NAVY,size:48},
-center : {name:'center',type:'text',text:'C',color:Cesium.Color.DARKCYAN,size:48},
-end : {name:'end',type:'text',text:'E',color:Cesium.Color.RED,size:48},
-via : {name:'via',type:'icon',icon:'marker',color:Cesium.Color.CHOCOLATE,size:48}
+    start: { name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 },
+    center: { name: 'center', type: 'text', text: 'C', color: Cesium.Color.DARKCYAN, size: 48 },
+    end: { name: 'end', type: 'text', text: 'E', color: Cesium.Color.RED, size: 48 },
+    via: { name: 'via', type: 'icon', icon: 'marker', color: Cesium.Color.CHOCOLATE, size: 48 }
 };
 
 class DrawCollection {
-    constructor(map,options) {
+    constructor(map, options) {
         this.name = options.name;
         this.map = map;
         this.viewer = map.viewer3d;
@@ -23,7 +23,7 @@ class DrawCollection {
     close() {
         this.viewer.entities.removeAll();
     }
-    add(id,option) {
+    add(id, option) {
         var ent = this.viewer.entities.add(option
             /*
             {
@@ -40,15 +40,15 @@ class DrawCollection {
         return this.viewer.entities.values.filter((entity) => { return (entity.category == this.name && entity.drawId == id) ? true : false; });
     }
     remove(idOrEntity) {
-        if(idOrEntity){
-            if( typeof(idOrEntity) == "number" ){
+        if (idOrEntity) {
+            if (typeof(idOrEntity) == "number") {
                 let ents = this.get(idOrEntity);
-                ents.forEach(ent=>{
+                ents.forEach(ent => {
                     _this.viewer.entities.remove(ent);
                 });
-            }else if(typeof(idOrEntity) == "string"){
+            } else if (typeof(idOrEntity) == "string") {
                 _this.viewer.entities.remove(idOrEntity);
-            }else if( typeof(idOrEntity) == "object" ){
+            } else if (typeof(idOrEntity) == "object") {
                 this.viewer.entities.remove(idOrEntity);
             }
         }
@@ -56,12 +56,12 @@ class DrawCollection {
     removeAll() {
         let _this = this;
         let list = this.viewer.entities.values.filter((entity) => { return (entity.category == _this.name) ? true : false; });
-        list.forEach(ent=>{
+        list.forEach(ent => {
             _this.viewer.entities.remove(ent);
         });
     }
 }
 module.exports = {
     DrawCollection: DrawCollection,
-    PinMarkers : PinMarkers
+    PinMarkers: PinMarkers
 }
