@@ -7,7 +7,13 @@ class VisibilityAnalysys extends DrawObject {
     }
     create(collection, points, viewModel) {
         if (points && points.length >= this.minPointCount) {
-            let polylines = VisibilityUtil.circle(CTX.c2d(points[0]), CTX.c2d(points[1]), 10);
+            var distance = Cesium.Cartesian3.distance(points[0], points[1]);
+            let polylines = VisibilityUtil.radiation(CTX.c2d(points[0]), CTX.c2d(points[1]), {
+                height: 10,
+                divide: 10,
+                degree: 3,
+                terrian: true
+            });
             if (Cesium.defined(polylines)) {
                 polylines.forEach(polyline => {
                     collection.add(this.index, {
@@ -19,7 +25,6 @@ class VisibilityAnalysys extends DrawObject {
                     });
                 });
             }
-
         }
     }
 }

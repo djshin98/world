@@ -1,5 +1,32 @@
 var { CTX } = require("../map3d/ctx");
 
+var SurfaceUtil = {
+    height: function(lon, lat, height) {
+        var earth = Cesium.Ellipsoid.WGS84;
+        let result = CTX.cartesian(0, 0, 0);
+        let c = earth.scaleToGeodeticSurface(CTX.cartesian(lon, lat, height), result);
+        let degree = CTX.c2d(result);
+        return degree.height;
+    }
+}
+var LineUtil = {
+    divide: function(start, end, split) {
+        let polyline = [];
+        let lon = (end.longitude - start.longitude) / split;
+        let lat = (end.latitude - start.latitude) / split;
+        for (var i = 0; i < split; i++) {
+            polyline.push(CTX.llh(start.longitude + lon * i, start.latitude + lat * i, start.height));
+        }
+        return polyline;
+    },
+    rotate: function(center, end, theta) {
+        x = end.longitude - center.longitude;
+        y = end.latitude - center.latitude;
+        x1 = x * Math.cos(theta) - y * Math.sin(theta);
+        y1 = x * Math.sin(theta) + y * Math.cos(theta);
+        return CTX.llh(center.longitude + x1, center.latitude + y1, end.height);
+    }
+};
 var ParabolaUtil = {
     sin: function(degrees, angles, divide, height, terrian, inverse, irepeat) {
         if (divide > 0 && height > 0) {
@@ -173,45 +200,55 @@ var ParabolaUtil = {
         let h = earth.scaleToGeodeticSurface(CTX.cartesian(lng, lat, 0), result);
         return h;
     }
-}
+};
 
 var VisibilityUtil = {
-    circle: function(start, end, height) {
+    radiation: function(center, end, options) {
+        options = Object.assign({
+            height: 1,
+            divide: 10,
+            degree: 10,
+            terrian: false
+        }, options);
         let polylines = [];
 
-        start.height += height;
-        let split = 10;
-
-
-        let center = CTX.cartesian(start.longitude, start.latitude, start.height);
+        center.height += options.height;
+        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
 
         let THETA = Math.PI / 180;
-        for (var i = 0; i < 360; i += 2) {
-            let polyline = [];
-            theta = THETA * i;
-            let r = VisibilityUtil.rotate(start, end, theta);
-            polylines.push(VisibilityUtil.divide(start, r, split));
-            //polyline.push(center);
-            //polyline.push(CTX.cartesian(r.longitude, r.latitude, r.height));
-            //polylines.push(polyline);
+        for (var i = 0; i < 360; i += options.degree) {
+            let r = LineUtil.rotate(center, end, THETA * i);
+
+            let polyline = LineUtil.divide(center, r, options.divide);
+            if (options.terrian == true) {
+                VisibilityUtil.terrianEI(polyline);
+            }
+            polyline = CTX.d2cA(polyline);
+            polylines.push(polyline);
         }
         return polylines;
     },
-    divide: function(start, end, split) {
-        let polyline = [];
-        let lon = (end.longitude - start.longitude) / split;
-        let lat = (end.latitude - start.latitude) / split;
-        for (var i = 0; i < split; i++) {
-            polyline.push(CTX.cartesian(start.longitude + lon * i, start.latitude + lat * i, start.height));
+    terrianEI: function(polyline) {
+        let len = polyline.length;
+        if (len > 1) {
+            let deltaLon = (polyline[len - 1].longitude - polyline[0].longitude);
+            let deltaLat = (polyline[len - 1].latitude - polyline[0].latitude);
+            let distanceUnit = (Math.abs(deltaLon) > Math.abs(deltaLat)) ? deltaLon / (len - 1) : deltaLat / (len - 1);
+            let maxTheta = -Infinity;
+            polyline.forEach((point, i) => {
+                if (i > 0) {
+                    let h = SurfaceUtil.height(point.longitude, point.latitude, point.height);
+                    let vector = (point.height > h) ? -1 : 1;
+                    maxTheta = Math.max(maxTheta, vector * h / (distanceUnit * i));
+                }
+            });
+            polyline.forEach((point, i) => {
+                if (i > 0) {
+                    point.height = maxTheta * (distanceUnit * i);
+                }
+            });
         }
         return polyline;
-    },
-    rotate: function(start, end, theta) {
-        x = end.longitude - start.longitude;
-        y = end.latitude - start.latitude;
-        x1 = x * Math.cos(theta) - y * Math.sin(theta);
-        y1 = x * Math.sin(theta) + y * Math.cos(theta);
-        return { longitude: start.longitude + x1, latitude: start.latitude + y1, height: end.height };
     }
 };
 
@@ -227,4 +264,4 @@ points.forEach(d => {
     console.log("p:" + d.longitude + " , h:" + d.height);
 });
 */
-module.exports = { ParabolaUtil: ParabolaUtil, VisibilityUtil: VisibilityUtil };
+module.exports = { SurfaceUtil: SurfaceUtil, LineUtil: LineUtil, ParabolaUtil: ParabolaUtil, VisibilityUtil: VisibilityUtil };
