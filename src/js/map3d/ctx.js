@@ -29,6 +29,7 @@ var CTX = {
             }
             return new Cesium.Cartographic(r.longitude * Cesium.Math.DEGREES_PER_RADIAN, r.latitude * Cesium.Math.DEGREES_PER_RADIAN, r.height);
         },
+        r2dA: function(rs) { return rs.map(r => { return CTX.r2d(r); }); },
         r2c: function(r) {
             if (CTX.debug) {
                 console.log("r2c : ");

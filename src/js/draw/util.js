@@ -229,14 +229,16 @@ var VisibilityUtil = {
         return polylines;
     },
     // ★ 최초의 정점의 높이는 고정시키고, 다른 정점들중 tanθ 값이 제일 큰 값으로 변경한다. 
-    terrianEI: function(polyline) {
+    terrianEI: function(polyline, options) {
+        options = Object.assign({ margin: 0 }, options);
+
         let len = polyline.length;
         if (len > 1) {
             let distanceUnit = CTX.distanceR(polyline[0], polyline[len - 1]) / (len - 1);
             let maxTheta = -Infinity;
             polyline.forEach((point, i) => {
                 if (i > 0) {
-                    maxTheta = Math.max(maxTheta, (point.height - polyline[0].height) / (distanceUnit * i));
+                    maxTheta = Math.max(maxTheta, ((options.margin + point.height) - polyline[0].height) / (distanceUnit * i));
                 }
             });
             polyline.forEach((point, i) => {
