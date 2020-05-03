@@ -133,6 +133,18 @@ class DrawObject {
     create(collection, points, viewModel) {
 
     }
+
+    lineMaterial(viewModel) {
+        if (viewModel.lineStyle != "line") {
+            return Cesium.PolylineDashMaterialProperty({
+                color: viewModel.lineColor,
+                dashPattern: this.dashPatternFromString(viewModel.lineStyle, (viewModel.lineWidth) % 8)
+            });
+        } else {
+            return viewModel.lineColor; //new Cesium.ColorMaterialProperty(viewModel.lineColor);
+        }
+    }
+
     dashPatternFromString(str, width) {
         if (str == "line") {
             return parseInt('11111111111', 2);

@@ -60,20 +60,12 @@ class Air2Earth extends DrawObject {
         }, viewModel);
         if (collection && Cesium.defined(degrees.start) && Cesium.defined(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
-            let distrance = CTX.distanceD(degrees.start, degrees.end);
+            let distance = CTX.distanceD(degrees.start, degrees.end);
 
             let polylinePoints = ParabolaUtil.quadratic(degrees, viewModel.size, height, true);
             //console.log("polylinePoints length : " + polylinePoints.points.length);
 
-            let heightMeterial;
-            if (viewModel.lineStyle != "line") {
-                heightMeterial = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, 4)
-                });
-            } else {
-                heightMeterial = viewModel.lineColor;
-            }
+            let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
             collection.add(this.index, {
                 polyline: {
@@ -81,7 +73,7 @@ class Air2Earth extends DrawObject {
                     color: viewModel.lineColor,
                     width: 1,
                     material: heightMeterial,
-                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
+                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distance * 10)
                 }
             });
             if (viewModel.frameEnable === true) {
@@ -96,7 +88,7 @@ class Air2Earth extends DrawObject {
                             outlineColor: viewModel.lineColor,
                             outlineWidth: viewModel.lineWidth,
                             heightReference: Cesium.HeightReference.NODE,
-                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
+                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distance * 10)
                         }
                     });
                 });

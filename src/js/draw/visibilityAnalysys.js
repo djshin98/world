@@ -14,15 +14,7 @@ class VisibilityAnalysys extends DrawObject {
                 divide: 20,
                 degree: 4
             });
-            var material;
-            if (viewModel.lineStyle != "line") {
-                material = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, (viewModel.lineWidth) % 8)
-                });
-            } else {
-                material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
-            }
+            var lineMaterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
             if (Cesium.defined(polylines)) {
                 polylines.forEach(polyline => {
@@ -46,16 +38,6 @@ class VisibilityAnalysys extends DrawObject {
                         });
                     });
                 });
-                /*
-                polylines.forEach(polyline => {
-                    collection.add(this.index, {
-                        polyline: {
-                            positions: polyline,
-                            color: viewModel.lineColor,
-                            width: viewModel.lineWidth
-                        }
-                    });
-                });*/
             }
         }
     }

@@ -40,14 +40,7 @@ class Parabola extends DrawObject {
                 distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
             };
 
-            if (viewModel.lineStyle != "line") {
-                option.material = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, viewModel.lineWidth)
-                });
-            } else {
-                option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
-            }
+            option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
             return collection.add(this.index, { polyline: option });
 

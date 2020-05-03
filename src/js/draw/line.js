@@ -9,16 +9,9 @@ class Line extends DrawObject {
                 positions: points,
                 clampToGround: true,
                 color: viewModel.lineColor,
-                width: viewModel.lineWidth
+                width: viewModel.lineWidth,
+                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            if (viewModel.lineStyle != "line") {
-                option.material = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, (viewModel.lineWidth) % 8)
-                });
-            } else {
-                option.material = new Cesium.ColorMaterialProperty(viewModel.lineColor);
-            }
             return collection.add(this.index, {
                 polyline: option
             });

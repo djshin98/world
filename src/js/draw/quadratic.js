@@ -18,15 +18,7 @@ class Quadratic extends DrawObject {
             let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
             console.log("polylinePoints length : " + polylinePoints.points.length);
 
-            let heightMeterial;
-            if (viewModel.lineStyle != "line") {
-                heightMeterial = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, 4)
-                });
-            } else {
-                heightMeterial = new Cesium.ColorMaterialProperty(viewModel.lineColor);
-            }
+            let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
             collection.add(this.index, {
                 polyline: {
@@ -79,28 +71,20 @@ class Quadratic extends DrawObject {
         }, viewModel);
         if (collection && Cesium.defined(degrees.start) && Cesium.defined(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
-            let distrance = CTX.distanceD(degrees.start, degrees.end);
+            let distance = CTX.distanceD(degrees.start, degrees.end);
 
             let polylinePoints = ParabolaUtil.quadratic(degrees, viewModel.size, height, true);
             //console.log("polylinePoints length : " + polylinePoints.points.length);
 
-            let heightMeterial;
-            if (viewModel.lineStyle != "line") {
-                heightMeterial = new Cesium.PolylineDashMaterialProperty({
-                    color: viewModel.lineColor,
-                    dashPattern: this.dashPatternFromString(viewModel.lineStyle, 4)
-                });
-            } else {
-                heightMeterial = viewModel.lineColor;
-            }
+            let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.frameColor, viewModel.lineWidth);
 
             collection.add(this.index, {
                 polyline: {
                     positions: polylinePoints.center,
-                    color: viewModel.lineColor,
+                    color: viewModel.frameColor,
                     width: 1,
                     material: heightMeterial,
-                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
+                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distance * 10)
                 }
             });
             if (viewModel.frameEnable === true) {
@@ -112,23 +96,22 @@ class Quadratic extends DrawObject {
                             //fill: true,
                             material: viewModel.faceColor,
                             outline: true,
-                            outlineColor: viewModel.lineColor,
+                            outlineColor: viewModel.shapeColor,
                             outlineWidth: viewModel.lineWidth,
                             heightReference: Cesium.HeightReference.NODE,
-                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
+                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distance * 10)
                         }
                     });
                 });
             } else {
                 let option = {
                     positions: polylinePoints.points.reverse(),
-                    color: viewModel.lineColor,
+                    color: viewModel.shapeColor,
                     width: viewModel.lineWidth,
                     material: new Cesium.PolylineGlowMaterialProperty({
-                        //color: viewModel.lineColor,
-                        glowPower: 0.3,
-                        taperPower: 0.3,
-                        color: Cesium.Color.PALEGOLDENROD
+                        glowPower: 0.4,
+                        taperPower: 0.4,
+                        color: viewModel.shapeColor
                     }),
                     distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
