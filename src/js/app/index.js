@@ -808,10 +808,12 @@ class Application {
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
                     document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
                     document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
+                    document.getElementById("center-distance").innerText = _this.map.oliveCamera.distanceFromCenter().toFixed(2) + " m";
                 });
                 _this.map.oliveCursor.widget(function(obj) {
                     document.getElementById("cursor-longitude").innerText = obj.longitude;
                     document.getElementById("cursor-latitude").innerText = obj.latitude;
+
                 });
 
                 _this.workStatus("section", true);

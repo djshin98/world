@@ -18,16 +18,35 @@ class Quadratic extends DrawObject {
             let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
             console.log("polylinePoints length : " + polylinePoints.points.length);
 
-            let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
-
-            collection.add(this.index, {
-                polyline: {
-                    positions: polylinePoints.center,
-                    color: viewModel.lineColor,
-                    width: 1,
-                    material: heightMeterial
-                }
+            let _this = this;
+            var positions = [CTX.c2r(polylinePoints.center[0])];
+            var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+            Cesium.when(promise, function(updatedPositions) {
+                let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
+                let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
+                collection.add(_this.index, {
+                    polyline: {
+                        positions: cpts,
+                        color: viewModel.lineColor,
+                        width: 1,
+                        material: heightMeterial,
+                        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
+                    }
+                });
+                collection.add(_this.index, {
+                    position: cpts[1],
+                    label: {
+                        text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
+                        font: '20px sans-serif',
+                        pixelOffset: new Cesium.Cartesian2(0, 20),
+                        fillColor: viewModel.shapeColor,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 50000)
+                    }
+                });
             });
+
+
             if (viewModel.frameEnable === true) {
                 polylinePoints.points.forEach(p => {
                     collection.add(this.index, {

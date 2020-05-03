@@ -74,6 +74,7 @@ var CTX = {
             }
             return Cesium.Cartographic.fromCartesian(c);
         },
+        c2rA: function(cs) { return cs.map(c => { return CTX.c2r(c) }); },
         c2d: function(c) {
             if (CTX.debug) {
                 console.log("c2d : ");

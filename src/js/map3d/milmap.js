@@ -331,7 +331,7 @@ class MilMap {
                             new Cesium.TileCoordinatesImageryProvider());
                         this.__gars.tile.olive_name = "GARS_TILE";
                     }
-
+                    /*
                     let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
                         148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
                     options.tilingScheme = new Cesium.GeographicTilingScheme({
@@ -358,6 +358,7 @@ class MilMap {
                     });
 
                     this.__gars.layer.olive_name = "GARS";
+                    */
                 }
             } else {
                 if (this.__gars && this.__gars.layer) {

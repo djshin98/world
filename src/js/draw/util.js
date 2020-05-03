@@ -234,20 +234,56 @@ var VisibilityUtil = {
 
         let len = polyline.length;
         if (len > 1) {
-            let distanceUnit = CTX.distanceR(polyline[0], polyline[len - 1]) / (len - 1);
+            let distance = CTX.distanceR(polyline[0], polyline[len - 1]);
+            let distanceUnit = distance / (len - 1);
             let maxTheta = -Infinity;
             polyline.forEach((point, i) => {
                 if (i > 0) {
                     maxTheta = Math.max(maxTheta, ((options.margin + point.height) - polyline[0].height) / (distanceUnit * i));
                 }
             });
+            polyline[len - 1].height = maxTheta * distance + polyline[0].height;
+            let theta = Math.atan(maxTheta);
+            let ratio = 1 - (polyline[len - 1].height * Math.sin(theta)) / distance;
+
+            let p = [CTX.r2c(polyline[0]), CTX.r2c(polyline[len - 1])];
+            //p[1].x *= ratio;
+            //p[1].y *= ratio;
+            //p[1].z *= ratio;
+            /*
             polyline.forEach((point, i) => {
                 if (i > 0) {
                     point.height = maxTheta * (distanceUnit * i) + polyline[0].height;
                 }
             });
+            let theta = Math.atan(maxTheta); //*180/(Math.PI);
+            let longitudeD = polyline[len - 1].longitude - polyline[0].longitude;
+            longitudeD = (1 - ((polyline[len - 1].height * Math.sin(theta)) / longitudeD));
+            polyline[len - 1].longitude = polyline[0].longitude + longitudeD;
+
+            let latitudeD = polyline[len - 1].latitude - polyline[0].latitude;
+            latitudeD = (1 - ((polyline[len - 1].height * Math.sin(theta)) / latitudeD));
+            polyline[len - 1].latitude = polyline[0].latitude + latitudeD;
+
+            polyline[len - 1].height = maxTheta * distance + polyline[0].height;*/
+            return p;
         }
-        return polyline;
+    },
+    callbackTerrianEI: function(center, updatedPositions, divide, options, callback) {
+        let outline = [];
+        do {
+            let ps = updatedPositions.splice(divide);
+            let polyline = [center].concat(updatedPositions);
+            if (Cesium.defined(callback)) {
+                let terrianPolyline = VisibilityUtil.terrianEI(polyline, options);
+                outline.push(terrianPolyline[terrianPolyline.length - 1]);
+                callback(terrianPolyline);
+            }
+            updatedPositions = ps;
+        } while (updatedPositions.length > 0);
+        if (Cesium.defined(callback)) {
+            callback(outline);
+        }
     }
 };
 

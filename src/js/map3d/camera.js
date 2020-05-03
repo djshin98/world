@@ -1,5 +1,5 @@
 var { IxDatabase } = require('../repository/db');
-
+var { CTX } = require('./ctx');
 class Camera {
     constructor(map) {
         this.map = map;
@@ -14,20 +14,21 @@ class Camera {
     widget(callback) {
         this.cameraWidgetCallback = callback;
     }
-    cache(){
+    cache() {
         let carto = Cesium.Cartographic.fromCartesian(this.camera.position);
-        return { rect : this.camera.computeViewRectangle(),
-                    x : carto.longitude,
-                    y : carto.latitude
+        return {
+            rect: this.camera.computeViewRectangle(),
+            x: carto.longitude,
+            y: carto.latitude
         };
     }
-    uncache(ca){
-        let obj = Object.assign({},ca);
-        this.camera.setView( {destination:obj} );
+    uncache(ca) {
+        let obj = Object.assign({}, ca);
+        this.camera.setView({ destination: obj });
     }
     load() {
         let _this = this;
-        this.camera.moveEnd.addEventListener(function () {
+        this.camera.moveEnd.addEventListener(function() {
             _this.db.set("scene", "camera", {
                 position: _this.camera.position,
                 heading: _this.camera.heading,
@@ -39,7 +40,7 @@ class Camera {
             }
         });
 
-        this.db.get("scene", "camera", function (result) {
+        this.db.get("scene", "camera", function(result) {
             if (result && result.value) {
                 let obj = result.value;
                 _this.camera.flyTo({
@@ -66,7 +67,7 @@ class Camera {
         }
     }
     roll(bfixCenter, radian) {
-        if (bfixCenter && typeof (radian) != "undefined") {
+        if (bfixCenter && typeof(radian) != "undefined") {
             this.camera.flyTo({
                 destination: this.camera.position,
                 orientation: {
@@ -90,6 +91,10 @@ class Camera {
         } else {
             return this.camera.heading;
         }
+    }
+    distanceFromCenter() {
+        //return CTX.distance(map.oliveCamera.center(), this.camera.position);
+        return 0;
     }
     distance(d) {
         this.distance = d;
@@ -133,14 +138,14 @@ class Camera {
             }*/
         });
     }
-    flyOver(lon,lat){
-        let c = this.cameraFocus(lon,lat);
-        this.flyTo(c.lon,c.lat);
+    flyOver(lon, lat) {
+        let c = this.cameraFocus(lon, lat);
+        this.flyTo(c.lon, c.lat);
     }
-    flyOverEntity(coll,id){
-        if( Cesium.defined(coll) ){
+    flyOverEntity(coll, id) {
+        if (Cesium.defined(coll)) {
             let entity = coll.get(id);
-            if( Cesium.defined(entity) ){
+            if (Cesium.defined(entity)) {
                 var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
                 var lon = Cesium.Math.toDegrees(carto.longitude);
                 var lat = Cesium.Math.toDegrees(carto.latitude);
@@ -156,7 +161,7 @@ class Camera {
         let center = _this.center();
         if (center) {
             let count = 0;
-            this.turnHandler = setInterval(function () {
+            this.turnHandler = setInterval(function() {
                 _this.camera.rotate(center, Cesium.Math.PI / 1000);
                 count++;
                 if (count == 2000) {
@@ -204,7 +209,7 @@ class Camera {
         let headSine = Math.sin((areaDegree - headingDegree) * (Math.PI / 180));
         if (latDistance > 12000) { latDistance = 12000; } // pitch의 각이 0도에 너무 가까워지면 최초 빗변이 될 distan가 너무멀어진다.
 
-        let resultlat = headCosine * latDistance;// 빗변의 길이라고 생각하자
+        let resultlat = headCosine * latDistance; // 빗변의 길이라고 생각하자
         let resultlon = headSine * latDistance;
         // var lonDistance = latDistance * headSine;
         //   90도단위가 넘어가면 각도가 다시 90도부터 초기화가 되서 사인 코사인값을 바꿔줘야한다
