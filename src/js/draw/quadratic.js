@@ -22,12 +22,12 @@ class Quadratic extends DrawObject {
             var positions = [CTX.c2r(polylinePoints.center[0])];
             var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
             Cesium.when(promise, function(updatedPositions) {
-                let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
+                let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
                 let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
                 collection.add(_this.index, {
                     polyline: {
                         positions: cpts,
-                        color: viewModel.lineColor,
+                        color: viewModel.shapeColor,
                         width: 1,
                         material: heightMeterial,
                         distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
@@ -38,8 +38,11 @@ class Quadratic extends DrawObject {
                     label: {
                         text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
                         font: '20px sans-serif',
-                        pixelOffset: new Cesium.Cartesian2(0, 20),
+                        showBackground: true,
+                        pixelOffset: new Cesium.Cartesian2(0, -20),
+                        eyeOffset: new Cesium.Cartesian3(0, 0, -50),
                         fillColor: viewModel.shapeColor,
+                        outlineColor: Cesium.Color.BLACK,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                         distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 50000)
                     }

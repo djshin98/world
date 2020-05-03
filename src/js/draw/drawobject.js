@@ -134,14 +134,14 @@ class DrawObject {
 
     }
 
-    lineMaterial(viewModel) {
-        if (viewModel.lineStyle != "line") {
+    lineMaterial(style, color, width) {
+        if (style != "line") {
             return Cesium.PolylineDashMaterialProperty({
-                color: viewModel.lineColor,
-                dashPattern: this.dashPatternFromString(viewModel.lineStyle, (viewModel.lineWidth) % 8)
+                color: color,
+                dashPattern: this.dashPatternFromString(style, (width) % 8)
             });
         } else {
-            return viewModel.lineColor; //new Cesium.ColorMaterialProperty(viewModel.lineColor);
+            return color; //new Cesium.ColorMaterialProperty(viewModel.lineColor);
         }
     }
 
