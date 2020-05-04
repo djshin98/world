@@ -27,6 +27,7 @@ var { Quadratic } = require('../draw/quadratic');
 var { Air2Earth } = require('../draw/air2earth');
 var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
+var { LineEO } = require('../draw/line_eo');
 
 var drawLinker = {
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -52,6 +53,7 @@ var drawLinker = {
     air2earth: { name: "공대지(quadratic)", createFunc: function() { return new Air2Earth(); } },
     visibilityAnalysys: { name: "가시권분석", createFunc: function() { return new VisibilityAnalysys(); } },
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
+    eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
 
 }
 

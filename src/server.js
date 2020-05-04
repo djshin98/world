@@ -196,13 +196,16 @@ server.get('/Entities/', (req, res) => {
     var queryShip = mybatisMapper.getStatement('testMapper', 'ship', JSON.parse(param), format);
     var queryAirArea = mybatisMapper.getStatement('testMapper', 'air_area', JSON.parse(param), format);
     var queryAirControl = mybatisMapper.getStatement('testMapper', 'air_control', JSON.parse(param), format);
+    var queryEoLine = mybatisMapper.getStatement('testMapper', 'eo_line', JSON.parse(param), format);
+
     // var queryStm2 = req.query.queryStm2;
     // connection.connect();
 
     retObj = {};
 
     function completeJob(obj) {
-        if (retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft && retObj.ship && retObj.airArea && retObj.airControl) {
+        if (retObj.ally && retObj.bmoa && retObj.enemy && retObj.aircraft &&
+            retObj.ship && retObj.airArea && retObj.airControl && retObj.eoLine) {
             res.json(retObj);
         }
     }
@@ -251,6 +254,13 @@ server.get('/Entities/', (req, res) => {
     connection.query(queryAirControl, function(err, result, fields) {
         if (!err) { retObj.airControl = result; } else {
             retObj.airControl = [];
+            console.log('query error : ' + err);
+        }
+        completeJob(retObj);
+    });
+    connection.query(queryEoLine, function(err, result, fields) {
+        if (!err) { retObj.eoLine = result; } else {
+            retObj.eoLine = [];
             console.log('query error : ' + err);
         }
         completeJob(retObj);

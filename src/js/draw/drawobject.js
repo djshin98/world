@@ -103,8 +103,12 @@ function setDrawViewModel(defaultViewModel, viewModel) {
             _viewModel.shapeSize = viewModel.shapeSize;
         }
     }
-    _viewModel.lineColor = _viewModel.lineColor.withAlpha(_viewModel.lineTransparent);
-    _viewModel.faceColor = _viewModel.faceColor.withAlpha(_viewModel.faceTransparent);
+    if (Cesium.defined(_viewModel.lineTransparent)) {
+        _viewModel.lineColor = _viewModel.lineColor.withAlpha(_viewModel.lineTransparent);
+    }
+    if (Cesium.defined(_viewModel.faceTransparent)) {
+        _viewModel.faceColor = _viewModel.faceColor.withAlpha(_viewModel.faceTransparent);
+    }
 
     return _viewModel;
 }

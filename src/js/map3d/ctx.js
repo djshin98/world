@@ -13,6 +13,18 @@ var CTX = {
                 }
             }
         },
+        en: function(str) { //127.55555E38.30576N
+            if (str) {
+                let nidx = str.indexOf("N");
+                let eidx = str.indexOf("E");
+                if (nidx > 0 && eidx > 0) {
+                    return {
+                        longitude: parseFloat(str.substr(0, eidx)),
+                        latitude: parseFloat(str.substr(eidx + 1, nidx - eidx - 1))
+                    };
+                }
+            }
+        },
         distanceD: function(a, b) { return Cesium.Cartesian3.distance(CTX.d2c(a), CTX.d2c(b)); },
         distanceR: function(a, b) { return Cesium.Cartesian3.distance(CTX.r2c(a), CTX.r2c(b)); },
         distance: function(a, b) { return Cesium.Cartesian3.distance(a, b); },

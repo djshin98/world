@@ -10,19 +10,6 @@
 </div>
 
 <script>
-    function parseEN(s) {
-        if (s) {
-            let nidx = s.indexOf("N");
-            let eidx = s.indexOf("E");
-            if (nidx > 0 && eidx > 0) {
-                return {
-                    longitude: parseFloat(s.substr(0, eidx)),
-                    latitude: parseFloat(s.substr(eidx + 1, nidx - eidx - 1))
-                };
-            }
-        }
-    }
-
     function unitNParse(parent, arr) {
         !arr || arr.forEach((row, i) => {
             parent.children.push({
@@ -133,13 +120,27 @@
                 name: row.ac_name,
                 unit: row.air_area_id,
                 degree: {
-                    lb: parseEN(row.ac_co_lb),
-                    lu: parseEN(row.ac_co_lu),
-                    rb: parseEN(row.ac_co_rb),
-                    ru: parseEN(row.ac_co_ru),
+                    lb: CTX.en(row.ac_co_lb),
+                    lu: CTX.en(row.ac_co_lu),
+                    rb: CTX.en(row.ac_co_rb),
+                    ru: CTX.en(row.ac_co_ru),
                 },
                 altitude: parseFloat(row.min_alt) * 1000,
                 height: parseFloat(row.max_alt) * 1000,
+                group: parent.group
+            });
+        });
+    };
+
+    function eoLineParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
+            parent.children.push({
+                id: row.e_line_id,
+                name: row.line_name,
+                unit: row.unit_id,
+                degrees: row.line_geocd.split(",").map(d => {
+                    return CTX.en(d);
+                }),
                 group: parent.group
             });
         });
@@ -237,6 +238,15 @@
         parse: (parent, arr) => {
             airAreaParse(parent, arr);
         }
+    }, {
+        name: '전투지경선',
+        group: 'eoLine',
+        collection: "Draw",
+        id: 'EOLINE',
+        children: [],
+        parse: (parent, arr) => {
+            eoLineParse(parent, arr);
+        }
     }];
 
     function toshowView() {
@@ -293,6 +303,28 @@
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#ff0000",
+                                            lineTransparent: 1
+                                        });
+                                    });
+                                }
+                            }
+
+                        }
+                    } else if (group === "eoLine") {
+                        let addCollection = map.collection(group);
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
+                                });
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        app.drawObject("eoline").type1(addCollection, row.name, row.degrees, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#ff0000",
+                                            lineWidth: 10,
                                             lineTransparent: 1
                                         });
                                     });

@@ -13,6 +13,7 @@ require("../ui/olive-input");
 require("../ui/olive-tree");
 require("../ui/olive-dialog");
 
+var { CTX } = require("../map3d/ctx");
 var { OliveVideo } = require("../ui/olive-video");
 global.OliveVideo = OliveVideo;
 
@@ -683,10 +684,10 @@ class Application {
                                             if (row.ac) {
                                                 row.ac.forEach(d => {
                                                     d.degree = {
-                                                        lb: _this.parseEN(d.lb),
-                                                        lu: _this.parseEN(d.lu),
-                                                        rb: _this.parseEN(d.rb),
-                                                        ru: _this.parseEN(d.ru)
+                                                        lb: CTX.en(d.lb),
+                                                        lu: CTX.en(d.lu),
+                                                        rb: CTX.en(d.rb),
+                                                        ru: CTX.en(d.ru)
                                                     }
                                                     _this.drawObject("aa_box").type1(aaCollection, d.name, d.degree, parseFloat(d.min) * 1000, parseFloat(d.max) * 1000, {
                                                         faceColor: "#ffffff",
@@ -983,18 +984,6 @@ class Application {
                     }
                 }
             });
-        }
-    }
-    parseEN(s) {
-        if (s) {
-            let nidx = s.indexOf("N");
-            let eidx = s.indexOf("E");
-            if (nidx > 0 && eidx > 0) {
-                return {
-                    longitude: parseFloat(s.substr(0, eidx)),
-                    latitude: parseFloat(s.substr(eidx + 1, nidx - eidx - 1))
-                };
-            }
         }
     }
 };
