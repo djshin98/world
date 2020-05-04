@@ -150,7 +150,7 @@ class MilMap {
             }
         });
 
-
+        //test
         this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
 
