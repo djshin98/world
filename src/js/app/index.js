@@ -832,6 +832,9 @@ class Application {
                 _this.map.show('fps', false);
                 _this.map.show('distance', false);
 
+                _this.readyFunctions.forEach(d => {
+                    d(_this, _this.map);
+                });
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
             }
         });
