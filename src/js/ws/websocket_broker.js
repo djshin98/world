@@ -18,6 +18,10 @@ class WebSocketBroker{
             }else{
                 console.log('disconnected : ' + _this.options.host + ":" + _this.options.port + "/" + _this.options.uri );
             }
+            console.log('Socket is closed. Reconnect will be attempted in 10 second.', e.reason);
+            setTimeout(function() {
+                _this.reconnect();
+            }, 10000);
         };
 
         this.ws.onmessage = function(event) {
@@ -28,6 +32,10 @@ class WebSocketBroker{
                 console.log( event.data );
             }
         };
+    }
+    reconnect(){
+        this.ws = undefined;
+        let ws = new WebSocketBroker(this.options);
     }
     send(topic,msg){
         let data = { topic : topic , message : msg };

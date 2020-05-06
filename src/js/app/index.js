@@ -304,7 +304,6 @@ class Application {
                                             _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), row.code,
                                                 (entity) => {}, false);
                                         }
-
                                     }
                                 });
                             }
@@ -577,6 +576,9 @@ class Application {
             host: config.WebSocket.host,
             port: config.WebSocket.port,
             uri: '',
+            onreconnect:function(websockerbroker){
+                _this.websocket = websockerbroker;
+            },
             onclose: function() {
 
             },
