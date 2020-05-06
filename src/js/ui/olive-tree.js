@@ -26,7 +26,14 @@ class OliveTree {
             $(this).addClass('clicked');
             if ($(this).hasClass('file')) {
                 if (_this.options.onSelect) {
-                    _this.options.onSelect('file', this, _this);
+                    let url = this.innerText;
+                    $(this.parentElement).parents("li").each((i,ele)=>{
+                        let p = $(ele).children("div.folder");
+                        if( p.length > 0 ){
+                            url = p[0].innerText + "/" + url;
+                        }
+                    });
+                    _this.options.onSelect('file', this, _this, url);
                 }
             }
         });
