@@ -74,6 +74,24 @@
                 }
             });
         });
+
+        function showGlbf() {
+            serverAdapter.get('images', {
+                url: "models/3DModels",
+                exts: ["glb", "gltf"]
+            }, function(data) {
+                new OliveTree(".section-content #glbf-view", data, {
+                    onAttribute: function(d) {
+                        return {
+                            id: d.id
+                        };
+                    },
+                    onText: function(d) {
+                        return d.name;
+                    }
+                });
+            });
+        }
     </script>
 </head>
 

@@ -5,11 +5,12 @@ const server = express();
 const conf = require("./conf/server.json");
 var session = require('express-session');
 var fs = require("fs");
-var { base64_encode, dir } = require("./js/watch/image");
+var { base64_encode, dir, dirByExts } = require("./js/watch/image");
 
 const { WebSocketServer } = require('./js/ws/websocket_server');
 const { MqttAdapter } = require('./js/mqtt/mqttbroker');
 const { FileWatcher } = require('./js/watch/filewatcher');
+var { isValid } = require("./js/core/block");
 
 const cors = require('cors');
 
@@ -35,6 +36,7 @@ var format = { language: 'sql', indent: '  ' };
 
 console.log("config : " + "conf/server.json");
 console.dir(conf);
+
 
 const wss = new WebSocketServer({
     port: conf.WebSocket.port,
@@ -180,9 +182,16 @@ server.get('/default/', (req, res) => {
 server.get('/images/', (req, res) => {
     var param = req.query.param;
     let data = JSON.parse(param);
-    dir(__dirname + "/" + data.url, function(array) {
-        res.json({ result: array });
-    });
+    if (isValid(data.exts)) {
+        dirByExts(__dirname + "/" + data.url, data.exts, function(array) {
+            res.json({ result: array });
+        });
+    } else {
+        dir(__dirname + "/" + data.url, function(array) {
+            res.json({ result: array });
+        });
+    }
+
 });
 
 server.get('/Entities/', (req, res) => {

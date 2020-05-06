@@ -20,45 +20,49 @@ var inject = require("gulp-inject-string");
 var del = require('del');
 
 var paths = {
-    conf:{
+    conf: {
         src: './src/conf/**/*.*',
-        dest:'./dist/conf/'
+        dest: './dist/conf/'
     },
-    mqtt:{
+    core: {
+        src: './src/js/core/**/*.*',
+        dest: './dist/js/core/'
+    },
+    mqtt: {
         src: './src/mqtt/**/*.*',
-        dest:'./dist/mqtt/'
+        dest: './dist/mqtt/'
     },
-    watch_brokder:{
+    watch_brokder: {
         src: './src/js/watch/**/*.*',
-        dest:'./dist/js/watch/'
+        dest: './dist/js/watch/'
     },
-    mqtt_broker:{
+    mqtt_broker: {
         src: './src/js/mqtt/mqttbroker.js',
-        dest:'./dist/js/mqtt/'
+        dest: './dist/js/mqtt/'
     },
-    ws_broker:{
+    ws_broker: {
         src: './src/js/ws/websocket_server.js',
-        dest:'./dist/js/ws/'
+        dest: './dist/js/ws/'
     },
-    batch:{
+    batch: {
         src: './src/*.bat',
-        dest:'./dist/'
+        dest: './dist/'
     },
-    popper:{
+    popper: {
         src: './node_modules/popper.js/dist/**/*.*',
-        dest:'./src/libs/popper/'
+        dest: './src/libs/popper/'
     },
-    bootstrap:{
+    bootstrap: {
         src: './node_modules/bootstrap/dist/**/*.*',
-        dest:'./src/libs/bootstrap/'
+        dest: './src/libs/bootstrap/'
     },
-    jquery:{
+    jquery: {
         src: './node_modules/jquery/dist/**/*.*',
-        dest:'./src/libs/jquery/'
+        dest: './src/libs/jquery/'
     },
-    lobipanel:{
+    lobipanel: {
         src: './node_modules/lobipanel/dist/**/*.*',
-        dest:'./src/libs/lobipanel/'
+        dest: './src/libs/lobipanel/'
     },
     md: {
         src: './src/**/*.md',
@@ -128,6 +132,11 @@ function clean() {
 
 function cleanCSS() {
     return del(['src/css']);
+}
+
+function core() {
+    return src(paths.core.src)
+        .pipe(dest(paths.core.dest));
 }
 
 function md() {
@@ -204,6 +213,7 @@ function img() {
         //.pipe(imagemin())
         .pipe(dest(paths.img.dest));
 }
+
 function scss() {
     return src(paths.scss.src)
         .pipe(sourcemaps.init())
@@ -211,13 +221,15 @@ function scss() {
         .pipe(sourcemaps.write())
         .pipe(dest(paths.scss.dest));
 }
-function widget_scss(){
+
+function widget_scss() {
     return src(paths.widget_scss.src)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write())
         .pipe(dest(paths.widget_scss.dest));
 }
+
 function css() {
     return src(paths.css.src)
         .pipe(concat('main.css')) //병합하고
@@ -253,22 +265,27 @@ function lobipanel() {
     return src(paths.lobipanel.src)
         .pipe(dest(paths.lobipanel.dest));
 }
+
 function popper() {
     return src(paths.popper.src)
         .pipe(dest(paths.popper.dest));
 }
+
 function conf() {
     return src(paths.conf.src)
         .pipe(dest(paths.conf.dest));
 }
+
 function mqtt() {
     return src(paths.mqtt.src)
         .pipe(dest(paths.mqtt.dest));
 }
+
 function mqtt_broker() {
     return src(paths.mqtt_broker.src)
         .pipe(dest(paths.mqtt_broker.dest));
 }
+
 function watch_brokder() {
     return src(paths.watch_brokder.src)
         .pipe(dest(paths.watch_brokder.dest));
@@ -278,18 +295,21 @@ function ws_broker() {
     return src(paths.ws_broker.src)
         .pipe(dest(paths.ws_broker.dest));
 }
+
 function batch() {
     return src(paths.batch.src)
         .pipe(dest(paths.batch.dest));
 }
+
 function watchFiles() {
     watch(paths.conf.src, conf);
+    watch(paths.core.src, core);
     watch(paths.mqtt.src, mqtt);
     watch(paths.mqtt_broker.src, mqtt_broker);
     watch(paths.watch_brokder.src, watch_brokder);
-    
+
     watch(paths.ws_broker.src, ws_broker);
-    
+
     watch(paths.batch.src, batch);
     watch(paths.popper.src, popper);
     watch(paths.bootstrap.src, bootstrap);
@@ -297,7 +317,7 @@ function watchFiles() {
     watch(paths.lobipanel.src, lobipanel);
     watch(paths.md.src, md);
 
-    
+
     watch(paths.widget_scss.src, widget_scss);
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
@@ -315,4 +335,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf,mqtt,mqtt_broker,watch_brokder,ws_broker,batch, md, popper, bootstrap, jquery, lobipanel, libs,  img, widget_scss,scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, world, serverJs, mapperxmls));
