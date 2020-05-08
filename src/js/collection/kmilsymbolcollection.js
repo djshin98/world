@@ -199,7 +199,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 text-align:center;\
             }</style>';
 
-            return css + '<table><tbody><tr><td rowspan="3"><img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/></td>\
+            return css + '<table><tbody><tr><td rowspan="3"><img width="'+img.width+'px" height="'+img.height+'px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/></td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음')  + ' </span></td>\
             <th><span>부호</span></th><td><span>' + options.sic + ' </span></td></tr>\
             <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\

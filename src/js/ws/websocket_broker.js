@@ -1,3 +1,5 @@
+var { isValid } = require('../core/block');
+
 const BROKER_INNER_TOPIC = "__websocket_broker__";
 class WebSocketBroker{
     constructor(options){
@@ -10,6 +12,9 @@ class WebSocketBroker{
             console.log('-------------------------------------------------------------------------' );
             console.log('|                 WebSocketBroker( version 1.1.2)                       |' );
             console.log('-------------------------------------------------------------------------' );
+            if( _this.options.onreconnected ){
+                _this.options.onreconnected(_this);
+            }
         };
 
         this.ws.onclose = function close() {
@@ -18,6 +23,10 @@ class WebSocketBroker{
             }else{
                 console.log('disconnected : ' + _this.options.host + ":" + _this.options.port + "/" + _this.options.uri );
             }
+            console.log('Socket is closed. Reconnect will be attempted in 10 second.');
+            setTimeout(function() {
+                _this.reconnect();
+            }, 10000);
         };
 
         this.ws.onmessage = function(event) {
@@ -28,6 +37,10 @@ class WebSocketBroker{
                 console.log( event.data );
             }
         };
+    }
+    reconnect(){
+        this.ws = undefined;
+        let ws = new WebSocketBroker(this.options);
     }
     send(topic,msg){
         let data = { topic : topic , message : msg };

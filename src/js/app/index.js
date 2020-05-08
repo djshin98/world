@@ -133,7 +133,7 @@ class Application {
 
                             if (data.longitude && data.latitude) {
                                 _this.addEntity(_this.map.collection("KMILSYMBOL"), data.longitude, data.latitude,
-                                    "SPZP----------G", (entity) => {
+                                    { sic:"SPZP----------G" }, (entity) => {
                                         obj.setVariable("token", entity.id);
                                     }, true
                                 );
@@ -220,7 +220,7 @@ class Application {
                                         col.remove(entity.id);
                                     }
                                 }
-                                _this.addEntity(col, data.longitude, data.latitude, d.sidc,
+                                _this.addEntity(col, data.longitude, data.latitude, { sic: d.sidc },
                                     (entity) => {
                                         _this.dialog.det.setVariable("entity", { id: entity.id });
                                     }, true
@@ -275,7 +275,7 @@ class Application {
                                     if (!Cesium.defined(row.t_id) || row.t_id.length == 0) {
                                         if (row.lon && row.lat) {
                                             _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat),
-                                                "SPZP----------G", (entity) => {
+                                                { sic: "SPZP----------G" , name:row.t_name , id:row.t_id }, (entity) => {
                                                     let ustr = "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
                                                     ustr += "<td class='tdata'>" + row.dt + "</td>";
                                                     ustr += "<td class='tdata' data-token='" + entity.id + "' onclick=\"app.reqUnknown('" + entity.id + "'," + row.lon + "," + row.lat + ")\" style='background-color:red;'>미확인</td>";
@@ -301,10 +301,9 @@ class Application {
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
-                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), row.code,
+                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), { sic:row.code , name : row.t_name, id: row.t_id },
                                                 (entity) => {}, false);
                                         }
-
                                     }
                                 });
                             }
@@ -577,6 +576,9 @@ class Application {
             host: config.WebSocket.host,
             port: config.WebSocket.port,
             uri: '',
+            onreconnected:function(websockerbroker){
+                _this.websocket = websockerbroker;
+            },
             onclose: function() {
 
             },
@@ -968,7 +970,7 @@ class Application {
         };
         this.websocket.send('TIA.HANDLER', msg);
     }
-    addEntity(col, longitude, latitude, sic, callback, bfly) {
+    addEntity(col, longitude, latitude, options, callback, bfly) {
         let _this = this;
         if (col) {
             col.terrianFromDegrees([{
@@ -976,7 +978,9 @@ class Application {
                     longitude: longitude,
                     latitude: latitude
                 },
-                sic: sic
+                sic: options.sic,
+                id: options.t_id,
+                name: options.t_name
             }], function(d, collection) {
                 d.size = 30;
                 let entity = collection.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);
