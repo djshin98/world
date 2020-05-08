@@ -1,5 +1,6 @@
 var { isValid } = require('../src/js/core/block');
 var { dirByExts } = require('../src/js/watch/image');
+
 describe('images', function() {
     describe('#dirByExts(' + __dirname + '/../src/models/3DModels)', function() {
         it('should return list for files', function() {
@@ -16,6 +17,12 @@ describe('images', function() {
                 }
                 displayFiles(1, array);
             });
+        });
+    });
+
+    describe('#test', function() {
+        it('test', function() {
+            console.log("ok");
         });
     });
 });

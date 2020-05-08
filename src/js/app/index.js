@@ -787,6 +787,7 @@ class Application {
                 { name: "즐겨찾기", icon: "map marker alternate", page: "section/favorite.html" },
                 //{ name: "위치검색", icon: "search", page: "section/search.html" },
                 { name: "3D Map", icon: "map", page: "section/map.html" },
+
                 { name: "3D 모델", icon: "fighter jet", page: "section/flight-area.html" },
                 { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
                 //{ name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
@@ -795,6 +796,7 @@ class Application {
                 { name: "Entities", icon: "sitemap", page: "section/entities.html" },
                 { name: "도시요소", icon: "eye", page: "section/toshow.html" }
                 //{ name: "animation", icon: "file video", page: "section/animation.html" }
+
 
             ],
             onload: function(parentNode, data) {
