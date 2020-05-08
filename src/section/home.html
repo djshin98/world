@@ -108,13 +108,26 @@
 
         <div class="demo-container">
             <button class="button" onclick="new Dialog({title:'colors',url:'dialog/colors.html',height:560});">ColorTable</button>
-          </div>
+        </div>
+        <div class="demo-container">
+            <button class="button" onclick="errorTest()">서버 오류 테스트</button>
+        </div>
     </div>
   
 
 </div>
 
 <script>
+    function errorTest(){
+        serverAdapter.get('testError', {}, 
+            function(data) {
+                if( data.error ){
+                    alert("errorTest : " + data.error );        
+                }
+                
+            }
+        );
+    }
     map.connectViewModel('olive-bloom', {
         show: false,
         glowOnly: false,

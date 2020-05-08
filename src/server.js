@@ -280,10 +280,8 @@ server.get('/Entities/', (req, res) => {
 server.get('/type0/', (req, res) => {
     console.log("type0");
     var param = req.query.param;
-    console.log(JSON.parse(param));
-    var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
-    var queryAir = mybatisMapper.getStatement('testMapper', 'air_type0', JSON.parse(param), format);
-
+    //console.log(JSON.parse(param));
+    
     retObj = {};
 
     function completeJob(obj) {
@@ -291,76 +289,108 @@ server.get('/type0/', (req, res) => {
             res.json(retObj);
         }
     }
-    connection.query(queryBmoa, function(err, result, fields) {
-        if (!err) { retObj.bmoa = result; } else {
-            retObj.bmoa = [];
-            console.log('query error : ' + err);
-        }
-        completeJob(retObj);
-    });
-    connection.query(queryAir, function(err, result, fields) {
-        if (!err) { retObj.aircraft = result; } else {
-            retObj.aircraft = [];
-            console.log('query error : ' + err);
-        }
-        completeJob(retObj);
-    });
+    try{
+        var queryBmoa = mybatisMapper.getStatement('testMapper', 'bmoa', JSON.parse(param), format);
+        var queryAir = mybatisMapper.getStatement('testMapper', 'air_type0', JSON.parse(param), format);
+
+        connection.query(queryBmoa, function(err, result, fields) {
+            if (!err) { retObj.bmoa = result; } else {
+                retObj.bmoa = [];
+                console.log('query error : ' + err);
+            }
+            completeJob(retObj);
+        });
+        connection.query(queryAir, function(err, result, fields) {
+            if (!err) { retObj.aircraft = result; } else {
+                retObj.aircraft = [];
+                console.log('query error : ' + err);
+            }
+            completeJob(retObj);
+        });
+    }catch(error){
+        res.json({error:error});
+    }
+    
 });
 
 //------------------------------- presentation 에 필요한 쿼리 -------------------------------------
 server.get('/allyPre/', (req, res) => {
     var param = req.query.param;
-    var query = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
-    connection.query(query, function(err, result, fields) {
-        res.json({ allyPres: result });
-    });
+    try{
+        var query = mybatisMapper.getStatement('testMapper', 'unit', JSON.parse(param), format);
+        connection.query(query, function(err, result, fields) {
+            res.json({ allyPres: result });
+        });
+    }catch(error){
+        res.json({error:error}); 
+    }
 });
 
 server.get('/enemyPre/', (req, res) => {
     var param = req.query.param;
-    var query = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
-    connection.query(query, function(err, result, fields) {
-        res.json({ enemyPres: result });
-    });
+    try{
+        var query = mybatisMapper.getStatement('testMapper', 'enemy_unit', JSON.parse(param), format);
+        connection.query(query, function(err, result, fields) {
+            res.json({ enemyPres: result });
+        });
+    }catch(error){
+        res.json({error:error}); 
+    }
 });
 
 
 server.get('/target/', (req, res) => {
     var param = req.query.param;
 
-    var query1 = mybatisMapper.getStatement('targetMapper', 'str_tgt', JSON.parse(param), format);
-    var query2 = mybatisMapper.getStatement('targetMapper', 'bmoa', JSON.parse(param), format);
-    var query3 = mybatisMapper.getStatement('targetMapper', 'tgt_info', JSON.parse(param), format);
-    var query4 = mybatisMapper.getStatement('targetMapper', 'enemy_unit', JSON.parse(param), format);
-
-    connection.query(query1, function(err, strTgt, fields) {
-        connection.query(query2, function(err, bmoa, fields) {
-            connection.query(query3, function(err, tgtInfo, fields) {
-                connection.query(query4, function(err, enemyUnit, fields) {
-                    if (!err) {
-                        res.json({ strTgt: strTgt, bmoa: bmoa, tgtInfo: tgtInfo, enemyUnit: enemyUnit });
-                    } else {
-                        console.log('query error : ' + err);
-                        res.send(err);
-                    }
+    try{
+        var query1 = mybatisMapper.getStatement('targetMapper', 'str_tgt', JSON.parse(param), format);
+        var query2 = mybatisMapper.getStatement('targetMapper', 'bmoa', JSON.parse(param), format);
+        var query3 = mybatisMapper.getStatement('targetMapper', 'tgt_info', JSON.parse(param), format);
+        var query4 = mybatisMapper.getStatement('targetMapper', 'enemy_unit', JSON.parse(param), format);
+    
+        connection.query(query1, function(err, strTgt, fields) {
+            connection.query(query2, function(err, bmoa, fields) {
+                connection.query(query3, function(err, tgtInfo, fields) {
+                    connection.query(query4, function(err, enemyUnit, fields) {
+                        if (!err) {
+                            res.json({ strTgt: strTgt, bmoa: bmoa, tgtInfo: tgtInfo, enemyUnit: enemyUnit });
+                        } else {
+                            console.log('query error : ' + err);
+                            res.send(err);
+                        }
+                    });
                 });
             });
         });
-    });
+    }catch(error){
+        res.json({error:error}); 
+    }
 });
 
 server.get('/wpRecom/', (req, res) => {
     var param = req.query.param;
-    var query = mybatisMapper.getStatement('wpRecom', 'wp_recom', JSON.parse(param), format);
+    try{
+        var query = mybatisMapper.getStatement('wpRecom', 'wp_recom', JSON.parse(param), format);
 
-    connection.query(query, function(err, wpRecom, fields) {
-        if (!err) {
-            res.json({ wpRecom: wpRecom });
-        } else {
-            console.log('query error : ' + err);
-            res.send(err);
-        }
-    });
+        connection.query(query, function(err, wpRecom, fields) {
+            if (!err) {
+                res.json({ wpRecom: wpRecom });
+            } else {
+                console.log('query error : ' + err);
+                res.send(err);
+            }
+        });
+    }catch(error){
+        res.json({error:error}); 
+    }
+});
+
+server.get('/testError/', (req, res) => {
+    try{
+        throw "test error";
+    }catch(error){
+        res.json({error:error}); 
+    }
 });
 
 // mapper: mybatisMapper.getStatement
