@@ -28,11 +28,11 @@ function getFiles(dir, exts) {
     files.forEach(file => {
         var name = dir + '/' + file;
         if (fs.statSync(name).isDirectory()) {
-            files_.push({ name: file, children: getFiles(name, exts) });
+            files_.push({ name: file, type: 'folder', fullname: name, children: getFiles(name, exts) });
         } else {
             let iext = file.lastIndexOf(".");
             if (iext > 0 && exts.includes(file.substr(iext + 1))) {
-                files_.push({ name: file });
+                files_.push({ name: file, type: 'file', fullname: name });
             }
         }
     });
