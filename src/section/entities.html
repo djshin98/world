@@ -5,7 +5,7 @@
 </div>
 
 <script>
-    app.onReady(function() {
+    app.onReady(function(_app, _map) {
         new OliveTree("#entities-view", undefined, {
             onAttribute: function(d) {
                 return {

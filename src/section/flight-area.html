@@ -1,10 +1,12 @@
 <style>
-#gltfviewer .cesium-widget-credits, #gltfviewer .cesium-viewer-bottom{
-	display: none;
-}
-.dz-preview{
-    display: none;
-}
+    #gltfviewer .cesium-widget-credits,
+    #gltfviewer .cesium-viewer-bottom {
+        display: none;
+    }
+    
+    .dz-preview {
+        display: none;
+    }
 </style>
 <div class="section-content">
     <div id="gltfviewer" style="height:200px;width:100%;background-color:bisque;">
@@ -19,10 +21,13 @@
             <button class="ui button mini" onclick="gltfviewer.toggleBoundingVolume()">
                 프레임
             </button>
-            <button class="ui button mini" onclick="gltfviewer.showGlTF('models/GroundVehicle.glb')" >
+            <button class="ui button mini" onclick="gltfviewer.showGlTF(modelUrl)">
                 열기
             </button>
         </div>
+    </div>
+    <div id="glbf-view" class="filetree" style="height:250px;">
+
     </div>
     <div class="ui divider"></div>
     <div class="ui small buttons">
@@ -50,6 +55,33 @@
     </div>
 </div>
 <script>
+    function showGlbf() {
+        serverAdapter.get('images', {
+            url: "models/3DModels",
+            exts: ["glb", "gltf"]
+        }, function(data) {
+            new OliveTree(".section-content #glbf-view", data.result, {
+                onAttribute: function(d) {
+                    return {
+                        id: d.id
+                    };
+                },
+                onText: function(d) {
+                    return d.name;
+                },
+                onSelect: function(type, tag, obj, url) {
+                    if (type == "file") {
+                        modelUrl = "models/3DModels/" + url;
+                    }
+                }
+            });
+        });
+    }
+
+    app.onReady(function(_app, _map) {
+        showGlbf();
+    });
+
     function kmzShow() {
         map.dataSource({
             url: 'models/ROK-Airspace.kmz',
@@ -99,6 +131,8 @@
     function kmzHideForNorthKorea() {
 
     }
-    var gltfviewer = new GltfViewer({id:'gltfviewer'});
+    var gltfviewer = new GltfViewer({
+        id: 'gltfviewer'
+    });
     //@sourceURL="flight-area.js"
 </script>

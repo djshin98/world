@@ -1,20 +1,20 @@
 {
-    "WebServer":{
-        "host":"localhost",
-        "port":8081
+    "WebServer": {
+        "host": "localhost",
+        "port": 8081
     },
-    "WasServer":{
-        "host":"localhost",
-        "port":8082
+    "WasServer": {
+        "host": "localhost",
+        "port": 8082
     },
-    "MqttServer":{
-        "host":"175.207.13.28",
-        "port":1883,
-        "watch-folder":"D:\\mapx\\tia\\org_images"
+    "MqttServer": {
+        "host": "175.207.13.28",
+        "port": 1883,
+        "watch-folder": "D:\\mapx\\tia\\org_images"
     },
-    "WebSocket":{
-        "host":"localhost",
-        "port":8083
+    "WebSocket": {
+        "host": "localhost",
+        "port": 8083
     },
     "DatabaseServer": {
         "host": "175.207.13.28",

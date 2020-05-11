@@ -19,7 +19,7 @@ class Section {
             get({
                 url: content.page,
                 success: function(status, statusText, data) {
-                    console.log( "loading a section page :" + content.page );
+                    console.log("loading a section page :" + content.page);
                     let tv = dom.$(_this.path.sidebar)[0];
                     tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
                         "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
@@ -64,7 +64,7 @@ class Section {
         sv.style.width = (w - tw) + "px";
         sv.style.height = h + "px";
         let sectionContentHeight = h - 70 - 10;
-        dom.$(".section-content").forEach(function(d){
+        dom.$(".section-content").forEach(function(d) {
             d.style.height = sectionContentHeight + "px";
         });
     }
@@ -80,7 +80,7 @@ class Section {
         if (bshow) {
             //$(".section-view").show();
             $(".section-head>a>b").show();
-
+            $(".section-head>a>img").attr("src", "img/logo.png");
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
             } else {
@@ -90,7 +90,7 @@ class Section {
         } else {
             //$(".section-view").hide();
             $(".section-head>a>b").hide();
-
+            $(".section-head>a>img").attr("src", "img/logom.png");
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('fade right');
 

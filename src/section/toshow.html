@@ -10,62 +10,101 @@
 </div>
 
 <script>
-    
-    function unitParse(parent,arr){
-        !arr || arr.forEach((row,i)=>{
+    function unitNParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
             parent.children.push({
-                id: parent.group + "_" + (i+1),
+                id: parent.group + "_" + (i + 1),
                 name: row.unit_name,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
                 sic: row.unit_sbl_cd,
                 group: parent.group
             });
         });
     }
-    function bmoaParse(parent,arr){
-        !arr || arr.forEach((row,i)=>{
+
+    function unitParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
+            let myparent = parent.children.find((group) => {
+                return row.unit_s_cd == group.id ? true : false;
+            });
+            if (myparent) {
+                myparent.children.push({
+                    id: myparent.group + "_" + (i + 1),
+                    name: row.unit_name,
+                    degree: {
+                        longitude: row.geocd_lngt,
+                        latitude: row.geocd_ltd
+                    },
+                    sic: row.unit_sbl_cd,
+                    group: myparent.group
+                });
+            }
+
+        });
+    }
+
+    function bmoaParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
             parent.children.push({
                 id: row.bmoa_id,
                 name: row.bmoa_id,
-                rad : row.bmoa_rads,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                rad: row.bmoa_rads,
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
                 sic: row.unit_sbl_cd,
                 group: parent.group
             });
         });
     }
-    function shipParse(parent,arr){
-        !arr || arr.forEach((row,i)=>{
+
+    function shipParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
             parent.children.push({
                 id: row.ship_id,
                 name: row.ship_name,
-                unit : row.unit_id,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                unit: row.unit_id,
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
                 sic: row.unit_sbl_cd,
                 group: parent.group
             });
         });
     }
-    function aircraftParse(parent,arr){
-        !arr || arr.forEach((row,i)=>{
+
+    function aircraftParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
             parent.children.push({
                 id: row.air_id,
                 name: row.air_name,
-                unit : row.unit_id,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                unit: row.unit_id,
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
                 sic: row.unit_sbl_cd,
                 area: row.air_area_id,
                 group: parent.group
             });
         });
     }
-    function airAreaParse(parent,arr){
-        !arr || arr.forEach((row,i)=>{
+
+    function airAreaParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
             parent.children.push({
                 id: row.air_area_id,
                 name: row.air_area_id,
-                unit : row.air_area_id,
-                degree : {longitude: row.geocd_lngt,latitude: row.geocd_ltd},
+                unit: row.air_area_id,
+                degree: {
+                    longitude: row.geocd_lngt,
+                    latitude: row.geocd_ltd
+                },
                 radius: row.air_area_rads,
                 altitude: row.air_op_altitude,
                 height: row.air_op_height,
@@ -73,154 +112,325 @@
             });
         });
     }
-    
+
+    function airControlParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
+            parent.children.push({
+                id: row.ac_id,
+                name: row.ac_name,
+                unit: row.air_area_id,
+                degree: {
+                    lb: CTX.en(row.ac_co_lb),
+                    lu: CTX.en(row.ac_co_lu),
+                    rb: CTX.en(row.ac_co_rb),
+                    ru: CTX.en(row.ac_co_ru),
+                },
+                altitude: parseFloat(row.min_alt) * 1000,
+                height: parseFloat(row.max_alt) * 1000,
+                group: parent.group
+            });
+        });
+    };
+
+    function eoLineParse(parent, arr) {
+        !arr || arr.forEach((row, i) => {
+            parent.children.push({
+                id: row.e_line_id,
+                name: row.line_name,
+                unit: row.unit_id,
+                degrees: row.line_geocd.split(",").map(d => {
+                    return CTX.en(d);
+                }),
+                group: parent.group
+            });
+        });
+    };
     var toShowNode = [{
-                    name: '아군부대',
-                    group:'ally',
-                    collection:"KMilSymbol",
-                    id: 'ALLY',
-                    children: [],
-                    parse:(parent,arr)=>{ unitParse(parent,arr); }
-                }, {
-                    name: '탄도미사일작전구역',
-                    group:'bmoa',
-                    collection:"Draw",
-                    id: 'BMOA',
-                    children: [],
-                    parse:(parent,arr)=>{ bmoaParse(parent,arr); }
-                }, {
-                    name: '적부대',
-                    group:'enemy',
-                    collection:"KMilSymbol",
-                    id: 'ENEMY',
-                    children: [],
-                    parse:(parent,arr)=>{ unitParse(parent,arr); }
-                },{
-                    name: '비행부대',
-                    group:'aircraft',
-                    collection:"KMilSymbol",
-                    id: 'AIRCRAFT',
-                    children: [],
-                    parse:(parent,arr)=>{ aircraftParse(parent,arr); }
-                },{
-                    name: '함선',
-                    group:'ship',
-                    collection:"KMilSymbol",
-                    id: 'SHIP',
-                    children: [],
-                    parse:(parent,arr)=>{ shipParse(parent,arr); }
-                },,{
-                    name: '공역',
-                    group:'airarea',
-                    collection:"KMilSymbol",
-                    id: 'AIRAREA',
-                    children: [],
-                    parse:(parent,arr)=>{ airAreaParse(parent,arr); }
-                } ];
+        name: '아군부대',
+        group: 'unit',
+        collection: "KMilSymbol",
+        id: 'ALLY',
+        children: [{
+            name: '군단급이상',
+            group: 'ally-J',
+            id: 'J',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '여단',
+            group: 'ally-H',
+            id: 'H',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '대대',
+            group: 'ally-F',
+            id: 'F',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '중대',
+            group: 'ally-E',
+            id: 'E',
+            collection: "KMilSymbol",
+            children: []
+        }, {
+            name: '함대사/비행(사)단',
+            group: 'ally-I',
+            id: 'I',
+            collection: "KMilSymbol",
+            children: []
+        }],
+        parse: (parent, arr) => {
+            unitParse(parent, arr);
+        }
+    }, {
+        name: '탄도미사일작전구역',
+        group: 'bmoa',
+        collection: "Draw",
+        id: 'BMOA',
+        children: [],
+        parse: (parent, arr) => {
+            bmoaParse(parent, arr);
+        }
+    }, {
+        name: '적부대',
+        group: 'enemy',
+        collection: "KMilSymbol",
+        id: 'ENEMY',
+        children: [],
+        parse: (parent, arr) => {
+            unitNParse(parent, arr);
+        }
+    }, {
+        name: '항공기',
+        group: 'aircraft',
+        collection: "KMilSymbol",
+        id: 'AIRCRAFT',
+        children: [],
+        parse: (parent, arr) => {
+            aircraftParse(parent, arr);
+        }
+    }, {
+        name: '함정',
+        group: 'ship',
+        collection: "KMilSymbol",
+        id: 'SHIP',
+        children: [],
+        parse: (parent, arr) => {
+            shipParse(parent, arr);
+        }
+    }, {
+        name: '공역 통제',
+        group: 'air_control',
+        collection: "Draw",
+        id: 'AIRCONTROL',
+        children: [],
+        parse: (parent, arr) => {
+            airControlParse(parent, arr);
+        }
+    }, {
+        name: '항공기 작전 공역',
+        group: 'air_area',
+        collection: "Draw",
+        id: 'AIRAREA',
+        children: [],
+        parse: (parent, arr) => {
+            airAreaParse(parent, arr);
+        }
+    }, {
+        name: '전투지경선',
+        group: 'eo_line',
+        collection: "Draw",
+        id: 'EOLINE',
+        children: [],
+        parse: (parent, arr) => {
+            eoLineParse(parent, arr);
+        }
+    }];
 
     function toshowView() {
         serverAdapter.get('Entities', {}, function(data) {
-            toShowNode.forEach((g)=>{
-                if( !map.collection(g.group) ){map.createCollection(g.group, g.collection);}
-                if( data[g.group] && g.parse ){
-                    g.parse(g,data[g.group]);
+            toShowNode.forEach((g) => {
+                if (!map.collection(g.group)) {
+                    map.createCollection(g.group, g.collection);
+                }
+                if (data[g.group] && g.parse) {
+                    g.parse(g, data[g.group]);
                 }
                 console.dir(g);
-            });  
+            });
             new OliveTree('#toshow-view', toShowNode, {
                 onAttribute: function(d) {
                     return {
-                            id: d.id,
-                            name:d.name,
-                            group : d.group
+                        id: d.id,
+                        name: d.name,
+                        group: d.group
                     };
                 },
                 onText: function(d) {
                     return d.name;
                 },
-                onSelect:function(type, tag, obj) {
-                        if (type == "file") {
-                            var __this = obj;
-                            let id = $(tag).data("id");
-                            let group = $(tag).data('group');
+                onSelect: function(type, tag, obj) {
+                    if (type == "file") {
+                        var __this = obj;
+                        let id = $(tag).data("id");
+                        let group = $(tag).data('group');
 
-                            map.oliveCamera.flyOverEntity(map.collection(group),id);
+                        map.oliveCamera.flyOverEntity(map.collection(group), id);
 
-                            //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
-                            // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
-                            //   위도거리는 어디서나 1도=111Km
-                            
-                        }else if( type == "folder"){
+                        //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
+                        // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
+                        //   위도거리는 어디서나 1도=111Km
 
-                        }
+                    } else if (type == "folder") {
+
+                    }
                 },
-                onChecked:function(checked,type,tag,obj){
+                onChecked: function(checked, type, tag, obj) {
                     let group = $(tag).data('group');
-                        if (group === "bmoa") {
-                            let addCollection = map.collection(group);
-                            if( Cesium.defined(addCollection) ){
-                                addCollection.removeAll();
+                    if (group === "bmoa") {
+                        let addCollection = map.collection(group);
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
                                 });
-                                if( viewdata && viewdata.children ){
-                                    viewdata.children.forEach(row=>{
-                                        app.drawObject("bmoa").type1(addCollection,row.degree,row.rad*1000,{
-                                            faceColor: "#ffffff",faceTransparent: 0.5,
-                                            lineColor: "#954045",
-                                            text:row.name});
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        app.drawObject("bmoa").type1(addCollection, row.name, row.degree, row.rad * 1000, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#ff0000",
+                                            lineTransparent: 1
+                                        });
                                     });
                                 }
                             }
-                        }else if( group == "airarea" ){
-                            let addCollection = map.collection(group);
-                            if( Cesium.defined(addCollection) ){
-                                addCollection.removeAll();
+
+                        }
+                    } else if (group === "eo_line") {
+                        let addCollection = map.collection(group);
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
                                 });
-                                if( viewdata && viewdata.children ){
-                                    viewdata.children.forEach(row=>{
-                                        app.drawObject("aa_circle").type1(addCollection,row.degree,row.rad*1000,{
-                                            faceColor: "#ffffff",faceTransparent: 0.5,
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        app.drawObject("eoline").type1(addCollection, row.name, row.degrees, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#ff0000",
+                                            lineWidth: 10,
+                                            lineTransparent: 1
+                                        });
+                                    });
+                                }
+                            }
+
+                        }
+                    } else if (group === "air_area") {
+                        let addCollection = map.collection(group);
+
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
+                                });
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        radius: row.air_area_rads,
+                                        app.drawObject("aa_circle").type1(addCollection, row.name, row.degree, row.radius * 1000, row.altitude, row.height, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
                                             lineColor: "#954045",
-                                            text:row.name});
+                                            lineTransparent: 0.5
+                                        });
                                     });
                                 }
                             }
                         }
-                        } else {
-                            let addCollection = map.collection(group);
-                            if( Cesium.defined(addCollection) ){
-                                addCollection.removeAll();
-                                if (checked) {
-                                    var viewdata = toShowNode.find(function(d) {
-                                        return (d.group === group) ? true : false;
+                    } else if (group === "air_control") {
+                        let addCollection = map.collection(group);
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
+                                var viewdata = toShowNode.find(function(d) {
+                                    return (d.group === group) ? true : false;
+                                });
+                                if (viewdata && viewdata.children) {
+                                    viewdata.children.forEach(row => {
+                                        radius: row.air_area_rads,
+                                        app.drawObject("aa_box").type1(addCollection, row.name, row.degree, row.altitude, row.height, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#954045",
+                                            lineTransparent: 1
+                                        });
                                     });
-                                    
-                                    addCollection.terrianFromDegrees(viewdata.children,function(d){
-                                        d.size = 30;
-                                        let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,d.degree.height), d);
-                                        //console.dir(entity);
-                                        let ele = $("#toshow-view [data-id="+d.id+"]");
-                                        ele.data("id", entity.id);
-                                    });
-                                    /*
-                                    viewdata.children.forEach(function(d) {
-                                        d.size = 30;
-                                        let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,0), d);
-                                        console.dir(entity);
-                                        let ele = $("#toshow-view [data-id="+d.id+"]");
-                                        ele.data("id", entity.id);
-                                    });
-                                    */
-                                }   
+                                }
                             }
-                        }    
-                        
-                        
+                        }
+                    } else {
+                        let groups = group.split('-');
+                        let addCollection = map.collection(group);
+                        var viewdata;
+                        if (groups.length > 1) {
+                            viewdata = groups.reduce((prev, curr) => {
+                                if (!prev) {
+                                    return toShowNode.find(function(d) {
+                                        return (d.group === groups[0]) ? true : false;
+                                    });
+                                }
+                                return prev.children.find(function(d) {
+                                    return (d.group === prev.group + "-" + curr) ? true : false;
+                                });
+                            }, null);
+                        } else {
+                            viewdata = toShowNode.find(function(d) {
+                                return (d.group === group) ? true : false;
+                            });
+                        }
+
+                        console.dir(viewdata);
+                        if (!Cesium.defined(addCollection) && viewdata) {
+                            addCollection = map.createCollection(group, viewdata.collection);
+                        }
+
+                        if (Cesium.defined(addCollection)) {
+                            addCollection.removeAll();
+                            if (checked) {
+                                //var viewdata = toShowNode.find(function(d) {
+                                //   return (d.group === group) ? true : false;
+                                //});
+
+                                addCollection.terrianFromDegrees(viewdata.children, function(d) {
+                                    d.size = 30;
+                                    let entity = addCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);
+                                    //console.dir(entity);
+                                    let ele = $("#toshow-view [data-id=" + d.id + "]");
+                                    ele.data("id", entity.id);
+                                });
+                                /*
+                                viewdata.children.forEach(function(d) {
+                                    d.size = 30;
+                                    let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,0), d);
+                                    console.dir(entity);
+                                    let ele = $("#toshow-view [data-id="+d.id+"]");
+                                    ele.data("id", entity.id);
+                                });
+                                */
+                            }
+                        }
+                    }
+
+
                 }
-            });    
+            });
         });
     }
 </script>

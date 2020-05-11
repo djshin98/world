@@ -63,9 +63,14 @@ class MqttAdapter {
     }
 };
 
+<<<<<<< HEAD
 var data = { cmd: "DET_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
 var data = { cmd: "REQ_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
 var data = { cmd: "RES_TIA", token: "1234", idx: "dbkey", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
+=======
+//c , c++ , pascal , java , 
+// function pointer , 
+>>>>>>> 1b9a60bc0c5b26c761bc2a2eb3de2d97131ede62
 
 
 
@@ -156,5 +161,8 @@ global.broker = new MqttAdapter({
 broker.publish("a", "1");
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1b9a60bc0c5b26c761bc2a2eb3de2d97131ede62
 module.exports = { MqttAdapter: MqttAdapter };

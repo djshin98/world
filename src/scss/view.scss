@@ -46,17 +46,15 @@ section {
             font-size: 0.8em;
             overflow: hidden;
             background: #2e3439;
-            
-            width:75px;
-            .item{
+            width: 75px;
+            .item {
                 padding: 10px 0px;
             }
             .active.item:after {
                 background: $sectionBackgroundColor !important;
-                
             }
-            .active.item{
-                i{
+            .active.item {
+                i {
                     color: #ccfff3;
                 }
             }
@@ -84,8 +82,8 @@ section {
                     .bl {
                         border-left: 1px solid #e8e9e9;
                     }
-                    .ui.ov-input>input{
-                        padding:2px;
+                    .ui.ov-input>input {
+                        padding: 2px;
                     }
                 }
                 .accordion {
@@ -102,8 +100,8 @@ section {
                         overflow-y: auto;
                     }
                 }
-                .ui.inline.top-gap{
-                    margin-top:0.4em;
+                .ui.inline.top-gap {
+                    margin-top: 0.4em;
                 }
                 .ui.list {
                     .item {
@@ -123,97 +121,95 @@ section {
                         padding: 6px 0px;
                     }
                 }
-                .ui.sub.header{
+                .ui.sub.header {
                     font-size: 1em;
                     color: white;
                     margin-top: 0.4em;
                 }
-                .label{
+                .label {
                     color: white;
                     font-weight: 700;
                     margin-right: 0.5em;
                 }
-                
-                select.ui{
+                select.ui {
                     padding: 0.2em;
                     height: 2em;
                     border-radius: 3px;
                     /*width: 100%;*/
                 }
-                .filetree{
+                .filetree {
                     background-color: #fff;
-                    border:#ddd;
+                    border: #ddd;
                     font-family: Verdana, helvetica, arial, sans-serif;
                     line-height: 1em;
-                    height:300px;
+                    height: 300px;
                     overflow: scroll;
-
-                    input[type=checkbox]{
-                        margin:0px;
+                    input[type=checkbox] {
+                        margin: 0px;
                     }
                     div.file {
-                        cursor:pointer;
+                        cursor: pointer;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
-
-                        &.clicked{
+                        &.clicked {
                             border: 1px dotted;
                             background-color: #00398f;
                             color: white;
                         }
                     }
                     div.folder {
-                        cursor:pointer;
+                        cursor: pointer;
                         background: url(../libs/jquery-treeview/images/folder.gif) 0 0 no-repeat;
                     }
-                    div.folder, div.file {
+                    div.folder,
+                    div.file {
                         padding: 1px 0 1px 16px;
                         display: block;
                         text-overflow: ellipsis;
                         overflow: hidden;
                         white-space: nowrap;
                     }
-                    li.expandable{
+                    li.expandable {
                         div.folder {
                             background: url(../libs/jquery-treeview/images/folder-closed.gif) 0 0 no-repeat;
                         }
                     }
-
                 }
-
-                .ui.inline{
-                    input{
+                .ui.inline {
+                    input {
                         display: inline;
                     }
-                    span, div{
+                    span,
+                    div {
                         display: inline;
                         font-size: 1.2em;
-                        color:yellow;
-                        label{
+                        color: yellow;
+                        label {
                             display: inline;
-                            color:white;
+                            color: white;
                         }
                     }
-                    div.right{
-                        float:right;
+                    div.right {
+                        float: right;
                     }
                 }
-                .ui.result{
+                .ui.result {
                     background-color: #fff;
-                    border:1px solid #ddd;
-                    height:120px;
+                    border: 1px solid #ddd;
+                    height: 120px;
                 }
                 .demo-container {
-                    color:#fff;
+                    color: #fff;
                     background-color: #2e3439;
                     border-radius: 5px;
                     padding: 5px;
                     margin: 5px 3px;
                 }
-                .dropdown, .dropup {
-                    color:black;
+                .dropdown,
+                .dropup {
+                    color: black;
                 }
-                .button{
-                    color:black;
+                .button {
+                    color: black;
                 }
             }
         }
@@ -306,9 +302,9 @@ header {
     z-index: 10000;
 }
 
-.map-cesium{
+.map-cesium {
     .cesium-infoBox {
-        right:100px;
+        right: 100px;
         .cesium-infoBox-description {
             font-family: sans-serif;
             font-size: 12px;
@@ -320,11 +316,12 @@ header {
     }
 }
 
-.panel{
-    border:0px;
+.panel {
+    border: 0px;
     background-color: #2e3439;
     color: #a5aeb4;
 }
+
 .lobipanel>.panel-heading {
     padding: 0px;
 }
@@ -334,15 +331,22 @@ header {
     color: #838b91;
     border-color: #292929;
 }
+
 .lobipanel-minimized-toolbar {
     background: rgba(43, 43, 43, 0.51);
 }
-.cesium-infoBox-iframe{
-    height:auto;
+
+.cesium-infoBox-iframe {
+    height: auto;
 }
+
 .cesium-infoBox-description table {
     color: #edffff;
     list-style: cambodian;
     border: 1px solid #959595;
     font-size: 14px;
+}
+
+.progress-bar {
+    background-color: #F44336;
 }

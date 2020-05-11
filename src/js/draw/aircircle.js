@@ -27,24 +27,47 @@ class AirCircle extends DrawObject{
             }
         }
     }
-    type1(collection,point,radus,minHeight,maxHeight,viewModel){
+    type1(collection,name,lnglat,radus,minHeight,maxHeight,_viewModel){
         if( collection ){
-            return collection.add(this.index,{
-                position: points[0],
+            lnglat.height = minHeight;
+            let point = CTX.d2c(lnglat);
+            let viewModel = this.setViewModel({
+                faceColor: Cesium.Color.WHITE,
+                faceTransparent: 0.6,
+                lineColor: Cesium.Color.YELLOW,
+                lineTransparent: 0.6}, _viewModel);
+
+            let option = {
+                position: point,
+                name:name,
+                description:this.callbackDescirption(lnglat,{name:name},[]),
                 ellipse: {
-                    semiMinorAxis : distance,
-                    semiMajorAxis : distance,
+                    semiMinorAxis : radus,
+                    semiMajorAxis : radus,
                     fill:true,
                     outline:true,
                     outlineColor:viewModel.lineColor,
                     outlineWidth:viewModel.lineWidth,
                     material: viewModel.faceColor,
                     height:minHeight,
-                    extrudedHeight:maxHeight,
-                    extrudedHeightReference: Cesium.HeightReference.NONE,
-                    heightReference: Cesium.HeightReference.NONE 
+                    extrudedHeight:minHeight+maxHeight+1000,
+                    extrudedHeightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+                    heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND 
                 }
-            });
+            };
+
+            if( Cesium.defined(name) && name.length > 0 ){
+                option.label = {
+                    text : name,
+                    fillColor : viewModel.lineColor,
+                    //pixelOffset : new Cesium.Cartesian2(0, -20),
+                    //eyeOffset : CTX.c(0,minHeight+maxHeight+1000,-200),
+                    verticalOrigin : Cesium.VerticalOrigin.BOTTOM,	
+                    heightReference:Cesium.HeightReference.RELATIVE_TO_GROUND 
+                }
+            }
+    
+            return collection.add(this.index,option);
         }
     }
 }
