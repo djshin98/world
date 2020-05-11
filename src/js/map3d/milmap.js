@@ -67,11 +67,16 @@ class MilMap {
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
+
+            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+                url: 'https://a.tile.openstreetmap.org/'
+            }),
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
              }),
-              terrainProvider: Cesium.createWorldTerrain(),
+            
+             terrainProvider: Cesium.createWorldTerrain(),
              shadows: false,
              scene3DOnly: true, //3차원 화면으로 구성 // ,
              //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
