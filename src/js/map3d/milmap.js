@@ -12,7 +12,8 @@ var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 var { DrawCollection } = require("../collection/drawcollection");
 
-
+var { WebSocketBroker } = require("../ws/websocket_broker");
+const config = require("../../conf/server.json");
 
 require('./grid/wgs84');
 
@@ -189,6 +190,21 @@ class MilMap {
             console.log('Camera view rectangle updated...');
         });
 
+        if (Cesium.defined(this.options.websocket)) {
+            this.websocket = new WebSocketBroker({
+                host: config.WebSocket.host,
+                port: config.WebSocket.port,
+                uri: '',
+                reconnectable: (Cesium.defined(this.options.websocket.reconnectable) && this.options.websocket.reconnectable == true) ? true : false,
+                onreconnected: function(websockerbroker) {
+                    _this.websocket = websockerbroker;
+                },
+                onclose: function() {
+
+                },
+                onmessage: function(data) {}
+            });
+        }
     }
     getId() {
         return this.options.map3.id;

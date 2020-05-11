@@ -64,10 +64,15 @@ var paths = {
         src: './node_modules/lobipanel/dist/**/*.*',
         dest: './src/libs/lobipanel/'
     },
-    md: {
-        src: './src/**/*.md',
-        dest: './dist/doc/'
-    },
+    md: [{
+            src: './src/**/*.md',
+            dest: './dist/doc/'
+        },
+        {
+            src: './*.md',
+            dest: './dist/'
+        }
+    ],
     widget_scss: {
         src: './src/widget/scss/**/*.scss',
         dest: './dist/css/'
@@ -98,12 +103,6 @@ var paths = {
         output_src: 'main.src.js',
         dest: 'dist/js/'
     },
-    kmil_app_scripts: {
-        entries: ['./src/milsymbol/app.js'],
-        output: 'kmilsymbol_edit.js',
-        output_src: 'kmilsymbol_edit.src.js',
-        dest: 'dist/js/'
-    },
     html: {
         src: 'src/**/*.html',
         dest: 'dist/'
@@ -112,8 +111,8 @@ var paths = {
         src: 'src/libs/**/*.*',
         dest: 'dist/libs/'
     },
-    worlds: {
-        src: 'src/world.js',
+    mapx3dserver: {
+        src: 'src/mapx3dserver.js',
         dest: 'dist/'
     },
     serverjs: {
@@ -140,11 +139,15 @@ function core() {
 }
 
 function md() {
-    return src(paths.md.src)
-        .pipe(markdown())
-        .pipe(inject.prepend("<html><head></head><body>"))
-        .pipe(inject.append("</body></html>"))
-        .pipe(dest(paths.md.dest));
+    let job;
+    paths.md.forEach((d, i) => {
+        job = src(d.src)
+            .pipe(markdown())
+            .pipe(inject.prepend("<html><head></head><body>"))
+            .pipe(inject.append("</body></html>"))
+            .pipe(dest(d.dest));
+    });
+    return job;
 }
 /*
 function md_src() {
@@ -155,9 +158,9 @@ function md_src() {
         .pipe(dest(paths.md_src.src));
 }
 */
-function world() {
-    return src(paths.worlds.src)
-        .pipe(dest(paths.worlds.dest));
+function mapx3dserver() {
+    return src(paths.mapx3dserver.src)
+        .pipe(dest(paths.mapx3dserver.dest));
 }
 
 function mapperxmls() {
@@ -232,7 +235,7 @@ function widget_scss() {
 
 function css() {
     return src(paths.css.src)
-        .pipe(concat('main.css')) //병합하고
+        .pipe(concat('main.css')) //병합하고    
         .pipe(dest(paths.css.dest));
 }
 
@@ -301,6 +304,16 @@ function batch() {
         .pipe(dest(paths.batch.dest));
 }
 
+function mywatch(path, worker) {
+    if (Array.isArray(path)) {
+        path.forEach(d => {
+            watch(d.src, worker);
+        });
+    } else {
+        watch(path.src, worker);
+    }
+}
+
 function watchFiles() {
     watch(paths.conf.src, conf);
     watch(paths.core.src, core);
@@ -315,9 +328,7 @@ function watchFiles() {
     watch(paths.bootstrap.src, bootstrap);
     watch(paths.jquery.src, jquery);
     watch(paths.lobipanel.src, lobipanel);
-    watch(paths.md.src, md);
-
-
+    mywatch(paths.md, md);
     watch(paths.widget_scss.src, widget_scss);
     watch(paths.scss.src, scss);
     watch(paths.css.src, css);
@@ -328,11 +339,11 @@ function watchFiles() {
     //watch(paths.png.src, png);
     //watch(paths.gif.src, gif);
     watch(paths.libs.src, libs);
-    watch(paths.worlds.src, world);
+    watch(paths.mapx3dserver.src, mapx3dserver);
     watch(paths.serverjs.src, serverJs);
     watch(paths.mapperxml.src, mapperxmls);
 }
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, world, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, mapx3dserver, serverJs, mapperxmls));

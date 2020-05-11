@@ -1,6 +1,6 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get, post } = require("../util/comm");
-var { WebSocketBroker } = require("../ws/websocket_broker");
+
 var { Section } = require("../section/section");
 var { MilMap } = require("../map3d/milmap");
 
@@ -25,7 +25,7 @@ global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
 
-const config = require("../../conf/server.json");
+
 
 function makeTable(data) {
     let str = "";
@@ -132,11 +132,9 @@ class Application {
                             obj.setVariable("latitude", data.latitude);
 
                             if (data.longitude && data.latitude) {
-                                _this.addEntity(_this.map.collection("KMILSYMBOL"), data.longitude, data.latitude,
-                                    { sic:"SPZP----------G" }, (entity) => {
-                                        obj.setVariable("token", entity.id);
-                                    }, true
-                                );
+                                _this.addEntity(_this.map.collection("KMILSYMBOL"), data.longitude, data.latitude, { sic: "SPZP----------G" }, (entity) => {
+                                    obj.setVariable("token", entity.id);
+                                }, true);
                             }
                         }
                     },
@@ -162,7 +160,7 @@ class Application {
                             let entity = obj.getVariable("entity");
                             if (entity) { msg.entity = entity.id }
 
-                            _this.websocket.send('TIA.HANDLER', msg);
+                            _this.map.websocket.send('TIA.HANDLER', msg);
                         });
                         let cancel = $(body).find("button[data-key=cancel]");
                         cancel.unbind('click');
@@ -230,26 +228,6 @@ class Application {
                     },
                     onclose: function() { _this.dialog.tia = undefined; },
                     oninit: function(obj, body) {
-                        /*
-                    ["req0","req1","req2","req3","req4"].forEach((key,i)=>{
-                        let req = $(body).find("button[data-key="+key+"]");
-                        req.unbind('click');
-                        req.bind('click', function(){
-                            let msg = {
-                                cmd:"REQ_WAA",
-                                type:i,
-                                token: obj.getVariable("token"),
-                                longitude: obj.getVariable("longitude"),
-                                latitude: obj.getVariable("latitude")
-                            };
-    
-                            let entity = obj.getVariable( "entity");
-                            if( entity ){ msg.entity=entity.id }
-    
-                            _this.websocket.send('WAA.HANDLER',msg);
-                        });
-                    });
-                    */
                         let cancel = $(body).find("button[data-key=cancel]");
                         cancel.unbind('click');
                         cancel.bind('click', function() {
@@ -274,20 +252,18 @@ class Application {
                                 data.data.forEach(row => {
                                     if (!Cesium.defined(row.t_id) || row.t_id.length == 0) {
                                         if (row.lon && row.lat) {
-                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat),
-                                                { sic: "SPZP----------G" , name:row.t_name , id:row.t_id }, (entity) => {
-                                                    let ustr = "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
-                                                    ustr += "<td class='tdata'>" + row.dt + "</td>";
-                                                    ustr += "<td class='tdata' data-token='" + entity.id + "' onclick=\"app.reqUnknown('" + entity.id + "'," + row.lon + "," + row.lat + ")\" style='background-color:red;'>미확인</td>";
-                                                    ustr += "<td class='tdata' >" + row.lon + "</td>";
-                                                    ustr += "<td class='tdata' >" + row.lat + "</td>";
-                                                    ustr += "<td class='tdata'>" + row.wt + "</td>";
-                                                    ustr += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                                    ustr += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
-                                                    ustr += "</tr>";
-                                                    $(body).find("tbody").append(ustr);
-                                                }, false
-                                            );
+                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), { sic: "SPZP----------G", name: row.t_name, id: row.t_id }, (entity) => {
+                                                let ustr = "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
+                                                ustr += "<td class='tdata'>" + row.dt + "</td>";
+                                                ustr += "<td class='tdata' data-token='" + entity.id + "' onclick=\"app.reqUnknown('" + entity.id + "'," + row.lon + "," + row.lat + ")\" style='background-color:red;'>미확인</td>";
+                                                ustr += "<td class='tdata' >" + row.lon + "</td>";
+                                                ustr += "<td class='tdata' >" + row.lat + "</td>";
+                                                ustr += "<td class='tdata'>" + row.wt + "</td>";
+                                                ustr += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                                ustr += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                                ustr += "</tr>";
+                                                $(body).find("tbody").append(ustr);
+                                            }, false);
                                         }
                                     } else {
                                         str += "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ");\">";
@@ -301,7 +277,7 @@ class Application {
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
-                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), { sic:row.code , name : row.t_name, id: row.t_id },
+                                            _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), { sic: row.code, name: row.t_name, id: row.t_id },
                                                 (entity) => {}, false);
                                         }
                                     }
@@ -572,169 +548,146 @@ class Application {
         };
 
         this.map = new MilMap(options);
-        this.websocket = new WebSocketBroker({
-            host: config.WebSocket.host,
-            port: config.WebSocket.port,
-            uri: '',
-            onreconnected:function(websockerbroker){
-                _this.websocket = websockerbroker;
-            },
-            onclose: function() {
-
-            },
-            onmessage: function(data) {
-
-                if (data && data.topic) {
-                    let jsonMessage = (typeof(data.message) == "object") ? data.message : JSON.parse(data.message);
-                    switch (data.topic) {
-                        case 'TIA.HANDLER': //표적식별
-                            if (jsonMessage.cmd == "RES_TIA") {
-                                if (!Cesium.defined(_this.dialog.tia)) {
-                                    _this.dialog.tia = _this.dialogFunc.tia(jsonMessage);
-                                } else {
-                                    let dlg = _this.dialog.tia;
-                                    dlg.set(jsonMessage);
-                                    dlg.front();
-                                }
-                            } else if (jsonMessage.cmd == "DET_TIA") {
-                                if (jsonMessage.act && jsonMessage.act != "del") {
-                                    if (!Cesium.defined(_this.dialog.det)) {
-                                        _this.dialog.det = _this.dialogFunc.det(jsonMessage);
-                                    } else {
-                                        let dlg = _this.dialog.det;
-                                        dlg.set(jsonMessage);
-                                        dlg.front();
-                                    }
-                                }
-                            }
-                            break;
-                        case 'WAA.HANDLER': //무장할당 
-                            if (Cesium.defined(jsonMessage.type) && jsonMessage.type != null) {
-                                let type = jsonMessage.type;
-                                if (type == 0) {
-
-                                    serverAdapter.get('type0', {}, function(resultdata) {
-                                        var addCollection = map.collection("type0");
-                                        if (!Cesium.defined(addCollection)) {
-                                            addCollection = map.createCollection("type0", "Draw");
-                                        }
-                                        addCollection.removeAll();
-                                        var viewdata = resultdata.bmoa;
-                                        if (viewdata) {
-                                            viewdata.forEach(row => {
-                                                row.degree = { longitude: row.geocd_lngt, latitude: row.geocd_ltd };
-                                                app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
-                                                    faceColor: "#ffffff",
-                                                    faceTransparent: 0.5,
-                                                    lineColor: "#ff0000",
-                                                    lineTransparent: 1
-                                                });
-                                            });
-                                        }
-
-                                        var airCollection = map.collection("type0:air");
-                                        if (!Cesium.defined(airCollection)) {
-                                            airCollection = map.createCollection("type0:air", "KMilSymbol");
-                                        }
-                                        airCollection.removeAll();
-
-                                        viewdata = resultdata.aircraft;
-                                        if (viewdata) {
-                                            viewdata.forEach(d => {
-                                                d.degree = {
-                                                    longitude: d.lng,
-                                                    latitude: d.lat
-                                                };
-                                            })
-                                            airCollection.terrianFromDegrees(viewdata, function(d) {
-                                                d.size = 30;
-                                                let entity = airCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, parseFloat(d.height) * 1000), d);
-                                                //console.dir(entity);
-                                                //let ele = $("#toshow-view [data-id=" + d.id + "]");
-                                                //ele.data("id", entity.id);
-                                            });
-                                        }
-
-                                    });
-                                }
-
-                                if (type == 1) {
-                                    targetRefs = jsonMessage;
-                                    $("button[data-token=ref]").prop('disabled', false);
-                                } else if (type == 2) {
-                                    targetExtras = jsonMessage;
-
-                                    if (targetExtras && targetExtras.data) {
-                                        targetExtras.data.sort((a, b) => { return b.rad - a.rad; });
-                                        targetExtras.data.forEach(row => {
-                                            _this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result, parseFloat(row.rad));
-                                        });
-                                    }
-
-                                } else if (type == 3) {
-                                    targetAirCollision = jsonMessage;
-
-                                    if (targetAirCollision && targetAirCollision.data) {
-
-                                        var aaCollection = map.collection("type3:aa");
-                                        if (!Cesium.defined(aaCollection)) {
-                                            aaCollection = map.createCollection("type3:aa", "Draw");
-                                        }
-                                        aaCollection.removeAll();
-
-                                        targetAirCollision.data.forEach(row => {
-                                            if (row.ac) {
-                                                row.ac.forEach(d => {
-                                                    d.degree = {
-                                                        lb: CTX.en(d.lb),
-                                                        lu: CTX.en(d.lu),
-                                                        rb: CTX.en(d.rb),
-                                                        ru: CTX.en(d.ru)
-                                                    }
-                                                    _this.drawObject("aa_box").type1(aaCollection, d.name, d.degree, parseFloat(d.min) * 1000, parseFloat(d.max) * 1000, {
-                                                        faceColor: "#ffffff",
-                                                        faceTransparent: 0.5,
-                                                        lineColor: "#954045",
-                                                        lineTransparent: 1
-                                                    });
-                                                });
-                                            }
-                                            //_this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
-                                        });
-                                    }
-
-                                } else if (type == 4) {
-                                    targetAlignRefs = jsonMessage;
-                                    $("button[data-token=align]").prop('disabled', false);
-                                } else {
-                                    let dlgkey = "waa" + type;
-                                    if (!Cesium.defined(_this.dialog[dlgkey])) {
-                                        _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
-                                    } else {
-                                        let dlg = _this.dialog[dlgkey];
-                                        dlg.set(jsonMessage);
-                                        dlg.front();
-                                    }
-                                }
-
-                            } else {
-                                alert("invalid message \n" + data);
-                            }
-                            //console.log( data.topic + "> " + jsonMessage );
-                            break;
-                        case 'DSW.HANDLER': //시연용
-                            if (!Cesium.defined(_this.dialog.dsw)) {
-                                _this.dialog.dsw = _this.dialogFunc.dsw(jsonMessage);
-                            } else {
-                                let dlg = _this.dialog.dsw;
-                                dlg.set(jsonMessage);
-                                dlg.front();
-                            }
-
-                            //console.log( data.topic + "> " + data.message );
-                            break;
+        this.map.websocket.onmessage('TIA.HANDLER', function(jsonMessage) {
+            if (jsonMessage.cmd == "RES_TIA") {
+                if (!Cesium.defined(_this.dialog.tia)) {
+                    _this.dialog.tia = _this.dialogFunc.tia(jsonMessage);
+                } else {
+                    let dlg = _this.dialog.tia;
+                    dlg.set(jsonMessage);
+                    dlg.front();
+                }
+            } else if (jsonMessage.cmd == "DET_TIA") {
+                if (jsonMessage.act && jsonMessage.act != "del") {
+                    if (!Cesium.defined(_this.dialog.det)) {
+                        _this.dialog.det = _this.dialogFunc.det(jsonMessage);
+                    } else {
+                        let dlg = _this.dialog.det;
+                        dlg.set(jsonMessage);
+                        dlg.front();
                     }
                 }
+            }
+        });
+        this.map.websocket.onmessage('WAA.HANDLER', function(jsonMessage) {
+            if (Cesium.defined(jsonMessage.type) && jsonMessage.type != null) {
+                let type = jsonMessage.type;
+                if (type == 0) {
+                    serverAdapter.get('type0', {}, function(resultdata) {
+                        var addCollection = map.collection("type0");
+                        if (!Cesium.defined(addCollection)) {
+                            addCollection = map.createCollection("type0", "Draw");
+                        }
+                        addCollection.removeAll();
+                        var viewdata = resultdata.bmoa;
+                        if (viewdata) {
+                            viewdata.forEach(row => {
+                                row.degree = { longitude: row.geocd_lngt, latitude: row.geocd_ltd };
+                                app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
+                                    faceColor: "#ffffff",
+                                    faceTransparent: 0.5,
+                                    lineColor: "#ff0000",
+                                    lineTransparent: 1
+                                });
+                            });
+                        }
+
+                        var airCollection = map.collection("type0:air");
+                        if (!Cesium.defined(airCollection)) {
+                            airCollection = map.createCollection("type0:air", "KMilSymbol");
+                        }
+                        airCollection.removeAll();
+
+                        viewdata = resultdata.aircraft;
+                        if (viewdata) {
+                            viewdata.forEach(d => {
+                                d.degree = {
+                                    longitude: d.lng,
+                                    latitude: d.lat
+                                };
+                            })
+                            airCollection.terrianFromDegrees(viewdata, function(d) {
+                                d.size = 30;
+                                let entity = airCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, parseFloat(d.height) * 1000), d);
+                                //console.dir(entity);
+                                //let ele = $("#toshow-view [data-id=" + d.id + "]");
+                                //ele.data("id", entity.id);
+                            });
+                        }
+
+                    });
+                }
+
+                if (type == 1) {
+                    targetRefs = jsonMessage;
+                    $("button[data-token=ref]").prop('disabled', false);
+                } else if (type == 2) {
+                    targetExtras = jsonMessage;
+
+                    if (targetExtras && targetExtras.data) {
+                        targetExtras.data.sort((a, b) => { return b.rad - a.rad; });
+                        targetExtras.data.forEach(row => {
+                            _this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result, parseFloat(row.rad));
+                        });
+                    }
+
+                } else if (type == 3) {
+                    targetAirCollision = jsonMessage;
+
+                    if (targetAirCollision && targetAirCollision.data) {
+
+                        var aaCollection = map.collection("type3:aa");
+                        if (!Cesium.defined(aaCollection)) {
+                            aaCollection = map.createCollection("type3:aa", "Draw");
+                        }
+                        aaCollection.removeAll();
+
+                        targetAirCollision.data.forEach(row => {
+                            if (row.ac) {
+                                row.ac.forEach(d => {
+                                    d.degree = {
+                                        lb: CTX.en(d.lb),
+                                        lu: CTX.en(d.lu),
+                                        rb: CTX.en(d.rb),
+                                        ru: CTX.en(d.ru)
+                                    }
+                                    _this.drawObject("aa_box").type1(aaCollection, d.name, d.degree, parseFloat(d.min) * 1000, parseFloat(d.max) * 1000, {
+                                        faceColor: "#ffffff",
+                                        faceTransparent: 0.5,
+                                        lineColor: "#954045",
+                                        lineTransparent: 1
+                                    });
+                                });
+                            }
+                            //_this.drawRad(parseFloat(row.lon), parseFloat(row.lat), row.result,parseFloat(row.rad) );
+                        });
+                    }
+
+                } else if (type == 4) {
+                    targetAlignRefs = jsonMessage;
+                    $("button[data-token=align]").prop('disabled', false);
+                } else {
+                    let dlgkey = "waa" + type;
+                    if (!Cesium.defined(_this.dialog[dlgkey])) {
+                        _this.dialog[dlgkey] = _this.dialogFunc[dlgkey](jsonMessage);
+                    } else {
+                        let dlg = _this.dialog[dlgkey];
+                        dlg.set(jsonMessage);
+                        dlg.front();
+                    }
+                }
+
+            } else {
+                alert("invalid message \n" + data);
+            }
+        });
+        this.map.websocket.onmessage('DSW.HANDLER', function(jsonMessage) {
+            if (!Cesium.defined(_this.dialog.dsw)) {
+                _this.dialog.dsw = _this.dialogFunc.dsw(jsonMessage);
+            } else {
+                let dlg = _this.dialog.dsw;
+                dlg.set(jsonMessage);
+                dlg.front();
             }
         });
 
@@ -968,7 +921,7 @@ class Application {
             longitude: longitude,
             latitude: latitude
         };
-        this.websocket.send('TIA.HANDLER', msg);
+        this.map.websocket.send('TIA.HANDLER', msg);
     }
     addEntity(col, longitude, latitude, options, callback, bfly) {
         let _this = this;

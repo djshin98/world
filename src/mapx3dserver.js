@@ -188,19 +188,19 @@
     });
 
     server.on('close', function() {
-        console.log('Cesium development server stopped.');
+        console.log('OliveMap development server stopped.');
     });
 
     var isFirstSig = true;
     process.on('SIGINT', function() {
         if (isFirstSig) {
-            console.log('Cesium development server shutting down.');
+            console.log('OliveMap development server shutting down.');
             server.close(function() {
                 process.exit(0);
             });
             isFirstSig = false;
         } else {
-            console.log('Cesium development server force kill.');
+            console.log('OliveMap development server force kill.');
             process.exit(1);
         }
     });

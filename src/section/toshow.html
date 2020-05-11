@@ -147,7 +147,7 @@
     };
     var toShowNode = [{
         name: '아군부대',
-        group: 'ally',
+        group: 'unit',
         collection: "KMilSymbol",
         id: 'ALLY',
         children: [{
@@ -222,7 +222,7 @@
         }
     }, {
         name: '공역 통제',
-        group: 'airControl',
+        group: 'air_control',
         collection: "Draw",
         id: 'AIRCONTROL',
         children: [],
@@ -231,7 +231,7 @@
         }
     }, {
         name: '항공기 작전 공역',
-        group: 'airArea',
+        group: 'air_area',
         collection: "Draw",
         id: 'AIRAREA',
         children: [],
@@ -240,7 +240,7 @@
         }
     }, {
         name: '전투지경선',
-        group: 'eoLine',
+        group: 'eo_line',
         collection: "Draw",
         id: 'EOLINE',
         children: [],
@@ -310,7 +310,7 @@
                             }
 
                         }
-                    } else if (group === "eoLine") {
+                    } else if (group === "eo_line") {
                         let addCollection = map.collection(group);
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
@@ -332,7 +332,7 @@
                             }
 
                         }
-                    } else if (group === "airArea") {
+                    } else if (group === "air_area") {
                         let addCollection = map.collection(group);
 
                         if (Cesium.defined(addCollection)) {
@@ -354,7 +354,7 @@
                                 }
                             }
                         }
-                    } else if (group === "airControl") {
+                    } else if (group === "air_control") {
                         let addCollection = map.collection(group);
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();

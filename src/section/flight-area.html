@@ -55,6 +55,29 @@
     </div>
 </div>
 <script>
+    function showGlbf() {
+        serverAdapter.get('images', {
+            url: "models/3DModels",
+            exts: ["glb", "gltf"]
+        }, function(data) {
+            new OliveTree(".section-content #glbf-view", data.result, {
+                onAttribute: function(d) {
+                    return {
+                        id: d.id
+                    };
+                },
+                onText: function(d) {
+                    return d.name;
+                },
+                onSelect: function(type, tag, obj, url) {
+                    if (type == "file") {
+                        modelUrl = "models/3DModels/" + url;
+                    }
+                }
+            });
+        });
+    }
+
     app.onReady(function(_app, _map) {
         showGlbf();
     });
