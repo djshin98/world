@@ -137,7 +137,6 @@ class DrawObject {
     create(collection, points, viewModel) {
 
     }
-
     lineMaterial(style, color, width) {
         if (style != "line") {
             //return Cesium.Material.fromType('Dot');
