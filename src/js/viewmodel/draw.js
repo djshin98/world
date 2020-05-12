@@ -29,6 +29,7 @@ var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
 var { LineEO } = require('../draw/line_eo');
 var { Wall } = require('../draw/wall');
+var { PolygonWithLine } = require('../draw/polygonwithline');
 
 var drawLinker = {
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -56,6 +57,7 @@ var drawLinker = {
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
+    polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } }
 }
 
 // widget 에 대한 표준을 만든다.
