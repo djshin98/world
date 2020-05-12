@@ -63,106 +63,52 @@ class MqttAdapter {
     }
 };
 
-<<<<<<< HEAD
-var data = { cmd: "DET_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-var data = { cmd: "REQ_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-var data = { cmd: "RES_TIA", token: "1234", idx: "dbkey", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-=======
 //c , c++ , pascal , java , 
 // function pointer , 
->>>>>>> 1b9a60bc0c5b26c761bc2a2eb3de2d97131ede62
 
+/*
+function game369(message) {
+    let num = message.toString();
+    let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
+    let no = parseInt(message.toString());
+    if (no % 3 == 0 || hand) {
+        console.log(topic + " received : 짝!!!");
+    } else {
+        console.log(topic + " received : " + message.toString());
+    }
+    let v = parseInt(message.toString()) + 1;
+    return v;
+}
 
-
+function next(broker, who, speak) {
+    broker.publish(who, "" + speak);
+}
 global.broker = new MqttAdapter({
     host: "175.207.13.28",
     port: 1883,
     listens: [{
             topic: "#",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                console.log(topic + " received : " + message.toString());
-            },
+            onReady: function(topic) { console.log("onready : " + topic); },
+            onReceive: function(topic, message) { console.log(topic + " received : " + message.toString()); },
         },
         {
             topic: "a",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("b", "" + v);
-                }
-            }
+            onReady: function(topic) { console.log("onready : " + topic); },
+            onReceive: function(topic, message) { next(broker, "b", game369(message)); }
         },
         {
             topic: "b",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("c", "" + v);
-                }
-            }
+            onReady: function(topic) { console.log("onready : " + topic); },
+            onReceive: function(topic, message) { next(broker, "c", game369(message)); }
         },
         {
             topic: "c",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("a", "" + v);
-                }
-            }
+            onReady: function(topic) { console.log("onready : " + topic); },
+            onReceive: function(topic, message) { next(broker, "a", game369(message)); }
         }
     ]
 });
-//888887
-broker.publish("a", "1");
+next(broker, "a", game369("1"));
+*/
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 1b9a60bc0c5b26c761bc2a2eb3de2d97131ede62
 module.exports = { MqttAdapter: MqttAdapter };
