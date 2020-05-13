@@ -4,11 +4,11 @@ class Wall extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
-                minimumHeights:points.map(d=>{  
-                    return CTX.c2d(d).height + 1000; 
+                minimumHeights: points.map(d => {
+                    return CTX.c2d(d).height + 1000;
                 }),
                 clampToGround: true,
                 color: viewModel.lineColor,

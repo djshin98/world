@@ -9,7 +9,7 @@ class PolygonWithLine extends DrawObject {
     }
 
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             points.push(points[0]);
             points.push(points[1]);
             viewModel.lineColor.alpha = 1;

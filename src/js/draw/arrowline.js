@@ -1,22 +1,22 @@
 var { DrawObject } = require('./drawobject');
-class ArrowLine extends DrawObject{
-    constructor(){
+class ArrowLine extends DrawObject {
+    constructor() {
         super(2);
     }
-    create(collection,points,viewModel){
-        if( points && points.length >= this.minPointCount ){
+    create(collection, points, viewModel) {
+        if (this.isValidPoints(points)) {
             let option = {
-                positions : points,
-                clampToGround : true,
-                color : viewModel.lineColor,
-                width : viewModel.lineWidth
+                positions: points,
+                clampToGround: true,
+                color: viewModel.lineColor,
+                width: viewModel.lineWidth
             };
-            
+
             option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
-            return collection.add(this.index,{
-                polyline : option
+            return collection.add(this.index, {
+                polyline: option
             });
         }
     }
 }
-module.exports = { ArrowLine:ArrowLine };
+module.exports = { ArrowLine: ArrowLine };

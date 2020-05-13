@@ -4,7 +4,7 @@ class PointX extends DrawObject {
         super(2)
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance == 0) { distance = 10 }
             return collection.add(this.index, {

@@ -4,7 +4,7 @@ class MilLine1 extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             collection.add(this.index, {
                 polyline: {
                     positions: points,

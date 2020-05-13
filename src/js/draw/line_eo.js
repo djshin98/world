@@ -6,7 +6,7 @@ class LineEO extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
                 clampToGround: true,
