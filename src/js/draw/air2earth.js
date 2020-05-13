@@ -110,5 +110,4 @@ class Air2Earth extends DrawObject {
         }
     }
 }
-
 module.exports = { Air2Earth: Air2Earth };
