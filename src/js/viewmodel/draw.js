@@ -32,6 +32,7 @@ var { Wall } = require('../draw/wall');
 var { ShootingArc } = require('../draw/shootingarc');
 var { PolygonWithLine } = require('../draw/polygonwithline');
 var { Spline } = require('../draw/spline');
+var { KMilSymbol } = require('../draw/kmilsymbol');
 
 var drawLinker = {
 
@@ -62,7 +63,8 @@ var drawLinker = {
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     shootingarc: { name: "사격선(호)", createFunc: function() { return new ShootingArc(); } },
     polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
-    spline: { name: "스플라인", createFunc: function() { return new Spline(); } }
+    spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
+    kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } }
 }
 
 function registryHandler(key, name, createfunc) {

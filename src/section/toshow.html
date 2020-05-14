@@ -404,10 +404,7 @@
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
                             if (checked) {
-                                //var viewdata = toShowNode.find(function(d) {
-                                //   return (d.group === group) ? true : false;
-                                //});
-
+                                
                                 addCollection.terrianFromDegrees(viewdata.children, function(d) {
                                     d.size = 30;
                                     let entity = addCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);
