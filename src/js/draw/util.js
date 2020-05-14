@@ -203,6 +203,45 @@ var ParabolaUtil = {
 };
 
 var VisibilityUtil = {
+    arc: function(center, end, deg, options) {
+        options = Object.assign({
+            height: 1,
+            divide: 10,
+            degree: 10,
+            terrian: false
+        }, options);
+        let polylines = [];
+
+        center.height += options.height;
+        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
+
+        let THETA = Math.PI / 180;
+        if (deg > 0) {
+            for (var i = 0; i < deg; i += options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                //let polyline = LineUtil.divide(center, r, options.divide);
+                //if (options.terrian == true) {
+                //    VisibilityUtil.terrianEI(polyline);
+                //}
+                //polyline = CTX.d2cA(polyline);
+                polylines.push(r);
+            }
+        } else {
+            for (var i = 0; i > deg; i -= options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                //let polyline = LineUtil.divide(center, r, options.divide);
+                //if (options.terrian == true) {
+                //    VisibilityUtil.terrianEI(polyline);
+                //}
+                //polyline = CTX.d2cA(polyline);
+                polylines.push(r);
+            }
+        }
+
+        return polylines;
+    },
     radiation: function(center, end, options) {
         options = Object.assign({
             height: 1,

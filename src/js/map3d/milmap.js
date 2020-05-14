@@ -68,9 +68,13 @@ class MilMap {
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
+            /*
             imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                 url: 'https://a.tile.openstreetmap.org/'
             }),
+            */
+
+
             /*
              imageryProvider: Cesium.createWorldImagery({
                  style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
