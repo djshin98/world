@@ -25,8 +25,6 @@ global.axios = require('axios');
 global.dom = dom;
 global.tx = { get: get, post: post };
 
-
-
 function makeTable(data) {
     let str = "";
     Object.keys(data).forEach(key => {
@@ -55,43 +53,16 @@ class Application {
     constructor(options) {
         this.workStatus("section", false);
         this.workStatus("map3d", false);
-        let _this = this;
-        this.windowLayout = {
-            header: {
-                height: 0
-            },
-            section: {
-                getWidth: function() {
-                    if (_this.windowLayout.section.visible) {
-                        if (_this.windowLayout.section.view.visible) {
-                            return _this.windowLayout.section.width;
-                        }
-                        return _this.windowLayout.section.width - _this.windowLayout.section.view.width;
-                    } else {
-                        return 0;
-                    }
-                },
-                width: 300,
-                visible: true,
-                view: {
-                    width: 225,
-                    visible: true
-                },
-                handle: {
-                    height: 50
-                }
-            }
-        }
+        this.header = Object.assign({ height: 0 }, options.header);
+        this
         this.readyFunctions = [];
 
         window.onresize = this.onResize;
 
-
-        //window.onresize();
-
         this.init(options);
 
         this.section = this.createSection(options.section);
+
         this.onResize();
 
         if (options.success) {
@@ -541,12 +512,7 @@ class Application {
                 })
             }
         }
-
-        dom.$("#door-handle")[0].onclick = function(e) {
-            _this.section.showView(!_this.windowLayout.section.view.visible);
-        };
-
-        this.map = new MilMap(options);
+        this.map = new MilMap(options.map3);
         this.map.websocket.onmessage('TIA.HANDLER', function(jsonMessage) {
             if (jsonMessage.cmd == "RES_TIA") {
                 if (!Cesium.defined(_this.dialog.tia)) {
@@ -729,13 +695,10 @@ class Application {
     drawObject(name) {
         return this.drawModel.getHandler(name);
     }
-    sectionShowStatus(bshow) {
-        this.windowLayout.section.view.visible = bshow;
-    }
     createSection(options) {
         let _this = this;
         return new Section(this, {
-            contents: options.contents,
+            options: options,
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {
                     $(parentNode).append(d);
@@ -778,46 +741,25 @@ class Application {
             }
         });
     }
+    getHeaderHeight() {
+        return this.header.height;
+    }
     onResize() {
         let application = (typeof(app) == "undefined") ? this : app;
-        let windowLayout = application.windowLayout;
-        var width = windowLayout.section.getWidth();
-        var headerHeight = windowLayout.header.height;
-        var sectionHeaderHeight = 40;
-        var handleHeight = windowLayout.section.handle.height;
-
-        var sectionView = dom.$("section")[0];
-        var sectionHandle = dom.$("#door-handle")[0];
         var article = dom.$("article")[0];
-        //var header = dom.$("header")[0];
-        var mapEle = dom.$("#map3d")[0];
-        var viewWidth = window.innerWidth;
-        var viewHeight = window.innerHeight;
-        var bodyHeight = viewHeight - headerHeight;
-        /*
-            header.style.top = "0px";
-            header.style.width = viewWidth + "px";
-            header.style.height = headerHeight + "px";
-        */
+        var height = window.innerHeight - application.getHeaderHeight();
+        var sectionWidth = (application.section) ? application.section.getWidth() : 0;
+        article.style.top = application.getHeaderHeight() + "px";
+        article.style.left = sectionWidth + "px";
+        article.style.width = (window.innerWidth - sectionWidth) + "px";
+        article.style.height = height + "px";
 
-        if (sectionView) {
-            sectionView.style.top = headerHeight + "px";
-            sectionView.style.width = width + "px";
-            sectionView.style.height = bodyHeight + "px";
+        if (application.map) {
+            dom.$("#" + application.map.getId())[0].style.height = height + "px";
         }
-        sectionHandle.style.top = ((bodyHeight / 2) - (handleHeight / 2)) + "px";
-
-        article.style.top = headerHeight + "px";
-        article.style.left = width + "px";
-        article.style.width = (viewWidth - width) + "px";
-        article.style.height = bodyHeight + "px";
-
-        mapEle.style.height = bodyHeight + "px";
-
-        if (windowLayout.section.view.visible && application.section) {
-            application.section.resize(width, bodyHeight);
+        if (application.section) {
+            application.section.resize(sectionWidth, height);
         }
-
     }
     dragger() {
         if (!Cesium.defined(this.oliveDragger)) {

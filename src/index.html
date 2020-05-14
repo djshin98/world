@@ -30,6 +30,9 @@
         var modelUrl = "";
         $(function() {
             window.app = new Application({
+                header: {
+                    height: 0
+                },
                 map3: {
                     id: "map3d",
                     mapServiceMode: "internet", //"internet offline"
@@ -44,12 +47,23 @@
                         url: 'http://192.168.1.101:8080/Map/Seoul_TMS/'
                     }, {
                         url: 'http://192.168.1.101:8080/Map/Daejon_TMS/'
-                    }]
-                },
-                websocket: {
-                    reconnectable: true
+                    }],
+                    websocket: {
+                        reconnectable: true
+                    }
                 },
                 section: {
+                    id: "section",
+                    width: 300,
+                    visible: true,
+                    view: {
+                        width: 225,
+                        visible: true
+                    },
+                    handle: {
+                        id: "door-handle",
+                        height: 50
+                    },
                     contents: [{
                             name: "Home",
                             icon: "home",
@@ -96,6 +110,9 @@
                         }
                         //{ name: "animation", icon: "file video", page: "section/animation.html" }
                     ]
+                },
+                aside: {
+                    id: "aside"
                 },
                 success: function(map) {
                     //map.contour(true);
