@@ -29,12 +29,9 @@ var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
 var { LineEO } = require('../draw/line_eo');
 var { Wall } = require('../draw/wall');
-<<<<<<< HEAD
 var { ShootingArc } = require('../draw/shootingarc');
-=======
 var { PolygonWithLine } = require('../draw/polygonwithline');
 var { Spline } = require('../draw/spline');
->>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
 
 var drawLinker = {
 
@@ -63,12 +60,9 @@ var drawLinker = {
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
-<<<<<<< HEAD
     shootingarc: { name: "사격선(호)", createFunc: function() { return new ShootingArc(); } },
-=======
     polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } }
->>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
 }
 
 function registryHandler(key, name, createfunc) {

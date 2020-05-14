@@ -67,7 +67,6 @@ class MilMap {
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
-<<<<<<< HEAD
 
             /*
             imageryProvider: new Cesium.OpenStreetMapImageryProvider({
@@ -76,8 +75,6 @@ class MilMap {
             */
 
 
-=======
->>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
             /*
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'
