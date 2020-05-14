@@ -4,7 +4,7 @@ class Polygon extends DrawObject {
         super(3);
     }
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             return collection.add(this.index, {
                 polygon: {
                     hierarchy: points,
