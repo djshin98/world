@@ -7,7 +7,7 @@ class ShootingArc extends DrawObject {
         super(3);
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
 
             var p1 = CTX.c2w(points[0]);
