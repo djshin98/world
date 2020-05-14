@@ -4,18 +4,10 @@ class ShootingLine extends DrawObject {
         super(3);
     }
     create(collection, points, viewModel) {
-<<<<<<< HEAD
-        if (points && points.length && points.length >= this.minPointCount) {
-            var distance = Cesium.Cartesian3.distance(points[0], points[1]);
-            if (distance > 0) {
-                return collection.add(this.index, {
-                    position: points[0],
-=======
         if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
             if (distance > 0) {
                 return collection.add(this.index, {
->>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
                     ellipsoid: {
                         radii: new Cesium.Cartesian3(distance, distance, distance),
                         innerRadii: new Cesium.Cartesian3(distance / 2, distance / 2, distance / 2),
