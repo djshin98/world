@@ -7,12 +7,7 @@ class Image extends DrawObject {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
     }
     create(collection, points, viewModel) {
-<<<<<<< HEAD
         if (points && points.length && points.length >= this.minPointCount) {
-=======
-        if (this.isValidPoints(points)) {
-
->>>>>>> cc84257ce960ee2a27cd9c57603cb74a41077d8e
             let distance = viewModel.size;
 
             var points2 = [];
