@@ -758,7 +758,7 @@ class Application {
             dom.$("#" + application.map.getId())[0].style.height = height + "px";
         }
         if (application.section) {
-            application.section.resize(sectionWidth, height);
+            application.section.resize(0, application.header.height, sectionWidth, height);
         }
     }
     dragger() {

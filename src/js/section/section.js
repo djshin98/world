@@ -16,7 +16,7 @@ class Section {
         if (this.options.handle) {
             if (this.options.handle.id) {
                 let _this = this;
-                document.getElementById("door-handle").onclick = function(e) {
+                document.getElementById(this.options.handle.id).onclick = function(e) {
                     _this.toggleView();
                 };
             }
@@ -84,12 +84,11 @@ class Section {
             _this.showView(true);
         })();
     }
-    resize(w, h) {
-        var headerHeight = 0;
+    resize(left, top, w, h) {
         var sectionView = document.getElementById(this.options.id);
         var sectionHandle = document.getElementById(this.options.handle.id);
         if (sectionView) {
-            sectionView.style.top = headerHeight + "px";
+            sectionView.style.top = top + "px";
             sectionView.style.width = this.getWidth() + "px";
             sectionView.style.height = h + "px";
         }
@@ -116,7 +115,6 @@ class Section {
     }
     showView(bshow) {
         if (bshow) {
-            //$(".section-view").show();
             $(".section-head>a>b").show();
             $(".section-head>a>img").attr("src", "img/logo.png");
             if ($(".section-view").is(":visible")) {
@@ -126,7 +124,6 @@ class Section {
             }
 
         } else {
-            //$(".section-view").hide();
             $(".section-head>a>b").hide();
             $(".section-head>a>img").attr("src", "img/logom.png");
             if ($(".section-view").is(":visible")) {
@@ -137,7 +134,6 @@ class Section {
             }
         }
         this.options.view.visible = bshow;
-        //window.resize();
         this.app.onResize();
     }
 }
