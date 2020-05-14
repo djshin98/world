@@ -237,7 +237,6 @@ var VisibilityUtil = {
             terrian: false
         }, options);
         let polylines = [];
-
         center.height += options.height;
         //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
 

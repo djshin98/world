@@ -8,12 +8,16 @@ class Wall extends DrawObject {
             let option = {
                 positions: points,
                 minimumHeights: points.map(d => {
-                    return CTX.c2d(d).height + 1000;
+                    return CTX.c2d(d).height + viewModel.size;
                 }),
                 clampToGround: true,
-                color: viewModel.lineColor,
+                //color: viewModel.lineColor,
                 width: viewModel.lineWidth,
-                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+                fill: true,
+                outline: true,
+                outlineColor: viewModel.lineColor,
+                outlineWidth: viewModel.lineWidth,
+                material: this.lineMaterial(viewModel.lineStyle, viewModel.faceColor, viewModel.lineWidth)
             };
             return collection.add(this.index, {
                 wall: option
