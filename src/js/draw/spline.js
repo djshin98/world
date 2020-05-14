@@ -10,9 +10,15 @@ class Spline extends DrawObject {
             let option = {
                 positions: splinePoints,
                 clampToGround: true,
-                color: viewModel.lineColor,
+                //color: viewModel.lineColor,
                 width: viewModel.lineWidth,
-                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+                meterial: new Cesium.PolylineOutlineMaterialProperty({
+                        color: Cesium.Color.BLACK, //viewModel.lineColor,
+                        outlineColor: Cesium.Color.BLACK,
+                        outlineWidth: 2
+                    })
+                    //material: new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor)
+                    //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
             return collection.add(this.index, {
                 polyline: option
