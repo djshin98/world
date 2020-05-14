@@ -7,7 +7,7 @@ class ImageLine extends DrawObject {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
     }
     create(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
                 clampToGround: true,

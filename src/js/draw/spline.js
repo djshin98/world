@@ -1,24 +1,23 @@
 var { DrawObject } = require('./drawobject');
-class Wall extends DrawObject {
+var { LineUtil } = require('./util');
+class Spline extends DrawObject {
     constructor() {
-        super(2);
+        super(3);
     }
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {
+            let splinePoints = LineUtil.spline(points, 100);
             let option = {
-                positions: points,
-                minimumHeights: points.map(d => {
-                    return CTX.c2d(d).height + 1000;
-                }),
+                positions: splinePoints,
                 clampToGround: true,
                 color: viewModel.lineColor,
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
             return collection.add(this.index, {
-                wall: option
+                polyline: option
             });
         }
     }
 }
-module.exports = { Wall: Wall };
+module.exports = { Spline: Spline };

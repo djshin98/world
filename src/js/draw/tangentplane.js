@@ -4,7 +4,7 @@ class TangentPlane extends DrawObject {
         super(1);
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
             //if( distance > 0 ){
             var plane1 = new Cesium.EllipsoidTangentPlane(points[0]); // default ellipsoid WGS84

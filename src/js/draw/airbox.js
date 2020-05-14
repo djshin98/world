@@ -4,7 +4,7 @@ class AirBox extends DrawObject {
         super(3);
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             return collection.add(this.index, {
                 position: points[0],
                 polygon: {

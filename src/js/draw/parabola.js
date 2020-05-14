@@ -7,7 +7,7 @@ class Parabola extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             let degrees = {
                 start: CTX.c2d(points[0]),
                 end: CTX.c2d(points[1])
