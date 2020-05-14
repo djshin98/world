@@ -63,100 +63,6 @@ class MqttAdapter {
     }
 };
 
-<<<<<<< HEAD
-var data = { cmd: "DET_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-var data = { cmd: "REQ_TIA", token: "1234", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-var data = { cmd: "RES_TIA", token: "1234", idx: "dbkey", org_image: "D:/mapx/ccai/tia/org_images/1_N38.47699E126.67632.png" };
-
-
-/*
-global.broker = new MqttAdapter({
-    host: "175.207.13.28",
-    port: 1883,
-    listens: [{
-            topic: "#",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                console.log(topic + " received : " + message.toString());
-            },
-        },
-        {
-            topic: "a",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("b", "" + v);
-                }
-            }
-        },
-        {
-            topic: "b",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("c", "" + v);
-                }
-            }
-        },
-        {
-            topic: "c",
-            onReady: function(topic) {
-                console.log("onready : " + topic);
-            },
-            onReceive: function(topic, message) {
-                let num = message.toString();
-                let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-                let no = parseInt(message.toString());
-                if (no % 3 == 0 || hand) {
-                    console.log(topic + " received : 짝!!!");
-                } else {
-                    console.log(topic + " received : " + message.toString());
-                }
-                let v = parseInt(message.toString()) + 1;
-
-                if (v > 888889) {
-                    broker.destroy();
-                } else {
-                    broker.publish("a", "" + v);
-                }
-            }
-        }
-    ]
-});
-//888887
-broker.publish("a", "1");
-*/
-=======
 //c , c++ , pascal , java , 
 // function pointer , 
 
@@ -173,7 +79,6 @@ function game369(message) {
     let v = parseInt(message.toString()) + 1;
     return v;
 }
->>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
 
 function next(broker, who, speak) {
     broker.publish(who, "" + speak);
