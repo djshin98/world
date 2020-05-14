@@ -7,6 +7,15 @@ var SurfaceUtil = {
         let c = earth.scaleToGeodeticSurface(CTX.cartesian(lon, lat, height), result);
         let degree = CTX.c2d(result);
         return degree.height;
+    },
+    polyline: function(collection, points, callback) {
+        if (Cesium.defined(points) && points.length > 0 && callback) {
+            var positions = CTX.c2rA(points);
+            var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+            Cesium.when(promise, function(updatedPositions) { callback(CTX.r2cA(updatedPositions)); });
+            return true;
+        }
+        return false;
     }
 }
 var LineUtil = {
