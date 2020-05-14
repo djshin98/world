@@ -229,8 +229,11 @@ var VisibilityUtil = {
     arc: function(center, end, deg, options) {
         options = Object.assign({
             height: 1,
-            divide: 10,
-            degree: 10,
+            //divide: 10,
+            //degree: 10,
+            minDivide: 10,
+            maxDivideDegree: 3,
+            minDivideDegree: 0.5,
             terrian: false
         }, options);
         let polylines = [];
