@@ -1,0 +1,106 @@
+<style>
+    #layer-toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+    }
+    
+    #layer-toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+    
+    #layer-toolbar table tr {
+        transform: translateY(0);
+        transition: transform 0.4s ease-out;
+    }
+    
+    #layer-toolbar table tr.up {
+        transform: translateY(33px);
+        transition: none;
+    }
+    
+    #layer-toolbar table tr.down {
+        transform: translateY(-33px);
+        transition: none;
+    }
+</style>
+<div id="layer-toolbar">
+    <table>
+        <tbody data-bind="foreach: layers">
+            <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
+                <td><input type="checkbox" data-bind="checked: show" /></td>
+                <td>
+                    <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+                    <select data-bind="visible: $parent.isSelectableLayer($data), options: $parent.baseLayers, optionsText: 'name', value: $parent.selectedLayer"></select>
+                </td>
+                <td>
+                    <input type="range" min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" />
+                </td>
+                <td>
+                    <button type="button" class="cesium-button" data-bind="click: function() { $parent.raise($data, $index()); }, visible: $parent.canRaise($index())">▲</button>
+                </td>
+                <td>
+                    <button type="button" class="cesium-button" data-bind="click: function() { $parent.lower($data, $index()); }, visible: $parent.canLower($index())">▼</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var imageryLayers = map.viewer3d.imageryLayers;
+
+    function errorTest() {
+        serverAdapter.get('testError', {},
+            function(data) {
+                if (data.error) {
+                    alert("errorTest : " + data.error);
+                }
+
+            }
+        );
+    }
+    map.connectViewModel('olive-bloom', {
+        show: false,
+        glowOnly: false,
+        contrast: 128,
+        brightness: -0.3,
+        delta: 1.0,
+        sigma: 3.78,
+        stepSize: 5.0
+    }, function(viewer, viewModel) {
+        var bloom = viewer.scene.postProcessStages.bloom;
+        bloom.enabled = Boolean(viewModel.show);
+        bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
+        bloom.uniforms.contrast = Number(viewModel.contrast);
+        bloom.uniforms.brightness = Number(viewModel.brightness);
+        bloom.uniforms.delta = Number(viewModel.delta);
+        bloom.uniforms.sigma = Number(viewModel.sigma);
+        bloom.uniforms.stepSize = Number(viewModel.stepSize);
+        viewer.scene.requestRender();
+    });
+
+    map.connectViewModel('olive-label', {
+        label: true
+    }, function(viewer, viewModel) {
+        map.oliveCursor.tooltip(Boolean(viewModel.label));
+        viewer.scene.requestRender();
+    });
+
+    map.connectViewModel('olive-contour', {
+        selectedShading: 'none',
+        enableContour: false,
+        contourSpacing: 80,
+        contourWidth: 1.0,
+        changeColor: function() {
+            this.contourUniforms.color = Cesium.Color.fromRandom({
+                alpha: 1.0
+            }, this.contourColor);
+        }
+    }, function(viewer, viewModel) {
+        map.contour(viewModel);
+        viewer.scene.requestRender();
+    });
+</script>

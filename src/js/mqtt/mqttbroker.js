@@ -63,52 +63,6 @@ class MqttAdapter {
     }
 };
 
-//c , c++ , pascal , java , 
-// function pointer , 
 
-/*
-function game369(message) {
-    let num = message.toString();
-    let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-    let no = parseInt(message.toString());
-    if (no % 3 == 0 || hand) {
-        console.log(topic + " received : 짝!!!");
-    } else {
-        console.log(topic + " received : " + message.toString());
-    }
-    let v = parseInt(message.toString()) + 1;
-    return v;
-}
-
-function next(broker, who, speak) {
-    broker.publish(who, "" + speak);
-}
-global.broker = new MqttAdapter({
-    host: "175.207.13.28",
-    port: 1883,
-    listens: [{
-            topic: "#",
-            onReady: function(topic) { console.log("onready : " + topic); },
-            onReceive: function(topic, message) { console.log(topic + " received : " + message.toString()); },
-        },
-        {
-            topic: "a",
-            onReady: function(topic) { console.log("onready : " + topic); },
-            onReceive: function(topic, message) { next(broker, "b", game369(message)); }
-        },
-        {
-            topic: "b",
-            onReady: function(topic) { console.log("onready : " + topic); },
-            onReceive: function(topic, message) { next(broker, "c", game369(message)); }
-        },
-        {
-            topic: "c",
-            onReady: function(topic) { console.log("onready : " + topic); },
-            onReceive: function(topic, message) { next(broker, "a", game369(message)); }
-        }
-    ]
-});
-next(broker, "a", game369("1"));
-*/
 
 module.exports = { MqttAdapter: MqttAdapter };

@@ -117,6 +117,9 @@ class DrawObject {
         this.index = drawIndex++;
         this.minPointCount = minPointCount;
     }
+    isValidPoints(points) {
+        return (points && points.length >= this.minPointCount);
+    }
     pniStart() {
         return PinMarkers.start;
     }

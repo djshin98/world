@@ -91,8 +91,7 @@ class Application {
 
         this.init(options);
 
-        this.section = this.createSection();
-
+        this.section = this.createSection(options.section);
         this.onResize();
 
         if (options.success) {
@@ -733,28 +732,10 @@ class Application {
     sectionShowStatus(bshow) {
         this.windowLayout.section.view.visible = bshow;
     }
-    createSection() {
+    createSection(options) {
         let _this = this;
         return new Section(this, {
-            contents: [
-                { name: "Home", icon: "home", page: "section/home.html" },
-
-                { name: "즐겨찾기", icon: "map marker alternate", page: "section/favorite.html" },
-                { name: "위치검색", icon: "search", page: "section/search.html" },
-                { name: "3D Map", icon: "map", page: "section/map.html" },
-
-                { name: "3D 모델", icon: "fighter jet", page: "section/flight-area.html" },
-                { name: "군대부호", icon: "object ungroup", page: "section/milsymbol.html" },
-                //{ name: "인공위성", icon: "space shuttle", page: "section/sat.html" },
-                //{ name: "시연용", icon: "play", page: "section/presentation.html" },
-                { name: "Draw", icon: "edit", page: "section/draw.html" },
-                { name: "Entities", icon: "sitemap", page: "section/entities.html" },
-                { name: "도시요소", icon: "eye", page: "section/toshow.html" }
-                //{ name: "animation", icon: "file video", page: "section/animation.html" }
-
-
-
-            ],
+            contents: options.contents,
             onload: function(parentNode, data) {
                 $(data).each(function(i, d) {
                     $(parentNode).append(d);

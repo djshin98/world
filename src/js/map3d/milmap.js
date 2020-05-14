@@ -60,13 +60,21 @@ class MilMap {
             fps: true,
             animation: false,
             navigation: true,
-            fullscreenButton: false,
+            fullscreenButton: true,
             creditsDisplay: false,
             distanceDisplayCondition: false,
 
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
+
+            /*
+            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+                url: 'https://a.tile.openstreetmap.org/'
+            }),
+            */
+
+
             /*
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'

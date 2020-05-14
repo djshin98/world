@@ -7,7 +7,7 @@ class Air2Earth extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (points && points.length && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             let degrees = {
                 start: CTX.c2d(points[0]),
                 end: CTX.c2d(points[1])
@@ -110,5 +110,4 @@ class Air2Earth extends DrawObject {
         }
     }
 }
-
 module.exports = { Air2Earth: Air2Earth };

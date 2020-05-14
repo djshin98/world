@@ -25,6 +25,29 @@ var LineUtil = {
         x1 = x * Math.cos(theta) - y * Math.sin(theta);
         y1 = x * Math.sin(theta) + y * Math.cos(theta);
         return CTX.llh(center.longitude + x1, center.latitude + y1, end.height);
+    },
+    spline: function(points, divide) {
+        if (points.length > 1 && divide > 1) {
+            var distances = [0.0];
+            points.reduce((prev, curr) => {
+                distances.push(CTX.distance(prev, curr));
+                return curr;
+            });
+            var total = distances.reduce((prev, curr) => { return prev + curr; });
+            var times = distances.reduce((prev, curr) => {
+                if (prev.length > 0) { prev.push(prev[prev.length - 1] + curr); } else { prev.push(curr); }
+                return prev;
+            }, []);
+            times = times.map(d => {
+                return (d / total) * divide;
+            });
+            var spline = new Cesium.CatmullRomSpline({
+                times: times,
+                points: points
+            });
+            return new Array(divide + 1).fill(1).map((d, i) => { return spline.evaluate(i); });
+        }
+        return points;
     }
 };
 var ParabolaUtil = {
@@ -203,6 +226,45 @@ var ParabolaUtil = {
 };
 
 var VisibilityUtil = {
+    arc: function(center, end, deg, options) {
+        options = Object.assign({
+            height: 1,
+            divide: 10,
+            degree: 10,
+            terrian: false
+        }, options);
+        let polylines = [];
+
+        center.height += options.height;
+        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
+
+        let THETA = Math.PI / 180;
+        if (deg > 0) {
+            for (var i = 0; i < deg; i += options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                //let polyline = LineUtil.divide(center, r, options.divide);
+                //if (options.terrian == true) {
+                //    VisibilityUtil.terrianEI(polyline);
+                //}
+                //polyline = CTX.d2cA(polyline);
+                polylines.push(r);
+            }
+        } else {
+            for (var i = 0; i > deg; i -= options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                //let polyline = LineUtil.divide(center, r, options.divide);
+                //if (options.terrian == true) {
+                //    VisibilityUtil.terrianEI(polyline);
+                //}
+                //polyline = CTX.d2cA(polyline);
+                polylines.push(r);
+            }
+        }
+
+        return polylines;
+    },
     radiation: function(center, end, options) {
         options = Object.assign({
             height: 1,

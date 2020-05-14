@@ -9,7 +9,7 @@ class VisibilityAnalysys extends DrawObject {
         this.type1(collection, points, viewModel);
     }
     type0(collection, points, viewModel) {
-        if (points && points.length >= this.minPointCount) {
+        if (this.isValidPoints(points)) {
             var _this = this;
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
             let polylines = VisibilityUtil.radiation(CTX.c2d(points[0]), CTX.c2d(points[1]), {
