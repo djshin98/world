@@ -60,7 +60,7 @@ class MilMap {
             fps: true,
             animation: false,
             navigation: true,
-            fullscreenButton: false,
+            fullscreenButton: true,
             creditsDisplay: false,
             distanceDisplayCondition: false,
 
