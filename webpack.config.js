@@ -9,7 +9,7 @@ const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
 
 module.exports = {
-    mode: "development", //production
+    mode: "development", //porduction
     context: __dirname,
     entry: {
         MapX3D: './src/js/app/index.js',

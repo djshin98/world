@@ -117,6 +117,9 @@ class DrawObject {
         this.index = drawIndex++;
         this.minPointCount = minPointCount;
     }
+    isValidPoints(points) {
+        return (points && points.length >= this.minPointCount);
+    }
     pniStart() {
         return PinMarkers.start;
     }
@@ -137,7 +140,6 @@ class DrawObject {
     create(collection, points, viewModel) {
 
     }
-
     lineMaterial(style, color, width) {
         if (style != "line") {
             //return Cesium.Material.fromType('Dot');

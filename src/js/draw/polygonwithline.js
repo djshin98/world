@@ -1,24 +1,34 @@
 var { DrawObject } = require('./drawobject');
-class Wall extends DrawObject {
+class PolygonWithLine extends DrawObject {
     constructor() {
-        super(2);
+        super(3);
     }
+
+    static getName() {
+        return "PolygonWithLine";
+    }
+
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {
+            points.push(points[0]);
+            points.push(points[1]);
+            viewModel.lineColor.alpha = 1;
+
             let option = {
                 positions: points,
-                minimumHeights: points.map(d => {
-                    return CTX.c2d(d).height + 1000;
-                }),
                 clampToGround: true,
-                color: viewModel.lineColor,
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
             return collection.add(this.index, {
-                wall: option
+                polygon: {
+                    hierarchy: points,
+                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor)
+                },
+                polyline: option,
             });
         }
     }
 }
-module.exports = { Wall: Wall };
+
+module.exports = { PolygonWithLine: PolygonWithLine }

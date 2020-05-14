@@ -1,6 +1,7 @@
 //name:"도로명주소 검색 API",
 var { IxDatabase } = require("../repository/db");
 var { dom, get } = require("../util/comm");
+var conf = require("../../conf/server.json");
 
 class JusoSearch {
     constructor(options) {
@@ -116,7 +117,7 @@ class JusoSearch {
             "format=json";
         // cd src로 이동하여 node server.js 로 express 서버를 구동하여야 실행된다...
         var _this = this;
-        axios.get("http://192.168.0.12:8082/map/juso", {
+        axios.get("http://" + conf.WasServer.host + ":" + conf.WasServer.port + "/map/juso", {
             params: {
                 url: str
             }

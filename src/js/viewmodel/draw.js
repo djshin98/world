@@ -29,9 +29,15 @@ var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
 var { LineEO } = require('../draw/line_eo');
 var { Wall } = require('../draw/wall');
+<<<<<<< HEAD
 var { ShootingArc } = require('../draw/shootingarc');
+=======
+var { PolygonWithLine } = require('../draw/polygonwithline');
+var { Spline } = require('../draw/spline');
+>>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
 
 var drawLinker = {
+
     circle: { name: "원", createFunc: function() { return new Circle(); } },
     dom: { name: "탐지영역", createFunc: function() { return new Dom(); } },
     line: { name: "선", createFunc: function() { return new Line(); } },
@@ -57,9 +63,22 @@ var drawLinker = {
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
+<<<<<<< HEAD
     shootingarc: { name: "사격선(호)", createFunc: function() { return new ShootingArc(); } },
+=======
+    polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
+    spline: { name: "스플라인", createFunc: function() { return new Spline(); } }
+>>>>>>> 08d2a3e4db896421f2853f6dc63deb057fb48fec
 }
 
+function registryHandler(key, name, createfunc) {
+    if (Cesium.defined(drawLinker[key])) {
+        console.error("이미 등록된 모듈 : " + key + "( " + name + " )");
+        return false;
+    }
+    drawLinker[key] = { name: name, createFunc: createfunc };
+    return true;
+}
 // widget 에 대한 표준을 만든다.
 
 class Draw {
@@ -165,15 +184,14 @@ class Draw {
             this.activeDrawHandler = this.getHandler(this.viewModel.mode);
         }
     }
-
-    getHandler(name) {
-        if (Cesium.defined(drawLinker[name])) {
-            return drawLinker[name].createFunc();
+    getHandler(key) {
+        if (Cesium.defined(drawLinker[key])) {
+            return drawLinker[key].createFunc();
         }
     }
     getHandlerList() {
-        return Object.keys(drawLinker).map(name => {
-            return { key: name, name: drawLinker[name].name };
+        return Object.keys(drawLinker).map(key => {
+            return { key: key, name: drawLinker[key].name };
         });
     }
     createPoint(worldPosition) {
@@ -201,4 +219,4 @@ class Draw {
     }
 
 }
-module.exports = { Draw: Draw };
+module.exports = { Draw: Draw, registryHandler: registryHandler };
