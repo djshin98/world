@@ -60,7 +60,7 @@ class MilMap {
             fps: true,
             animation: false,
             navigation: true,
-            fullscreenButton: true,
+            fullscreenButton: false,
             creditsDisplay: false,
             distanceDisplayCondition: false,
 
@@ -68,11 +68,11 @@ class MilMap {
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
-            
+
             imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                 url: 'https://a.tile.openstreetmap.org/'
             }),
-            
+
 
 
             /*
@@ -328,6 +328,13 @@ class MilMap {
     }
     widget(name, bshow) {
 
+    }
+    fullscreen(bfull) {
+        if (bfull == true) {
+            Cesium.Fullscreen.requestFullscreen(document.getElementById(this.options.map3.id));
+        } else {
+            Cesium.Fullscreen.exitFullscreen();
+        }
     }
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
