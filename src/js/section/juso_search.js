@@ -2,7 +2,15 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get } = require("../util/comm");
 var conf = require("../../conf/server.json");
-
+/*
+let markerCollection = new MarkerCollection(map, { name: "DRAW" });
+        //pin = { name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 };
+function flyPosition(x,y){
+    markerCollection.add(CTX.c2d(worldPosition), pin);
+    map.oliveCamera.flyTo(x,y);
+}
+global.flyPosition = flyPosition;
+*/
 class JusoSearch {
     constructor(options) {
         this.options = Object.assign({
@@ -74,7 +82,7 @@ class JusoSearch {
                             response.result.items.forEach(function(d, i) {
                                 str1 += "<div class='item'>";
                                 str1 += "<i class='map marker icon'></i>";
-                                str1 += "<div class='juso' onclick='map.oliveCamera.flyTo(" + d.point.x + ", " + d.point.y + ")'>";
+                                str1 += "<div class='juso' onclick='flyPosition(" + d.point.x + ", " + d.point.y + ")'>";
                                 if (t.type == "place") {
                                     var title = d.title ? d.title : (d.bldnm ? d.bldnm : "");
                                     str1 += "<a class='header'>" + title + "</a>";
