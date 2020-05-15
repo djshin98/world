@@ -35,6 +35,7 @@ var LineUtil = {
         y1 = x * Math.sin(theta) + y * Math.cos(theta);
         return CTX.llh(center.longitude + x1, center.latitude + y1, end.height);
     },
+    //rotate2: //데카르트 좌표계로 회전
     spline: function(points, divide) {
         if (points.length > 1 && divide > 1) {
             var distances = [0.0];
