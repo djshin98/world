@@ -13,7 +13,7 @@ class Image extends DrawObject {
 
             var points2 = [];
             var plane1 = new Cesium.EllipsoidTangentPlane(points[0]); // default ellipsoid WGS84
-            var dimensions1 = new Cesium.Cartesian2(6000.0, 6000.0);
+            var dimensions1 = new Cesium.Cartesian2(3000.0, 3000.0);
 
             var pl = plane1.plane;
             pl.distance = 0;

@@ -48,7 +48,8 @@ class Aside {
     showView(bshow) {
         if (bshow) {
             $("#" + this.options.id).show();
-
+            $("#" + this.options.handle.id + ">i").removeClass("left");
+            $("#" + this.options.handle.id + ">i").addClass("right");
             /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
@@ -58,6 +59,9 @@ class Aside {
 
         } else {
             $("#" + this.options.id).hide();
+
+            $("#" + this.options.handle.id + ">i").removeClass("right");
+            $("#" + this.options.handle.id + ">i").addClass("left");
             /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('fade right');
