@@ -63,24 +63,6 @@ class MqttAdapter {
     }
 };
 
-<<<<<<< HEAD
-//c , c++ , pascal , java , 
-// function pointer , 
-
-/*
-function game369(message) {
-    let num = message.toString();
-    let hand = num.split("").some(n => { return (n == '3' || n == '6' || n == '9') ? true : false; });
-    let no = parseInt(message.toString());
-    if (no % 3 == 0 || hand) {
-        console.log(topic + " received : 짝!!!");
-    } else {
-        console.log(topic + " received : " + message.toString());
-    }
-    let v = parseInt(message.toString()) + 1;
-    return v;
-}
-=======
 
 /*
 global.broker = new MqttAdapter({
@@ -169,7 +151,6 @@ global.broker = new MqttAdapter({
 //888887
 broker.publish("a", "1");
 */
->>>>>>> 879b1166ac6b65495593c0139c34bde9e9ec69c0
 
 
 module.exports = { MqttAdapter: MqttAdapter };
