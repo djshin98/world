@@ -10,6 +10,7 @@ class PolygonWithLine extends DrawObject {
 
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {
+            //let displayCondition = new Cesium.DistanceDisplayCondition(0, 100000);
             points.push(points[0]);
             points.push(points[1]);
             viewModel.lineColor.alpha = 1;
@@ -18,11 +19,13 @@ class PolygonWithLine extends DrawObject {
                 positions: points,
                 clampToGround: true,
                 width: viewModel.lineWidth,
+                //distanceDisplayCondition: displayCondition,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
             return collection.add(this.index, {
                 polygon: {
                     hierarchy: points,
+                    //distanceDisplayCondition: displayCondition,
                     material: new Cesium.ColorMaterialProperty(viewModel.faceColor)
                 },
                 polyline: option,

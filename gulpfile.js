@@ -71,6 +71,10 @@ var paths = {
         {
             src: './*.md',
             dest: './dist/'
+        },
+        {
+            src: './story/*.md',
+            dest: './dist/story/'
         }
     ],
     widget_scss: {

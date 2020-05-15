@@ -36,9 +36,6 @@ class Section {
     getHandleHeight() {
         return this.options.handle.height;
     }
-    toggleView() {
-        this.showView(!this.options.view.visible);
-    }
     load() {
         var _this = this;
         this.options.contents.forEach(function(content) {
@@ -56,7 +53,7 @@ class Section {
                     sv.appendChild(tabNode);
 
                     _this.onload ? (function(parent, html) {
-                        let children = _this.onload(parent, html);
+                        let children = _this.onload.apply(_this.app, parent, html);
                     })(tabNode, data) : (tabNode.innerHTML = data);
                     content.complete = true;
                     _this.options.contents.every((d) => { return d.complete ? true : false; }) && _this._loadComplete();
@@ -71,7 +68,7 @@ class Section {
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
-        this.oncomplete && this.oncomplete();
+        this.oncomplete && this.oncomplete.apply(this.app);
     }
     select(tag, name) {
         let _this = this;
@@ -83,6 +80,9 @@ class Section {
             dom.$(_this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
             _this.showView(true);
         })();
+    }
+    toggleView() {
+        this.showView(!this.options.view.visible);
     }
     resize(left, top, w, h) {
         var sectionView = document.getElementById(this.options.id);
