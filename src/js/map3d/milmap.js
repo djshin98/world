@@ -69,10 +69,11 @@ class MilMap {
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
 
+            /*
             imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                 url: 'https://a.tile.openstreetmap.org/'
             }),
-
+            */
 
 
             /*
