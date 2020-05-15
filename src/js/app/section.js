@@ -53,7 +53,7 @@ class Section {
                     sv.appendChild(tabNode);
 
                     _this.onload ? (function(parent, html) {
-                        let children = _this.onload.apply(_this.app, parent, html);
+                        let children = _this.onload.call(_this.app, parent, html);
                     })(tabNode, data) : (tabNode.innerHTML = data);
                     content.complete = true;
                     _this.options.contents.every((d) => { return d.complete ? true : false; }) && _this._loadComplete();
@@ -68,7 +68,7 @@ class Section {
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
-        this.oncomplete && this.oncomplete.apply(this.app);
+        this.oncomplete && this.oncomplete.call(this.app);
     }
     select(tag, name) {
         let _this = this;
