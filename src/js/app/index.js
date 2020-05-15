@@ -207,7 +207,7 @@ class Application {
             application.section.resize(0, application.header.height, sectionWidth, height);
         }
         if (application.aside) {
-            application.aside.resize(window.innerWidth - sectionWidth, application.header.height, asideWidth, height);
+            application.aside.resize(window.innerWidth - asideWidth, application.header.height, asideWidth, height);
         }
     }
     dragger() {

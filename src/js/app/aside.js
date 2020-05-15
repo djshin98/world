@@ -48,6 +48,7 @@ class Aside {
     showView(bshow) {
         if (bshow) {
             $("#" + this.options.id).show();
+
             /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
