@@ -29,7 +29,11 @@
     <script>
         var modelUrl = "";
         $(function() {
+
             window.app = new Application({
+                header: {
+                    height: 0
+                },
                 map3: {
                     id: "map3d",
                     mapServiceMode: "internet", //"internet offline"
@@ -44,12 +48,23 @@
                         url: 'http://192.168.1.101:8080/Map/Seoul_TMS/'
                     }, {
                         url: 'http://192.168.1.101:8080/Map/Daejon_TMS/'
-                    }]
-                },
-                websocket: {
-                    reconnectable: true
+                    }],
+                    websocket: {
+                        reconnectable: true
+                    }
                 },
                 section: {
+                    id: "section",
+                    width: 300,
+                    visible: true,
+                    view: {
+                        width: 225,
+                        visible: true
+                    },
+                    handle: {
+                        id: "door-handle",
+                        height: 50
+                    },
                     contents: [{
                             name: "Home",
                             icon: "home",
@@ -97,6 +112,15 @@
                         //{ name: "animation", icon: "file video", page: "section/animation.html" }
                     ]
                 },
+                aside: {
+                    id: "aside",
+                    width: 250,
+                    visible: true,
+                    handle: {
+                        id: "aside-handle",
+                        height: 15
+                    }
+                },
                 success: function(map) {
                     //map.contour(true);
                     //viewer.scene.globe.enableLighting = true;
@@ -122,6 +146,7 @@
                     console.log("success end");
                 }
             });
+
         });
     </script>
 </head>
@@ -133,7 +158,7 @@
         <div class="title">Web MapX3D 8.0 </div>
         <i class="window close outline"></i>
     </header>-->
-    <section id="section">
+    <section id="section" style="display:none;">
         <div class="section-head item" style="text-align: center;">
             <a href="" target=”_blank”><img height="50" src="img/logo.png" alt="합동참모본부"></a>
         </div>
@@ -147,10 +172,12 @@
     </section>
 
     <article>
-        <div id="door-handle"><i class="angle left icon"></i></div>
+        <div id="door-handle" style="display:none;"><i class="angle left icon"></i></div>
+        <div id="aside-handle" style="display:none;"><i class="angle right icon"></i></div>
         <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
         <div id="map2d"></div>
     </article>
+    <aside id="aside" style="display:none;"></aside>
     <footer></footer>
 
     <!--
@@ -160,5 +187,6 @@
 
 </body>
 <script src="./libs/navigation/viewerCesiumNavigationMixin.js"></script>
+<script src="./client/app.js"></script>
 
 </html>

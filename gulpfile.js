@@ -97,6 +97,10 @@ var paths = {
         src: ['src/models/**/*.glb', 'src/models/**/*.kmz', 'src/models/**/*.czml'],
         dest: 'dist/models/'
     },
+    client: {
+        src: 'client/**/*.*',
+        dest: 'dist/client/'
+    },
     js: {
         src: 'src/js/**/*.js',
         dest: 'dist/js/'
@@ -162,6 +166,11 @@ function md_src() {
         .pipe(dest(paths.md_src.src));
 }
 */
+function client() {
+    return src(paths.client.src)
+        .pipe(dest(paths.client.dest));
+}
+
 function mapx3dserver() {
     return src(paths.mapx3dserver.src)
         .pipe(dest(paths.mapx3dserver.dest));
@@ -346,8 +355,9 @@ function watchFiles() {
     watch(paths.mapx3dserver.src, mapx3dserver);
     watch(paths.serverjs.src, serverJs);
     watch(paths.mapperxml.src, mapperxmls);
+    watch(paths.client.src, client);
 }
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, mapx3dserver, serverJs, mapperxmls));
+exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, mapx3dserver, serverJs, mapperxmls, client));

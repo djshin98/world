@@ -1,17 +1,40 @@
 var { dom, get, post } = require("../util/comm");
 
-var { JusoSearch } = require("./juso_search");
+var { JusoSearch } = require("../section/juso_search");
 
 class Section {
-    constructor(app, options) {
+    constructor(app, opt) {
         this.app = app;
-        this.options = Object.assign({}, options);
+        this.options = Object.assign({}, opt.options);
+        this.onload = opt.onload;
+        this.oncomplete = opt.oncomplete;
         this.plugin = [];
         this.path = {
             sidebar: "section>.section-body>div.sidebar",
             view: "section>.section-body>.section-view"
         }
+        if (this.options.handle) {
+            if (this.options.handle.id) {
+                let _this = this;
+                document.getElementById(this.options.handle.id).onclick = function(e) {
+                    _this.toggleView();
+                };
+            }
+        }
         this.load();
+    }
+    getWidth() {
+        if (this.options.visible) {
+            if (this.options.view.visible) {
+                return this.options.width;
+            }
+            return this.options.width - this.options.view.width;
+        } else {
+            return 0;
+        }
+    }
+    getHandleHeight() {
+        return this.options.handle.height;
     }
     load() {
         var _this = this;
@@ -29,8 +52,8 @@ class Section {
                     tabNode.classList.add("tab");
                     sv.appendChild(tabNode);
 
-                    _this.options.onload ? (function(parent, html) {
-                        let children = _this.options.onload(parent, html);
+                    _this.onload ? (function(parent, html) {
+                        let children = _this.onload.call(_this.app, parent, html);
                     })(tabNode, data) : (tabNode.innerHTML = data);
                     content.complete = true;
                     _this.options.contents.every((d) => { return d.complete ? true : false; }) && _this._loadComplete();
@@ -45,7 +68,7 @@ class Section {
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
-        this.options.oncomplete && this.options.oncomplete();
+        this.oncomplete && this.oncomplete.call(this.app);
     }
     select(tag, name) {
         let _this = this;
@@ -58,7 +81,21 @@ class Section {
             _this.showView(true);
         })();
     }
-    resize(w, h) {
+    toggleView() {
+        this.showView(!this.options.view.visible);
+    }
+    resize(left, top, w, h) {
+        var sectionView = document.getElementById(this.options.id);
+        var sectionHandle = document.getElementById(this.options.handle.id);
+        if (sectionView) {
+            sectionView.style.top = top + "px";
+            sectionView.style.width = this.getWidth() + "px";
+            sectionView.style.height = h + "px";
+        }
+        if (sectionHandle) {
+            sectionHandle.style.top = ((h / 2) - (this.getHandleHeight() / 2)) + "px";
+        }
+
         let tw = 80;
         let sv = dom.$(this.path.view)[0];
         sv.style.width = (w - tw) + "px";
@@ -78,7 +115,6 @@ class Section {
     }
     showView(bshow) {
         if (bshow) {
-            //$(".section-view").show();
             $(".section-head>a>b").show();
             $(".section-head>a>img").attr("src", "img/logo.png");
             if ($(".section-view").is(":visible")) {
@@ -88,7 +124,6 @@ class Section {
             }
 
         } else {
-            //$(".section-view").hide();
             $(".section-head>a>b").hide();
             $(".section-head>a>img").attr("src", "img/logom.png");
             if ($(".section-view").is(":visible")) {
@@ -98,9 +133,7 @@ class Section {
                 $(".section-view").transition('bounce');
             }
         }
-
-
-        this.app.sectionShowStatus(bshow);
+        this.options.view.visible = bshow;
         this.app.onResize();
     }
 }

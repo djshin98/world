@@ -7,6 +7,15 @@ var SurfaceUtil = {
         let c = earth.scaleToGeodeticSurface(CTX.cartesian(lon, lat, height), result);
         let degree = CTX.c2d(result);
         return degree.height;
+    },
+    polyline: function(collection, points, callback) {
+        if (Cesium.defined(points) && points.length > 0 && callback) {
+            var positions = CTX.c2rA(points);
+            var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+            Cesium.when(promise, function(updatedPositions) { callback(CTX.r2cA(updatedPositions)); });
+            return true;
+        }
+        return false;
     }
 }
 var LineUtil = {
@@ -226,48 +235,6 @@ var ParabolaUtil = {
 };
 
 var VisibilityUtil = {
-    arc: function(center, end, deg, options) {
-        options = Object.assign({
-            height: 1,
-            //divide: 10,
-            //degree: 10,
-            minDivide: 10,
-            maxDivideDegree: 3,
-            minDivideDegree: 0.5,
-            terrian: false
-        }, options);
-        let polylines = [];
-
-        center.height += options.height;
-        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
-
-        let THETA = Math.PI / 180;
-        if (deg > 0) {
-            for (var i = 0; i < deg; i += options.degree) {
-                let r = LineUtil.rotate(center, end, THETA * i);
-
-                //let polyline = LineUtil.divide(center, r, options.divide);
-                //if (options.terrian == true) {
-                //    VisibilityUtil.terrianEI(polyline);
-                //}
-                //polyline = CTX.d2cA(polyline);
-                polylines.push(r);
-            }
-        } else {
-            for (var i = 0; i > deg; i -= options.degree) {
-                let r = LineUtil.rotate(center, end, THETA * i);
-
-                //let polyline = LineUtil.divide(center, r, options.divide);
-                //if (options.terrian == true) {
-                //    VisibilityUtil.terrianEI(polyline);
-                //}
-                //polyline = CTX.d2cA(polyline);
-                polylines.push(r);
-            }
-        }
-
-        return polylines;
-    },
     radiation: function(center, end, options) {
         options = Object.assign({
             height: 1,
@@ -352,6 +319,38 @@ var VisibilityUtil = {
     }
 };
 
+var ArcUtil = {
+    arcPoints: function(center, end, deg, options) {
+        options = Object.assign({
+            height: 1,
+            divide: 10,
+            degree: 2,
+            terrian: false
+        }, options);
+        let polylines = [];
+
+        center.height += options.height;
+        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
+
+        let THETA = Math.PI / 180;
+        if (deg > 0) {
+            for (var i = 0; i < deg; i += options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                polylines.push(r);
+            }
+        } else {
+            for (var i = 0; i > deg; i -= options.degree) {
+                let r = LineUtil.rotate(center, end, THETA * i);
+
+                polylines.push(r);
+            }
+        }
+
+        return polylines;
+    },
+};
+
 //console.log("height : " + ParabolaUtil.height(126.94089, 38.66589));
 /*
 let degrees = {
@@ -364,4 +363,4 @@ points.forEach(d => {
     console.log("p:" + d.longitude + " , h:" + d.height);
 });
 */
-module.exports = { SurfaceUtil: SurfaceUtil, LineUtil: LineUtil, ParabolaUtil: ParabolaUtil, VisibilityUtil: VisibilityUtil };
+module.exports = { SurfaceUtil: SurfaceUtil, LineUtil: LineUtil, ParabolaUtil: ParabolaUtil, VisibilityUtil: VisibilityUtil, ArcUtil: ArcUtil };

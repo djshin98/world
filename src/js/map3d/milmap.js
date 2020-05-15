@@ -120,30 +120,30 @@ class MilMap {
             }*/
         };
 
-        if (this.options.map3.mapServiceMode == "internet") {
+        if (this.options.mapServiceMode == "internet") {
             this.viewOption.terrainProvider = Cesium.createWorldTerrain();
-        } else if (this.options.map3.mapServiceMode == "offline") {
-            if (this.options.map3.offlineOption.map) {
+        } else if (this.options.mapServiceMode == "offline") {
+            if (this.options.offlineOption.map) {
                 this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
-                    url: Cesium.buildModuleUrl(this.options.map3.offlineOption.map)
+                    url: Cesium.buildModuleUrl(this.options.offlineOption.map)
                 });
             }
-            if (this.options.map3.offlineOption.terrain) {
+            if (this.options.offlineOption.terrain) {
                 this.viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
-                    url: this.options.map3.offlineOption.terrain,
-                    proxy: new Cesium.DefaultProxy(this.options.map3.offlineOption.proxy),
+                    url: this.options.offlineOption.terrain,
+                    proxy: new Cesium.DefaultProxy(this.options.offlineOption.proxy),
                     requestWaterMask: false,
                     requestVertexNormals: false
                 });
             }
         }
-        this.viewer3d = new Cesium.Viewer(this.options.map3.id, this.viewOption);
+        this.viewer3d = new Cesium.Viewer(this.options.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
 
-        if (this.options.map3.mapServiceMode == "offline" && this.options.map3.offlineBaseLayers && this.options.map3.offlineBaseLayers.length > 0) {
+        if (this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;
-            this.options.map3.offlineBaseLayers.forEach(d => {
+            this.options.offlineBaseLayers.forEach(d => {
                 imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
                     url: d.url
                 }));
@@ -219,9 +219,20 @@ class MilMap {
                 onmessage: function(data) {}
             });
         }
+
+        if (this.options.fullscreen == true) {
+
+            /*
+            let mymap = this;
+            const promiseA = new Promise((resolutionFunc, rejectionFunc) => {
+                resolutionFunc(777);
+            });
+            promiseA.then((val) => { mymap.fullscreen(true); });
+            */
+        }
     }
     getId() {
-        return this.options.map3.id;
+        return this.options.id;
     }
     getView() { return this.viewer3d; }
     setMode(m) {
@@ -249,21 +260,21 @@ class MilMap {
         if (!widget || widget.length == 0) {
             this._showElement(this.viewer3d.container, _bshow);
         } else if (widget == "animation") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-animationContainer"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-viewer-animationContainer"), _bshow);
         } else if (widget == "timeline") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-timelineContainer"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-viewer-timelineContainer"), _bshow);
         } else if (widget == "fullscreen") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-fullscreenContainer"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-viewer-fullscreenContainer"), _bshow);
         } else if (widget == "credits") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-widget-credits"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-widget-credits"), _bshow);
         } else if (widget == "navigation") {
-            this._showElement(dom.e("#" + this.options.map3.id + " #navigationDiv"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " #navigationDiv"), _bshow);
         } else if (widget == "fps") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-performanceDisplay-defaultContainer"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-performanceDisplay-defaultContainer"), _bshow);
         } else if (widget == "distance") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .distance-legend"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .distance-legend"), _bshow);
         } else if (widget == "toolbar") {
-            this._showElement(dom.e("#" + this.options.map3.id + " .cesium-viewer-toolbar"), _bshow);
+            this._showElement(dom.e("#" + this.options.id + " .cesium-viewer-toolbar"), _bshow);
         }
     }
     hide(widget) { this.show(widget, false); }
@@ -332,7 +343,7 @@ class MilMap {
     }
     fullscreen(bfull) {
         if (bfull == true) {
-            Cesium.Fullscreen.requestFullscreen(document.getElementById(this.options.map3.id));
+            Cesium.Fullscreen.requestFullscreen(document.getElementById(this.options.id));
         } else {
             Cesium.Fullscreen.exitFullscreen();
         }
