@@ -1,3 +1,5 @@
+const { get } = require("../util/comm");
+
 class Aside {
     constructor(app, options) {
         this.app = app;
@@ -8,8 +10,19 @@ class Aside {
             _this.toggleView();
         });
 
+        this.load();
+    }
+    load() {
+        var _this = this;
+        get({
+            url: "aside/first.html",
+            success: function(status, statusText, data) {
+                document.getElementById(_this.options.id).innerHTML = data;
+            }
+        });
     }
     getWidth() {
+
         if (this.options.visible) {
             return this.options.width;
         } else {

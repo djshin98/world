@@ -1,7 +1,7 @@
 var dom = {
     $: function(a) { return document.querySelectorAll(a); },
     e: function(a) { return document.querySelector(a); },
-    trueOrundef: function(a){ return ((!a && a != false) || a == true)?true:false; },
+    trueOrundef: function(a) { return ((!a && a != false) || a == true) ? true : false; },
     guid: function() {
         function s4() { return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1); }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
