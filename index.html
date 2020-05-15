@@ -29,6 +29,7 @@
     <script>
         var modelUrl = "";
         $(function() {
+
             window.app = new Application({
                 header: {
                     height: 0
@@ -145,6 +146,7 @@
                     console.log("success end");
                 }
             });
+
         });
     </script>
 </head>
@@ -171,7 +173,7 @@
 
     <article>
         <div id="door-handle" style="display:none;"><i class="angle left icon"></i></div>
-        <div id="aside-handle" style="display:none;"><i class="angle left icon"></i></div>
+        <div id="aside-handle" style="display:none;"><i class="angle right icon"></i></div>
         <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
         <div id="map2d"></div>
     </article>

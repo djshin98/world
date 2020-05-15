@@ -218,6 +218,17 @@ class MilMap {
                 onmessage: function(data) {}
             });
         }
+
+        if (this.options.fullscreen == true) {
+
+            /*
+            let mymap = this;
+            const promiseA = new Promise((resolutionFunc, rejectionFunc) => {
+                resolutionFunc(777);
+            });
+            promiseA.then((val) => { mymap.fullscreen(true); });
+            */
+        }
     }
     getId() {
         return this.options.id;

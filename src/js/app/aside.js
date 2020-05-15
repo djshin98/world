@@ -2,6 +2,12 @@ class Aside {
     constructor(app, options) {
         this.app = app;
         this.options = Object.assign({}, options);
+
+        let _this = this;
+        document.getElementById(this.options.handle.id).addEventListener("click", function() {
+            _this.toggleView();
+        });
+
     }
     getWidth() {
         if (this.options.visible) {
@@ -17,15 +23,16 @@ class Aside {
         this.showView(!this.options.visible);
     }
     resize(left, top, w, h) {
-        var sectionView = document.getElementById(this.options.id);
+        var view = document.getElementById(this.options.id);
         var sectionHandle = document.getElementById(this.options.handle.id);
-        if (sectionView) {
-            sectionView.style.top = top + "px";
-            sectionView.style.width = this.getWidth() + "px";
-            sectionView.style.height = h + "px";
+        if (view) {
+            view.style.top = top + "px";
+            view.style.left = left + "px";
+            view.style.width = this.getWidth() + "px";
+            view.style.height = h + "px";
         }
         if (sectionHandle) {
-            sectionHandle.style.top = ((h / 2) - (this.getHandleHeight() / 2)) + "px";
+            sectionHandle.style.top = 0 + "px";
         }
         /*
         let tw = 80;
@@ -40,25 +47,25 @@ class Aside {
     }
     showView(bshow) {
         if (bshow) {
-            $(".section-head>a>b").show();
-            $(".section-head>a>img").attr("src", "img/logo.png");
+            $("#" + this.options.id).show();
+            /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
             } else {
                 $(".section-view").transition('fade right');
-            }
+            }*/
 
         } else {
-            $(".section-head>a>b").hide();
-            $(".section-head>a>img").attr("src", "img/logom.png");
+            $("#" + this.options.id).hide();
+            /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('fade right');
 
             } else {
                 $(".section-view").transition('bounce');
-            }
+            }*/
         }
-        this.options.view.visible = bshow;
+        this.options.visible = bshow;
         this.app.onResize();
     }
 };

@@ -10,6 +10,11 @@ body {
     overflow: hidden;
 }
 
+aside {
+    position: absolute;
+    background-color: $sectionBackgroundColor;
+}
+
 section {
     position: absolute;
     width: 200px;
@@ -244,8 +249,8 @@ article {
     #aside-handle {
         position: absolute;
         width: 15px;
-        height: 15px;
-        right: 15px;
+        height: 19px;
+        right: 0px;
         top: 0px;
         border-top: 1px solid $handleColor;
         border-right: 1px solid $handleColor;
@@ -258,6 +263,7 @@ article {
         i {
             margin-top: 0px;
             font-size: 0.8em;
+            vertical-align: top;
         }
     }
 }
