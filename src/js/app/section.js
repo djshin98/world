@@ -1,6 +1,6 @@
 var { dom, get, post } = require("../util/comm");
 
-var { JusoSearch } = require("./juso_search");
+var { JusoSearch } = require("../section/juso_search");
 
 class Section {
     constructor(app, opt) {

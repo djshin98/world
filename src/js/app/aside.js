@@ -3,8 +3,18 @@ class Aside {
         this.app = app;
         this.options = Object.assign({}, options);
     }
+    getWidth() {
+        if (this.options.visible) {
+            return this.options.width;
+        } else {
+            return 0;
+        }
+    }
+    getHandleHeight() {
+        return this.options.handle.height;
+    }
     toggleView() {
-        this.showView(!this.options.view.visible);
+        this.showView(!this.options.visible);
     }
     resize(left, top, w, h) {
         var sectionView = document.getElementById(this.options.id);
@@ -17,7 +27,7 @@ class Aside {
         if (sectionHandle) {
             sectionHandle.style.top = ((h / 2) - (this.getHandleHeight() / 2)) + "px";
         }
-
+        /*
         let tw = 80;
         let sv = dom.$(this.path.view)[0];
         sv.style.width = (w - tw) + "px";
@@ -26,6 +36,7 @@ class Aside {
         dom.$(".section-content").forEach(function(d) {
             d.style.height = sectionContentHeight + "px";
         });
+        */
     }
     showView(bshow) {
         if (bshow) {

@@ -1,7 +1,8 @@
 var { IxDatabase } = require("../repository/db");
 var { dom, get, post } = require("../util/comm");
 
-var { Section } = require("../section/section");
+var { Section } = require("./section");
+var { Aside } = require("./aside");
 var { MilMap } = require("../map3d/milmap");
 
 var { JsonByFolder } = require("../repository/json-by-folder");
@@ -44,7 +45,6 @@ function makeTable(data) {
     return str;
 }
 
-
 class Application {
     constructor(options) {
 
@@ -65,21 +65,21 @@ class Application {
         this.drawModel = new Draw(this.map, this.map.viewOption.baseLayerPicker);
         global.map = this.map;
 
-        this.init(options, () => {
-            $("input[data-olive-widget=animation]").prop("checked", this.map.viewOption.animation);
-            $("input[data-olive-widget=timeline]").prop("checked", this.map.viewOption.timeline);
-            $("input[data-olive-widget=fullscreen]").prop("checked", this.map.viewOption.fullscreenButton);
-            $("input[data-olive-widget=fps]").prop("checked", this.map.viewOption.fps);
-            $("input[data-olive-widget=toolbar]").prop("checked", this.map.viewOption.baseLayerPicker);
-            $("input[data-olive-widget=credits]").prop("checked", this.map.viewOption.creditsDisplay);
-            $("input[data-olive-widget=navigation]").prop("checked", this.map.viewOption.navigation);
-            $("input[data-olive-widget=distance]").prop("checked", this.map.viewOption.distance);
-            this.map.show('credits', false);
-            this.map.show('toolbar', false);
-            this.map.show('fps', false);
-            this.map.show('distance', false);
-            this.workStatus("map3d", true);
-        });
+        //this.init(options, () => {
+        $("input[data-olive-widget=animation]").prop("checked", this.map.viewOption.animation);
+        $("input[data-olive-widget=timeline]").prop("checked", this.map.viewOption.timeline);
+        $("input[data-olive-widget=fullscreen]").prop("checked", this.map.viewOption.fullscreenButton);
+        $("input[data-olive-widget=fps]").prop("checked", this.map.viewOption.fps);
+        $("input[data-olive-widget=toolbar]").prop("checked", this.map.viewOption.baseLayerPicker);
+        $("input[data-olive-widget=credits]").prop("checked", this.map.viewOption.creditsDisplay);
+        $("input[data-olive-widget=navigation]").prop("checked", this.map.viewOption.navigation);
+        $("input[data-olive-widget=distance]").prop("checked", this.map.viewOption.distance);
+        this.map.show('credits', false);
+        this.map.show('toolbar', false);
+        this.map.show('fps', false);
+        this.map.show('distance', false);
+        this.workStatus("map3d", true);
+        //});
 
         if (options.section) {
             if (options.section.visible == true) {
@@ -111,6 +111,7 @@ class Application {
         if (options.success) {
             options.success(this.map);
         }
+
 
     }
 
@@ -157,13 +158,19 @@ class Application {
                 this.map.oliveCamera.widget(function(obj) {
                     var carto = Cesium.Cartographic.fromCartesian(obj.position);
                     //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
-                    document.getElementById("center-longitude").innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
-                    document.getElementById("center-latitude").innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
-                    document.getElementById("center-distance").innerText = _this.map.oliveCamera.distanceFromCenter().toFixed(2) + " m";
+                    let lng = document.getElementById("center-longitude");
+                    let lat = document.getElementById("center-latitude");
+                    let dist = document.getElementById("center-distance");
+                    if (lng) lng.innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
+                    if (lat) lat.innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
+                    if (dist) dist.innerText = _this.map.oliveCamera.distanceFromCenter().toFixed(2) + " m";
                 });
                 this.map.oliveCursor.widget(function(obj) {
-                    document.getElementById("cursor-longitude").innerText = obj.longitude;
-                    document.getElementById("cursor-latitude").innerText = obj.latitude;
+                    let lng = document.getElementById("cursor-longitude");
+                    let lat = document.getElementById("cursor-latitude");
+
+                    if (lng) lng.innerText = obj.longitude;
+                    if (lat) lat.innerText = obj.latitude;
 
                 });
 
