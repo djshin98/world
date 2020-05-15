@@ -112,7 +112,13 @@
                     ]
                 },
                 aside: {
-                    id: "aside"
+                    id: "aside",
+                    width: 250,
+                    visible: true,
+                    handle: {
+                        id: "aside-handle",
+                        height: 15
+                    }
                 },
                 success: function(map) {
                     //map.contour(true);
@@ -150,7 +156,7 @@
         <div class="title">Web MapX3D 8.0 </div>
         <i class="window close outline"></i>
     </header>-->
-    <section id="section">
+    <section id="section" style="display:none;">
         <div class="section-head item" style="text-align: center;">
             <a href="" target=”_blank”><img height="50" src="img/logo.png" alt="합동참모본부"></a>
         </div>
@@ -164,10 +170,12 @@
     </section>
 
     <article>
-        <div id="door-handle"><i class="angle left icon"></i></div>
+        <div id="door-handle" style="display:none;"><i class="angle left icon"></i></div>
+        <div id="aside-handle" style="display:none;"><i class="angle left icon"></i></div>
         <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
         <div id="map2d"></div>
     </article>
+    <aside id="aside" style="display:none;"></aside>
     <footer></footer>
 
     <!--
