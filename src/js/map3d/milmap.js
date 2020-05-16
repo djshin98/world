@@ -368,61 +368,114 @@ class MilMap {
             callback(positions);
         });
     }
-    gridGARS(bshow, options) {
-
-            if (bshow) {
-                if (!this.__gars) {
-                    this.__gars = {};
-                    if (options.tile && options.tile == true) {
-                        this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                            new Cesium.TileCoordinatesImageryProvider());
-                        this.__gars.tile.olive_name = "GARS_TILE";
-                    }
-                    /*
-                    let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
-                        148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
-                    options.tilingScheme = new Cesium.GeographicTilingScheme({
-                        rectangle: bound,
-                        numberOfLevelZeroTilesX: 18,
-                        numberOfLevelZeroTilesY: 9
-                    });
-
-                    options.tileWidth = 256;
-                    options.tileHeight = 256;
-                    options.cells = 0;
-                    let grid = new Cesium.GridImageryProvider(options);
-
-                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
-
-                    grid.readyPromise.then(function(result) {
-                        if (result) {
-
-                        }
-                        console.log("readyPromise GridImageryProvider");
-                        console.log("minimumLevel " + grid.minimumLevel);
-                        console.log("maximumLevel " + grid.maximumLevel);
-
-                    });
-
-                    this.__gars.layer.olive_name = "GARS";
-                    */
-                }
-            } else {
-                if (this.__gars && this.__gars.layer) {
-                    this.viewer3d.scene.imageryLayers.remove(this.__gars.layer, true);
-                    this.__gars.layer = undefined;
-                }
-                if (this.__gars && this.__gars.tile) {
-                    this.viewer3d.scene.imageryLayers.remove(this.__gars.tile, true);
-                    this.__gars.tile = undefined;
-                }
-                this.__gars = undefined;
-            }
+    testGrid(bshow) {
+        var scene = this.viewer3d.scene;
+        if (Cesium.defined(this.pri)) {
+            scene.primitives.remove(this.pri);
         }
-        /* animation(bool) {
-            bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
-        } */
+        if (bshow) {
+            var instances = [];
+
+            for (var lon = -180.0; lon < 180.0; lon += 5.0) {
+                for (var lat = -85.0; lat < 85.0; lat += 5.0) {
+                    instances.push(new Cesium.GeometryInstance({
+                        geometry: new Cesium.RectangleGeometry({
+                            rectangle: Cesium.Rectangle.fromDegrees(lon, lat, lon + 5.0, lat + 5.0),
+                            vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+                        }),
+                        attributes: {
+                            color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({ alpha: 0.5 }))
+                        }
+                    }));
+                }
+            }
+            this.pri = new Cesium.Primitive({
+                geometryInstances: instances,
+                appearance: new Cesium.PerInstanceColorAppearance()
+            });
+            scene.primitives.add(this.pri);
+        }
+    }
+    testGrid2(bshow) {
+        var scene = this.viewer3d.scene;
+        if (Cesium.defined(this.pri)) {
+            scene.primitives.remove(this.pri);
+        }
+
+        if (bshow) {
+            var instance = new Cesium.GeometryInstance({
+                geometry: new Cesium.RectangleGeometry({
+                    rectangle: Cesium.Rectangle.fromDegrees(110.0, 10.0, 140.0, 60.0),
+                    vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
+                    //height: 10000.0,
+                    //extrudedHeight: 300000
+                })
+            });
+
+            this.pri = new Cesium.Primitive({
+                geometryInstances: instance,
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    material: Cesium.Material.fromType('Grid')
+                })
+            })
+            scene.primitives.add(this.pri);
+        }
+    }
+    gridGARS(bshow, options) {
+        //this.testGrid2(bshow);
+        this._gridGARS(bshow, options);
+    }
+    _gridGARS(bshow, options) {
+        if (bshow) {
+            if (!this.__gars) {
+                this.__gars = {};
+                if (options.tile && options.tile == true) {
+                    this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
+                        new Cesium.TileCoordinatesImageryProvider());
+                    this.__gars.tile.olive_name = "GARS_TILE";
+                }
+
+                let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
+                    148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
+                options.tilingScheme = new Cesium.GeographicTilingScheme({
+                    rectangle: bound,
+                    numberOfLevelZeroTilesX: 18,
+                    numberOfLevelZeroTilesY: 9
+                });
+
+                options.tileWidth = 256;
+                options.tileHeight = 256;
+                options.cells = 0;
+                let grid = new Cesium.GridImageryProvider(options);
+
+                this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
+
+                grid.readyPromise.then(function(result) {
+                    if (result) {
+
+                    }
+                    console.log("readyPromise GridImageryProvider");
+                    console.log("minimumLevel " + grid.minimumLevel);
+                    console.log("maximumLevel " + grid.maximumLevel);
+
+                });
+
+                this.__gars.layer.olive_name = "GARS";
+
+            }
+        } else {
+            if (this.__gars && this.__gars.layer) {
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.layer, true);
+                this.__gars.layer = undefined;
+            }
+            if (this.__gars && this.__gars.tile) {
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.tile, true);
+                this.__gars.tile = undefined;
+            }
+            this.__gars = undefined;
+        }
+    }
     tileset() {
         let ts = new Tileset(this.viewer3d);
         ts.create();
