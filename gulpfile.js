@@ -82,7 +82,7 @@ var paths = {
         dest: './dist/css/'
     },
     scss: {
-        src: './src/scss/**/*.scss',
+        src: './src/scss/main.scss',
         dest: './src/css/'
     },
     css: {

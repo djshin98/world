@@ -193,6 +193,8 @@ class Draw {
     createPoint(worldPosition) {
         if (Cesium.defined(this.activeDrawHandler)) {
             let pin = this.activeDrawHandler.pin(this.activeShapePoints.length);
+
+            //{ name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 }
             return this.markerCollection.add(CTX.c2d(worldPosition), pin);
         }
     }

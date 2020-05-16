@@ -1,5 +1,5 @@
 //name:"도로명주소 검색 API",
-var { IxDatabase } = require("../repository/db");
+var { IxDatabase } = require("../indexeddb/db");
 var { dom, get } = require("../util/comm");
 var conf = require("../../conf/server.json");
 /*

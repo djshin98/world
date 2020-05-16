@@ -1,4 +1,4 @@
-var { IxDatabase } = require('../repository/db');
+var { IxDatabase } = require('../indexeddb/db');
 var { Animation } = require('../util/animation');
 var { Tileset } = require('./tileset');
 var { Contour } = require('./contour');

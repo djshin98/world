@@ -1,4 +1,4 @@
-var { IxDatabase } = require('../repository/db');
+var { IxDatabase } = require('../indexeddb/db');
 var { CTX } = require('./ctx');
 class Camera {
     constructor(map) {

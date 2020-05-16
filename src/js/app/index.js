@@ -1,11 +1,11 @@
-var { IxDatabase } = require("../repository/db");
+var { IxDatabase } = require("../indexeddb/db");
 var { dom, get, post } = require("../util/comm");
 
 var { Section } = require("./section");
 var { Aside } = require("./aside");
 var { MilMap } = require("../map3d/milmap");
 
-var { JsonByFolder } = require("../repository/json-by-folder");
+var { JsonByFolder } = require("../indexeddb/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
 var { OliveDragger } = require("../ui/olive-dragger");
 require("../util/serveradapter");

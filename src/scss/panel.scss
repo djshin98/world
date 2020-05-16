@@ -1,0 +1,20 @@
+
+.panel {
+    border: 0px;
+    background-color: #2e3439;
+    color: #a5aeb4;
+}
+
+.lobipanel>.panel-heading {
+    padding: 0px;
+}
+
+.lobipanel.panel-unpin>.panel-heading {
+    background-color: #3a4147;
+    color: #838b91;
+    border-color: #292929;
+}
+
+.lobipanel-minimized-toolbar {
+    background: rgba(43, 43, 43, 0.51);
+}

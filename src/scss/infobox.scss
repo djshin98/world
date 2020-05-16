@@ -1,0 +1,24 @@
+.map-cesium {
+    .cesium-infoBox {
+        right: 100px;
+        .cesium-infoBox-description {
+            font-family: sans-serif;
+            font-size: 12px;
+            padding: 4px 10px;
+            margin-right: 4px;
+            color: #2f2f2f;
+            background: #fff;
+        }
+    }
+}
+
+.cesium-infoBox-iframe {
+    height: auto;
+}
+
+.cesium-infoBox-description table {
+    color: #edffff;
+    list-style: cambodian;
+    border: 1px solid #959595;
+    font-size: 14px;
+}
