@@ -82,6 +82,7 @@ var paths = {
         dest: './dist/css/'
     },
     scss: {
+        watch:'./src/scss/**/*.scss',
         src: './src/scss/main.scss',
         dest: './src/css/'
     },
@@ -343,7 +344,7 @@ function watchFiles() {
     watch(paths.lobipanel.src, lobipanel);
     mywatch(paths.md, md);
     watch(paths.widget_scss.src, widget_scss);
-    watch(paths.scss.src, scss);
+    watch(paths.scss.watch, scss);
     watch(paths.css.src, css);
     //watch(paths.js.src, js);
     //watch(paths.js.src, js_src_w);
