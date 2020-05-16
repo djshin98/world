@@ -7,6 +7,9 @@ class DashBoard{
         this.create();
     }
     create(){
-        
+        let svg = document.getElementById(this.options.id);
+        if( this.options.center ){
+
+        }
     }
 }
