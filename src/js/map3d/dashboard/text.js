@@ -20,9 +20,9 @@ class Text {
         } else {
             text = this.options.text;
         }
-        this.svg.attr("x", function(d) { return _this.options.x; })
+        this.svg.text(text)
+            .attr("x", function(d) { return _this.options.x; })
             .attr("y", function(d) { return _this.options.y; })
-            .text(text)
             .attr("font-family", _this.options.fontFamily)
             .attr("font-size", _this.options.fontSize)
             .attr("fill", _this.options.fill)
