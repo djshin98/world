@@ -7,5 +7,19 @@ aside {
     table {
         margin-left: 3px;
         padding-left: 3px;
+        border: 1px solid #dddddd;
+        //width: 240px;
+        overflow: hidden;
+    }
+    td {
+        padding: 5px;
+        border: 1px solid #dddddd;
+        width: 120px;
+        border-spacing: 15px;
+        overflow: hidden;
+    }
+    th {
+        border: 1px solid #dddddd;
+        width: 120px;
     }
 }

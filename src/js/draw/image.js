@@ -28,6 +28,15 @@ class Image extends DrawObject {
 
 
             var carto = CTX.c2r(points[0]);
+            var lo = 0.1 / 10 * (Math.PI / 180);
+            var la = 0.1 / 10 * (Math.PI / 180);
+
+            carto.longitude -= lo;
+            carto.latitude -= la;
+            var carte = CTX.r2c(carto);
+            points.push(carte);
+
+
 
             collection.add(this.index, {
                 position: points[0],
