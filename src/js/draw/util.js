@@ -373,17 +373,10 @@ var ArcUtil = {
 
         //vector 1
         let v1 = Object.assign({}, start);
-        //polylines.push(v1);
-        //v1.x -= offsetX;
-        //v1.y -= offsetY;
-        //v1.z -= offsetZ;
         v1 = Cesium.Cartesian3.subtract(v1, center, {});
 
         //vector 2
         let v2 = Object.assign({}, end);
-        //v2.x -= offsetX;
-        //v2.y -= offsetY;
-        //v2.z -= offsetZ;
         v2 = Cesium.Cartesian3.subtract(v2, center, {});
 
         let v2_2 = Object.assign({}, v2);
@@ -394,14 +387,11 @@ var ArcUtil = {
 
         //quaternion을 구하기 위해 normal vector 구하기
         let normal = Cesium.Cartesian3.cross(v1, v2_2, {});
-        //Cesium.Cartesian3.normalize(normal, normal);
 
         let THETA = Math.PI / 180;
         for (var i = 0; i < deg; i += options.degree) {
             //i 만큼 회전 후 polyline에 push 한다
             //Cesium.Matrix4.fromTranslationQuaternionRotationScale
-
-            //let quaternion = new Cesium.Quaternion(dir.x * THETA * i, dir.y * THETA * i, dir.z * THETA * i, 0);
             let quaternion = Cesium.Quaternion.fromAxisAngle(normal, THETA * i, {});
             let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
                 new Cesium.Cartesian3(0, 0, 0),
@@ -409,31 +399,15 @@ var ArcUtil = {
                 new Cesium.Cartesian3(1.0, 1.0, 1.0), {}
             );
 
-
-            //let rot = new Cesium.Matrix3(dir.x * i, dir.y * i, dir.z * i);
-            //let rot = new Cesium.Matrix3(Math.cos(THETA * i), Math.sin(THETA * i), 0, -Math.sin(THETA * i), Math.cos(THETA * i), 0, 0, 0, 1);
-            //let transl = new Cesium.Cartesian3(0, 0, 0);
-            //let transform = Cesium.Matrix4.fromRotationTranslation(rot, transl, {});
-
-            //회전된 Matrix4에서 x,y,z를 추출하여 cartesian3로 저장한다.
-            //let carte4_result = Cesium.Matrix4.getColumn(result, 3, new Cesium.Cartesian4());
-            //let p = new Cesium.Cartesian3(carte4_result.x, carte4_result.y, carte4_result.z);
-            //let p = Cesium.Matrix4.getTranslation(result, {});
-            //결과에 offset을 더하여 polyline push
-
+            //변환행렬에 점을 곱하여 실제로 회전시킨다.
             let p = Cesium.Matrix4.multiplyByPoint(transform, v1, {});
-
-            //p.x += offsetX;
-            //p.y += offsetY;
-            //p.z += offsetZ;
+            //vector p와 vector center를 더하여 최종 위치 vector를 구한다
             p = Cesium.Cartesian3.add(center, p, {});
+            //결과를 polylines에 push
             polylines.push(p);
         }
-        //v2_2 를 offset을 더하여 polyline push
-        //v2_2.x += offsetX;
-        //v2_2.y += offsetY;
-        //v2_2.z += offsetZ;
 
+        //마지막 포인트를 계산하여 넣음으로서 완전한 호를 그리는 점들을 반환한다
         let quaternion = Cesium.Quaternion.fromAxisAngle(normal, THETA * deg, {});
         let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
             new Cesium.Cartesian3(0, 0, 0),
@@ -444,29 +418,7 @@ var ArcUtil = {
         p = Cesium.Cartesian3.add(center, p, {});
 
         polylines.push(p);
-        //v2_2 = Cesium.Cartesian3.add(center, v2_2, {});
-        //polylines.push(v2_2);
 
-
-        //center.height += options.height;
-        //let center = CTX.cartesian(center.longitude, center.latitude, center.height);
-
-        //let THETA = Math.PI / 180;
-        /*
-        if (deg > 0) {
-            for (var i = 0; i < deg; i += options.degree) {
-                let r = LineUtil.rotate(center, end, THETA * i);
-
-                polylines.push(r);
-            }
-        } else {
-            for (var i = 0; i > deg; i -= options.degree) {
-                let r = LineUtil.rotate(center, end, THETA * i);
-
-                polylines.push(r);
-            }
-        }
-        */
         return polylines;
     },
 };
