@@ -176,8 +176,6 @@ class JusoSearch {
             }
 
         }
-        //strTest += "</span>";
-
         if (endPage < totalPage) {
             strTest += "<button type='button' class='btn_next ui button' onclick='app.section.getPlugin(\"JusoSearch\").pageCall(\"" + keyword + "\"," + type.index + "," + (currentPage + pageSize) + ",true)' ><i class=' ui angle right icon'></i></button>";
         }
