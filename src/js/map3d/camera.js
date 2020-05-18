@@ -1,19 +1,18 @@
 var { IxDatabase } = require('../indexeddb/db');
 var { CTX } = require('./ctx');
-class Camera {
+var { Eventable } = require('../core/eventable');
+class Camera extends Eventable {
     constructor(map) {
+        super();
         this.map = map;
         this.viewer = map.viewer3d;
         this.camera = this.viewer.scene.camera;
 
         this.db = new IxDatabase(1, "camera");
-        this.cameraWidgetCallback = undefined;
         this.distance = 3000;
         this.load();
     }
-    widget(callback) {
-        this.cameraWidgetCallback = callback;
-    }
+
     cache() {
         let carto = Cesium.Cartographic.fromCartesian(this.camera.position);
         return {
@@ -35,9 +34,7 @@ class Camera {
                 pitch: _this.camera.pitch,
                 roll: _this.camera.roll
             });
-            if (_this.cameraWidgetCallback) {
-                _this.cameraWidgetCallback(_this.camera);
-            }
+            _this.fireEvent("changed", _this.camera);
         });
 
         this.db.get("scene", "camera", function(result) {
@@ -52,6 +49,10 @@ class Camera {
                     }
                 });
             }
+        });
+
+        this.camera.changed.addEventListener(function() {
+            _this.fireEvent("changed", _this.camera);
         });
     }
     pitch(bfixCenter, radian) {

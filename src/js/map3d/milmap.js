@@ -4,6 +4,7 @@ var { Tileset } = require('./tileset');
 var { Contour } = require('./contour');
 var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
+var { Dashboard } = require('./dashboard');
 var { dom } = require("../util/comm");
 
 global.Cesium = require('cesium/Cesium');
@@ -38,6 +39,9 @@ class MilMap {
         this.db = new IxDatabase(1);
         this.options = Object.assign({}, options);
 
+        this.width = 0;
+        this.height = 0;
+
         var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.1;
@@ -68,45 +72,45 @@ class MilMap {
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
-
-            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-                url: 'https://a.tile.openstreetmap.org/'
-            }),
-
-
-
             /*
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'
                        }),
+
+
+
                       
-                        imageryProvider: Cesium.createWorldImagery({
-                            style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-                        }),
-                       
-                        terrainProvider: Cesium.createWorldTerrain(),
-                        shadows: false,
-                        scene3DOnly: true, //3차원 화면으로 구성 // ,
-                        //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-                        animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-                        baseLayerPicker: true,
-                        geocoder: true,
-                        vrButton: false,
-                        homeButton: false,
-                        infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-                        sceneModePicker: false,
-                        selectionIndicator: false,
-                        creditsDisplay: true,
-                        //creditContainer: false,
-                        fullscreenButton: false,
-                        timeline: true,
-                        navigationHelpButton: false,
-                        terrainExaggeration: 1.0, //고도 기복 비율 조정
-                        shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-                        requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-                        // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-                        maximumRenderTimeChange: Infinity,
-                        navigationInstructionsInitiallyVisible: false, */
+                                  imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+                                      url: 'https://a.tile.openstreetmap.org/'
+                                  }),
+                                 
+                                   imageryProvider: Cesium.createWorldImagery({
+                                       style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+                                   }),
+                                  
+                                   terrainProvider: Cesium.createWorldTerrain(),
+                                   shadows: false,
+                                   scene3DOnly: true, //3차원 화면으로 구성 // ,
+                                   //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+                                   animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+                                   baseLayerPicker: true,
+                                   geocoder: true,
+                                   vrButton: false,
+                                   homeButton: false,
+                                   infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+                                   sceneModePicker: false,
+                                   selectionIndicator: false,
+                                   creditsDisplay: true,
+                                   //creditContainer: false,
+                                   fullscreenButton: false,
+                                   timeline: true,
+                                   navigationHelpButton: false,
+                                   terrainExaggeration: 1.0, //고도 기복 비율 조정
+                                   shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+                                   requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+                                   // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+                                   maximumRenderTimeChange: Infinity,
+                                   navigationInstructionsInitiallyVisible: false, */
             /*
             skyBox: new Cesium.SkyBox({}),
             skyAtmosphere: new Cesium.SkyAtmosphere(),
@@ -168,6 +172,10 @@ class MilMap {
         this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
 
+        if (this.options.dashboard) {
+            this.dashboard = new Dashboard(this, this.options.dashboard);
+        }
+
         this.viewer3d.canvas.addEventListener('click', function(e) {
             var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
 
@@ -228,6 +236,16 @@ class MilMap {
             });
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
+        }
+    }
+    center() {
+        return { x: this.width / 2, y: this.height / 2 };
+    }
+    resize(x, y, width, height) {
+        this.width = parseInt(width);
+        this.height = parseInt(height);
+        if (this.dashboard) {
+            this.dashboard.resize(x, y, width, height);
         }
     }
     getId() {

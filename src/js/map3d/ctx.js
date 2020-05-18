@@ -120,7 +120,11 @@ var CTX = {
                 console.log("w2c : ");
                 console.log("x=" + x + " ,y=" + y);
             }
-            return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
+            let t = CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y));
+            if (!t) { t = CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid); }
+            return t;
+            //return CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
+            //return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
         },
     }
     /*

@@ -155,23 +155,24 @@ class Application {
                 });
             },
             oncomplete: function() {
-                this.map.oliveCamera.widget(function(obj) {
-                    var carto = Cesium.Cartographic.fromCartesian(obj.position);
-                    //Number(Cesium.Math.toDegrees(viewer.camera.positionCartographic.longitude).toFixed(10))
+                this.map.oliveCamera.listenEvent("changed", (v) => {
                     let lng = document.getElementById("center-longitude");
                     let lat = document.getElementById("center-latitude");
                     let dist = document.getElementById("center-distance");
-                    if (lng) lng.innerText = Number(Cesium.Math.toDegrees(carto.longitude).toFixed(5));
-                    if (lat) lat.innerText = Number(Cesium.Math.toDegrees(carto.latitude).toFixed(5));
-                    if (dist) dist.innerText = _this.map.oliveCamera.distanceFromCenter().toFixed(2) + " m";
+                    let d = CTX.c2d(v.position);
+                    let wc = _this.map.center();
+                    let w = CTX.w2d(wc.x, wc.y);
+                    let distance = CTX.distanceD(d, w);
+                    if (lng) lng.innerText = d.longitude.toFixed(5);
+                    if (lat) lat.innerText = d.latitude.toFixed(5);
+                    if (dist) dist.innerText = distance.toFixed(2) + " m";
                 });
-                this.map.oliveCursor.widget(function(obj) {
+                this.map.oliveCursor.listenEvent("move", (v) => {
                     let lng = document.getElementById("cursor-longitude");
                     let lat = document.getElementById("cursor-latitude");
 
-                    if (lng) lng.innerText = obj.longitude;
-                    if (lat) lat.innerText = obj.latitude;
-
+                    if (lng) lng.innerText = v.longitude;
+                    if (lat) lat.innerText = v.latitude;
                 });
 
                 this.workStatus("section", true);
@@ -208,6 +209,9 @@ class Application {
         }
         if (application.aside) {
             application.aside.resize(window.innerWidth - asideWidth, application.header.height, asideWidth, height);
+        }
+        if (application.map) {
+            application.map.resize(0, 0, article.style.width, article.style.height);
         }
     }
     dragger() {
