@@ -1,4 +1,5 @@
 var { DrawObject } = require('./drawobject');
+var { CTX } = require('../map3d/ctx');
 class Image extends DrawObject {
     constructor() {
         super(1);
@@ -17,33 +18,34 @@ class Image extends DrawObject {
 
             var pl = plane1.plane;
             pl.distance = 0;
-            //var origin = plane1.origin;
+            pl.normal = points[0];
 
             var planetmp = new Cesium.PlaneGraphics({
                 plane: pl,
                 dimensions: dimensions1,
-                //material: Cesium.Color.RED.withAlpha(0.5),
                 material: viewModel.image
             });
 
+
+            var carto = CTX.c2r(points[0]);
+
             collection.add(this.index, {
                 position: points[0],
-                plane: planetmp
+                //plane: planetmp,
 
-                /*
+
+
                 rectangle: {
-                    coordinates: Cesium.Rectangle.fromCartesianArray(points2),
-                    height: 500,
+                    coordinates: Cesium.Rectangle.fromCartesianArray(points),
+                    //height: 500,
                     //extrudedHeight: 1000,
                     fill: true,
                     outline: true,
                     outlineColor: viewModel.lineColor,
                     outlineWidth: viewModel.lineWidth,
                     material: viewModel.image,
-                    //material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
-                }*/
-
+                }
             });
         }
     }

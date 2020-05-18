@@ -1,0 +1,11 @@
+@import "define.scss";
+aside {
+    position: absolute;
+    background-color: $sectionBackgroundColor;
+    color: #fff;
+    padding: 0.5em;
+    table {
+        margin-left: 3px;
+        padding-left: 3px;
+    }
+}

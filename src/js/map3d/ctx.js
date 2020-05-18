@@ -25,9 +25,9 @@ var CTX = {
                 }
             }
         },
-        distanceD: function(a, b) { return Cesium.Cartesian3.distance(CTX.d2c(a), CTX.d2c(b)); },
-        distanceR: function(a, b) { return Cesium.Cartesian3.distance(CTX.r2c(a), CTX.r2c(b)); },
-        distance: function(a, b) { return Cesium.Cartesian3.distance(a, b); },
+        distanceD: function(a, b) { let a1 = CTX.d2c(a); let b1 = CTX.d2c(b); return (!a1 || !b1) ? 0 : Cesium.Cartesian3.distance(a1, b1); },
+        distanceR: function(a, b) { let a1 = CTX.r2c(a); let b1 = CTX.r2c(b); return (!a1 || !b1) ? 0 : Cesium.Cartesian3.distance(a1, b1); },
+        distance: function(a, b) { return (!a || !b) ? 0 : Cesium.Cartesian3.distance(a, b); },
         llh: function(longitude, latitude, height) { return { longitude: longitude, latitude: latitude, height: height }; },
         degree: function(longitude, latitude, height) { return new Cesium.Cartographic(longitude, latitude, height); },
         radian: function(longitude, latitude, height) { return Cesium.Cartographic.fromDegrees(longitude, latitude, height); },
@@ -39,7 +39,7 @@ var CTX = {
                 console.log("r2d : ");
                 console.dir(r);
             }
-            return new Cesium.Cartographic(r.longitude * Cesium.Math.DEGREES_PER_RADIAN, r.latitude * Cesium.Math.DEGREES_PER_RADIAN, r.height);
+            return !r ? r : new Cesium.Cartographic(r.longitude * Cesium.Math.DEGREES_PER_RADIAN, r.latitude * Cesium.Math.DEGREES_PER_RADIAN, r.height);
         },
         r2dA: function(rs) { return rs.map(r => { return CTX.r2d(r); }); },
         r2c: function(r) {
@@ -47,7 +47,7 @@ var CTX = {
                 console.log("r2c : ");
                 console.dir(r);
             }
-            return Cesium.Cartesian3.fromRadians(r.longitude, r.latitude, r.height);
+            return !r ? r : Cesium.Cartesian3.fromRadians(r.longitude, r.latitude, r.height);
         },
         r2cA: function(rs) { return rs.map(r => { return CTX.r2c(r); }); },
         r2w: function(r) {
@@ -55,21 +55,21 @@ var CTX = {
                 console.log("r2w : ");
                 console.dir(r);
             }
-            return CTX.c2w(CTX.r2c(r));
+            return !r ? r : CTX.c2w(CTX.r2c(r));
         },
         d2r: function(d) {
             if (CTX.debug) {
                 console.log("d2r : ");
                 console.dir(d);
             }
-            return new Cesium.Cartographic(d.longitude / Cesium.Math.DEGREES_PER_RADIAN, d.latitude / Cesium.Math.DEGREES_PER_RADIAN, d.height);
+            return !d ? d : new Cesium.Cartographic(d.longitude / Cesium.Math.DEGREES_PER_RADIAN, d.latitude / Cesium.Math.DEGREES_PER_RADIAN, d.height);
         },
         d2c: function(d) {
             if (CTX.debug) {
                 console.log("d2c : ");
                 console.dir(d);
             }
-            return CTX.r2c(CTX.d2r(d));
+            return !d ? d : CTX.r2c(CTX.d2r(d));
         },
         d2cA: function(ds) { return ds.map(d => { return CTX.r2c(CTX.d2r(d)); }); },
         d2w: function(d) {
@@ -77,14 +77,14 @@ var CTX = {
                 console.log("d2w : ");
                 console.dir(d);
             }
-            return CTX.c2w(Cesium.Cartesian3.fromDegrees(d.longitude, d.latitude));
+            return !d ? d : CTX.c2w(Cesium.Cartesian3.fromDegrees(d.longitude, d.latitude));
         },
         c2r: function(c) {
             if (CTX.debug) {
                 console.log("c2r : ");
                 console.dir(c);
             }
-            return Cesium.Cartographic.fromCartesian(c);
+            return !c ? c : Cesium.Cartographic.fromCartesian(c);
         },
         c2rA: function(cs) { return cs.map(c => { return CTX.c2r(c) }); },
         c2d: function(c) {
@@ -92,14 +92,14 @@ var CTX = {
                 console.log("c2d : ");
                 console.dir(c);
             }
-            return CTX.r2d(CTX.c2r(c));
+            return !c ? c : CTX.r2d(CTX.c2r(c));
         },
         c2w: function(c) {
             if (CTX.debug) {
                 console.log("c2w : ");
                 console.dir(c);
             }
-            return Cesium.SceneTransforms.wgs84ToWindowCoordinates(CTX.viewer.scene, c);
+            return !c ? c : Cesium.SceneTransforms.wgs84ToWindowCoordinates(CTX.viewer.scene, c);
         },
         w2r: function(x, y) {
             if (CTX.debug) {
@@ -120,7 +120,11 @@ var CTX = {
                 console.log("w2c : ");
                 console.log("x=" + x + " ,y=" + y);
             }
-            return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
+            let t = CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y));
+            if (!t) { t = CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid); }
+            return t;
+            //return CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
+            //return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
         },
     }
     /*

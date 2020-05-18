@@ -35,6 +35,7 @@ module.exports = {
             cesium: path.resolve(__dirname, cesiumSource)
         }
     },
+
     module: {
         rules: [{
             test: /\.css$/,

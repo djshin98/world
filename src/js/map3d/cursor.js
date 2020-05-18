@@ -1,10 +1,12 @@
 var { dom } = require('../util/comm');
+var { Eventable } = require('../core/eventable');
 
-class Cursor {
+class Cursor extends Eventable {
     constructor(viewer) {
+        super();
         this.viewer = viewer;
         this.cursorWidgetHandler = undefined;
-        this.cursorWidgetCallback = undefined;
+        this.load();
     }
     destroy() {
         if (this.cursorWidgetHandler) {
@@ -12,61 +14,37 @@ class Cursor {
             this.cursorWidgetHandler.destroy();
             this.cursorWidgetHandler = undefined;
         }
-        if (this.cursorWidgetCallback) {
-            this.cursorWidgetCallback = undefined;
-        }
     }
-    widget(callback) {
-        this.destroy();
-        this.cursorWidgetCallback = callback;
+    load() {
         let _this = this;
-        if (callback) {
-            this.cursorWidgetHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-            this.cursorWidgetHandler.setInputAction(function(movement) {
-                var cartesian = _this.viewer.camera.pickEllipsoid(movement.endPosition, _this.viewer.scene.globe.ellipsoid);
-                if (cartesian) {
-                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                    var longitude = Cesium.Math.toDegrees(cartographic.longitude).toFixed(5);
-                    var latitude = Cesium.Math.toDegrees(cartographic.latitude).toFixed(5);
+        this.cursorWidgetHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+        this.cursorWidgetHandler.setInputAction(function(movement) {
+            var cartographic = CTX.w2r(movement.endPosition.x, movement.endPosition.y);
+            var degree = CTX.r2d(cartographic);
 
-                    if (callback) {
-                        callback({
-                            latitude: latitude,
-                            longitude: longitude
-                        });
-                    }
-                } else {
-                    //entity.label.show = false;
-                }
+            _this.getSelectedObjFromPoint(movement.endPosition);
 
-                _this.getSelectedObjFromPoint(movement.endPosition, longitude, latitude);
-            }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+            _this.fireEvent("move", degree);
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 
-            this.cursorWidgetHandler.setInputAction(function(movement) {
-                var cartesian = _this.viewer.camera.pickEllipsoid(movement.position, _this.viewer.scene.globe.ellipsoid);
-                if (cartesian) {
-                    var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-                    var longitude = Cesium.Math.toDegrees(cartographic.longitude).toFixed(5);
-                    var latitude = Cesium.Math.toDegrees(cartographic.latitude).toFixed(5);
-                } else {
-                    //entity.label.show = false;
-                }
-                var pickedObject = _this.viewer.scene.pick(movement.position);
+        this.cursorWidgetHandler.setInputAction(function(movement) {
+            //var cartesian = CTX.w2c(movement.position.x, movement.position.y);
+            //_this.viewer.camera.pickEllipsoid(movement.position, _this.viewer.scene.globe.ellipsoid);
 
-                if (Cesium.defined(pickedObject)) {
-                    //var d = new Dialog({ width: "300px", height: "500px" });
-                    //var description = pickedObject.id._description;
-                    //$("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
-                }
-                // (pickedObject.id._description)
-                // _this.getSelectedObjFromPoint(movement.position, longitude, latitude);
-            }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+            var pickedObject = _this.viewer.scene.pick(movement.position);
 
-        }
+            if (Cesium.defined(pickedObject)) {
+                //var d = new Dialog({ width: "300px", height: "500px" });
+                //var description = pickedObject.id._description;
+                //$("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
+            }
+            // (pickedObject.id._description)
+            // _this.getSelectedObjFromPoint(movement.position, longitude, latitude);
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
 
-    getSelectedObjFromPoint(position, longitude, latitude) {
+    getSelectedObjFromPoint(position) {
         var valueToReturn = null;
         var pickedObject = this.viewer.scene.pick(position);
         if (!Cesium.defined(pickedObject)) {
@@ -82,6 +60,7 @@ class Cursor {
 
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
 
+            this.fireEvent("selected", picked);
             if (this.labelEntity) {
                 if (this.labelEntity.ref && this.labelEntity.ref == picked.id) {
 

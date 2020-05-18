@@ -1,0 +1,23 @@
+
+header {
+    position: absolute;
+    padding: 3px;
+    background-color: #414141;
+    color: #fff;
+    img {
+        width: 34px;
+        display: inline-block;
+    }
+    div {
+        display: inline-block;
+        font-size: 1.2em;
+    }
+    a.right {
+        display: inline-block;
+        i {
+            float: right;
+            width: 40px;
+            height: 40px;
+        }
+    }
+}

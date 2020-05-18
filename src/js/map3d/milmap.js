@@ -1,9 +1,10 @@
-var { IxDatabase } = require('../repository/db');
+var { IxDatabase } = require('../indexeddb/db');
 var { Animation } = require('../util/animation');
 var { Tileset } = require('./tileset');
 var { Contour } = require('./contour');
 var { OliveCamera } = require('./camera');
 var { OliveCursor } = require('./cursor');
+var { Dashboard } = require('./dashboard');
 var { dom } = require("../util/comm");
 
 global.Cesium = require('cesium/Cesium');
@@ -38,6 +39,9 @@ class MilMap {
         this.db = new IxDatabase(1);
         this.options = Object.assign({}, options);
 
+        this.width = 0;
+        this.height = 0;
+
         var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.1;
@@ -68,46 +72,45 @@ class MilMap {
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
-
-            /*
-            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-                url: 'https://a.tile.openstreetmap.org/'
-            }),
-            */
-
-
             /*
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'
                        }),
+
+
+
                       
-                        imageryProvider: Cesium.createWorldImagery({
-                            style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-                        }),
-                       
-                        terrainProvider: Cesium.createWorldTerrain(),
-                        shadows: false,
-                        scene3DOnly: true, //3차원 화면으로 구성 // ,
-                        //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-                        animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-                        baseLayerPicker: true,
-                        geocoder: true,
-                        vrButton: false,
-                        homeButton: false,
-                        infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-                        sceneModePicker: false,
-                        selectionIndicator: false,
-                        creditsDisplay: true,
-                        //creditContainer: false,
-                        fullscreenButton: false,
-                        timeline: true,
-                        navigationHelpButton: false,
-                        terrainExaggeration: 1.0, //고도 기복 비율 조정
-                        shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-                        requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-                        // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-                        maximumRenderTimeChange: Infinity,
-                        navigationInstructionsInitiallyVisible: false, */
+                                  imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+                                      url: 'https://a.tile.openstreetmap.org/'
+                                  }),
+                                 
+                                   imageryProvider: Cesium.createWorldImagery({
+                                       style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+                                   }),
+                                  
+                                   terrainProvider: Cesium.createWorldTerrain(),
+                                   shadows: false,
+                                   scene3DOnly: true, //3차원 화면으로 구성 // ,
+                                   //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+                                   animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+                                   baseLayerPicker: true,
+                                   geocoder: true,
+                                   vrButton: false,
+                                   homeButton: false,
+                                   infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+                                   sceneModePicker: false,
+                                   selectionIndicator: false,
+                                   creditsDisplay: true,
+                                   //creditContainer: false,
+                                   fullscreenButton: false,
+                                   timeline: true,
+                                   navigationHelpButton: false,
+                                   terrainExaggeration: 1.0, //고도 기복 비율 조정
+                                   shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+                                   requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+                                   // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+                                   maximumRenderTimeChange: Infinity,
+                                   navigationInstructionsInitiallyVisible: false, */
             /*
             skyBox: new Cesium.SkyBox({}),
             skyAtmosphere: new Cesium.SkyAtmosphere(),
@@ -169,6 +172,10 @@ class MilMap {
         this.oliveCamera = new OliveCamera(this);
         this.oliveCursor = new OliveCursor(this.viewer3d);
 
+        if (this.options.dashboard) {
+            this.dashboard = new Dashboard(this, this.options.dashboard);
+        }
+
         this.viewer3d.canvas.addEventListener('click', function(e) {
             var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
 
@@ -229,6 +236,16 @@ class MilMap {
             });
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
+        }
+    }
+    center() {
+        return { x: this.width / 2, y: this.height / 2 };
+    }
+    resize(x, y, width, height) {
+        this.width = parseInt(width);
+        this.height = parseInt(height);
+        if (this.dashboard) {
+            this.dashboard.resize(x, y, width, height);
         }
     }
     getId() {
@@ -369,61 +386,114 @@ class MilMap {
             callback(positions);
         });
     }
-    gridGARS(bshow, options) {
-
-            if (bshow) {
-                if (!this.__gars) {
-                    this.__gars = {};
-                    if (options.tile && options.tile == true) {
-                        this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
-                            new Cesium.TileCoordinatesImageryProvider());
-                        this.__gars.tile.olive_name = "GARS_TILE";
-                    }
-                    /*
-                    let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
-                        148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
-                    options.tilingScheme = new Cesium.GeographicTilingScheme({
-                        rectangle: bound,
-                        numberOfLevelZeroTilesX: 18,
-                        numberOfLevelZeroTilesY: 9
-                    });
-
-                    options.tileWidth = 256;
-                    options.tileHeight = 256;
-                    options.cells = 0;
-                    let grid = new Cesium.GridImageryProvider(options);
-
-                    this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
-
-                    grid.readyPromise.then(function(result) {
-                        if (result) {
-
-                        }
-                        console.log("readyPromise GridImageryProvider");
-                        console.log("minimumLevel " + grid.minimumLevel);
-                        console.log("maximumLevel " + grid.maximumLevel);
-
-                    });
-
-                    this.__gars.layer.olive_name = "GARS";
-                    */
-                }
-            } else {
-                if (this.__gars && this.__gars.layer) {
-                    this.viewer3d.scene.imageryLayers.remove(this.__gars.layer, true);
-                    this.__gars.layer = undefined;
-                }
-                if (this.__gars && this.__gars.tile) {
-                    this.viewer3d.scene.imageryLayers.remove(this.__gars.tile, true);
-                    this.__gars.tile = undefined;
-                }
-                this.__gars = undefined;
-            }
+    testGrid(bshow) {
+        var scene = this.viewer3d.scene;
+        if (Cesium.defined(this.pri)) {
+            scene.primitives.remove(this.pri);
         }
-        /* animation(bool) {
-            bool ? map.viewer3d.dataSources.add(Cesium.CzmlDataSource.load('../models/simple.czml')) : map.viewer3d.dataSources.removeAll();
 
-        } */
+        if (bshow) {
+            var instances = [];
+
+            for (var lon = -180.0; lon < 180.0; lon += 5.0) {
+                for (var lat = -85.0; lat < 85.0; lat += 5.0) {
+                    instances.push(new Cesium.GeometryInstance({
+                        geometry: new Cesium.RectangleGeometry({
+                            rectangle: Cesium.Rectangle.fromDegrees(lon, lat, lon + 5.0, lat + 5.0),
+                            vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+                        }),
+                        attributes: {
+                            color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({ alpha: 0.5 }))
+                        }
+                    }));
+                }
+            }
+            this.pri = new Cesium.Primitive({
+                geometryInstances: instances,
+                appearance: new Cesium.PerInstanceColorAppearance()
+            });
+            scene.primitives.add(this.pri);
+        }
+    }
+    testGrid2(bshow) {
+        var scene = this.viewer3d.scene;
+        if (Cesium.defined(this.pri)) {
+            scene.primitives.remove(this.pri);
+        }
+
+        if (bshow) {
+            var instance = new Cesium.GeometryInstance({
+                geometry: new Cesium.RectangleGeometry({
+                    rectangle: Cesium.Rectangle.fromDegrees(110.0, 10.0, 140.0, 60.0),
+                    vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
+                    //height: 10000.0,
+                    //extrudedHeight: 300000
+                })
+            });
+
+            this.pri = new Cesium.Primitive({
+                geometryInstances: instance,
+                appearance: new Cesium.EllipsoidSurfaceAppearance({
+                    material: Cesium.Material.fromType('Grid')
+                })
+            })
+            scene.primitives.add(this.pri);
+        }
+    }
+    gridGARS(bshow, options) {
+        //this.testGrid2(bshow);
+        this._gridGARS(bshow, options);
+    }
+    _gridGARS(bshow, options) {
+        if (bshow) {
+            if (!this.__gars) {
+                this.__gars = {};
+                if (options.tile && options.tile == true) {
+                    this.__gars.tile = this.viewer3d.scene.imageryLayers.addImageryProvider(
+                        new Cesium.TileCoordinatesImageryProvider());
+                    this.__gars.tile.olive_name = "GARS_TILE";
+                }
+
+                let bound = new Cesium.Rectangle(112 / Cesium.Math.DEGREES_PER_RADIAN, 30 / Cesium.Math.DEGREES_PER_RADIAN,
+                    148 / Cesium.Math.DEGREES_PER_RADIAN, 48 / Cesium.Math.DEGREES_PER_RADIAN);
+                options.tilingScheme = new Cesium.GeographicTilingScheme({
+                    rectangle: bound,
+                    numberOfLevelZeroTilesX: 18,
+                    numberOfLevelZeroTilesY: 9
+                });
+
+                options.tileWidth = 256;
+                options.tileHeight = 256;
+                options.cells = 0;
+                let grid = new Cesium.GridImageryProvider(options);
+
+                this.__gars.layer = this.viewer3d.scene.imageryLayers.addImageryProvider(grid);
+
+                grid.readyPromise.then(function(result) {
+                    if (result) {
+
+                    }
+                    console.log("readyPromise GridImageryProvider");
+                    console.log("minimumLevel " + grid.minimumLevel);
+                    console.log("maximumLevel " + grid.maximumLevel);
+
+                });
+
+                this.__gars.layer.olive_name = "GARS";
+
+            }
+        } else {
+            if (this.__gars && this.__gars.layer) {
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.layer, true);
+                this.__gars.layer = undefined;
+            }
+            if (this.__gars && this.__gars.tile) {
+                this.viewer3d.scene.imageryLayers.remove(this.__gars.tile, true);
+                this.__gars.tile = undefined;
+            }
+            this.__gars = undefined;
+        }
+    }
     tileset() {
         let ts = new Tileset(this.viewer3d);
         ts.create();
