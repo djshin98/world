@@ -38,6 +38,29 @@ class Cursor extends Eventable {
                 //var d = new Dialog({ width: "300px", height: "500px" });
                 //var description = pickedObject.id._description;
                 //$("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
+                //_this.getSelectedObjFromPoint(movement.position, longitude, latitude);
+                //console.log("pick :");
+
+                let ent = {};
+                let desc = ent["Description"] = [];
+                pickedObject.id._olive_description.forEach(item => {
+                    desc.push({ key: item.name, value: item.value });
+                });
+                let option = ent["Option"] = [];
+                let other = Object.keys(pickedObject.id._olive_option).filter(item => { return item == "degree" ? false : true; });
+
+                other.forEach(key => {
+                    let item = pickedObject.id._olive_option;
+
+                    option.push({ key: key, value: item[key] });
+                });
+                let degreeOption = ent["Degree"] = [];
+                let degree = pickedObject.id._olive_option.degree;
+                Object.keys(degree).forEach(key => {
+                    degreeOption.push({ key: key, value: degree[key] });
+
+                })
+                _this.fireEvent("selected", ent);
             }
             // (pickedObject.id._description)
             // _this.getSelectedObjFromPoint(movement.position, longitude, latitude);
@@ -60,7 +83,7 @@ class Cursor extends Eventable {
 
             valueToReturn = Cesium.defaultValue(picked.id, picked.primitive.id);
 
-            this.fireEvent("selected", picked);
+            //this.fireEvent("selected", picked);
             if (this.labelEntity) {
                 if (this.labelEntity.ref && this.labelEntity.ref == picked.id) {
 
