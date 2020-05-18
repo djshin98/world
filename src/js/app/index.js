@@ -156,23 +156,28 @@ class Application {
             },
             oncomplete: function() {
                 this.map.oliveCamera.listenEvent("changed", (v) => {
-                    let lng = document.getElementById("center-longitude");
-                    let lat = document.getElementById("center-latitude");
-                    let dist = document.getElementById("center-distance");
-                    let d = CTX.c2d(v.position);
-                    let wc = _this.map.center();
-                    let w = CTX.w2d(wc.x, wc.y);
-                    let distance = CTX.distanceD(d, w);
-                    if (lng) lng.innerText = d.longitude.toFixed(5);
-                    if (lat) lat.innerText = d.latitude.toFixed(5);
-                    if (dist) dist.innerText = distance.toFixed(2) + " m";
+                    if( v ){
+                        let lng = document.getElementById("center-longitude");
+                        let lat = document.getElementById("center-latitude");
+                        let dist = document.getElementById("center-distance");
+                        let d = CTX.c2d(v.position);
+                        let wc = _this.map.center();
+                        let w = CTX.w2d(wc.x, wc.y);
+                        let distance = CTX.distanceD(d, w);
+                        if (lng) lng.innerText = d.longitude.toFixed(5);
+                        if (lat) lat.innerText = d.latitude.toFixed(5);
+                        if (dist) dist.innerText = distance.toFixed(2) + " m";
+                    }
+                    
                 });
                 this.map.oliveCursor.listenEvent("move", (v) => {
-                    let lng = document.getElementById("cursor-longitude");
-                    let lat = document.getElementById("cursor-latitude");
-
-                    if (lng) lng.innerText = v.longitude;
-                    if (lat) lat.innerText = v.latitude;
+                    if( v ){
+                        let lng = document.getElementById("cursor-longitude");
+                        let lat = document.getElementById("cursor-latitude");
+    
+                        if (lng) lng.innerText = v.longitude;
+                        if (lat) lat.innerText = v.latitude;
+                    }
                 });
 
                 this.workStatus("section", true);
