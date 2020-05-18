@@ -7,6 +7,27 @@ var dom = {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 }
+
+function ele(hele) {
+    this.element = hele;
+    this.select = function(s) {
+        return e(this.element.querySelectorAll(a));
+    }
+}
+
+function e(a) {
+    if (typeof(a) == "string") {
+        return e(document.querySelectorAll(a));
+    } else if (typeof(a) == "object") {
+        if (a instanceof NodeList) {
+            let l = [];
+            a.forEach(i => { l.push(new ele(i)); });
+            return l;
+        } else if (a instanceof HTMLElement) {
+            return [new ele(a)];
+        }
+    }
+}
 var tx = {
     send: function(options) {
         var xhr = new XMLHttpRequest();
@@ -53,4 +74,4 @@ var tx = {
     get: function(options) { return tx.send(Object.assign({}, options, { type: 'GET' })); }
 }
 
-module.exports = { dom: dom, get: tx.get, post: tx.post };
+module.exports = { dom: dom, get: tx.get, post: tx.post, e: e };

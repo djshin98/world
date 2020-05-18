@@ -47,7 +47,6 @@ var drawLinker = {
     bmoa: { name: "BMOA", createFunc: function() { return new Bmoa(); } },
     arrowline: { name: "화살표", createFunc: function() { return new ArrowLine(); } },
     milline1: { name: "군사분계선", createFunc: function() { return new MilLine1(); } },
-    shootingline: { name: "사격선", createFunc: function() { return new ShootingLine(); } },
     o: { name: "O", createFunc: function() { return new PointO(); } },
     x: { name: "X", createFunc: function() { return new PointX(); } },
     image: { name: "이미지", createFunc: function() { return new Image(); } },
@@ -62,6 +61,7 @@ var drawLinker = {
     eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     shootingarc: { name: "사격선(호)", createFunc: function() { return new ShootingArc(); } },
+    shootingline: { name: "사격선", createFunc: function() { return new ShootingLine(); } },
     polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } }

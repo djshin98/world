@@ -54,12 +54,11 @@ class Cursor extends Eventable {
 
                     option.push({ key: key, value: item[key] });
                 });
-                let degreeOption = ent["Degree"] = [];
-                let degree = pickedObject.id._olive_option.degree;
-                Object.keys(degree).forEach(key => {
-                    degreeOption.push({ key: key, value: degree[key] });
-
-                })
+                let degreeOption = ent["위치"] = [];
+                let d = CTX.c2d(pickedObject.primitive.position);
+                degreeOption.push({ key: "경도", value: d.longitude });
+                degreeOption.push({ key: "위도", value: d.latitude });
+                degreeOption.push({ key: "높이", value: d.height });
                 _this.fireEvent("selected", ent);
             }
             // (pickedObject.id._description)
