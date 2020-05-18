@@ -55,6 +55,9 @@ class Camera extends Eventable {
             _this.fireEvent("changed", _this.camera);
         });
     }
+    position(){
+        return this.camera.position;
+    }
     pitch(bfixCenter, radian) {
         if (bfixCenter && radian) {
             let center = this.center();

@@ -3,7 +3,7 @@ class Text {
         this.options = Object.assign({
             x: 0,
             y: 0,
-            text: "__",
+            text: "",
             fontFamily: "sans-serif",
             fontSize: "16px",
             fill: "black"
