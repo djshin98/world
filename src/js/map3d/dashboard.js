@@ -26,12 +26,19 @@ class Dashboard {
         this.changedEvent = this.map.oliveCamera.listenEvent("changed", (v) => {
 
             let d = CTX.c2d(v.position);
+            
             let wc = _this.map.center();
-            let w = CTX.w2c(wc.x, wc.y);
-            let dist = CTX.distance(v.position, w);
+            if( wc.x > 0 && wc.y > 0 ){
+                let w = CTX.w2c(wc.x, wc.y);
+                if( w ){
+                    let dist = CTX.distance(v.position, w);
+                    _this.texts.cameraDist.text(dist);
+                }
+            }
+            
             _this.texts.cameraLng.text(d.longitude);
             _this.texts.cameraLat.text(d.latitude);
-            _this.texts.cameraDist.text(dist);
+            
             _this.texts.heading.text(v.heading);
             _this.texts.pitch.text(v.pitch);
             _this.texts.roll.text(v.roll);
