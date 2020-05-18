@@ -1,5 +1,5 @@
 const { get } = require("../util/comm");
-
+const { OliveAttributes } = require("../ui/olive-attributes");
 class Aside {
     constructor(app, options) {
         this.app = app;
@@ -10,7 +10,19 @@ class Aside {
             _this.toggleView();
         });
 
-        this.load();
+        this.attributes = new OliveAttributes(this.app.map, { id: this.options.id, caption: "제목" });
+
+        let test = {
+            General: [
+                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" },
+                { key: "Configuration Type", value: "Application(.exe)" }
+            ],
+            "Project Defaults": [
+                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
+            ]
+        };
+        this.attributes.set(test);
+        //this.load();
     }
     load() {
         var _this = this;
@@ -47,16 +59,9 @@ class Aside {
         if (sectionHandle) {
             sectionHandle.style.top = 0 + "px";
         }
-        /*
-        let tw = 80;
-        let sv = dom.$(this.path.view)[0];
-        sv.style.width = (w - tw) + "px";
-        sv.style.height = h + "px";
-        let sectionContentHeight = h - 70 - 10;
-        dom.$(".section-content").forEach(function(d) {
-            d.style.height = sectionContentHeight + "px";
-        });
-        */
+        if (this.attributes) {
+            this.attributes.resize(0, 0, w, h);
+        }
     }
     showView(bshow) {
         if (bshow) {
