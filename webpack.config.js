@@ -35,20 +35,20 @@ module.exports = {
             cesium: path.resolve(__dirname, cesiumSource)
         }
     },
-    
-        module: {
-            rules: [{
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            }, {
-                test: /\.(png|gif|jpg|jpeg|svg|xml)$/,
-                use: ['url-loader']
-            }, {
-                test: /\.json$/,
-                loader: "json-loader",
-                type: "javascript/auto"
-            }]
-        },
+
+    module: {
+        rules: [{
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }, {
+            test: /\.(png|gif|jpg|jpeg|svg|xml)$/,
+            use: ['url-loader']
+        }, {
+            test: /\.json$/,
+            loader: "json-loader",
+            type: "javascript/auto"
+        }]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: './index.html'
@@ -68,6 +68,6 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         port: 8081,
-        host: '192.168.0.12'
+        host: 'localhost'
     }
 };
