@@ -100,7 +100,7 @@ class Dashboard {
             cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 }),
             heading: new Text(svg, { label: "heading", x: 15, y: 150 }),
             pitch: new Text(svg, { label: "pitch", x: 15, y: 170 }),
-            roll: new Text(svg, { label: "roll", x: 15, y: 190 })
+            roll: new Text(svg, { label: "roll", x: 15, y: 290 })
         }
         this.groupboxs = [
             new Group(svg, [this.texts.longtitude, this.texts.latitude, this.texts.height, this.texts.distance]),
