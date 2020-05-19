@@ -92,6 +92,18 @@
                 })
                 return new elements(l);
             }
+            this.children = function() {
+                let l = [];
+                this.elements.forEach(ele => {
+                    let children = ele.children;
+                    if (children && children.length > 0) {
+                        for (let i = 0; i < children.length; i++) {
+                            l.push(children[i]);
+                        }
+                    }
+                })
+                return new elements(l);
+            }
             this.destroy = function() {
                 this.elements.forEach(ele => {
                     ele = null;

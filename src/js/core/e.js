@@ -72,13 +72,25 @@ function elements(heles) {
     }
     this.parent = function() {
         let l = [];
-        this.elements.map(ele => {
+        this.elements.forEach(ele => {
             let parent = ele.parentElement;
             if (parent) {
                 if (l.every((e) => {
                         return (e != parent) ? true : false;
                     })) {
                     l.push(parent);
+                }
+            }
+        })
+        return new elements(l);
+    }
+    this.children = function() {
+        let l = [];
+        this.elements.forEach(ele => {
+            let children = ele.children;
+            if (children && children.length > 0) {
+                for (let i = 0; i < children.length; i++) {
+                    l.push(children[i]);
                 }
             }
         })
