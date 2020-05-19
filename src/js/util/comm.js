@@ -8,10 +8,59 @@ var dom = {
     }
 }
 
-function ele(hele) {
-    this.element = hele;
+function elements(heles) {
+    this.elements = hele;
     this.select = function(s) {
-        return e(this.element.querySelectorAll(a));
+        let l = [];
+        this.elements.map(ele=>{
+            let a = ele.querySelectorAll(s);
+            if (a instanceof NodeList) {
+                a.forEach(i => { l.push(i); });
+            } else if (a instanceof HTMLElement) {
+                l.push(a);
+            }
+        })
+        return new elements(l);
+    }
+    this.pselect = function(s){
+        let l = [];
+        this.elements.map(ele=>{
+            let parent = ele.parentElement;
+            while( parent ){
+                if( parent.matches(s) === true ){
+                    l.push(ele.p);
+                }
+                parent = parent.parentElement;
+            }
+        })
+        return new elements(l);
+    }
+    this.attr = function(name,val,callback){
+        if( name ){
+            this.elements.forEach(ele=>{
+                if( val ){
+                    ele.setAttribute(name,val);
+                }else{
+                    callback(ele,name,ele.getAttribute(name));
+                }
+                
+            });
+        }
+        return this;
+    }
+    this.remove = function(){
+        this.elements.forEach(ele=>{
+            ele.remove();
+        });
+        return this;
+    }
+    this.append = function(s){
+        
+    }
+    this.h2e = function(html) {
+        var template = document.createElement('template');
+        template.innerHTML = html;
+        return template.content.childNodes;
     }
 }
 
@@ -21,13 +70,14 @@ function e(a) {
     } else if (typeof(a) == "object") {
         if (a instanceof NodeList) {
             let l = [];
-            a.forEach(i => { l.push(new ele(i)); });
-            return l;
+            a.forEach(i => { l.push(i); });
+            return new elements(l);
         } else if (a instanceof HTMLElement) {
-            return [new ele(a)];
+            return new elements([a]);
         }
     }
 }
+global.e = e;
 var tx = {
     send: function(options) {
         var xhr = new XMLHttpRequest();
