@@ -8,9 +8,39 @@
     <script>
         function elements(heles) {
             this.elements = heles;
+            this.on = function(event, callback) {
+                this.elements.forEach(ele => {
+                    !callback || ele.addEventListener(event, callback);
+                });
+                return this;
+            }
+            this.get = function(i) {
+                if (this.elements && i >= 0 && i < this.elements.length) {
+                    return new elements([this.elements[i]]);
+                }
+                return new elements([]);
+            }
+            this.prev = function() {
+                let l = [];
+                this.elements.forEach(ele => {
+                    if (ele.previousElementSibling) {
+                        l.push(ele.previousElementSibling);
+                    }
+                });
+                return new elements(l);
+            }
+            this.next = function() {
+                let l = [];
+                this.elements.forEach(ele => {
+                    if (ele.nextElementSibling) {
+                        l.push(ele.nextElementSibling);
+                    }
+                });
+                return new elements(l);
+            }
             this.select = function(s) {
                 let l = [];
-                this.elements.map(ele => {
+                this.elements.forEach(ele => {
                     let a = ele.querySelectorAll(s);
                     if (a instanceof NodeList) {
                         a.forEach(i => {
@@ -28,7 +58,7 @@
                     let parent = ele.parentElement;
                     while (parent) {
                         if (parent.matches(s) === true) {
-                            l.push(ele.p);
+                            l.push(parent);
                         }
                         parent = parent.parentElement;
                     }
@@ -41,16 +71,26 @@
                 });
                 this.elements = [];
             }
+            this.style = function() {
+                return this;
+            };
+            this.hasClass = function() {};
+            this.addClass = function() {
+                return this;
+            };
+            this.removeClass = function() {};
+            this.id = function() {
+                let id = "";
+                this.attr("id", undefined, (ele, name, val) => {
+                    id = val;
+                });
+                return id;
+            };
             this.attr = function(name, val, callback) {
-                if (name) {
-                    this.elements.forEach(ele => {
-                        if (val) {
-                            ele.setAttribute(name, val);
-                        } else {
-                            !callback || callback(ele, name, ele.getAttribute(name));
-                        }
-                    });
-                }
+                !name || this.elements.forEach(ele => {
+                    !val || ele.setAttribute(name, val);
+                    !callback || callback(ele, name, ele.getAttribute(name));
+                });
                 return this;
             }
             this.removeAttr = function(name) {
@@ -65,6 +105,12 @@
                 });
                 return this;
             }
+            this.text = function(t) {
+                this.elements.forEach((ele) => {
+                    ele.innerText = t;
+                });
+                return this;
+            }
             this.add = function(a, callback) {
                 if (typeof(a) == "string") {
                     this.add(this.h2e(a), callback);
@@ -75,9 +121,10 @@
                         });
                     } else if (a instanceof HTMLElement) {
                         this.elements.forEach(ele => {
-                            !callback || callback(ele, a);
-                            if (a.tagName.toUpperCase() === "SCRIPT") {
-                                eval(a.textContent);
+                            let x = a.cloneNode(true);
+                            !callback || callback(ele, x);
+                            if (x.tagName.toUpperCase() === "SCRIPT") {
+                                eval(x.textContent);
                             }
                         });
                     }
@@ -88,11 +135,13 @@
                 return this.add(a, function(ele, addEle) {
                     ele.append(addEle);
                 });
+                return this;
             }
             this.prepend = function(a) {
                 return this.add(a, function(ele, addEle) {
                     ele.prepend(addEle);
                 });
+                return this;
             }
             this.h2e = function(html) {
                 var template = document.createElement('template');
