@@ -28,8 +28,8 @@ class Image extends DrawObject {
 
 
             var carto = CTX.c2r(points[0]);
-            var lo = 0.1 / 10 * (Math.PI / 180);
-            var la = 0.1 / 10 * (Math.PI / 180);
+            var lo = 0.1 / 100 * (Math.PI / 180); //이미지 크기에 
+            var la = 0.1 / 100 * (Math.PI / 180);
 
             carto.longitude -= lo;
             carto.latitude -= la;
@@ -37,15 +37,30 @@ class Image extends DrawObject {
             points.push(carte);
 
 
+            var v1 = Object.assign({}, points[1]);
+            v1.x -= points[0].x;
+            v1.y -= points[0].y;
+            v1.z -= points[0].z;
+
+            v1.x /= 2;
+            v1.y /= 2;
+            v1.z /= 2;
+
+            var v2 = Cesium.Cartesian3.negate(v1, {});
+
+            var center_p1 = Cesium.Cartesian3.add(points[0], v1, {});
+            var center_p2 = Cesium.Cartesian3.add(points[0], v2, {});
+
+            var points_result = [];
+            points_result.push(center_p1);
+            points_result.push(center_p2);
 
             collection.add(this.index, {
                 position: points[0],
                 //plane: planetmp,
 
-
-
                 rectangle: {
-                    coordinates: Cesium.Rectangle.fromCartesianArray(points),
+                    coordinates: Cesium.Rectangle.fromCartesianArray(points_result),
                     //height: 500,
                     //extrudedHeight: 1000,
                     fill: true,
