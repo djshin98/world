@@ -54,4 +54,4 @@ var tx = {
     get: function(options) { return tx.send(Object.assign({}, options, { type: 'GET' })); }
 }
 
-module.exports = { dom: dom, get: tx.get, post: tx.post, e: e };
+module.exports = { dom: dom, get: tx.get, post: tx.post };

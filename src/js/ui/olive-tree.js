@@ -1,7 +1,9 @@
+const { $$ } = require('../core/e');
+
 class OliveTree {
     constructor(selector, arr, option) {
         this.selector = selector;
-        this.options = Object.assign({collapsed: true}, option);
+        this.options = Object.assign({ collapsed: true }, option);
         if (arr) {
             $(this.selector).html(this._makeTree(arr, this.options));
         }
@@ -27,9 +29,9 @@ class OliveTree {
             if ($(this).hasClass('file')) {
                 if (_this.options.onSelect) {
                     let url = this.innerText;
-                    $(this.parentElement).parents("li").each((i,ele)=>{
+                    $(this.parentElement).parents("li").each((i, ele) => {
                         let p = $(ele).children("div.folder");
-                        if( p.length > 0 ){
+                        if (p.length > 0) {
                             url = p[0].innerText + "/" + url;
                         }
                     });
@@ -40,8 +42,8 @@ class OliveTree {
 
         $(this.selector + " li>input[type='checkbox']").change(function() {
             let type = ($(this).hasClass('file')) ? 'file' : 'folder';
-            if (_this.options.onChecked) {_this.options.onChecked( $(this).is(":checked"), type, $(this).next(), _this ); }
-            
+            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this); }
+
             // if ($("#checkBoxId").is(":checked")) {
             //     alert("체크박스 체크했음!");
             // } else {

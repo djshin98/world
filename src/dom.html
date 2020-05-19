@@ -19,10 +19,32 @@
                 return this;
             }
             this.off = function(event, callback) {
-                this.elements.forEach(ele => {
-                    !callback || ele.removeEventListener(event, callback);
-                });
+                if (event && callback) {
+                    this.elements.forEach(ele => {
+                        !callback || ele.removeEventListener(event, callback);
+                    });
+                } else {
+                    function recreateNode(el, withChildren) {
+                        if (withChildren) {
+                            let newEl = el.cloneNode(true);
+                            el.parentNode.replaceChild(el.cloneNode(true), el);
+                            return newEl;
+                        } else {
+                            let newEl = el.cloneNode(false);
+                            while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
+                            el.parentNode.replaceChild(newEl, el);
+                            return newEl;
+                        }
+                    }
+                    let l = [];
+                    this.elements.forEach(ele => {
+                        !callback || l.push(recreateNode(ele, true));
+                    });
+                    return new elements(l);
+                }
+                return this;
             }
+
             this.get = function(i) {
                 if (this.elements && i >= 0 && i < this.elements.length) {
                     return new elements([this.elements[i]]);
