@@ -8,6 +8,9 @@
     <script>
         function elements(heles) {
             this.elements = heles;
+            this.length = function() {
+                return this.elements.length;
+            }
             this.on = function(event, callback) {
                 this.elements.forEach(ele => {
                     !callback || ele.addEventListener(event, callback);
@@ -58,9 +61,27 @@
                     let parent = ele.parentElement;
                     while (parent) {
                         if (parent.matches(s) === true) {
-                            l.push(parent);
+                            if (l.every((e) => {
+                                    return (e != parent) ? true : false;
+                                })) {
+                                l.push(parent);
+                            }
                         }
                         parent = parent.parentElement;
+                    }
+                })
+                return new elements(l);
+            }
+            this.parent = function() {
+                let l = [];
+                this.elements.map(ele => {
+                    let parent = ele.parentElement;
+                    if (parent) {
+                        if (l.every((e) => {
+                                return (e != parent) ? true : false;
+                            })) {
+                            l.push(parent);
+                        }
                     }
                 })
                 return new elements(l);
@@ -74,22 +95,83 @@
             this.style = function() {
                 return this;
             };
-            this.hasClass = function() {};
-            this.addClass = function() {
+            this.hasClass = function() {
+                let l = [];
+                this.elements.forEach(ele => {
+                    let has = false;
+                    ele.classList.forEach(c => {
+                        if (c == cls) {
+                            has = true;
+                        }
+                    });
+                    if (has) {
+                        l.push(ele);
+                    }
+                });
+                return new elements(l);
+            }
+            this.addClass = function(cls) {
+                this.elements.forEach(ele => {
+                    let newClassList = [];
+                    ele.classList.forEach(c => {
+                        if (c != cls) {
+                            newClassList.push(c);
+                        }
+                    });
+                    newClassList.push(cls);
+                    ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                        return prev + " " + curr;
+                    }, "").trim());
+                });
                 return this;
             };
-            this.removeClass = function() {};
-            this.id = function() {
-                let id = "";
-                this.attr("id", undefined, (ele, name, val) => {
-                    id = val;
+            this.removeClass = function(cls) {
+                this.elements.forEach(ele => {
+                    let newClassList = [];
+                    ele.classList.forEach(c => {
+                        if (c != cls) {
+                            newClassList.push(c);
+                        }
+                    });
+                    ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                        return prev + " " + curr;
+                    }, "").trim());
                 });
-                return id;
+                return this;
+            };
+            this.id = function(sid) {
+                if (sid) {
+                    this.elements.some(ele => {
+                        ele.setAttribute("id", sid);
+                        return true;
+                    });
+                    return this;
+                } else {
+                    let id = "";
+                    this.elements.some(ele => {
+                        id = ele.getAttribute("id");
+                        return true;
+                    });
+                    return id;
+                }
             };
             this.attr = function(name, val, callback) {
                 !name || this.elements.forEach(ele => {
                     !val || ele.setAttribute(name, val);
-                    !callback || callback(ele, name, ele.getAttribute(name));
+                    if (callback) {
+                        let v = callback(ele, name, ele.getAttribute(name));
+                        if (v) ele.setAttribute(name, v);
+                    }
+                });
+                return this;
+            }
+            this.data = function(name, val, callback) {
+                !name || this.elements.forEach(ele => {
+                    !val || ele.setAttribute("data-" + name, val);
+                    if (callback) {
+                        let v = callback(ele, name, ele.getAttribute("data-" + name));
+                        if (v) ele.setAttribute("data-" + name, v);
+                    }
                 });
                 return this;
             }
@@ -106,8 +188,16 @@
                 return this;
             }
             this.text = function(t) {
-                this.elements.forEach((ele) => {
-                    ele.innerText = t;
+                !!t || (t = "");
+                this.elements.forEach((ele, i) => {
+                    if (typeof(t) == "function") {
+                        let v = t(ele, i, ele.innerText);
+                        if (v) {
+                            ele.innerText = v;
+                        }
+                    } else {
+                        ele.innerText = t;
+                    }
                 });
                 return this;
             }
