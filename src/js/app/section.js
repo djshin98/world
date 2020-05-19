@@ -65,6 +65,7 @@ class Section {
         let _this = this;
         !(this.options.contents.length > 0) || (i => {
             this.app.section.select(dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
+
             dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
             dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);

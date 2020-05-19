@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0030)http://localhost:8081/dom.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
@@ -11,17 +10,11 @@
             this.length = function() {
                 return this.elements.length;
             }
-            this.on = function(event, callback, savedCallback) {
+            this.on = function(event, callback) {
                 this.elements.forEach(ele => {
                     !callback || ele.addEventListener(event, callback);
-                    !savedCallback || savedCallback(callback);
                 });
                 return this;
-            }
-            this.off = function(event, callback) {
-                this.elements.forEach(ele => {
-                    !callback || ele.removeEventListener(event, callback);
-                });
             }
             this.get = function(i) {
                 if (this.elements && i >= 0 && i < this.elements.length) {
@@ -304,6 +297,6 @@
             <div class="list"></div>
         </div>
     </div>
-</body>
 
-</html>
+
+</body></html>

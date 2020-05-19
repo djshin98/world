@@ -3,11 +3,17 @@ function elements(heles) {
     this.length = function() {
         return this.elements.length;
     }
-    this.on = function(event, callback) {
+    this.on = function(event, callback, savedCallback) {
         this.elements.forEach(ele => {
             !callback || ele.addEventListener(event, callback);
+            !savedCallback || savedCallback(callback);
         });
         return this;
+    }
+    this.off = function(event, callback) {
+        this.elements.forEach(ele => {
+            !callback || ele.removeEventListener(event, callback);
+        });
     }
     this.get = function(i) {
         if (this.elements && i >= 0 && i < this.elements.length) {
@@ -225,6 +231,15 @@ function elements(heles) {
         });
         return this;
     }
+    this.empty = function() {
+        this.elements.forEach(ele => {
+            ele.innerHTML = "";
+        });
+        return this;
+    }
+    this.html = function(a) {
+        return this.empty().append(a);
+    }
     this.h2e = function(html) {
         var template = document.createElement('template');
         template.innerHTML = html;
@@ -232,9 +247,9 @@ function elements(heles) {
     }
 }
 
-function e(a) {
+function $$(a) {
     if (typeof(a) == "string") {
-        return e(document.querySelectorAll(a));
+        return $$(document.querySelectorAll(a));
     } else if (typeof(a) == "object") {
         if (a instanceof NodeList) {
             let l = [];
@@ -248,5 +263,5 @@ function e(a) {
     }
 }
 
-global.e = e;
-module.exports = { e: e };
+global.$$ = $$;
+module.exports = { $$: $$ };
