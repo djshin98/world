@@ -8,6 +8,7 @@
     <script>
         function elements(heles) {
             this.elements = heles;
+
             this.on = function(event, callback) {
                 this.elements.forEach(ele => {
                     !callback || ele.addEventListener(event, callback);
@@ -71,7 +72,11 @@
                 });
                 this.elements = [];
             }
-            this.style = function() {
+
+            this.style = function(name, value) {
+                this.elements.forEach(ele => {
+                    ele.style = ele.style + ";" + name + ":" + value;
+                })
                 return this;
             };
             this.hasClass = function() {};
