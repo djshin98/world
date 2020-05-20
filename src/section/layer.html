@@ -1,106 +1,116 @@
-<style>
-    #layer-toolbar {
-        background: rgba(42, 42, 42, 0.8);
-        padding: 4px;
-        border-radius: 4px;
-    }
-    
-    #layer-toolbar input {
-        vertical-align: middle;
-        padding-top: 2px;
-        padding-bottom: 2px;
-    }
-    
-    #layer-toolbar table tr {
-        transform: translateY(0);
-        transition: transform 0.4s ease-out;
-    }
-    
-    #layer-toolbar table tr.up {
-        transform: translateY(33px);
-        transition: none;
-    }
-    
-    #layer-toolbar table tr.down {
-        transform: translateY(-33px);
-        transition: none;
-    }
-</style>
-<div id="layer-toolbar">
-    <table>
-        <tbody data-bind="foreach: layers">
-            <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
-                <td><input type="checkbox" data-bind="checked: show" /></td>
-                <td>
-                    <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
-                    <select data-bind="visible: $parent.isSelectableLayer($data), options: $parent.baseLayers, optionsText: 'name', value: $parent.selectedLayer"></select>
-                </td>
-                <td>
-                    <input type="range" min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" />
-                </td>
-                <td>
-                    <button type="button" class="cesium-button" data-bind="click: function() { $parent.raise($data, $index()); }, visible: $parent.canRaise($index())">▲</button>
-                </td>
-                <td>
-                    <button type="button" class="cesium-button" data-bind="click: function() { $parent.lower($data, $index()); }, visible: $parent.canLower($index())">▼</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="section-content">
+    <div id="layer-view" class="filetree" style="height:100%;">
+
+    </div>
 </div>
 
 <script>
-    var imageryLayers = map.viewer3d.imageryLayers;
-
-    function errorTest() {
-        serverAdapter.get('testError', {},
-            function(data) {
-                if (data.error) {
-                    alert("errorTest : " + data.error);
-                }
+    var layers = [{
+        name: '배경 지도',
+        group: 'baseMap',
+        children: [{
+            name: "Bing Maps Aerial",
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'Bing Maps Road',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'ArcGIS World Street Maps',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'OpenStreetMaps',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'Stamen Maps',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'Natural Earth II (local)',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'USGS Shaded Relief (via WMTS)',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'Stamen Maps',
+            type: "radio",
+            group:'baseMap'
+        }, {
+            name: 'Stamen Maps',
+            type: "radio",
+            group:'baseMap'
+        }],
+        parse: (parent, arr) => {
+            
+        }
+    }, {
+        name: 'DEM',
+        children: [{
+            name: "Bing Maps Aerial",
+            type: "radio",
+            group:'dem'
+        }, {
+            name: 'Bing Maps Road',
+            type: "radio",
+            group:'dem'
+        }],
+        parse: (parent, arr) => {
+            
+        }
+    }, {
+        name: '사용자 지도',
+        children: [{
+            name: "United States GOES Infrared",
+            type: "check",
+        }, {
+            name: 'United States Weather Radar',
+            type: "check",
+        }, {
+            name: 'TileMapService Image',
+            type: "check",
+        }, {
+            name: 'Single Image',
+            type: "check",
+        }, {
+            name: 'Grid',
+            type: "check",
+        }, {
+            name: 'Tile Coordinates',
+            type: "check",
+        }],
+        parse: (parent, arr) => {
+            
+        }
+    }];
+    app.onReady(function(_app, _map) {
+        new OliveTree("#layer-view", layers,{
+            onAttribute: function(d) {
+                return {
+                    id: d.id
+                };
+            },
+            onText: function(d) {
+                return d.name;
+            },
+            onSelect: function(type, tag, obj) {
+                let test = {
+            General: [
+                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" },
+                { key: "Configuration Type", value: "Application(.exe)" }
+            ],
+            "Project Defaults": [
+                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
+            ]
+        };
+            },
+            onChecked: function(checked, type, tag, obj) {
 
             }
-        );
-    }
-    map.connectViewModel('olive-bloom', {
-        show: false,
-        glowOnly: false,
-        contrast: 128,
-        brightness: -0.3,
-        delta: 1.0,
-        sigma: 3.78,
-        stepSize: 5.0
-    }, function(viewer, viewModel) {
-        var bloom = viewer.scene.postProcessStages.bloom;
-        bloom.enabled = Boolean(viewModel.show);
-        bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
-        bloom.uniforms.contrast = Number(viewModel.contrast);
-        bloom.uniforms.brightness = Number(viewModel.brightness);
-        bloom.uniforms.delta = Number(viewModel.delta);
-        bloom.uniforms.sigma = Number(viewModel.sigma);
-        bloom.uniforms.stepSize = Number(viewModel.stepSize);
-        viewer.scene.requestRender();
-    });
-
-    map.connectViewModel('olive-label', {
-        label: true
-    }, function(viewer, viewModel) {
-        map.oliveCursor.tooltip(Boolean(viewModel.label));
-        viewer.scene.requestRender();
-    });
-
-    map.connectViewModel('olive-contour', {
-        selectedShading: 'none',
-        enableContour: false,
-        contourSpacing: 80,
-        contourWidth: 1.0,
-        changeColor: function() {
-            this.contourUniforms.color = Cesium.Color.fromRandom({
-                alpha: 1.0
-            }, this.contourColor);
-        }
-    }, function(viewer, viewModel) {
-        map.contour(viewModel);
-        viewer.scene.requestRender();
+        });
     });
 </script>

@@ -114,7 +114,11 @@ class Application {
 
 
     }
-
+    setAttributes(attrs){
+        if( this.aside ){
+            this.aside.setAttributes(attrs);
+        }
+    }
     workStatus(name, bcomplete) {
         if (!this._workStatus) { this._workStatus = {}; }
         this._workStatus[name] = bcomplete;

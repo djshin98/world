@@ -24,6 +24,11 @@ class Aside {
         this.attributes.set(test);
         //this.load();
     }
+    setAttributes(attrs){
+        if( this.attributes ){
+            this.attributes.set(attrs);
+        }
+    }
     load() {
         var _this = this;
         get({

@@ -84,12 +84,14 @@ var paths = {
     scss: {
         watch:'./src/scss/**/*.scss',
         src: './src/scss/main.scss',
-        dest: './src/css/'
-    },
-    css: {
-        src: './src/css/**/*.css',
         dest: './dist/css/'
     },
+    /*
+    css: {
+        src: './src/css/.css',
+        dest: './dist/css/'
+    },
+    */
     img: {
         src: 'src/img/**/*.*',
         dest: 'dist/img/'
@@ -246,13 +248,13 @@ function widget_scss() {
         .pipe(sourcemaps.write())
         .pipe(dest(paths.widget_scss.dest));
 }
-
+/*
 function css() {
     return src(paths.css.src)
         .pipe(concat('main.css')) //병합하고    
         .pipe(dest(paths.css.dest));
 }
-
+*/
 function html() {
     return src(paths.html.src)
         .pipe(dest(paths.html.dest));
@@ -345,7 +347,7 @@ function watchFiles() {
     mywatch(paths.md, md);
     watch(paths.widget_scss.src, widget_scss);
     watch(paths.scss.watch, scss);
-    watch(paths.css.src, css);
+    //watch(paths.css.src, css);
     //watch(paths.js.src, js);
     //watch(paths.js.src, js_src_w);
     watch(paths.html.src, html);
@@ -361,4 +363,4 @@ function watchFiles() {
 
 exports.clean = series(clean);
 exports.scss = parallel(scss);
-exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, css, models, html, mapx3dserver, serverJs, mapperxmls, client));
+exports.default = parallel(watchFiles, series(conf, core, mqtt, mqtt_broker, watch_brokder, ws_broker, batch, md, popper, bootstrap, jquery, lobipanel, libs, img, widget_scss, scss, models, html, mapx3dserver, serverJs, mapperxmls, client));
