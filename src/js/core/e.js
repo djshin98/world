@@ -1,9 +1,39 @@
 function elements(heles) {
     this.elements = heles;
-    this.on = function(event, callback) {
+    this.length = function() {
+        return this.elements.length;
+    }
+    this.on = function(event, callback, savedCallback) {
         this.elements.forEach(ele => {
             !callback || ele.addEventListener(event, callback);
+            !savedCallback || savedCallback(callback);
         });
+        return this;
+    }
+    this.off = function(event, callback) {
+        if (event && callback) {
+            this.elements.forEach(ele => {
+                !callback || ele.removeEventListener(event, callback);
+            });
+        } else {
+            function recreateNode(el, withChildren) {
+                if (withChildren) {
+                    let newEl = el.cloneNode(true);
+                    el.parentNode.replaceChild(el.cloneNode(true), el);
+                    return newEl;
+                } else {
+                    let newEl = el.cloneNode(false);
+                    while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
+                    el.parentNode.replaceChild(newEl, el);
+                    return newEl;
+                }
+            }
+            let l = [];
+            this.elements.forEach(ele => {
+                !callback || l.push(recreateNode(ele, true));
+            });
+            return new elements(l);
+        }
         return this;
     }
     this.get = function(i) {
@@ -50,9 +80,39 @@ function elements(heles) {
             let parent = ele.parentElement;
             while (parent) {
                 if (parent.matches(s) === true) {
-                    l.push(parent);
+                    if (l.every((e) => {
+                            return (e != parent) ? true : false;
+                        })) {
+                        l.push(parent);
+                    }
                 }
                 parent = parent.parentElement;
+            }
+        })
+        return new elements(l);
+    }
+    this.parent = function() {
+        let l = [];
+        this.elements.forEach(ele => {
+            let parent = ele.parentElement;
+            if (parent) {
+                if (l.every((e) => {
+                        return (e != parent) ? true : false;
+                    })) {
+                    l.push(parent);
+                }
+            }
+        })
+        return new elements(l);
+    }
+    this.children = function() {
+        let l = [];
+        this.elements.forEach(ele => {
+            let children = ele.children;
+            if (children && children.length > 0) {
+                for (let i = 0; i < children.length; i++) {
+                    l.push(children[i]);
+                }
             }
         })
         return new elements(l);
@@ -63,25 +123,89 @@ function elements(heles) {
         });
         this.elements = [];
     }
-    this.style = function() {
+    this.style = function(name, value) {
+        this.elements.forEach(ele => {
+            ele.style = ele.style + ";" + name + ":" + value;
+        })
         return this;
     };
-    this.hasClass = function() {};
-    this.addClass = function() {
-        return this;
-    };
-    this.removeClass = function() {};
-    this.id = function() {
-        let id = "";
-        this.attr("id", undefined, (ele, name, val) => {
-            id = val;
+    this.hasClass = function() {
+        let l = [];
+        this.elements.forEach(ele => {
+            let has = false;
+            ele.classList.forEach(c => {
+                if (c == cls) {
+                    has = true;
+                }
+            });
+            if (has) {
+                l.push(ele);
+            }
         });
-        return id;
+        return new elements(l);
+    }
+    this.addClass = function(cls) {
+        this.elements.forEach(ele => {
+            let newClassList = [];
+            ele.classList.forEach(c => {
+                if (c != cls) {
+                    newClassList.push(c);
+                }
+            });
+            newClassList.push(cls);
+            ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                return prev + " " + curr;
+            }, "").trim());
+        });
+        return this;
+    };
+    this.removeClass = function(cls) {
+        this.elements.forEach(ele => {
+            let newClassList = [];
+            ele.classList.forEach(c => {
+                if (c != cls) {
+                    newClassList.push(c);
+                }
+            });
+            ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                return prev + " " + curr;
+            }, "").trim());
+        });
+        return this;
+    };
+    this.id = function(sid) {
+        if (sid) {
+            this.elements.some(ele => {
+                ele.setAttribute("id", sid);
+                return true;
+            });
+            return this;
+        } else {
+            let id = "";
+            this.elements.some(ele => {
+                id = ele.getAttribute("id");
+                return true;
+            });
+            return id;
+        }
     };
     this.attr = function(name, val, callback) {
         !name || this.elements.forEach(ele => {
             !val || ele.setAttribute(name, val);
-            !callback || callback(ele, name, ele.getAttribute(name));
+            if (callback) {
+                let v = callback(ele, name, ele.getAttribute(name));
+                if (v) ele.setAttribute(name, v);
+            }
+        });
+        return this;
+    }
+    this.data = function(name, val, callback) {
+        !name || this.elements.forEach(ele => {
+            !val || ele.setAttribute("data-" + name, val);
+            if (callback) {
+                let v = callback(ele, name, ele.getAttribute("data-" + name));
+                if (v) ele.setAttribute("data-" + name, v);
+            }
         });
         return this;
     }
@@ -98,8 +222,16 @@ function elements(heles) {
         return this;
     }
     this.text = function(t) {
-        this.elements.forEach((ele) => {
-            ele.innerText = t;
+        !!t || (t = "");
+        this.elements.forEach((ele, i) => {
+            if (typeof(t) == "function") {
+                let v = t(ele, i, ele.innerText);
+                if (v) {
+                    ele.innerText = v;
+                }
+            } else {
+                ele.innerText = t;
+            }
         });
         return this;
     }
@@ -135,6 +267,15 @@ function elements(heles) {
         });
         return this;
     }
+    this.empty = function() {
+        this.elements.forEach(ele => {
+            ele.innerHTML = "";
+        });
+        return this;
+    }
+    this.html = function(a) {
+        return this.empty().append(a);
+    }
     this.h2e = function(html) {
         var template = document.createElement('template');
         template.innerHTML = html;
@@ -142,9 +283,9 @@ function elements(heles) {
     }
 }
 
-function e(a) {
+function $$(a) {
     if (typeof(a) == "string") {
-        return e(document.querySelectorAll(a));
+        return $$(document.querySelectorAll(a));
     } else if (typeof(a) == "object") {
         if (a instanceof NodeList) {
             let l = [];
@@ -157,5 +298,6 @@ function e(a) {
         }
     }
 }
-global.e = e;
-module.exports = { e: e };
+
+global.$$ = $$;
+module.exports = { $$: $$ };

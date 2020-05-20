@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0030)http://localhost:8081/dom.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
@@ -11,40 +10,12 @@
             this.length = function() {
                 return this.elements.length;
             }
-            this.on = function(event, callback, savedCallback) {
+            this.on = function(event, callback) {
                 this.elements.forEach(ele => {
                     !callback || ele.addEventListener(event, callback);
-                    !savedCallback || savedCallback(callback);
                 });
                 return this;
             }
-            this.off = function(event, callback) {
-                if (event && callback) {
-                    this.elements.forEach(ele => {
-                        !callback || ele.removeEventListener(event, callback);
-                    });
-                } else {
-                    function recreateNode(el, withChildren) {
-                        if (withChildren) {
-                            let newEl = el.cloneNode(true);
-                            el.parentNode.replaceChild(el.cloneNode(true), el);
-                            return newEl;
-                        } else {
-                            let newEl = el.cloneNode(false);
-                            while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
-                            el.parentNode.replaceChild(newEl, el);
-                            return newEl;
-                        }
-                    }
-                    let l = [];
-                    this.elements.forEach(ele => {
-                        !callback || l.push(recreateNode(ele, true));
-                    });
-                    return new elements(l);
-                }
-                return this;
-            }
-
             this.get = function(i) {
                 if (this.elements && i >= 0 && i < this.elements.length) {
                     return new elements([this.elements[i]]);
@@ -114,29 +85,13 @@
                 })
                 return new elements(l);
             }
-            this.children = function() {
-                let l = [];
-                this.elements.forEach(ele => {
-                    let children = ele.children;
-                    if (children && children.length > 0) {
-                        for (let i = 0; i < children.length; i++) {
-                            l.push(children[i]);
-                        }
-                    }
-                })
-                return new elements(l);
-            }
             this.destroy = function() {
                 this.elements.forEach(ele => {
                     ele = null;
                 });
                 this.elements = [];
             }
-
-            this.style = function(name, value) {
-                this.elements.forEach(ele => {
-                    ele.style = ele.style + ";" + name + ":" + value;
-                })
+            this.style = function() {
                 return this;
             };
             this.hasClass = function() {
@@ -342,6 +297,6 @@
             <div class="list"></div>
         </div>
     </div>
-</body>
 
-</html>
+
+</body></html>

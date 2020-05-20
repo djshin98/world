@@ -156,7 +156,7 @@ class Application {
             },
             oncomplete: function() {
                 this.map.oliveCamera.listenEvent("changed", (v) => {
-                    if( v ){
+                    if (v) {
                         let lng = document.getElementById("center-longitude");
                         let lat = document.getElementById("center-latitude");
                         let dist = document.getElementById("center-distance");
@@ -168,13 +168,13 @@ class Application {
                         if (lat) lat.innerText = d.latitude.toFixed(5);
                         if (dist) dist.innerText = distance.toFixed(2) + " m";
                     }
-                    
+
                 });
                 this.map.oliveCursor.listenEvent("move", (v) => {
-                    if( v ){
+                    if (v) {
                         let lng = document.getElementById("cursor-longitude");
                         let lat = document.getElementById("cursor-latitude");
-    
+
                         if (lng) lng.innerText = v.longitude;
                         if (lat) lat.innerText = v.latitude;
                     }

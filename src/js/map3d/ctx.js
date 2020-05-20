@@ -126,17 +126,21 @@ var CTX = {
             //return CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
             //return CTX.terrain ? CTX.viewer.scene.pickPosition(new Cesium.Cartesian2(x, y)) : CTX.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(x, y), CTX.viewer.scene.globe.ellipsoid);
         },
-        θ:function(c,s,e){
-            let v1 = CTX.c(s.x-c.x,s.y-c.y,s.z-c.z);
-            let v2 = CTX.c(e.x-c.x,e.y-c.y,e.z-c.z);
+        θ: function(c, s, e) {
+            let v1 = CTX.c(s.x - c.x, s.y - c.y, s.z - c.z);
+            let v2 = CTX.c(e.x - c.x, e.y - c.y, e.z - c.z);
             Cesium.Cartesian3.normalize(v1, v1);
             Cesium.Cartesian3.normalize(v2, v2);
             let radian = Math.acos(Cesium.Cartesian3.dot(v1, v2));
-            let degree = radian * (180 / Math.PI); 
+            let degree = radian * (180 / Math.PI);
             return degree;
         },
-        radian2degree(r){ return r * (180 / Math.PI); }
+        radian2degree(r) { return r * (180 / Math.PI); },
 
+        ca: function(x, y) {
+            let result = Cesium.Cartesian3.add(x, y, {})
+            return result;
+        }
     }
     /*
     baseLayerPicker true or false 따라 가져오는 함수가 다르다? 
