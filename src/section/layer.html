@@ -99,14 +99,15 @@
             },
             onSelect: function(type, tag, obj) {
                 let test = {
-            General: [
-                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" },
-                { key: "Configuration Type", value: "Application(.exe)" }
-            ],
-            "Project Defaults": [
-                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
-            ]
-        };
+                    General: [
+                        { key: "Layer", value: obj.name },
+                        { key: "Configuration Type", value: "Application(.exe)" }
+                    ],
+                    "Project Defaults": [
+                        { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
+                    ]
+                };
+                app.setAttributes(test);
             },
             onChecked: function(checked, type, tag, obj) {
 

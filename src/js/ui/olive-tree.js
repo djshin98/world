@@ -4,8 +4,10 @@ class OliveTree {
     constructor(selector, arr, option) {
         this.selector = selector;
         this.options = Object.assign({ collapsed: true }, option);
-        if (arr) {
-            $(this.selector).html(this._makeTree(arr, this.options));
+        this.data = Object.assign([], arr);
+        this.issuance(this.data,""); 
+        if (this.data) {
+            $(this.selector).html(this._makeTree(this.data, this.options));
         }
         //document.getElementById(id).innerHTML = this._makeTree(id, arr, options);
         //this.arr = arr;
@@ -54,7 +56,15 @@ class OliveTree {
     _toHtmlAttribute(v) {
         return Object.keys(v).reduce(function(prev, key) { if(v[key]){return prev + "data-" + key + "='" + v[key] + "' ";} return prev; }, " ");
     }
-
+    issuance(arr,parentId){
+        let _this = this;
+        arr.forEach(d => {
+            d.issuanceId = parentId + "." + (i+1);
+            if (d.children && d.children.length > 0) {
+            
+            }
+        });
+    }
     _makeTree(arr, options) {
         let _this = this;
         let str = '';
