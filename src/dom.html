@@ -8,6 +8,20 @@
     <script>
         function elements(heles) {
             this.elements = heles;
+            this.value = function(v) {
+                if (v) {
+                    this.elements.forEach(ele => {
+                        ele.value = v;
+                    });
+                } else {
+                    let l = [];
+                    this.elements.forEach(ele => {
+                        l.push(ele.value);
+                    });
+                    return l;
+                }
+                return this;
+            }
             this.length = function() {
                 return this.elements.length;
             }
@@ -44,7 +58,6 @@
                 }
                 return this;
             }
-
             this.get = function(i) {
                 if (this.elements && i >= 0 && i < this.elements.length) {
                     return new elements([this.elements[i]]);
@@ -133,6 +146,20 @@
                 this.elements = [];
             }
             this.style = function() {
+                return this;
+            };
+            this.width = function() {}
+            this.height = function() {}
+            this.innerWidth = function() {}
+            this.innerHeight = function() {}
+            this.outerWidth = function() {}
+            this.outerHeight = function() {}
+            this.hide = function() {
+                // "display:none"
+                return this;
+            };
+            this.show = function() {
+                // "display:'' "
                 return this;
             };
             this.hasClass = function() {
@@ -310,6 +337,54 @@
 <body>
     <div class="content">
         <div>
+            <input type="text" id="name" />
+            <label><input type="checkbox" id="job" value="salery man"/> 직장인</label>
+
+            <p>Select a maintenance drone:</p>
+
+            <div>
+                <input type="radio" id="huey" name="drone" value="huey" checked>
+                <label for="huey">Huey</label>
+            </div>
+
+            <div>
+                <input type="radio" id="dewey" name="drone" value="dewey">
+                <label for="dewey">Dewey</label>
+            </div>
+
+            <div>
+                <input type="radio" id="louie" name="drone" value="louie">
+                <label for="louie">Louie</label>
+            </div>
+
+            <label><input type="color" id="color">색상</label>
+            <input type="date" id="date" data-width="rt" data-group="myreq" data-listen="res.startDate">
+            <input type="datetime-local" id="datetime-local" data-group="myreq">
+            <input type="email" id="email" data-group="myreq">
+            <input type="file" id="file" data-group="myreq">
+            <input type="hidden" id="hidden" data-group="youreq">
+            <input type="image" id="image" data-group="youreq">
+            <input type="month" id="month" data-group="youreq">
+            <input type="number" id="number">
+            <input type="password" id="password">
+            <input type="range" id="range" min="20" max="200000" step="100">
+            <input type="reset" id="reset">
+            <input type="search" id="search">
+            <input type="submit" id="submit">
+            <input type="tel" id="tel">
+            <input type="time" id="time">
+            <input type="url" id="url">
+            <input type="week" id="week">
+
+            <label for="cars">Choose a car:</label>
+
+            <select id="cars">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
+
             <div class="list">
                 <ul>
                     <li>

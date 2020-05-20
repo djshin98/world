@@ -1,5 +1,19 @@
 function elements(heles) {
     this.elements = heles;
+    this.value = function(v) {
+        if (v) {
+            this.elements.forEach(ele => {
+                ele.value = v;
+            });
+        } else {
+            let l = [];
+            this.elements.forEach(ele => {
+                l.push(ele.value);
+            });
+            return l;
+        }
+        return this;
+    }
     this.length = function() {
         return this.elements.length;
     }
@@ -93,7 +107,7 @@ function elements(heles) {
     }
     this.parent = function() {
         let l = [];
-        this.elements.forEach(ele => {
+        this.elements.map(ele => {
             let parent = ele.parentElement;
             if (parent) {
                 if (l.every((e) => {
@@ -124,6 +138,20 @@ function elements(heles) {
         this.elements = [];
     }
     this.style = function() {
+        return this;
+    };
+    this.width = function() {}
+    this.height = function() {}
+    this.innerWidth = function() {}
+    this.innerHeight = function() {}
+    this.outerWidth = function() {}
+    this.outerHeight = function() {}
+    this.hide = function() {
+        // "display:none"
+        return this;
+    };
+    this.show = function() {
+        // "display:'' "
         return this;
     };
     this.hasClass = function() {
