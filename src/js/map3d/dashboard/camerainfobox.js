@@ -39,25 +39,24 @@ class CameraInfoBox extends Group {
         });
         this.width(200);
         this.height(80);
+
+
+        this.data = [
+            { type: "text", name: "중심 경도", label: "중심 경도" },
+            { type: "text", name: "중심 위도", label: "중심 위도" },
+            { type: "text", name: "거리", label: "거리" }
+        ]
     }
-
-
 
     refresh() {
-        super.refresh();
-        this.texts = {
-            cameraLng: new Text(this.svg, { label: "중심 경도", x: 15, y: 10 }),
-            cameraLat: new Text(this.svg, { label: "중심 위도", x: 15, y: 30 }),
-            cameraDist: new Text(this.svg, { label: "거리", x: 15, y: 50 })
-        }
+        super.refresh(this.data);
     }
+
     destroy() {
         if (this.changedEvent) {
             this.map.oliveCamera.removeEvent(this.changedEvent);
             delete(this.changedEvent);
         }
-
-
     }
 }
 
