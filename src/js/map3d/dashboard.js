@@ -7,12 +7,7 @@ const { CursorInfoBox } = require('./dashboard/cursorinfobox');
 const { CameraInfoBox } = require('./dashboard/camerainfobox');
 const { CameraAngleBox } = require('./dashboard/cameraanglebox');
 
-function displayMeter(f, d) {
-    if (f >= 1000) {
-        return (f / 1000).toFixed(d) + " km";
-    }
-    return f.toFixed(d) + "m";
-}
+
 class Dashboard {
     constructor(map, options) {
         this.map = map;
@@ -34,7 +29,7 @@ class Dashboard {
         this.children = [
             new CursorInfoBox(this, { alignment: "lefttop" }),
             new CameraInfoBox(this, { alignment: "lefttop" }),
-            new CameraAnangleBox(this, { alignment: "lefttop" }),
+            new CameraAngleBox(this, { alignment: "lefttop" }),
         ]
     }
     refresh() {
