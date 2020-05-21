@@ -1,5 +1,6 @@
 function elements(heles) {
     this.elements = heles;
+
     this.value = function(v) {
         if (v) {
             this.elements.forEach(ele => {
@@ -137,26 +138,86 @@ function elements(heles) {
         });
         this.elements = [];
     }
-    this.style = function(name, value) {
+
+    this.style = function(name, value, callback) {
+        if (value) {
+            this.elements.forEach(ele => {
+                let styles = [];
+                let bfind = false;
+                let str = ele.getAttribute("style");
+                str.split(";").forEach(seg => {
+                    let kv = seg.split(":");
+                    if (kv.length == 2) {
+                        if (name === kv[0]) {
+                            styles.push(kv[0] + ":" + value);
+                            bfind = true;
+                        } else {
+                            styles.push(kv[0] + ":" + kv[1]);
+                        }
+                    }
+                });
+                if (!bfind) {
+                    styles.push(name + ":" + value);
+                }
+                ele.style = styles.join(";");
+            });
+        } else {
+
+        }
+
+        return this;
+    };
+
+    this.width = function(value, callback) {
+        return this.style("width", value ? (value + "px") : undefined, callback);
+    }
+
+    this.height = function(value) {
+        return this.style("height", value + "px");
+    }
+
+    this.innerWidth = function() {
+        let a = [];
         this.elements.forEach(ele => {
-            ele.style = ele.style + ";" + name + ":" + value;
-        })
-        return this;
-    };
-    this.width = function() {}
-    this.height = function() {}
-    this.innerWidth = function() {}
-    this.innerHeight = function() {}
-    this.outerWidth = function() {}
-    this.outerHeight = function() {}
+            a.push(ele.clientWidth);
+        });
+        return a;
+    }
+
+    this.innerHeight = function() {
+        let a = [];
+        this.elements.forEach(ele => {
+            a.push(ele.clientHeight);
+        });
+        return a;
+    }
+
+    this.outerWidth = function() {
+        let b = [];
+        this.elements.forEach(ele => {
+            b.push(ele.offsetWidth);
+        });
+        return b;
+    }
+
+    this.outerHeight = function() {
+        let a = [];
+        this.elements.forEach(ele => {
+            a.push(ele.offsetHeight);
+        });
+        return a;
+    }
+
     this.hide = function() {
-        // "display:none"
-        return this;
+        return this.style("display", "none");
     };
+
     this.show = function() {
-        // "display:'' "
-        return this;
+        return this.style("display", "");
     };
+
+
+
     this.hasClass = function() {
         let l = [];
         this.elements.forEach(ele => {
@@ -317,7 +378,9 @@ function $$(a) {
     } else if (typeof(a) == "object") {
         if (a instanceof NodeList) {
             let l = [];
-            a.forEach(i => { l.push(i); });
+            a.forEach(i => {
+                l.push(i);
+            });
             return new elements(l);
         } else if (a instanceof HTMLElement) {
             return new elements([a]);

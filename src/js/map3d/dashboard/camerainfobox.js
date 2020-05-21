@@ -37,7 +37,7 @@ class CameraInfoBox extends Group {
             }
 
         });
-        this.width(100);
+        this.width(200);
         this.height(80);
     }
 
