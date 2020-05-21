@@ -1,5 +1,6 @@
 const { Text } = require('./text');
 const { Group } = require('./group');
+const { CTX } = require('../ctx');
 class CursorInfoBox extends Group {
     constructor(dashboard, options) {
         super(dashboard);
@@ -18,7 +19,7 @@ class CursorInfoBox extends Group {
                     let vc = CTX.d2c(v);
                     let dist = CTX.distance(cc, vc);
 
-                    _this.texts.distance.text(displayMeter(dist, 2));
+                    _this.texts.distance.text(CTX.displayMeter(dist, 2));
                 } else {
                     _this.texts.longtitude.text("");
                     _this.texts.latitude.text("");
