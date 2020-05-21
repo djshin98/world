@@ -10,7 +10,6 @@ class CameraInfoBox extends Group {
         this.map = dashboard.map;
         this.width = 0;
         this.height = 0;
-        this.update(options);
         let _this = this;
 
 
