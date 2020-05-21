@@ -1,5 +1,6 @@
 const { Text } = require('./text');
 const { Group } = require('./group')
+const { $$ } = require('../../core/e');
 
 class CameraAngleBox extends Group {
     constructor(dashboard, options) {
@@ -30,11 +31,13 @@ class CameraAngleBox extends Group {
 
     refresh() {
         super.refresh();
+        let fontSizeStr = this.svg.style("font-size");
+        let fontSize = fontSizeStr.split("px")[0];
 
         this.texts = {
-            heading: new Text(this.svg, { label: "heading", x: 15, y: 10 }),
-            pitch: new Text(this.svg, { label: "pitch", x: 15, y: 30 }),
-            roll: new Text(this.svg, { label: "roll", x: 15, y: 50 })
+            heading: new Text(this.svg, { label: "heading", x: 15, y: fontSize + "px" }),
+            pitch: new Text(this.svg, { label: "pitch", x: 15, y: fontSize * 2 + "px" }),
+            roll: new Text(this.svg, { label: "roll", x: 15, y: fontSize * 3 + "px" })
         }
     }
 
