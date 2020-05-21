@@ -48,20 +48,16 @@ class CameraInfoBox extends Group {
             }
 
         });
-
-        this.texts = {
-            cameraLng: new Text(svg, { label: "중심 경도", x: 15, y: 90 }),
-            cameraLat: new Text(svg, { label: "중심 위도", x: 15, y: 110 }),
-            cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 }),
-        }
     }
+
+
 
     refresh() {
         super.refresh();
         this.texts = {
-            cameraLng: new Text(svg, { label: "중심 경도", x: 15, y: 90 }),
-            cameraLat: new Text(svg, { label: "중심 위도", x: 15, y: 110 }),
-            cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 })
+            cameraLng: new Text(this.svg, { label: "중심 경도", x: 15, y: 90 }),
+            cameraLat: new Text(this.svg, { label: "중심 위도", x: 15, y: 110 }),
+            cameraDist: new Text(this.svg, { label: "거리", x: 15, y: 130 })
         }
     }
     destroy() {
@@ -77,6 +73,7 @@ class CameraInfoBox extends Group {
             this.map.oliveCamera.removeEvent(this.changedEvent);
             delete(this.changedEvent);
         }
+
 
     }
 }
