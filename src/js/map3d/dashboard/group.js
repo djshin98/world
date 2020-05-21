@@ -1,7 +1,6 @@
 class Group {
     constructor(svgObj) {
         let svg = svgObj.svg;
-
     }
 
     refresh() {
@@ -19,8 +18,10 @@ class Group {
             .attr("opacity", "0.2")
             .attr("stroke", "white")
             .attr("stroke-width", "1");
+    }
 
-
+    destory() {
+        this.svg.remove();
     }
 
 }
