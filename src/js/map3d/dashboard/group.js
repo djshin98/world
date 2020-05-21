@@ -47,12 +47,13 @@ class Group {
             let padding = { x: fontSize / 2, y: fontSize / 2 };
             let lineMargin = 2;
             let lineHeight = fontSize;
+            let _this = this;
             this.texts = {};
             this.height(2 * padding.y + (this.data.length * (lineMargin + lineHeight)));
             contents.forEach((row, i) => {
                 if (row.type == "text") {
                     let y = padding.y + (i * lineMargin) + (i * lineHeight);
-                    this.texts[row.name] = new Text(this.svg, { label: row.label, x: padding.x, y: y });
+                    _this.texts[row.name] = new Text(_this.svg, { label: row.label, x: padding.x, y: y });
                 }
             });
         }
