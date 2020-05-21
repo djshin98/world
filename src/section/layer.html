@@ -106,10 +106,12 @@
                         key: "Your Name",
                         value: "Djshin"
                     }],
-                    "Property": [{
-                        key: "Target Platform",
-                        value: "xxx"
-                    }]
+                    Properties: Object.keys(obj).map(key => {
+                        return {
+                            key: key,
+                            value: obj[key]
+                        };
+                    })
                 };
                 app.setAttributes(test);
             },

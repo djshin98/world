@@ -27,6 +27,11 @@ class Group {
         }
         return this.options.height;
     }
+    translate(x, y) {
+        if (this.svg) {
+            this.svg.attr("transform", "translate(" + x + "," + y + ")");
+        }
+    }
     refresh(contents) {
         this.svg = this.parent.svg.append("g");
         this.svg.attr("transform", "translate(" + this.options.x + "," + this.options.y + ")")

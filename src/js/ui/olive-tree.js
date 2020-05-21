@@ -21,14 +21,15 @@ class OliveTree {
         $(this.selector + " li>div.folder").bind('click', function() {
             _this.toggleFolder(this);
             if (_this.options.onSelect) {
-                _this.options.onSelect('folder', this, _this);
+                _this.options.onSelect('folder', this, _this.get($(ele).data('issuance')));
             }
         });
 
         $(this.selector + " li>div.file").bind('click', function() {
             $('.clicked').removeClass('clicked');
-            $(this).addClass('clicked');
-            if ($(this).hasClass('file')) {
+            let $this = $(this);
+            $this.addClass('clicked');
+            if ($this.hasClass('file')) {
                 if (_this.options.onSelect) {
                     let url = this.innerText;
                     $(this.parentElement).parents("li").each((i, ele) => {
@@ -37,7 +38,7 @@ class OliveTree {
                             url = p[0].innerText + "/" + url;
                         }
                     });
-                    _this.options.onSelect('file', this, _this, url);
+                    _this.options.onSelect('file', this, _this.get($this.data('issuance')), url);
                 }
             }
         });
@@ -61,9 +62,28 @@ class OliveTree {
         arr.forEach((d, i) => {
             d.issuanceId = parentId + "." + (i + 1);
             if (d.children && d.children.length > 0) {
-
+                _this.issuance(d.children, d.issuanceId);
             }
         });
+    }
+    _get(arr, issuanceId) {
+        let _this = this;
+        let issuanceObject = undefined;
+        arr.some((d, i) => {
+            if (d.issuanceId == issuanceId) {
+                issuanceObject = d;
+                return true;
+            }
+            if (d.children && d.children.length > 0) {
+                issuanceObject = _this._get(d.children, issuanceId);
+                if (issuanceObject) { return true; }
+            }
+            return false;
+        });
+        return issuanceObject;
+    }
+    get(issuanceId) {
+        return this._get(this.data, issuanceId);
     }
     _makeTree(arr, options) {
         let _this = this;
@@ -74,12 +94,13 @@ class OliveTree {
             let idstr = ""; //(d.id)?'id="' + d.id + '" ':"";
             let classstr = (d.children && d.children.length > 0) ? ' class="folder" ' : ' class="file" ';
             let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
+            let issuanceStr = (d.issuanceId) ? ' data-issuance="' + d.issuanceId + '" ' : ' ';
             if (d.type && d.type == "check") {
-                str += '<li><input type="checkbox" ' + idstr + '/><div' + classstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li><input type="checkbox" ' + idstr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else if (d.type && d.type == "radio") {
-                str += '<li><input type="radio" ' + groupstr + idstr + '/><div' + classstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li><input type="radio" ' + groupstr + idstr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else {
-                str += '<li><div' + classstr + idstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li><div' + classstr + idstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             }
             if (d.children && d.children.length > 0) {
                 str += '<ul>';
