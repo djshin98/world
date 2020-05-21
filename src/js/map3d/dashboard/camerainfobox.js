@@ -72,4 +72,4 @@ class CameraInfoBox extends Group {
     }
 }
 
-module.exports = { CamerInfoBox: CamerInfoBox };
+module.exports = { CameraInfoBox: CameraInfoBox };
