@@ -2,13 +2,10 @@ const d3 = require('d3');
 const { center } = require('./dashboard/center');
 const { Text } = require('./dashboard/text');
 const { Group } = require('./dashboard/group');
-<<<<<<< HEAD
-const { CameraInfoBox } = require('./dashboard/camerainfobox');
-=======
+
 const { CursorInfoBox } = require('./dashboard/cursorinfobox');
 const { CameraInfoBox } = require('./dashboard/camerainfobox');
 const { CameraAngleBox } = require('./dashboard/cameraanglebox');
->>>>>>> 2ec9d9f75d5350925d8465f51e765765d259a22b
 
 function displayMeter(f, d) {
     if (f >= 1000) {
@@ -54,12 +51,7 @@ class Dashboard {
                 color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
-<<<<<<< HEAD
-
-        this.groupboxs.forEach((groupbox) => { groupbox.refresh(); });
-=======
         this.children.forEach((group) => { group.refresh(); });
->>>>>>> 2ec9d9f75d5350925d8465f51e765765d259a22b
     }
     resize(x, y, width, height) {
         this.width = parseInt(width);
