@@ -27,9 +27,9 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
-            new CursorInfoBox(this, { alignment: "lefttop" }),
-            new CameraInfoBox(this, { alignment: "lefttop" }),
-            new CameraAngleBox(this, { alignment: "lefttop" }),
+            new CursorInfoBox(this, { alignment: "lefttop", x: 0, y: 0 }),
+            new CameraInfoBox(this, { alignment: "lefttop", x: 0, y: 400 }),
+            new CameraAngleBox(this, { alignment: "lefttop", x: 100, y: 600 }),
         ]
     }
     refresh() {
