@@ -23,7 +23,7 @@ class CameraInfoBox extends Group {
                         let w = CTX.w2c(wc.x, wc.y);
                         if (w) {
                             let dist = CTX.distance(v.position, w);
-                            _this.texts.cameraDist.text(displayMeter(dist, 2));
+                            _this.texts.cameraDist.text(CTX.displayMeter(dist, 2));
                         }
                     }
 
