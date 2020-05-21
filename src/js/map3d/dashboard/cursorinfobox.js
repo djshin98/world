@@ -14,7 +14,7 @@ class CursorInfoBox extends Group {
                 if (v) {
                     _this.texts.longtitude.text(v.longitude.toFixed(5));
                     _this.texts.latitude.text(v.latitude.toFixed(5));
-                    _this.texts.height.text(v.height.toFixed(2) + " m");
+                    _this.texts.height.text(CTX.displayMeter(v.height, 2));
                     let cc = _this.map.oliveCamera.position();
                     let vc = CTX.d2c(v);
                     let dist = CTX.distance(cc, vc);
