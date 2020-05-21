@@ -80,22 +80,31 @@ function center(svg, options) {
         svg.append("line")
             .attr("x1", center.x - radius)
             .attr("x2", center.x - radius)
-            .attr("y1", center.y - radius).attr("y2", center.y - inRadius).attr("stroke", color);
-
-        svg.append("line")
-            .attr("x1", center.x - radius)
-            .attr("x2", center.x - radius)
-            .attr("y1", center.y + radius).attr("y2", center.y + inRadius).attr("stroke", color);
+            .attr("y1", center.y - radius).attr("y2", center.y + radius).attr("stroke", color);
 
         svg.append("line")
             .attr("x1", center.x + radius)
             .attr("x2", center.x + radius)
-            .attr("y1", center.y - radius).attr("y2", center.y - inRadius).attr("stroke", color);
+            .attr("y1", center.y - radius).attr("y2", center.y + radius).attr("stroke", color);
+
 
         svg.append("line")
-            .attr("x1", center.x + radius)
-            .attr("x2", center.x + radius)
-            .attr("y1", center.y + radius).attr("y2", center.y + inRadius).attr("stroke", color);
+            .attr("x1", center.x)
+            .attr("x2", center.x - forcusMargin)
+            .attr("y1", center.y).attr("y2", center.y).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x + forcusMargin)
+            .attr("x2", center.x)
+            .attr("y1", center.y).attr("y2", center.y).attr("stroke", color)
+
+        svg.append("line")
+            .attr("x1", center.x).attr("x2", center.x)
+            .attr("y1", center.y).attr("y2", center.y - forcusMargin).attr("stroke", color)
+
+        svg.append("line")
+            .attr("x1", center.x).attr("x2", center.x)
+            .attr("y1", center.y).attr("y2", center.y + forcusMargin).attr("stroke", color)
 
 
     } else if (options.type == "circle") {
