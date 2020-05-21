@@ -2,7 +2,7 @@ const { Text } = require('./text');
 const { Group } = require('./group');
 
 
-class CamerInfoBox extends Group {
+class CameraInfoBox extends Group {
     constructor(dashboard, options) {
 
         super(dashboard);
