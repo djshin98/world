@@ -5,7 +5,7 @@ class OliveTree {
         this.selector = selector;
         this.options = Object.assign({ collapsed: true }, option);
         this.data = Object.assign([], arr);
-        this.issuance(this.data,""); 
+        this.issuance(this.data, "");
         if (this.data) {
             $(this.selector).html(this._makeTree(this.data, this.options));
         }
@@ -52,16 +52,16 @@ class OliveTree {
             if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this); }
         });
     }
-    
+
     _toHtmlAttribute(v) {
-        return Object.keys(v).reduce(function(prev, key) { if(v[key]){return prev + "data-" + key + "='" + v[key] + "' ";} return prev; }, " ");
+        return Object.keys(v).reduce(function(prev, key) { if (v[key]) { return prev + "data-" + key + "='" + v[key] + "' "; } return prev; }, " ");
     }
-    issuance(arr,parentId){
+    issuance(arr, parentId) {
         let _this = this;
-        arr.forEach(d => {
-            d.issuanceId = parentId + "." + (i+1);
+        arr.forEach((d, i) => {
+            d.issuanceId = parentId + "." + (i + 1);
             if (d.children && d.children.length > 0) {
-            
+
             }
         });
     }
@@ -72,14 +72,14 @@ class OliveTree {
             let attr = options.onAttribute ? options.onAttribute(d) : "";
             let text = options.onText ? options.onText(d) : "";
             let idstr = ""; //(d.id)?'id="' + d.id + '" ':"";
-            let classstr = (d.children && d.children.length > 0)?' class="folder" ':' class="file" ';
-            let groupstr = (d.group)?' name="'+d.group+'" ':' ';
-            if( d.type && d.type == "check" ){
-                str += '<li><input type="checkbox" ' + idstr + '/><div'+classstr+ _this._toHtmlAttribute(attr) + '>' + text + '</div>';
-            }else if( d.type && d.type == "radio" ){
-                str += '<li><input type="radio" ' + groupstr + idstr + '/><div'+classstr+ _this._toHtmlAttribute(attr) + '>' + text + '</div>';
-            }else{
-                str += '<li><div'+classstr+ idstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+            let classstr = (d.children && d.children.length > 0) ? ' class="folder" ' : ' class="file" ';
+            let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
+            if (d.type && d.type == "check") {
+                str += '<li><input type="checkbox" ' + idstr + '/><div' + classstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+            } else if (d.type && d.type == "radio") {
+                str += '<li><input type="radio" ' + groupstr + idstr + '/><div' + classstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+            } else {
+                str += '<li><div' + classstr + idstr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             }
             if (d.children && d.children.length > 0) {
                 str += '<ul>';

@@ -147,16 +147,37 @@
                 this.elements = [];
             }
 
-            this.style = function(name, value) {
-                this.elements.forEach(ele => {
-                    let str = ele.getAttribute("style");
-                    ele.style = str + ";" + name + ":" + value;
-                });
+            this.style = function(name, value, callback) {
+                if (value) {
+                    this.elements.forEach(ele => {
+                        let styles = [];
+                        let bfind = false;
+                        let str = ele.getAttribute("style");
+                        str.split(";").forEach(seg => {
+                            let kv = seg.split(":");
+                            if (kv.length == 2) {
+                                if (name === kv[0]) {
+                                    styles.push(kv[0] + ":" + value);
+                                    bfind = true;
+                                } else {
+                                    styles.push(kv[0] + ":" + kv[1]);
+                                }
+                            }
+                        });
+                        if (!bfind) {
+                            styles.push(name + ":" + value);
+                        }
+                        ele.style = styles.join(";");
+                    });
+                } else {
+
+                }
+
                 return this;
             };
 
-            this.width = function(value) {
-                return this.style("width", value + "px");
+            this.width = function(value, callback) {
+                return this.style("width", value ? (value + "px") : undefined, callback);
             }
 
             this.height = function(value) {

@@ -84,10 +84,10 @@ class Dashboard {
             center(svg, {
                 width: this.width,
                 height: this.height,
-                type: this.options.center,
+                type: this.options.center.type,
                 lineLength: 100,
                 forcusMargin: 10,
-                color: "gray"
+                color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
         this.texts = {
