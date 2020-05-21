@@ -45,6 +45,12 @@ class CameraInfoBox extends Group {
 
     refresh() {
         super.refresh();
+        let fontSize = parseInt(this.svg.style("font-size"));
+        let padding = { x: fontSize / 2, y: fontSize / 2 };
+        let padding_bottom = padding;
+        let padding_top = padding;
+        let padding_left = padding;
+        let padding_right = padding;
 
         this.texts = {
             cameraLng: new Text(this.svg, { label: "중심 경도", x: 15, y: 10 }),
