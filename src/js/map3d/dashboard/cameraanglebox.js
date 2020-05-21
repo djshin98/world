@@ -3,7 +3,7 @@ const { Group } = require('./group')
 
 class CameraAngleBox extends Group {
     constructor(dashboard, options) {
-        super(dashboard);
+        super(dashboard, options);
         this.map = dashboard.map;
         this.width = 0;
         this.height = 0;

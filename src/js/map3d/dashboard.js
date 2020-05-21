@@ -75,7 +75,11 @@ class Dashboard {
         if (this.width > 0 && this.height > 0) {
             this.refresh();
         }
-
+        this.children = [
+            new CursorInfoBox(this, { alignment: "lefttop", x: 0, y: 0 }),
+            new CameraInfoBox(this, { alignment: "lefttop", x: 0, y: 400 }),
+            new CameraAngleBox(this, { alignment: "lefttop", x: 100, y: 600 }),
+        ]
     }
     refresh() {
         let svg = d3.select("#" + this.options.id);
