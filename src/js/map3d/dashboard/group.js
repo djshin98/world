@@ -11,12 +11,18 @@ class Group {
     width(value) {
         if (value) {
             this.options.width = value;
+            if (this.rect) {
+                this.rect.attr("width", this.options.width);
+            }
         }
         return this.options.width;
     }
     height(value) {
         if (value) {
             this.options.height = value;
+            if (this.rect) {
+                this.rect.attr("height", this.options.height);
+            }
         }
         return this.options.height;
     }
