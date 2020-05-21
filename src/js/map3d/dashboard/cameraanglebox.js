@@ -47,7 +47,6 @@ class CameraAngleBox extends Group {
 
     refresh() {
         super.refresh();
-        this.svg.selectAll("*").remove();
 
         this.texts = {
             heading: new Text(this.svg, { label: "heading", x: 15, y: 150 }),
