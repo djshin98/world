@@ -1,6 +1,7 @@
 const { Text } = require('./text');
 const { Group } = require('./group');
 const { CTX } = require('../ctx');
+const { $$ } = require('../../core/e');
 class CursorInfoBox extends Group {
     constructor(dashboard, options) {
         super(dashboard, options);
@@ -32,6 +33,7 @@ class CursorInfoBox extends Group {
     }
     refresh() {
         super.refresh();
+        //$$(this.svg).style("font-size")
         this.texts = {
             longtitude: new Text(this.svg, { label: "경도", x: 15, y: 10 }),
             latitude: new Text(this.svg, { label: "위도", x: 15, y: 30 }),

@@ -4,9 +4,9 @@ class Text {
             x: 0,
             y: 0,
             text: "",
-            fontFamily: "sans-serif",
-            fontSize: "16px",
-            fill: "black"
+            //fontFamily: "sans-serif",
+            //fontSize: "10px",
+            //fill: "black"
         }, options);
         this.svg = svg.append("text");
 
