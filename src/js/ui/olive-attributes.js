@@ -1,7 +1,5 @@
 function _toggleAttributeDisplay(tag) {
-
     let table = tag.parentElement.parentElement.parentElement;
-
     let trs = table.getElementsByClassName("pair");
     Object.keys(trs).forEach(key => {
         let tr = trs[key];
