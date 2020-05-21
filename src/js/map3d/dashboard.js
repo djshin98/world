@@ -22,10 +22,10 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
-            new CursorInfoBox(this, { alignment: "lefttop", x: 50, y: 0 }),
-            new CameraInfoBox(this, { alignment: "lefttop", x: 50, y: 100 }),
-            new CameraAngleBox(this, { alignment: "lefttop", x: 50, y: 200 }),
-            new SlopeGraphBox(this)
+            new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
+            new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
+            new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
+            //new SlopeGraphBox(this)
         ]
     }
     refresh() {
