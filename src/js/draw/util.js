@@ -367,10 +367,6 @@ var ArcUtil = {
         }, options);
         let polylines = [];
 
-        let offsetX = center.x;
-        let offsetY = center.y;
-        let offsetZ = center.z;
-
         //vector 1
         let v1 = Object.assign({}, start);
         v1 = Cesium.Cartesian3.subtract(v1, center, {});
@@ -379,14 +375,8 @@ var ArcUtil = {
         let v2 = Object.assign({}, end);
         v2 = Cesium.Cartesian3.subtract(v2, center, {});
 
-        let v2_2 = Object.assign({}, v2);
-
-        //방향을 구한 후, 해당 방향으로 일정 각도만큼 이동하며 arc를 구성할 point을 구한다
-        let dir = Cesium.Cartesian3.subtract(v2_2, v1, {});
-        Cesium.Cartesian3.normalize(dir, dir);
-
         //quaternion을 구하기 위해 normal vector 구하기
-        let normal = Cesium.Cartesian3.cross(v1, v2_2, {});
+        let normal = Cesium.Cartesian3.cross(v1, v2, {});
 
         let THETA = Math.PI / 180;
         for (var i = 0; i < deg; i += options.degree) {
