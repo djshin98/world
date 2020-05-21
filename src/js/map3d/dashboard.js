@@ -2,6 +2,7 @@ const d3 = require('d3');
 const { center } = require('./dashboard/center');
 const { Text } = require('./dashboard/text');
 const { Group } = require('./dashboard/group');
+const { CameraInfoBox } = require('./dashboard/camerainfobox');
 
 function displayMeter(f, d) {
     if (f >= 1000) {
@@ -90,23 +91,7 @@ class Dashboard {
                 color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
-        this.texts = {
-            longtitude: new Text(svg, { label: "경도", x: 15, y: 10 }),
-            latitude: new Text(svg, { label: "위도", x: 15, y: 30 }),
-            height: new Text(svg, { label: "높이", x: 15, y: 50 }),
-            distance: new Text(svg, { label: "거리", x: 15, y: 70 }),
-            cameraLng: new Text(svg, { label: "중심 경도", x: 15, y: 90 }),
-            cameraLat: new Text(svg, { label: "중심 위도", x: 15, y: 110 }),
-            cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 }),
-            heading: new Text(svg, { label: "heading", x: 15, y: 150 }),
-            pitch: new Text(svg, { label: "pitch", x: 15, y: 170 }),
-            roll: new Text(svg, { label: "roll", x: 15, y: 290 })
-        }
-        this.groupboxs = [
-            new Group(svg, [this.texts.longtitude, this.texts.latitude, this.texts.height, this.texts.distance]),
-            new Group(svg, [this.texts.cameraLng, this.texts.cameraLat, this.texts.cameraDist]),
-            new Group(svg, [this.texts.heading, this.texts.pitch, this.texts.roll])
-        ];
+
         this.groupboxs.forEach((groupbox) => { groupbox.refresh(); });
     }
     resize(x, y, width, height) {
