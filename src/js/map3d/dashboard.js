@@ -37,7 +37,7 @@ class Dashboard {
         this.svg.selectAll("*").remove();
 
         if (this.options.center) {
-            center(svg, {
+            center(this.svg, {
                 width: this.width,
                 height: this.height,
                 type: this.options.center.type,
