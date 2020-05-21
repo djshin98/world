@@ -26,8 +26,6 @@ class CameraAngleBox extends Group {
                     _this.texts.roll.text('');
                 }
             }
-
-            this.svg = d3.select("#" + this.options.id);
         });
     }
 
