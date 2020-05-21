@@ -26,14 +26,17 @@ class CursorInfoBox extends Group {
             }
 
         });
+
+    }
+    refresh() {
+        super.refresh();
         this.texts = {
-            longtitude: new Text(svg, { label: "경도", x: 15, y: 10 }),
-            latitude: new Text(svg, { label: "위도", x: 15, y: 30 }),
-            height: new Text(svg, { label: "높이", x: 15, y: 50 }),
-            distance: new Text(svg, { label: "거리", x: 15, y: 70 })
+            longtitude: new Text(this.svg, { label: "경도", x: 15, y: 10 }),
+            latitude: new Text(this.svg, { label: "위도", x: 15, y: 30 }),
+            height: new Text(this.svg, { label: "높이", x: 15, y: 50 }),
+            distance: new Text(this.svg, { label: "거리", x: 15, y: 70 })
         }
     }
-
     destroy() {
 
         if (this.moveEvent) {

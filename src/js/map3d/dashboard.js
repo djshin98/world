@@ -38,7 +38,7 @@ class Dashboard {
     }
     refresh() {
 
-        svg.selectAll("*").remove();
+        this.svg.selectAll("*").remove();
 
         if (this.options.center) {
             center(svg, {
@@ -50,7 +50,7 @@ class Dashboard {
                 color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
-        this.groupboxs.forEach((groupbox) => { groupbox.refresh(); });
+        this.children.forEach((group) => { group.refresh(); });
     }
     resize(x, y, width, height) {
         this.width = parseInt(width);

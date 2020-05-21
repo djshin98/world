@@ -1,11 +1,12 @@
 class Group {
     constructor(svgObj) {
         let svg = svgObj.svg;
-        this.svg = svg.append("g");
-        this.rect = this.svg.append(rect);
+
     }
 
     refresh() {
+        this.svg = svg.append("g");
+        this.rect = this.svg.append(rect);
         let _this = this;
         this.rect
             .attr("x", this.x)
