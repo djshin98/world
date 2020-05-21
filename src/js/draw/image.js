@@ -48,15 +48,15 @@ class Image extends DrawObject {
 
             var v2 = Cesium.Cartesian3.negate(v1, {});
 
-            var center_p1 = Cesium.Cartesian3.add(points[0], v1, {});
-            var center_p2 = Cesium.Cartesian3.add(points[0], v2, {});
+            var center_p1 = CTX.ca(points[0], v1);
+            var center_p2 = CTX.ca(points[0], v2);
 
             var points_result = [];
             points_result.push(center_p1);
             points_result.push(center_p2);
 
             collection.add(this.index, {
-                position: points[0],
+                //position: points[0],
                 //plane: planetmp,
 
                 rectangle: {
