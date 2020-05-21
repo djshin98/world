@@ -45,6 +45,7 @@ class CameraInfoBox extends Group {
 
     refresh() {
         super.refresh();
+
         this.texts = {
             cameraLng: new Text(this.svg, { label: "중심 경도", x: 15, y: 10 }),
             cameraLat: new Text(this.svg, { label: "중심 위도", x: 15, y: 30 }),
