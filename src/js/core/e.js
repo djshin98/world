@@ -166,18 +166,36 @@ function elements(heles) {
     this.style = function(name, value, callback) {
         if (value) {
             this.elements.forEach(ele => {
-                let styles = this._styleList(ele, name, value);
-                ele.style = styles.reduce((prev, curr) => { if (prev.length > 0) { prev += ";" + curr.join(":"); } else { prev = curr.join(":"); } return prev }, "");
-            });
-        } else {
-            let _this = this;
-            this.elements.forEach(ele => {
+                let styles = [];
+                let bfind = false;
+                let str = ele.getAttribute("style");
+                str.split(";").forEach(seg => {
+                    let kv = seg.split(":");
+                    if (kv.length == 2) {
+                        if (name === kv[0]) {
+                            styles.push(kv[0] + ":" + value);
+                            bfind = true;
+                        } else {
+                            styles.push(kv[0] + ":" + kv[1]);
+                        }
+                    }
+                });
+                if (!bfind) {
+                    styles.push(name + ":" + value);
+                }
+                ele.style = styles.join(";");
+
                 if (callback) {
-                    let v = _this._styleList(ele).find(r => { return (r[0] == name) ? true : false; });
-                    if (v) value = v[1];
-                    callback(ele, name, value);
+                    let v = callback(ele, name, value);
+                    if (v) ele.style(name, v);
                 }
             });
+        } else {
+            let list = [];
+            this.elements.forEach(ele => {
+                list.push(ele.getAttribute("style"));
+            });
+            return list;
         }
 
         return this;
@@ -187,8 +205,8 @@ function elements(heles) {
         return this.style("width", value ? (value + "px") : undefined, callback);
     }
 
-    this.height = function(value) {
-        return this.style("height", value + "px");
+    this.height = function(value, callback) {
+        return this.style("height", value ? (value + "px") : undefined, callback);
     }
 
     this.innerWidth = function() {

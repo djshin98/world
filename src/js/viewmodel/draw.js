@@ -33,6 +33,7 @@ var { ShootingArc } = require('../draw/shootingarc');
 var { PolygonWithLine } = require('../draw/polygonwithline');
 var { Spline } = require('../draw/spline');
 var { KMilSymbol } = require('../draw/kmilsymbol');
+var { QuadraticTest } = require('../draw/quadratic_test');
 
 var drawLinker = {
 
@@ -64,7 +65,8 @@ var drawLinker = {
     shootingline: { name: "사격선", createFunc: function() { return new ShootingLine(); } },
     polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
-    kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } }
+    kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
+    quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } }
 }
 
 function registryHandler(key, name, createfunc) {
