@@ -29,17 +29,29 @@ class CursorInfoBox extends Group {
             }
         });
         this.width(100);
-        this.width(100);
+        this.height(100);
+
+        this.data = [
+            { type: "text", name: "longtitude", label: "경도" },
+            { type: "text", name: "latitude", label: "위도" },
+            { type: "text", name: "height", label: "높이" },
+            { type: "text", name: "distance", label: "거리" }
+        ]
     }
     refresh() {
         super.refresh();
-        //$$(this.svg).style("font-size")
-        this.texts = {
-            longtitude: new Text(this.svg, { label: "경도", x: 15, y: 10 }),
-            latitude: new Text(this.svg, { label: "위도", x: 15, y: 30 }),
-            height: new Text(this.svg, { label: "높이", x: 15, y: 50 }),
-            distance: new Text(this.svg, { label: "거리", x: 15, y: 70 })
-        }
+        let fontSize = parseInt(this.svg.style("font-size"));
+        let padding = { x: fontSize / 2, y: fontSize / 2 };
+        let lineMargin = 2;
+        let lineHeight = fontSize;
+        this.texts = {};
+        this.height(2 * padding.y + (this.data.length * (lineMargin + lineHeight)));
+        this.data.forEach((row, i) => {
+            if (row.type == "text") {
+                let y = padding.y + (i * lineMargin) + (i * lineHeight);
+                this.texts[row.name] = new Text(this.svg, { label: row.label, x: padding.x, y: y });
+            }
+        });
     }
     destroy() {
 

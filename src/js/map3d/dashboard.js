@@ -5,7 +5,7 @@ const { Group } = require('./dashboard/group');
 const { CursorInfoBox } = require('./dashboard/cursorinfobox');
 const { CameraInfoBox } = require('./dashboard/camerainfobox');
 const { CameraAngleBox } = require('./dashboard/cameraanglebox');
-
+const { SlopeGraphBox } = require('./dashboard/slopegraphbox');
 class Dashboard {
     constructor(map, options) {
         this.map = map;
