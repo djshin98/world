@@ -61,14 +61,6 @@ class CameraInfoBox extends Group {
         }
     }
     destroy() {
-        if (this.moveEvent) {
-            this.map.oliveCursor.removeEvent(this.moveEvent);
-            delete(this.moveEvent);
-        }
-        if (this.selectedEvent) {
-            this.map.oliveCursor.removeEvent(this.selectedEvent);
-            delete(this.selectedEvent);
-        }
         if (this.changedEvent) {
             this.map.oliveCamera.removeEvent(this.changedEvent);
             delete(this.changedEvent);
