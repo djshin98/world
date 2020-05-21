@@ -12,35 +12,9 @@ class CamerInfoBox extends Group {
         this.height = 0;
         this.update(options);
         let _this = this;
-        this.moveEvent = this.map.oliveCursor.listenEvent("move", (v) => {
-            if (v) {
-                _this.texts.longtitude.text(v.longitude.toFixed(5));
-                _this.texts.latitude.text(v.latitude.toFixed(5));
-                _this.texts.height.text(v.height.toFixed(2) + " m");
-                let cc = _this.map.oliveCamera.position();
-                let vc = CTX.d2c(v);
-                let dist = CTX.distance(cc, vc);
 
-                _this.texts.distance.text(displayMeter(dist, 2));
-            } else {
-                _this.texts.longtitude.text("");
-                _this.texts.latitude.text("");
-                _this.texts.height.text("");
-                _this.texts.distance.text("");
-            }
-        });
 
-        this.texts = {
-            cameraLng: new Text(svg, { label: "중심 경도", x: 15, y: 90 }),
-            cameraLat: new Text(svg, { label: "중심 위도", x: 15, y: 110 }),
-            cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 }),
-        }
 
-        this.groupboxs = [
-            new Group(svg, [this.texts.longtitude, this.texts.latitude, this.texts.height, this.texts.distance]),
-            new Group(svg, [this.texts.cameraLng, this.texts.cameraLat, this.texts.cameraDist]),
-            new Group(svg, [this.texts.heading, this.texts.pitch, this.texts.roll])
-        ];
 
         this.changedEvent = this.map.oliveCamera.listenEvent("changed", (v) => {
             if (v) {
@@ -74,6 +48,12 @@ class CamerInfoBox extends Group {
 
             }
         });
+
+        this.texts = {
+            cameraLng: new Text(svg, { label: "중심 경도", x: 15, y: 90 }),
+            cameraLat: new Text(svg, { label: "중심 위도", x: 15, y: 110 }),
+            cameraDist: new Text(svg, { label: "거리", x: 15, y: 130 }),
+        }
     }
     destroy() {
         if (this.moveEvent) {
