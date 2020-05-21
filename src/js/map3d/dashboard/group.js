@@ -47,7 +47,7 @@ class Group {
             let padding = { x: fontSize / 2, y: fontSize / 2 };
             let lineMargin = 2;
             let lineHeight = fontSize;
-            let _this = this;
+            //let _this = this;
             this.texts = {};
             this.height(2 * padding.y + (this.data.length * (lineMargin + lineHeight)));
             contents.forEach((row, i) => {
