@@ -1,5 +1,5 @@
 const { Text } = require('./text');
-
+const { Group } = require('./group');
 class CursorInfoBox extends Group {
     constructor(dashboard, options) {
         super(dashboard);
