@@ -1,6 +1,5 @@
 class Group {
     constructor(svg, texts) {
-
         this.svg = svg.append("rect");
         this.texts = texts; //파라메터로 받은 것을 저장
         this.x = 0;
