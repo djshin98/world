@@ -148,24 +148,62 @@
 
             this.style = function(name, value) {
                 this.elements.forEach(ele => {
-                    ele.style = ele.style + ";" + name + ":" + value;
-                })
+                    let str = ele.getAttribute("style");
+                    ele.style = str + ";" + name + ":" + value;
+                });
                 return this;
             };
-            this.width = function() {}
-            this.height = function() {}
-            this.innerWidth = function() {}
-            this.innerHeight = function() {}
-            this.outerWidth = function() {}
-            this.outerHeight = function() {}
+
+            this.width = function(value) {
+                return this.style("width", value + "px");
+            }
+
+            this.height = function(value) {
+                return this.style("height", value + "px");
+            }
+
+            this.innerWidth = function() {
+                let a = [];
+                this.elements.forEach(ele => {
+                    a.push(ele.clientWidth);
+                });
+                return a;
+            }
+
+            this.innerHeight = function() {
+                let a = [];
+                this.elements.forEach(ele => {
+                    a.push(ele.clientHeight);
+                });
+                return a;
+            }
+
+            this.outerWidth = function() {
+                let b = [];
+                this.elements.forEach(ele => {
+                    b.push(ele.offsetWidth);
+                });
+                return b;
+            }
+
+            this.outerHeight = function() {
+                let a = [];
+                this.elements.forEach(ele => {
+                    a.push(ele.offsetHeight);
+                });
+                return a;
+            }
+
             this.hide = function() {
-                // "display:none"
-                return this;
+                return this.style("display", "none");
             };
+
             this.show = function() {
-                // "display:'' "
-                return this;
+                return this.style("display", "");
             };
+
+
+
             this.hasClass = function() {
                 let l = [];
                 this.elements.forEach(ele => {
