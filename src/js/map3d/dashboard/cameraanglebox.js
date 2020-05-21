@@ -5,11 +5,7 @@ class CameraAngleBox extends Group {
     constructor(dashboard, options) {
         super(dashboard, options);
         this.map = dashboard.map;
-        this.width = 0;
-        this.height = 0;
         let _this = this;
-
-
         this.changedEvent = this.map.oliveCamera.listenEvent("changed", (v) => {
             if (_this.texts) {
                 if (v) {
@@ -27,6 +23,9 @@ class CameraAngleBox extends Group {
                 }
             }
         });
+
+        this.width(100);
+        this.height(80);
     }
 
     refresh() {

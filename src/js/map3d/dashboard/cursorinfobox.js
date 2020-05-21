@@ -5,8 +5,7 @@ class CursorInfoBox extends Group {
     constructor(dashboard, options) {
         super(dashboard, options);
         this.map = dashboard.map;
-        this.width = 0;
-        this.height = 0;
+
         //this.update(options);
         let _this = this;
         this.moveEvent = this.map.oliveCursor.listenEvent("move", (v) => {
@@ -28,7 +27,8 @@ class CursorInfoBox extends Group {
                 }
             }
         });
-
+        this.width(100);
+        this.width(100);
     }
     refresh() {
         super.refresh();
