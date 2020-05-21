@@ -27,18 +27,16 @@ class CameraAngleBox extends Group {
 
         this.width(100);
         this.height(80);
+
+        this.data = [
+            { type: "text", name: "heading", label: "heading" },
+            { type: "text", name: "pitch", label: "pitch" },
+            { type: "text", name: "roll", label: "roll" }
+        ]
     }
 
     refresh() {
-        super.refresh();
-        let fontSizeStr = this.svg.style("font-size");
-        let fontSize = fontSizeStr.split("px")[0];
-
-        this.texts = {
-            heading: new Text(this.svg, { label: "heading", x: 15, y: fontSize + "px" }),
-            pitch: new Text(this.svg, { label: "pitch", x: 15, y: fontSize * 2 + "px" }),
-            roll: new Text(this.svg, { label: "roll", x: 15, y: fontSize * 3 + "px" })
-        }
+        super.refresh(this.data);
     }
 
     destroy() {
