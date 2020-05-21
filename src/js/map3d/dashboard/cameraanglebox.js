@@ -11,35 +11,35 @@ class CameraAngleBox extends Group {
 
 
         this.changedEvent = this.map.oliveCamera.listenEvent("changed", (v) => {
-            if (v) {
-                let d = CTX.c2d(v.position);
+            if (_this.texts) {
+                if (v) {
+                    let d = CTX.c2d(v.position);
 
-                let wc = _this.map.center();
-                if (wc.x > 0 && wc.y > 0) {
-                    let w = CTX.w2c(wc.x, wc.y);
-                    if (w) {
-                        let dist = CTX.distance(v.position, w);
-                        _this.texts.cameraDist.text(displayMeter(dist, 2));
+                    let wc = _this.map.center();
+                    if (wc.x > 0 && wc.y > 0) {
+                        let w = CTX.w2c(wc.x, wc.y);
+                        if (w) {
+                            let dist = CTX.distance(v.position, w);
+                            _this.texts.cameraDist.text(displayMeter(dist, 2));
+                        }
                     }
+
+                    _this.texts.cameraLng.text(d.longitude.toFixed(5));
+                    _this.texts.cameraLat.text(d.latitude.toFixed(5));
+
+                    _this.texts.heading.text(CTX.radian2degree(v.heading).toFixed(2) + "°");
+                    _this.texts.pitch.text(CTX.radian2degree(v.pitch).toFixed(2) + "°");
+                    _this.texts.roll.text(CTX.radian2degree(v.roll).toFixed(2) + "°");
+                } else {
+                    _this.texts.cameraDist.text('');
+                    _this.texts.cameraLng.text('');
+                    _this.texts.cameraLat.text('');
+
+                    _this.texts.heading.text('');
+                    _this.texts.pitch.text('');
+                    _this.texts.roll.text('');
                 }
-
-                _this.texts.cameraLng.text(d.longitude.toFixed(5));
-                _this.texts.cameraLat.text(d.latitude.toFixed(5));
-
-                _this.texts.heading.text(CTX.radian2degree(v.heading).toFixed(2) + "°");
-                _this.texts.pitch.text(CTX.radian2degree(v.pitch).toFixed(2) + "°");
-                _this.texts.roll.text(CTX.radian2degree(v.roll).toFixed(2) + "°");
-            } else {
-                _this.texts.cameraDist.text('');
-                _this.texts.cameraLng.text('');
-                _this.texts.cameraLat.text('');
-
-                _this.texts.heading.text('');
-                _this.texts.pitch.text('');
-                _this.texts.roll.text('');
             }
-
-
 
             this.svg = d3.select("#" + this.options.id);
         });
