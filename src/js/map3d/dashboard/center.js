@@ -55,6 +55,49 @@ function center(svg, options) {
             .attr("y1", center.y + radius).attr("y2", center.y + inRadius).attr("stroke", color);
 
 
+    } else if (options.type == "brace") {
+        let inRadius = radius - forcusMargin;
+        svg.append("line")
+            .attr("x1", center.x - radius)
+            .attr("x2", center.x - inRadius)
+            .attr("y1", center.y - radius).attr("y2", center.y - radius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x + inRadius)
+            .attr("x2", center.x + radius)
+            .attr("y1", center.y - radius).attr("y2", center.y - radius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x - radius)
+            .attr("x2", center.x - inRadius)
+            .attr("y1", center.y + radius).attr("y2", center.y + radius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x + inRadius)
+            .attr("x2", center.x + radius)
+            .attr("y1", center.y + radius).attr("y2", center.y + radius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x - radius)
+            .attr("x2", center.x - radius)
+            .attr("y1", center.y - radius).attr("y2", center.y - inRadius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x - radius)
+            .attr("x2", center.x - radius)
+            .attr("y1", center.y + radius).attr("y2", center.y + inRadius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x + radius)
+            .attr("x2", center.x + radius)
+            .attr("y1", center.y - radius).attr("y2", center.y - inRadius).attr("stroke", color);
+
+        svg.append("line")
+            .attr("x1", center.x + radius)
+            .attr("x2", center.x + radius)
+            .attr("y1", center.y + radius).attr("y2", center.y + inRadius).attr("stroke", color);
+
+
     } else if (options.type == "circle") {
         svg.append("circle")
             .attr("cx", center.x)
