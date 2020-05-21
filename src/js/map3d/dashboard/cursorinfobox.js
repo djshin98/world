@@ -9,22 +9,23 @@ class CursorInfoBox extends Group {
         //this.update(options);
         let _this = this;
         this.moveEvent = this.map.oliveCursor.listenEvent("move", (v) => {
-            if (v) {
-                _this.texts.longtitude.text(v.longitude.toFixed(5));
-                _this.texts.latitude.text(v.latitude.toFixed(5));
-                _this.texts.height.text(v.height.toFixed(2) + " m");
-                let cc = _this.map.oliveCamera.position();
-                let vc = CTX.d2c(v);
-                let dist = CTX.distance(cc, vc);
+            if (_this.texts) {
+                if (v) {
+                    _this.texts.longtitude.text(v.longitude.toFixed(5));
+                    _this.texts.latitude.text(v.latitude.toFixed(5));
+                    _this.texts.height.text(v.height.toFixed(2) + " m");
+                    let cc = _this.map.oliveCamera.position();
+                    let vc = CTX.d2c(v);
+                    let dist = CTX.distance(cc, vc);
 
-                _this.texts.distance.text(displayMeter(dist, 2));
-            } else {
-                _this.texts.longtitude.text("");
-                _this.texts.latitude.text("");
-                _this.texts.height.text("");
-                _this.texts.distance.text("");
+                    _this.texts.distance.text(displayMeter(dist, 2));
+                } else {
+                    _this.texts.longtitude.text("");
+                    _this.texts.latitude.text("");
+                    _this.texts.height.text("");
+                    _this.texts.distance.text("");
+                }
             }
-
         });
 
     }
