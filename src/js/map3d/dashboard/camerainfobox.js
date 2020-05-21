@@ -1,4 +1,6 @@
 const { Text } = require('./text');
+const { Group } = require('./group');
+
 
 class CamerInfoBox extends Group {
     constructor(dashboard, options) {
