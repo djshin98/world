@@ -1,10 +1,12 @@
 class Group {
-    constructor(svgObj) {
+    constructor(svgObj, options) {
         this.parent = svgObj;
-        this.x = 0;
-        this.y = 0;
-        this.width = 200;
-        this.height = 200;
+        this.options = Object.assign({
+            x: 0,
+            y: 0,
+            width: 200,
+            height: 200
+        }, options);
     }
 
     refresh() {
@@ -12,10 +14,10 @@ class Group {
         this.rect = this.svg.append("rect");
         let _this = this;
         this.rect
-            .attr("x", this.x)
-            .attr("y", this.y)
-            .attr("width", this.width)
-            .attr("height", this.height)
+            .attr("x", this.options.x)
+            .attr("y", this.options.y)
+            .attr("width", this.options.width)
+            .attr("height", this.options.height)
             .attr("fill", "black")
             .attr("rx", "5")
             .attr("ry", "5")
