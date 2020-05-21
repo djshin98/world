@@ -1,3 +1,4 @@
+const { Text } = require("./text");
 class Group {
     constructor(svgObj, options) {
         this.parent = svgObj;

@@ -42,9 +42,9 @@ class CameraInfoBox extends Group {
 
 
         this.data = [
-            { type: "text", name: "중심 경도", label: "중심 경도" },
-            { type: "text", name: "중심 위도", label: "중심 위도" },
-            { type: "text", name: "거리", label: "거리" }
+            { type: "text", name: "cameraLng", label: "중심 경도" },
+            { type: "text", name: "cameraLat", label: "중심 위도" },
+            { type: "text", name: "cameraDist", label: "거리" }
         ]
     }
 

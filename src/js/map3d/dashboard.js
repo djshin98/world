@@ -25,6 +25,7 @@ class Dashboard {
             new CursorInfoBox(this, { alignment: "lefttop", x: 50, y: 0 }),
             new CameraInfoBox(this, { alignment: "lefttop", x: 50, y: 100 }),
             new CameraAngleBox(this, { alignment: "lefttop", x: 50, y: 200 }),
+            new SlopeGraphBox(this)
         ]
     }
     refresh() {
