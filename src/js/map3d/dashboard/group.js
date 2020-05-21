@@ -3,11 +3,18 @@ class Group {
     constructor(svgObj, options) {
         this.parent = svgObj;
         this.options = Object.assign({
+            alignment: "",
             x: 0,
             y: 0,
             width: 200,
             height: 200
         }, options);
+    }
+    alignment(align) {
+        if (align) {
+            return this.options.alignment = align;
+        }
+        return this.options.alignment;
     }
     width(value) {
         if (value) {
