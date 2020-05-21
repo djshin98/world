@@ -26,7 +26,7 @@ class Group {
         }
         return this.options.height;
     }
-    refresh() {
+    refresh(contents) {
         this.svg = this.parent.svg.append("g");
         this.svg.attr("transform", "translate(" + this.options.x + "," + this.options.y + ")")
         this.rect = this.svg.append("rect");
@@ -42,6 +42,20 @@ class Group {
             .attr("opacity", "0.2")
             .attr("stroke", "white")
             .attr("stroke-width", "1");
+        if (contents) {
+            let fontSize = parseInt(this.svg.style("font-size"));
+            let padding = { x: fontSize / 2, y: fontSize / 2 };
+            let lineMargin = 2;
+            let lineHeight = fontSize;
+            this.texts = {};
+            this.height(2 * padding.y + (this.data.length * (lineMargin + lineHeight)));
+            contents.forEach((row, i) => {
+                if (row.type == "text") {
+                    let y = padding.y + (i * lineMargin) + (i * lineHeight);
+                    this.texts[row.name] = new Text(this.svg, { label: row.label, x: padding.x, y: y });
+                }
+            });
+        }
     }
 
     destory() {
