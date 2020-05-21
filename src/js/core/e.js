@@ -160,9 +160,18 @@ function elements(heles) {
                     styles.push(name + ":" + value);
                 }
                 ele.style = styles.join(";");
+
+                if (callback) {
+                    let v = callback(ele, name, value);
+                    if (v) ele.style(name, v);
+                }
             });
         } else {
-
+            let list = [];
+            this.elements.forEach(ele => {
+                list.push(ele.getAttribute("style"));
+            });
+            return list;
         }
 
         return this;
@@ -172,8 +181,8 @@ function elements(heles) {
         return this.style("width", value ? (value + "px") : undefined, callback);
     }
 
-    this.height = function(value) {
-        return this.style("height", value + "px");
+    this.height = function(value, callback) {
+        return this.style("height", value ? (value + "px") : undefined, callback);
     }
 
     this.innerWidth = function() {
