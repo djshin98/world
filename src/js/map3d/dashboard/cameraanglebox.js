@@ -7,9 +7,7 @@ class CameraAngleBox extends Group {
         this.map = dashboard.map;
         this.width = 0;
         this.height = 0;
-        this.update(options);
         let _this = this;
-
 
 
         this.changedEvent = this.map.oliveCamera.listenEvent("changed", (v) => {
@@ -47,14 +45,6 @@ class CameraAngleBox extends Group {
         });
     }
 
-    update(options) {
-        this.options = Object.assign({}, options);
-        if (this.width > 0 && this.height > 0) {
-            this.refresh();
-        }
-
-    }
-
     refresh() {
         super.refresh();
         this.svg.selectAll("*").remove();
@@ -64,18 +54,9 @@ class CameraAngleBox extends Group {
             pitch: new Text(this.svg, { label: "pitch", x: 15, y: 170 }),
             roll: new Text(this.svg, { label: "roll", x: 15, y: 290 })
         }
-
     }
 
     destroy() {
-        if (this.moveEvent) {
-            this.map.oliveCursor.removeEvent(this.moveEvent);
-            delete(this.moveEvent);
-        }
-        if (this.selectedEvent) {
-            this.map.oliveCursor.removeEvent(this.selectedEvent);
-            delete(this.selectedEvent);
-        }
         if (this.changedEvent) {
             this.map.oliveCamera.removeEvent(this.changedEvent);
             delete(this.changedEvent);
