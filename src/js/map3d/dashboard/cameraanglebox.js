@@ -33,9 +33,9 @@ class CameraAngleBox extends Group {
         super.refresh();
 
         this.texts = {
-            heading: new Text(this.svg, { label: "heading", x: 15, y: 150 }),
-            pitch: new Text(this.svg, { label: "pitch", x: 15, y: 170 }),
-            roll: new Text(this.svg, { label: "roll", x: 15, y: 290 })
+            heading: new Text(this.svg, { label: "heading", x: 15, y: 10 }),
+            pitch: new Text(this.svg, { label: "pitch", x: 15, y: 30 }),
+            roll: new Text(this.svg, { label: "roll", x: 15, y: 50 })
         }
     }
 
