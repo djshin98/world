@@ -134,29 +134,32 @@ section {
                     line-height: 1em;
                     height: 300px;
                     overflow: scroll;
+                    font-size: 12px;
+                    li{
+                        white-space: nowrap;
+                    }
                     input[type=checkbox] {
+                        margin: 0px;
+                    }
+                    input[type=radio] {
                         margin: 0px;
                     }
                     div.file {
                         cursor: pointer;
+                        display:inline-block;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
                         &.clicked {
-                            border: 1px dotted;
-                            background-color: #00398f;
-                            color: white;
+                            border: 1px dotted; background-color: #00398f; color: white;
                         }
                     }
                     div.folder {
                         cursor: pointer;
+                        display:inline-block;
                         background: url(../libs/jquery-treeview/images/folder.gif) 0 0 no-repeat;
                     }
                     div.folder,
                     div.file {
-                        padding: 1px 0 1px 16px;
-                        display: block;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                        white-space: nowrap;
+                        padding: 2px 0 1px 16px;
                     }
                     li.expandable {
                         div.folder {

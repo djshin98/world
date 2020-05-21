@@ -317,9 +317,7 @@ function $$(a) {
     } else if (typeof(a) == "object") {
         if (a instanceof NodeList) {
             let l = [];
-            a.forEach(i => {
-                l.push(i);
-            });
+            a.forEach(i => { l.push(i); });
             return new elements(l);
         } else if (a instanceof HTMLElement) {
             return new elements([a]);
