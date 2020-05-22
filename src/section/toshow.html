@@ -149,41 +149,41 @@
         name: '아군부대',
         group: 'unit',
         collection: "KMilSymbol",
-        type:"check",
+        type: "check",
         id: 'ALLY',
         children: [{
             name: '군단급이상',
             group: 'ally-J',
             id: 'J',
-            type:"check",
+            type: "check",
             collection: "KMilSymbol",
             children: []
         }, {
             name: '여단',
             group: 'ally-H',
             id: 'H',
-            type:"check",
+            type: "check",
             collection: "KMilSymbol",
             children: []
         }, {
             name: '대대',
             group: 'ally-F',
             id: 'F',
-            type:"check",
+            type: "check",
             collection: "KMilSymbol",
             children: []
         }, {
             name: '중대',
             group: 'ally-E',
             id: 'E',
-            type:"check",
+            type: "check",
             collection: "KMilSymbol",
             children: []
         }, {
             name: '함대사/비행(사)단',
             group: 'ally-I',
             id: 'I',
-            type:"check",
+            type: "check",
             collection: "KMilSymbol",
             children: []
         }],
@@ -193,7 +193,7 @@
     }, {
         name: '탄도미사일작전구역',
         group: 'bmoa',
-        type:"check",
+        type: "check",
         collection: "Draw",
         id: 'BMOA',
         children: [],
@@ -203,7 +203,7 @@
     }, {
         name: '적부대',
         group: 'enemy',
-        type:"check",
+        type: "check",
         collection: "KMilSymbol",
         id: 'ENEMY',
         children: [],
@@ -213,7 +213,7 @@
     }, {
         name: '항공기',
         group: 'aircraft',
-        type:"check",
+        type: "check",
         collection: "KMilSymbol",
         id: 'AIRCRAFT',
         children: [],
@@ -223,7 +223,7 @@
     }, {
         name: '함정',
         group: 'ship',
-        type:"check",
+        type: "check",
         collection: "KMilSymbol",
         id: 'SHIP',
         children: [],
@@ -233,7 +233,7 @@
     }, {
         name: '공역 통제',
         group: 'air_control',
-        type:"check",
+        type: "check",
         collection: "Draw",
         id: 'AIRCONTROL',
         children: [],
@@ -243,7 +243,7 @@
     }, {
         name: '항공기 작전 공역',
         group: 'air_area',
-        type:"check",
+        type: "check",
         collection: "Draw",
         id: 'AIRAREA',
         children: [],
@@ -253,7 +253,7 @@
     }, {
         name: '전투지경선',
         group: 'eo_line',
-        type:"check",
+        type: "check",
         collection: "Draw",
         id: 'EOLINE',
         children: [],
@@ -286,15 +286,33 @@
                 },
                 onSelect: function(type, tag, obj) {
                     if (type == "file") {
-                        var __this = obj;
+
+                        //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
+                        // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
+                        //   위도거리는 어디서나 1도=111Km
+
+                        let test = {
+                            General: [{
+                                key: "Layer",
+                                value: obj.name
+                            }, {
+                                key: "Your Name",
+                                value: "Djshin"
+                            }],
+                            Properties: Object.keys(obj).map(key => {
+                                return {
+                                    key: key,
+                                    value: obj[key]
+                                };
+                            })
+                        };
+                        app.setAttributes(test);
+
                         let id = $(tag).data("id");
                         let group = $(tag).data('group');
 
                         map.oliveCamera.flyOverEntity(map.collection(group), id);
 
-                        //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
-                        // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
-                        //   위도거리는 어디서나 1도=111Km
 
                     } else if (type == "folder") {
 
@@ -417,7 +435,7 @@
                         if (Cesium.defined(addCollection)) {
                             addCollection.removeAll();
                             if (checked) {
-                                
+
                                 addCollection.terrianFromDegrees(viewdata.children, function(d) {
                                     d.size = 30;
                                     let entity = addCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);

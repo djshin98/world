@@ -22,10 +22,10 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
-            new CursorInfoBox(this, { alignment: "lefttop", x: 50, y: 0 }),
-            new CameraInfoBox(this, { alignment: "lefttop", x: 50, y: 100 }),
-            new CameraAngleBox(this, { alignment: "lefttop", x: 50, y: 200 }),
-            new SlopeGraphBox(this)
+            new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
+            new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
+            new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
+            //new SlopeGraphBox(this)
         ]
     }
     refresh() {
@@ -44,6 +44,23 @@ class Dashboard {
         }
 
         this.children.forEach((groupbox) => { groupbox.refresh(); });
+        this.alignment();
+    }
+    alignment() {
+        let padding = 5;
+        let margin = 3;
+        let assignValue = {
+            top: { left: 0, right: 0 },
+            bottom: { left: 0, right: 0 },
+            left: { top: 0, bottom: 0 },
+            right: { top: 0, bottom: 0 },
+        }
+        let alignOrder = ["top", "bottom", "left", "right", "lefttop", "leftbottom", "righttop", "rightbottom"];
+        let _this = this;
+        let alignList = alignOrder.map(align => {
+            let list = _this.children.filter(d => { if (d.alignment() == align) { return true; } return false; });
+            return { align: align, list: list };
+        }).filter(d => { return d.list.length > 0 ? true : false; });
     }
     resize(x, y, width, height) {
         this.width = parseInt(width);

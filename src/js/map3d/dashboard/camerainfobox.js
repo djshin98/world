@@ -39,8 +39,6 @@ class CameraInfoBox extends Group {
         });
         this.width(200);
         this.height(80);
-
-
         this.data = [
             { type: "text", name: "cameraLng", label: "중심 경도" },
             { type: "text", name: "cameraLat", label: "중심 위도" },

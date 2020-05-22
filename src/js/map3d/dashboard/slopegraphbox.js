@@ -12,6 +12,9 @@ class SlopeGraphBox extends Group {
             width = 460 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
+        this.width(width);
+        this.height(height);
+        this.translate(margin.left, margin.top);
         // append the svg object to the body of the page
         /*
         var svg = d3.select("#my_dataviz")

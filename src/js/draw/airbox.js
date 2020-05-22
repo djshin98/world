@@ -15,8 +15,8 @@ class AirBox extends DrawObject {
                     outlineColor: viewModel.lineColor,
                     outlineWidth: viewModel.lineWidth,
                     material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
-                    height: 10000,
-                    extrudedHeight: 30000,
+                    height: viewModel.size * 1000,
+                    extrudedHeight: viewModel.shapeSize * 100,
                     extrudedHeightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                 }

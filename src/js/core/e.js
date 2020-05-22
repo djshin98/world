@@ -138,7 +138,31 @@ function elements(heles) {
         });
         this.elements = [];
     }
-
+    this._styleList = function(ele, key, value) {
+        let styles = [];
+        return ele.getAttribute("style").split(";").filter(seg => {
+            let kv = seg.split(":");
+            if (kv.length == 2) {
+                if (key && key == kv[0]) {
+                    if (value && value.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }).map(seg => {
+            let kv = seg.split(":");
+            if (key && key == kv[0]) {
+                return [kv[0], value];
+            } else {
+                return [kv[0], kv[1]];
+            }
+        });
+    }
     this.style = function(name, value, callback) {
         if (value) {
             this.elements.forEach(ele => {
@@ -160,9 +184,18 @@ function elements(heles) {
                     styles.push(name + ":" + value);
                 }
                 ele.style = styles.join(";");
+
+                if (callback) {
+                    let v = callback(ele, name, value);
+                    if (v) ele.style(name, v);
+                }
             });
         } else {
-
+            let list = [];
+            this.elements.forEach(ele => {
+                list.push(ele.getAttribute("style"));
+            });
+            return list;
         }
 
         return this;
@@ -172,8 +205,8 @@ function elements(heles) {
         return this.style("width", value ? (value + "px") : undefined, callback);
     }
 
-    this.height = function(value) {
-        return this.style("height", value + "px");
+    this.height = function(value, callback) {
+        return this.style("height", value ? (value + "px") : undefined, callback);
     }
 
     this.innerWidth = function() {
