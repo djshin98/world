@@ -11,56 +11,56 @@
         children: [{
             name: "Bing Maps Aerial",
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'Bing Maps Road',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'ArcGIS World Street Maps',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'OpenStreetMaps',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'Stamen Maps',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'Natural Earth II (local)',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'USGS Shaded Relief (via WMTS)',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'Stamen Maps',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }, {
             name: 'Stamen Maps',
             type: "radio",
-            group:'baseMap'
+            group: 'baseMap'
         }],
         parse: (parent, arr) => {
-            
+
         }
     }, {
         name: 'DEM',
         children: [{
             name: "Bing Maps Aerial",
             type: "radio",
-            group:'dem'
+            group: 'dem'
         }, {
             name: 'Bing Maps Road',
             type: "radio",
-            group:'dem'
+            group: 'dem'
         }],
         parse: (parent, arr) => {
-            
+
         }
     }, {
         name: '사용자 지도',
@@ -84,11 +84,11 @@
             type: "check",
         }],
         parse: (parent, arr) => {
-            
+
         }
     }];
     app.onReady(function(_app, _map) {
-        new OliveTree("#layer-view", layers,{
+        new OliveTree("#layer-view", layers, {
             onAttribute: function(d) {
                 return {
                     id: d.id
@@ -99,13 +99,17 @@
             },
             onSelect: function(type, tag, obj) {
                 let test = {
-                    General: [
-                        { key: "Layer", value: obj.name },
-                        { key: "Configuration Type", value: "Application(.exe)" }
-                    ],
-                    "Project Defaults": [
-                        { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
-                    ]
+                    General: [{
+                        key: "type",
+                        value: type
+                    }, {
+                        key: "tag",
+                        value: tag
+                    }],
+                    "Property": [{
+                        key: "obj",
+                        value: obj
+                    }]
                 };
                 app.setAttributes(test);
             },

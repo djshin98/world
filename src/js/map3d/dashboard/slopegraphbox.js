@@ -1,7 +1,8 @@
 const d3 = require('d3');
 const { Group } = require('./group');
 class SlopeGraphBox extends Group {
-    constructor() {
+    constructor(dashboard, options) {
+        super(dashboard, options);
 
     }
     refresh() {

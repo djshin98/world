@@ -1,6 +1,5 @@
 const { Text } = require('./text');
-const { Group } = require('./group')
-const { $$ } = require('../../core/e');
+const { Group } = require('./group');
 
 class CameraAngleBox extends Group {
     constructor(dashboard, options) {

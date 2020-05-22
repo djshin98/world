@@ -1,14 +1,21 @@
+var { $$ } = require('../core/e');
+
 function _toggleAttributeDisplay(tag) {
     let table = tag.parentElement.parentElement.parentElement;
     let trs = table.getElementsByClassName("pair");
+    let target = table.getElementsByClassName("fa");
     Object.keys(trs).forEach(key => {
         let tr = trs[key];
         if (tr.style.display == "none") {
             tr.style.display = "";
+            target[0].className = "fa fa-arrow-circle-right";
         } else {
             tr.style.display = "none";
+            //target.className = "fa fa-arrow-circle-right"
+            target[0].className = "fa fa-arrow-circle-down";
         }
     });
+
 }
 global.toggleAttributeDisplay = _toggleAttributeDisplay;
 class OliveAttributes {
