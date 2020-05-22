@@ -25,7 +25,7 @@ class Dashboard {
             new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
             new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
             new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
-            //new SlopeGraphBox(this)
+            new SlopeGraphBox(this, { alignment: "bottom" })
         ]
     }
     refresh() {
@@ -61,7 +61,42 @@ class Dashboard {
             let list = _this.children.filter(d => { if (d.alignment() == align) { return true; } return false; });
             return { align: align, list: list };
         }).filter(d => { return d.list.length > 0 ? true : false; });
+
+        alignList.forEach(av => {
+            switch (av.align) {
+                case "top":
+                    {}
+                    break;
+                case "bottom":
+                    {
+                        av.list.forEach(group => {
+                            //left.bottom = 
+                            //group.translate(bottom.left,)
+                        });
+                    }
+                    break;
+                case "left":
+                    {}
+                    break;
+                case "right":
+                    {}
+                    break;
+                case "lefttop":
+                    {}
+                    break;
+                case "leftbottom":
+                    {}
+                    break;
+                case "righttop":
+                    {}
+                    break;
+                case "rightbottom":
+                    {}
+                    break;
+            }
+        });
     }
+
     resize(x, y, width, height) {
         this.width = parseInt(width);
         this.height = parseInt(height);

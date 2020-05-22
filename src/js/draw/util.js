@@ -82,7 +82,7 @@ var ParabolaUtil = {
                 var lat = degrees.start.latitude;
 
                 var points = [];
-                console.log("parabola : ");
+                //console.log("parabola : ");
                 for (var i = angles.start; i <= (angles.end + ratio); i += ratio) {
                     lon += deltaLon;
                     lat += deltaLat;
@@ -178,8 +178,8 @@ var ParabolaUtil = {
             maxHeight = Math.max(maxHeight, h);
             points.push(CTX.cartesian(lon, lat, h));
         }
-        console.log("q:" + height);
-        console.log("s:" + degrees.start.height + " , e:" + degrees.end.height + ", max:" + maxHeight);
+        // console.log("q:" + height);
+        // console.log("s:" + degrees.start.height + " , e:" + degrees.end.height + ", max:" + maxHeight);
 
         return { points: points, center: center };
     },

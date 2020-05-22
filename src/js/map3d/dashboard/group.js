@@ -36,8 +36,16 @@ class Group {
     }
     translate(x, y) {
         if (this.svg) {
+            this.options.x = x;
+            this.options.y = y;
             this.svg.attr("transform", "translate(" + x + "," + y + ")");
         }
+    }
+    left() {
+        return this.options.x;
+    }
+    top() {
+        return this.options.y;
     }
     refresh(contents) {
         this.svg = this.parent.svg.append("g");
