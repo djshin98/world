@@ -74,7 +74,7 @@ class Group {
         if (this.options.buttons && this.options.buttons.length > 0) {
             this.options.buttons.reverse();
             let topMargin = 5;
-            let margin = 10;
+            let margin = 5;
             let rightStartX = this.width() - padding.x;
             let radius = 5;
             let _this = this;
@@ -131,7 +131,7 @@ class Group {
     createButton(type, g, width, height, onclick) {
         let lineColor = "rgb(192, 192, 192)";
 
-        let box = g.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).attr("fill", "rgba(0, 255, 0, 0)")
+        let box = g.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).attr("fill", "rgba(255, 255, 255, 0.1)")
             .attr("pointer-events", "fill").style('cursor', 'pointer');
         switch (type) {
             case "close":
@@ -145,15 +145,15 @@ class Group {
                 g.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).style("stroke", lineColor);
                 break;
             case "horizontal-max":
-                g.append("line").attr("x1", width / 2).attr("y1", 0).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
-                g.append("line").attr("x1", width / 2).attr("y1", height).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
+                g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
+                g.append("line").attr("x1", 0).attr("y1", height).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
                 break;
             case "vertical-max":
                 g.append("line").attr("x1", 0).attr("y1", height / 2).attr("x2", width / 2).attr("y2", 0).style("stroke", lineColor);
                 g.append("line").attr("x1", width).attr("y1", height / 2).attr("x2", width / 2).attr("y2", 0).style("stroke", lineColor);
                 break;
             case "attribute":
-                g.append("text").text("A").style("fill", lineColor);
+                g.append("text").text("A").attr("x", width / 2).attr("y", 0).attr("text-anchor", "middle").attr("alignment-baseline", "hanging").style("fill", lineColor);
                 break;
         }
         if (box) {

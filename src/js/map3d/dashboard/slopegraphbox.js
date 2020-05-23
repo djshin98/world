@@ -48,17 +48,18 @@ class SlopeGraphBox extends Group {
     update(data) {
         // Create the X axis:
         let _this = this;
+        this.data = data;
         this.x.domain([0, d3.max(data, function(d) { return d.x })]);
         this.graphSvg.selectAll(".myXaxis").transition()
             .duration(3000)
-            .attr("color", "gray")
+            .attr("color", "rgb(192,192,192)")
             .call(this.xAxis);
 
         // create the Y axis
         this.y.domain([0, d3.max(data, function(d) { return d.y })]);
         this.graphSvg.selectAll(".myYaxis")
             .transition()
-            .attr("color", "gray")
+            .attr("color", "rgb(192,192,192)")
             .duration(3000)
             .call(this.yAxis);
 
@@ -79,6 +80,24 @@ class SlopeGraphBox extends Group {
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
+    }
+    attribute() {
+        let test = {
+            General: [{
+                key: "Graph",
+                value: "Line Graph"
+            }, {
+                key: "Your Name",
+                value: "Djshin"
+            }],
+            Properties: this.data.map(d => {
+                return {
+                    key: d.x,
+                    value: d.y
+                };
+            })
+        };
+        app.setAttributes(test);
     }
 }
 
