@@ -72,19 +72,40 @@ class Group {
                 .attr("stroke-width", "1");
         }
         if (this.options.buttons && this.options.buttons.length > 0) {
-            let btns = this.options.buttons.reverse();
+            this.options.buttons.reverse();
             let topMargin = 5;
-            let margin = 2;
+            let margin = 10;
             let rightStartX = this.width() - padding.x;
             let radius = 5;
-            btns.forEach((button, i) => {
+            let _this = this;
+            this.options.buttons.forEach((button, i) => {
                 let x = rightStartX - (radius * 2) * (i + 1) - margin * i;
-                var circle = this.svg.append("g")
-                    .attr("transform", "translate(" + x + "," + topMargin + ")")
-                    .append("circle").attr("cx", radius).attr("cy", radius).attr("r", radius)
-                    .style("fill", '#000')
-                    .attr("pointer-events", "fill");;
-                circle.on("click", function() { alert('click' + i); });
+                var g = this.svg.append("g")
+                    .attr("transform", "translate(" + x + "," + topMargin + ")");
+                _this.createButton(button, g, radius * 2, radius * 2, function(msg) {
+                    switch (msg) {
+                        case "close":
+                            _this.close();
+                            break;
+                        case "min":
+                            _this.min();
+                            break;
+                        case "max":
+                            _this.max();
+                            break;
+                        case "horizontal-max":
+                            _this.horizontalMax();
+                            break;
+                        case "vertical-max":
+                            _this.verticalMax();
+                            break;
+                        case "attribute":
+                            _this.attribute();
+                            break;
+                    }
+                });
+
+
             });
         }
         if (contents) {
@@ -107,7 +128,56 @@ class Group {
     destory() {
         this.svg.remove();
     }
+    createButton(type, g, width, height, onclick) {
+        let lineColor = "rgb(192, 192, 192)";
 
+        let box = g.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).attr("fill", "rgba(0, 255, 0, 0)")
+            .attr("pointer-events", "fill").style('cursor', 'pointer');
+        switch (type) {
+            case "close":
+                g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", width).attr("y2", height).style("stroke", lineColor).style("stroke-width", 2);
+                g.append("line").attr("x1", width).attr("y1", 0).attr("x2", 0).attr("y2", height).style("stroke", lineColor).style("stroke-width", 2);
+                break;
+            case "min":
+                g.append("line").attr("x1", 0).attr("y1", height - 1).attr("x2", width).attr("y2", height - 1).style("stroke", lineColor).style("stroke-width", 2);
+                break;
+            case "max":
+                g.append("rect").attr("x", 0).attr("y", 0).attr("width", width).attr("height", height).style("stroke", lineColor);
+                break;
+            case "horizontal-max":
+                g.append("line").attr("x1", width / 2).attr("y1", 0).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
+                g.append("line").attr("x1", width / 2).attr("y1", height).attr("x2", width).attr("y2", height / 2).style("stroke", lineColor);
+                break;
+            case "vertical-max":
+                g.append("line").attr("x1", 0).attr("y1", height / 2).attr("x2", width / 2).attr("y2", 0).style("stroke", lineColor);
+                g.append("line").attr("x1", width).attr("y1", height / 2).attr("x2", width / 2).attr("y2", 0).style("stroke", lineColor);
+                break;
+            case "attribute":
+                g.append("text").text("A").style("fill", lineColor);
+                break;
+        }
+        if (box) {
+            box.on("click", function() { if (onclick) { onclick(type); } });
+        }
+    }
+    close() {
+        this.destory();
+    }
+    min() {
+
+    }
+    max() {
+
+    }
+    horizontalMax() {
+
+    }
+    verticalMax() {
+
+    }
+    attribute() {
+
+    }
 }
 
 module.exports = { Group: Group };
