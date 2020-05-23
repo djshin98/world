@@ -3,69 +3,82 @@ const { Group } = require('./group');
 class SlopeGraphBox extends Group {
     constructor(dashboard, options) {
         super(dashboard, options);
-
+        this.data = [];
+        let _this = this;
+        this.slopeEvent = this.parent.map.listenEvent("slope", (v) => {
+            if (v) {
+                _this.data = v;
+            } else {
+                _this.data = [];
+            }
+            _this.update(_this.data);
+        });
     }
     refresh() {
         super.refresh();
         // set the dimensions and margins of the graph
-        var margin = { top: 10, right: 30, bottom: 30, left: 60 },
+        var margin = { top: 20, right: 30, bottom: 30, left: 30 },
             width = 460 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            height = 200 - margin.top - margin.bottom;
 
-        this.width(width);
-        this.height(height);
-        this.translate(margin.left, margin.top);
-        // append the svg object to the body of the page
-        /*
-        var svg = d3.select("#my_dataviz")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
-        */
+        this.width(width + (margin.left + margin.right));
+        this.height(height + (margin.top + margin.bottom));
 
         //Read the data
+
+
+        this.graphSvg = this.svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+
+        // Initialise a X axis:
+        this.x = d3.scaleLinear().range([0, width]);
+        this.xAxis = d3.axisBottom().scale(this.x);
+        this.graphSvg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "myXaxis")
+
+        // Initialize an Y axis
+        this.y = d3.scaleLinear().range([height, 0]);
+        this.yAxis = d3.axisLeft().scale(this.y);
+        this.graphSvg.append("g")
+            .attr("class", "myYaxis");
+    }
+    update(data) {
+        // Create the X axis:
         let _this = this;
-        d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
+        this.x.domain([0, d3.max(data, function(d) { return d.x })]);
+        this.graphSvg.selectAll(".myXaxis").transition()
+            .duration(3000)
+            .attr("color", "gray")
+            .call(this.xAxis);
 
-            // When reading the csv, I must format variables:
-            function(d) {
-                return { date: d3.timeParse("%Y-%m-%d")(d.date), value: d.value }
-            },
+        // create the Y axis
+        this.y.domain([0, d3.max(data, function(d) { return d.y })]);
+        this.graphSvg.selectAll(".myYaxis")
+            .transition()
+            .attr("color", "gray")
+            .duration(3000)
+            .call(this.yAxis);
 
-            // Now I can use this dataset:
-            function(data) {
+        // Create a update selection: bind to the new data
+        var u = this.graphSvg.selectAll(".lineTest")
+            .data([data], function(d) { return d.x });
 
-                // Add X axis --> it is a date format
-                var x = d3.scaleTime()
-                    .domain(d3.extent(data, function(d) { return d.date; }))
-                    .range([0, width]);
-                _this.svg.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x));
-
-                // Add Y axis
-                var y = d3.scaleLinear()
-                    .domain([0, d3.max(data, function(d) { return +d.value; })])
-                    .range([height, 0]);
-                _this.svg.append("g")
-                    .call(d3.axisLeft(y));
-
-                // Add the line
-                _this.svg.append("path")
-                    .datum(data)
-                    .attr("fill", "none")
-                    .attr("stroke", "steelblue")
-                    .attr("stroke-width", 1.5)
-                    .attr("d", d3.line()
-                        .x(function(d) { return x(d.date) })
-                        .y(function(d) { return y(d.value) })
-                    )
-
-            })
-
+        // Updata the line
+        u.enter()
+            .append("path")
+            .attr("class", "lineTest")
+            .merge(u)
+            .transition()
+            .duration(3000)
+            .attr("d", d3.line()
+                .x(function(d) { return _this.x(d.x); })
+                .y(function(d) { return _this.y(d.y); }))
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 1.5)
     }
 }
 
