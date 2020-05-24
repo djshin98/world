@@ -75,7 +75,7 @@ class Group {
                 .attr("stroke-width", "1");
         }
         if (this.options.buttons && this.options.buttons.length > 0) {
-            this.options.buttons.reverse();
+            //this.options.buttons.reverse();
             let topMargin = 5;
             let margin = 5;
             let rightStartX = this.width() - this.padding.x;
@@ -174,14 +174,18 @@ class Group {
         this.width(this.parent.width - (this.padding.x * 2));
         this.height(this.parent.height - (this.padding.y * 2));
         this.refresh();
+        this.hmax = true;
+        this.vmax = true;
     }
     horizontalMax() {
         this.width(this.parent.width - (this.padding.x * 2));
         this.refresh();
+        this.hmax = true;
     }
     verticalMax() {
         this.height(this.parent.height - (this.padding.y * 2));
         this.refresh();
+        this.vmax = true;
     }
     attribute() {
 
