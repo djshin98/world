@@ -21,12 +21,6 @@ class SlopeGraphBox extends Group {
         let width = this.width() - margin.left - margin.right;
         let height = this.height() - margin.top - margin.bottom;
 
-        //this.width(width + (margin.left + margin.right));
-        //this.height(height + (margin.top + margin.bottom));
-
-        //Read the data
-
-
         this.graphSvg = this.svg.append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
