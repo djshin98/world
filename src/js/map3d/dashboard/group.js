@@ -170,14 +170,18 @@ class Group {
 
     }
     max() {
-
+        this.translate(0, 0);
+        this.width(this.parent.width - (this.padding.x * 2));
+        this.height(this.parent.height - (this.padding.y * 2));
+        this.refresh();
     }
     horizontalMax() {
         this.width(this.parent.width - (this.padding.x * 2));
         this.refresh();
     }
     verticalMax() {
-
+        this.height(this.parent.height - (this.padding.y * 2));
+        this.refresh();
     }
     attribute() {
 
