@@ -51,10 +51,13 @@ class Group {
         return this.options.y;
     }
     refresh(contents) {
+        if (this.svg) {
+            this.svg.remove();
+        }
         this.svg = this.parent.svg.append("g");
 
         let fontSize = parseInt(this.svg.style("font-size"));
-        let padding = { x: fontSize / 2, y: fontSize / 2 };
+        this.padding = { x: fontSize / 2, y: fontSize / 2 };
 
         this.svg.attr("transform", "translate(" + this.options.x + "," + this.options.y + ")");
         if (this.options.border == true || this.options.transparent == false) {
@@ -75,7 +78,7 @@ class Group {
             this.options.buttons.reverse();
             let topMargin = 5;
             let margin = 5;
-            let rightStartX = this.width() - padding.x;
+            let rightStartX = this.width() - this.padding.x;
             let radius = 5;
             let _this = this;
             this.options.buttons.forEach((button, i) => {
@@ -114,12 +117,12 @@ class Group {
             let lineHeight = fontSize;
             //let _this = this;
             this.texts = {};
-            this.height(padding.y + (this.data.length * (lineMargin + lineHeight)) - lineMargin);
+            this.height(this.padding.y + (this.data.length * (lineMargin + lineHeight)) - lineMargin);
             let _this = this;
             contents.forEach((row, i) => {
                 if (row.type == "text") {
-                    let y = padding.y + (i * lineMargin) + (i * lineHeight);
-                    _this.texts[row.name] = new Text(_this.svg, { label: row.label, x: padding.x, y: y, labelWidth: _this.options.labelWidth });
+                    let y = _this.padding.y + (i * lineMargin) + (i * lineHeight);
+                    _this.texts[row.name] = new Text(_this.svg, { label: row.label, x: _this.padding.x, y: y, labelWidth: _this.options.labelWidth });
                 }
             });
         }
@@ -170,7 +173,8 @@ class Group {
 
     }
     horizontalMax() {
-
+        this.width(this.parent.width - (this.padding.x * 2));
+        this.refresh();
     }
     verticalMax() {
 

@@ -17,12 +17,12 @@ class SlopeGraphBox extends Group {
     refresh() {
         super.refresh();
         // set the dimensions and margins of the graph
-        var margin = { top: 20, right: 30, bottom: 30, left: 30 },
-            width = 460 - margin.left - margin.right,
-            height = 200 - margin.top - margin.bottom;
+        var margin = { top: 20, right: 30, bottom: 30, left: 30 };
+        let width = this.width() - margin.left - margin.right;
+        let height = this.height() - margin.top - margin.bottom;
 
-        this.width(width + (margin.left + margin.right));
-        this.height(height + (margin.top + margin.bottom));
+        //this.width(width + (margin.left + margin.right));
+        //this.height(height + (margin.top + margin.bottom));
 
         //Read the data
 
