@@ -39,37 +39,42 @@ var { Slope } = require('../draw/slope');
 var drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
-    dom: { name: "탐지영역", createFunc: function() { return new Dom(); } },
     line: { name: "선", createFunc: function() { return new Line(); } },
-    polygon: { name: "다각형", createFunc: function() { return new Polygon(); } },
-    radar: { name: "레이더", createFunc: function() { return new Radar(); } },
-    box: { name: "공역박스", createFunc: function() { return new Box(); } },
-    aa_rect: { name: "공역박스2", createFunc: function() { return new Rectangle(); } },
-    aa_circle: { name: "공역원", createFunc: function() { return new AirCircle(); } },
-    bmoa: { name: "BMOA", createFunc: function() { return new Bmoa(); } },
-    arrowline: { name: "화살표", createFunc: function() { return new ArrowLine(); } },
-    milline1: { name: "군사분계선", createFunc: function() { return new MilLine1(); } },
+    point: { name: "점", createFunc: function() { return new Point(); } },
     o: { name: "O", createFunc: function() { return new PointO(); } },
     x: { name: "X", createFunc: function() { return new PointX(); } },
     image: { name: "이미지", createFunc: function() { return new Image(); } },
     imageline: { name: "이미지선", createFunc: function() { return new ImageLine(); } },
-    point: { name: "점", createFunc: function() { return new Point(); } },
-    aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
-    parabola: { name: "포곡선(sin)", createFunc: function() { return new Parabola(); } },
-    quadratic: { name: "포곡선(quadratic)", createFunc: function() { return new Quadratic(); } },
-    air2earth: { name: "공대지(quadratic)", createFunc: function() { return new Air2Earth(); } },
-    visibilityAnalysys: { name: "가시권분석", createFunc: function() { return new VisibilityAnalysys(); } },
-    tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
-    eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
-    wall: { name: "장벽", createFunc: function() { return new Wall(); } },
+    polygon: { name: "다각형", createFunc: function() { return new Polygon(); } },
+    polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
     shootingarc: { name: "사격선(호)", createFunc: function() { return new ShootingArc(); } },
     shootingline: { name: "사격선", createFunc: function() { return new ShootingLine(); } },
-    polygonwithline: { name: "다각형(선)", createFunc: function() { return new PolygonWithLine(); } },
+    dom: { name: "탐지영역", createFunc: function() { return new Dom(); } },
+    visibilityAnalysys: { name: "가시권분석", createFunc: function() { return new VisibilityAnalysys(); } },
+    radar: { name: "레이더", createFunc: function() { return new Radar(); } },
+    arrowline: { name: "화살표", createFunc: function() { return new ArrowLine(); } },
+    milline1: { name: "군사분계선", createFunc: function() { return new MilLine1(); } },
+    eoline: { name: "전투지경선", createFunc: function() { return new LineEO(); } },
+    aa_circle: { name: "공역원", createFunc: function() { return new AirCircle(); } },
+    box: { name: "공역박스", createFunc: function() { return new Box(); } },
+    aa_rect: { name: "공역박스2", createFunc: function() { return new Rectangle(); } },
+    aa_box: { name: "공역박스3", createFunc: function() { return new AirBox(); } },
+    bmoa: { name: "BMOA", createFunc: function() { return new Bmoa(); } },
+    parabola: { name: "포곡선(sin)", createFunc: function() { return new Parabola(); } },
+    quadratic: { name: "포곡선(quadratic)", createFunc: function() { return new Quadratic(); } },
+    quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
+    air2earth: { name: "공대지(quadratic)", createFunc: function() { return new Air2Earth(); } },
+    wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
+<<<<<<< HEAD
+    tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } }
+=======
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     slope: { name: "경사", createFunc: function() { return new Slope(); } }
+>>>>>>> 113e811ec78f4a57d9989753efa6477744e5bc28
 }
+
 
 function registryHandler(key, name, createfunc) {
     if (Cesium.defined(drawLinker[key])) {
