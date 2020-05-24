@@ -17,6 +17,8 @@ function _toggleAttributeDisplay(tag) {
     });
 
 }
+
+
 global.toggleAttributeDisplay = _toggleAttributeDisplay;
 class OliveAttributes {
     constructor(map, options) {
