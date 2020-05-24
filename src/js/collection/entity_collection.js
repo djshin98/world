@@ -6,6 +6,9 @@ class OliveEntityCollection {
         this.objects = [];
         this.options = Object.assign({}, options);
     }
+    getMap() {
+        return this.map;
+    }
     entities() {
         return this.objects;
     }
@@ -82,8 +85,10 @@ class OliveEntityCollection {
             let subs = _this.viewer.entities.values.filter(e => {
                 return (e.parent && e.parent.id == entity.id && e.category && e.category == _this.name) ? true : false
             });
-            subs.forEach(e => { _this.viewer.entities.remove(e);
-                console.log("remove sub : " + e.id); });
+            subs.forEach(e => {
+                _this.viewer.entities.remove(e);
+                console.log("remove sub : " + e.id);
+            });
         });
     }
     _removeEntity(entity, callback) {
