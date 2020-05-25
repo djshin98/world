@@ -76,7 +76,7 @@ class MilMap {
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'
                        }),
-
+            */
 
 
                       
@@ -84,10 +84,12 @@ class MilMap {
                                       url: 'https://a.tile.openstreetmap.org/'
                                   }),
                                  
+                                  /*
                                    imageryProvider: Cesium.createWorldImagery({
                                        style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
                                    }),
                                   
+                                   
                                    terrainProvider: Cesium.createWorldTerrain(),
                                    shadows: false,
                                    scene3DOnly: true, //3차원 화면으로 구성 // ,
@@ -110,7 +112,8 @@ class MilMap {
                                    requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
                                    // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
                                    maximumRenderTimeChange: Infinity,
-                                   navigationInstructionsInitiallyVisible: false, */
+                                   navigationInstructionsInitiallyVisible: false,
+                                   */
             /*
             skyBox: new Cesium.SkyBox({}),
             skyAtmosphere: new Cesium.SkyAtmosphere(),
@@ -190,6 +193,8 @@ class MilMap {
             } else {
                 //alert('Globe was not picked');
             }
+
+            _this.pickedObject = _this.oliveCursor.getSelectedObjFromPoint(mousePosition);
         }, false);
 
         if (this.viewOption.navigation && this.viewOption.navigation == true) {

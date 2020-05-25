@@ -18,10 +18,10 @@ class AirCircle extends DrawObject {
                         outlineColor: viewModel.lineColor,
                         outlineWidth: viewModel.lineWidth,
                         material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
-                        height: 1000,
-                        extrudedHeight: 3000,
-                        extrudedHeightReference: Cesium.HeightReference.NONE,
-                        heightReference: Cesium.HeightReference.NONE
+                        height: viewModel.size * 1000,
+                        extrudedHeight: viewModel.shapeSize * 1000,
+                        extrudedHeightReference: Cesium.HeightReference.NONE ,
+                        heightReference: Cesium.HeightReference.NONE 
                     }
                 });
             }

@@ -22,16 +22,17 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
-            new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
-            new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
-            new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
-            new SlopeGraphBox(this, { alignment: "bottom" })
+            //new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
+            //new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
+            //new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
+            //new SlopeGraphBox(this, { alignment: "bottom" })
         ]
     }
     refresh() {
         this.svg = d3.select("#" + this.options.id);
         this.svg.selectAll("*").remove();
 
+        /*
         if (this.options.center) {
             center(this.svg, {
                 width: this.width,
@@ -42,6 +43,7 @@ class Dashboard {
                 color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
+        */
 
         this.children.forEach((groupbox) => { groupbox.refresh(); });
         this.alignment();
