@@ -67,12 +67,8 @@ var drawLinker = {
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
-<<<<<<< HEAD
-    tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } }
-=======
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     slope: { name: "경사", createFunc: function() { return new Slope(); } }
->>>>>>> 113e811ec78f4a57d9989753efa6477744e5bc28
 }
 
 
