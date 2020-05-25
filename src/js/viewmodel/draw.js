@@ -36,12 +36,14 @@ var { KMilSymbol } = require('../draw/kmilsymbol');
 var { QuadraticTest } = require('../draw/quadratic_test');
 var { DrawModel } = require('../draw/drawmodel');
 var { Slope } = require('../draw/slope');
+var { Alert } = require('../draw/alert');
 
 var drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
     line: { name: "선", createFunc: function() { return new Line(); } },
     point: { name: "점", createFunc: function() { return new Point(); } },
+    alert: { name: "경고", createFunc: function() { return new Alert(); } },
     o: { name: "O", createFunc: function() { return new PointO(); } },
     x: { name: "X", createFunc: function() { return new PointX(); } },
     image: { name: "이미지", createFunc: function() { return new Image(); } },
