@@ -20,8 +20,15 @@ class QuadraticTest extends DrawObject {
 
             let normal_dir = Cesium.Cartesian3.cross(v1, v2, {});
             Cesium.Cartesian3.normalize(normal_dir, normal_dir);
-
-            for (let i = 0; i < 10000; i++) {
+            var i = 1;
+            var incMeter = 4;
+            var maxMeter = 1000 * 4;
+            var handle = setInterval(function() {
+                if (i > maxMeter) {
+                    clearInterval(handle);
+                    return;
+                }
+                i += incMeter;
                 let add_dir = Object.assign({}, normal_dir);
                 add_dir.x *= i;
                 add_dir.y *= i;
@@ -38,42 +45,8 @@ class QuadraticTest extends DrawObject {
                 let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
                 let distrance = CTX.distanceD(degrees.start, degrees.end);
                 //height = distrance / 2;
-                let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
-                console.log("polylinePoints length : " + polylinePoints.points.length);
-
-                let _this = this;
-                var positions = [CTX.c2r(polylinePoints.center[0])];
-                var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
-                Cesium.when(promise, function(updatedPositions) {
-                    let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
-                    let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
-                    collection.add(_this.index, {
-                        polyline: {
-                            positions: cpts,
-                            color: viewModel.shapeColor,
-                            width: 1,
-                            material: heightMeterial,
-                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
-                        }
-                    });
-                    /*
-                    collection.add(_this.index, {
-                        position: cpts[1],
-                        label: {
-                            text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
-                            font: '20px sans-serif',
-                            showBackground: true,
-                            pixelOffset: new Cesium.Cartesian2(0, -20),
-                            eyeOffset: new Cesium.Cartesian3(0, 0, -50),
-                            fillColor: viewModel.shapeColor,
-                            outlineColor: Cesium.Color.BLACK,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 50000)
-                        }
-                    });
-                    */
-                });
-
+                let polylinePoints = ParabolaUtil.quadratic(degrees, 10, height, true);
+                //console.log("polylinePoints length : " + polylinePoints.points.length);
 
                 if (viewModel.frameEnable === true) {
                     polylinePoints.points.forEach(p => {
@@ -95,17 +68,21 @@ class QuadraticTest extends DrawObject {
                         positions: polylinePoints.points.reverse(),
                         color: viewModel.lineColor,
                         width: viewModel.lineWidth,
-                        material: new Cesium.PolylineGlowMaterialProperty({
-                                //color: viewModel.lineColor,
-                                glowPower: 0.3,
-                                taperPower: 0.3,
-                                color: Cesium.Color.PALEGOLDENROD
-                            })
+                        material: viewModel.lineColor
+                            /*new Cesium.PolylineGlowMaterialProperty({
+                                                           //color: viewModel.lineColor,
+                                                           glowPower: 0.3,
+                                                           taperPower: 0.3,
+                                                           color: Cesium.Color.PALEGOLDENROD
+                                                       })*/
                             //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                     };
                     collection.add(this.index, { polyline: option });
                 }
-            }
+            }, 50);
+            //for (let i = 0; i < 10000; i++) {
+
+            //}
         }
     }
 

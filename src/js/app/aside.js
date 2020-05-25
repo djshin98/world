@@ -24,8 +24,8 @@ class Aside {
         this.attributes.set(test);
         //this.load();
     }
-    setAttributes(attrs){
-        if( this.attributes ){
+    setAttributes(attrs) {
+        if (this.attributes) {
             this.attributes.set(attrs);
         }
     }
@@ -73,6 +73,8 @@ class Aside {
             $("#" + this.options.id).show();
             $("#" + this.options.handle.id + ">i").removeClass("left");
             $("#" + this.options.handle.id + ">i").addClass("right");
+            $("#" + this.options.handle.id).addClass("down");
+
             /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
@@ -85,6 +87,7 @@ class Aside {
 
             $("#" + this.options.handle.id + ">i").removeClass("right");
             $("#" + this.options.handle.id + ">i").addClass("left");
+
             /*
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('fade right');

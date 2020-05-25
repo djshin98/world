@@ -1,0 +1,29 @@
+/* This animates the circle when it switches to play */
+
+.animate-circle {
+    transition: stroke-dashoffset 300ms ease-in;
+    stroke-dashoffset: 0;
+    fill: rgba(255, 255, 255, 0);
+    stroke-width: 2px;
+    stroke: white;
+    cursor: pointer;
+    pointer-events: fill;
+}
+
+.animate-circle.play {
+    stroke-dashoffset: 314;
+}
+
+.animate-pause-line {
+    stroke-width: 4px;
+    stroke: white;
+    stroke-linecap: round;
+}
+
+.animate-play-line {
+    stroke-width: 4px;
+    stroke: white;
+    fill: white;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}

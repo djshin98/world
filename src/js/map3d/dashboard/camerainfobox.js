@@ -30,17 +30,11 @@ class CameraInfoBox extends Group {
                     _this.texts.cameraDist.text('');
                     _this.texts.cameraLng.text('');
                     _this.texts.cameraLat.text('');
-
-
-
                 }
             }
 
         });
-        this.width(200);
-        this.height(80);
-
-
+        this.width(120);
         this.data = [
             { type: "text", name: "cameraLng", label: "중심 경도" },
             { type: "text", name: "cameraLat", label: "중심 위도" },

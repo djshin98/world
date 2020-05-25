@@ -94,6 +94,7 @@ var CTX = {
         }
         return !c ? c : CTX.r2d(CTX.c2r(c));
     },
+    c2dA: function(cs) { return cs.map(c => { return CTX.c2d(c) }); },
     c2w: function(c) {
         if (CTX.debug) {
             console.log("c2w : ");

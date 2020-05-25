@@ -12,7 +12,7 @@ var { CTX } = require("./ctx");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 var { DrawCollection } = require("../collection/drawcollection");
-
+var { Eventable } = require('../core/eventable');
 var { WebSocketBroker } = require("../ws/websocket_broker");
 const config = require("../../conf/server.json");
 
@@ -27,8 +27,9 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-class MilMap {
+class MilMap extends Eventable {
     constructor(options) {
+        super();
         this.collectionTypes = {};
         this.collectionTypes["KMilSymbol"] = KMilSymbolCollection;
         this.collectionTypes["Marker"] = MarkerCollection;
@@ -78,41 +79,44 @@ class MilMap {
                        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
                            url: 'https://a.tile.openstreetmap.org/'
                        }),
+            */
 
 
 
-                      
-                                  imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-                                      url: 'https://a.tile.openstreetmap.org/'
-                                  }),
-                                 
-                                   imageryProvider: Cesium.createWorldImagery({
-                                       style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-                                   }),
+            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+                url: 'https://a.tile.openstreetmap.org/'
+            }),
+
+            /*
+             imageryProvider: Cesium.createWorldImagery({
+                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+             }),
                                   
-                                   terrainProvider: Cesium.createWorldTerrain(),
-                                   shadows: false,
-                                   scene3DOnly: true, //3차원 화면으로 구성 // ,
-                                   //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
-                                   animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
-                                   baseLayerPicker: true,
-                                   geocoder: true,
-                                   vrButton: false,
-                                   homeButton: false,
-                                   infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
-                                   sceneModePicker: false,
-                                   selectionIndicator: false,
-                                   creditsDisplay: true,
-                                   //creditContainer: false,
-                                   fullscreenButton: false,
-                                   timeline: true,
-                                   navigationHelpButton: false,
-                                   terrainExaggeration: 1.0, //고도 기복 비율 조정
-                                   shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
-                                   requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
-                                   // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
-                                   maximumRenderTimeChange: Infinity,
-                                   navigationInstructionsInitiallyVisible: false, */
+             
+             terrainProvider: Cesium.createWorldTerrain(),
+             shadows: false,
+             scene3DOnly: true, //3차원 화면으로 구성 // ,
+             //sceneMode: Cesium.SceneMode.SCENE2D, //2차원 화면으로 구성
+             animation: true, //MS BingMap Service 제한하여 불필요한 URL 호출 막음
+             baseLayerPicker: true,
+             geocoder: true,
+             vrButton: false,
+             homeButton: false,
+             infoBox: true, //객체 선택 시 상세정보 표시 기능 활성화
+             sceneModePicker: false,
+             selectionIndicator: false,
+             creditsDisplay: true,
+             //creditContainer: false,
+             fullscreenButton: false,
+             timeline: true,
+             navigationHelpButton: false,
+             terrainExaggeration: 1.0, //고도 기복 비율 조정
+             shouldAnimate: true, //새로추가.. 눈 비 안개를위한 20181005
+             requestRenderMode: false, //throttled이 false이면 매번 화면 갱신으로 FPS 값이 표시됨 f
+             // true 인경우 장면 내 변경 사항에 따라 필요할 때만 프레임 렌더링이 이루어집니다.
+             maximumRenderTimeChange: Infinity,
+             navigationInstructionsInitiallyVisible: false,
+             */
             /*
             skyBox: new Cesium.SkyBox({}),
             skyAtmosphere: new Cesium.SkyAtmosphere(),
@@ -197,6 +201,7 @@ class MilMap {
                 app.drawModel.drawModel(cartesian);
                 _this.bLocateModel = false;
             }
+            _this.pickedObject = _this.oliveCursor.getSelectedObjFromPoint(mousePosition);
         }, false);
 
         if (this.viewOption.navigation && this.viewOption.navigation == true) {

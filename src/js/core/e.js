@@ -138,7 +138,31 @@ function elements(heles) {
         });
         this.elements = [];
     }
-
+    this._styleList = function(ele, key, value) {
+        let styles = [];
+        return ele.getAttribute("style").split(";").filter(seg => {
+            let kv = seg.split(":");
+            if (kv.length == 2) {
+                if (key && key == kv[0]) {
+                    if (value && value.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }).map(seg => {
+            let kv = seg.split(":");
+            if (key && key == kv[0]) {
+                return [kv[0], value];
+            } else {
+                return [kv[0], kv[1]];
+            }
+        });
+    }
     this.style = function(name, value, callback) {
         if (value) {
             this.elements.forEach(ele => {

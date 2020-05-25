@@ -80,6 +80,14 @@ class Section {
             dom.$(_this.path.view + ">.tab").forEach(function(d) { d.classList.remove("active"); });
             dom.$(_this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
             _this.showView(true);
+
+            /*
+            let attrs = {
+                "tag": [{ tag: name }]
+            };
+
+            app.aside.setAttributes(attrs);
+            */
         })();
     }
     toggleView() {

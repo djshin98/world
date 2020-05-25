@@ -2,6 +2,7 @@ const { Text } = require('./text');
 const { Group } = require('./group');
 const { CTX } = require('../ctx');
 const { $$ } = require('../../core/e');
+
 class CursorInfoBox extends Group {
     constructor(dashboard, options) {
         super(dashboard, options);

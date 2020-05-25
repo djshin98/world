@@ -1,4 +1,5 @@
 /* class 가 olive-dashboard 인 element의 스타일을 정의합니다. */
+@import "dashboard/animate.scss";
 
 .olive-dashboard {
     position: absolute;
@@ -11,3 +12,5 @@
     color: white;
     fill: white;
 }
+
+/* dashboard */
