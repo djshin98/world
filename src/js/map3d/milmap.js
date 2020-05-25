@@ -42,6 +42,8 @@ class MilMap {
         this.width = 0;
         this.height = 0;
 
+        this.bLocateModel = false;
+
         var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.1;
@@ -189,6 +191,11 @@ class MilMap {
                 //alert(longitudeString + ', ' + latitudeString);
             } else {
                 //alert('Globe was not picked');
+            }
+
+            if (_this.bLocateModel) {
+                app.drawModel.drawModel(cartesian);
+                _this.bLocateModel = false;
             }
         }, false);
 
