@@ -28,13 +28,14 @@ class Dashboard {
             new CameraAngleBox(this, { alignment: "lefttop", labelWidth: 50 }),
 
             new Animate(this, { alignment: "leftbottom", border: false, transparent: true }),
-            new SlopeGraphBox(this, { alignment: "leftbottom", width: 520, height: 240, buttons: ["close", "min", "horizontal-max", "attribute"] }),
+            new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "min", "horizontal-max", "attribute"] }),
         ]
     }
     refresh() {
         this.svg = d3.select("#" + this.options.id);
         this.svg.selectAll("*").remove();
 
+        /*
         if (this.options.center) {
             center(this.svg, {
                 width: this.width,
@@ -45,6 +46,7 @@ class Dashboard {
                 color: this.options.center.color ? this.options.center.color : "gray"
             });
         }
+        */
 
         this.children.forEach((groupbox) => { groupbox.refresh(); });
         this.alignment();
