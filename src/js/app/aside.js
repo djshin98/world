@@ -1,5 +1,6 @@
 const { get } = require("../util/comm");
 const { OliveAttributes } = require("../ui/olive-attributes");
+const { Eventable } = require("../core/eventable");
 class Aside {
     constructor(app, options) {
         this.app = app;
@@ -11,17 +12,25 @@ class Aside {
         });
 
         this.attributes = new OliveAttributes(this.app.map, { id: this.options.id, caption: "제목" });
-
-        let test = {
-            General: [
-                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" },
-                { key: "Configuration Type", value: "Application(.exe)" }
-            ],
-            "Project Defaults": [
-                { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
-            ]
-        };
-        this.attributes.set(test);
+        /*
+                let test = {
+                    General: [
+                        { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" },
+                        { key: "Configuration Type", value: "Application(.exe)" }
+                    ],
+                    "Project Defaults": [
+                        { key: "Target Platform", value: "WindowsWindowsWindowsWindowsWindows" }
+                    ]
+                };
+                this.attributes.set(test);
+        */
+        this.attributeEvent = Eventable.listenEventAnywhere("attributes", (v) => {
+            if (v) {
+                _this.setAttributes(v);
+            } else {
+                _this.setAttributes({});
+            }
+        });
         //this.load();
     }
     setAttributes(attrs) {

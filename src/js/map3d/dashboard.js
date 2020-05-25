@@ -28,7 +28,11 @@ class Dashboard {
             new CameraAngleBox(this, { alignment: "lefttop", labelWidth: 50 }),
 
             new Animate(this, { alignment: "leftbottom", border: false, transparent: true }),
+<<<<<<< HEAD
+            new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "max", "min", "horizontal-max", "attribute"] }),
+=======
             new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "min", "horizontal-max", "attribute"] }),
+>>>>>>> 266139ed713217a2955ba804c8ea1896537b54c0
         ]
     }
     refresh() {
