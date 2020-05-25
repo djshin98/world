@@ -91,7 +91,7 @@ class SlopeGraphBox extends Group {
                 };
             })
         };
-        app.setAttributes(test);
+        this.fireEvent("attributes", test);
     }
 }
 

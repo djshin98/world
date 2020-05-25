@@ -1,6 +1,8 @@
 const { Text } = require("./text");
-class Group {
+const { Eventable } = require("../../core/eventable");
+class Group extends Eventable {
     constructor(svgObj, options) {
+        super();
         this.parent = svgObj;
         this.options = Object.assign({
             alignment: "",
@@ -12,6 +14,7 @@ class Group {
             transparent: false,
             labelWidth: 0
         }, options);
+        this.windowLayoutStatus = "none";
     }
     alignment(align) {
         if (align) {
@@ -54,6 +57,19 @@ class Group {
         if (this.svg) {
             this.svg.remove();
         }
+        switch (this.windowLayoutStatus) {
+            case "horizontal-max":
+                {
+                    this.width(this.parent.width - (this.padding.x * 2));
+                }
+                break;
+            case "max":
+                {
+                    this.width(this.parent.width - (this.padding.x * 2));
+                    this.height(this.parent.height - (this.padding.y * 2));
+                }
+                break;
+        }
         this.svg = this.parent.svg.append("g");
 
         let fontSize = parseInt(this.svg.style("font-size"));
@@ -86,6 +102,7 @@ class Group {
                 var g = this.svg.append("g")
                     .attr("transform", "translate(" + x + "," + topMargin + ")");
                 _this.createButton(button, g, radius * 2, radius * 2, function(msg) {
+                    _this.windowLayoutStatus = msg;
                     switch (msg) {
                         case "close":
                             _this.close();
@@ -107,8 +124,6 @@ class Group {
                             break;
                     }
                 });
-
-
             });
         }
         if (contents) {

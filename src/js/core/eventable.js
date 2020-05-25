@@ -1,7 +1,18 @@
+var staticListeners = {};
+var staticKey = 1;
+
 class Eventable {
     constructor() {
         this.listeners = {};
         this.key = 1;
+    }
+    static listenEventAnywhere(event, callback) {
+        if (!staticListeners[event]) {
+            staticListeners[event] = {};
+        }
+        let key = "_" + ((staticKey++) + 1);
+        staticListeners[event][key] = callback;
+        return { event: event, key: key };
     }
     listenEvent(event, callback) {
         if (!this.listeners[event]) {
@@ -24,6 +35,13 @@ class Eventable {
         if (evts) {
             Object.keys(evts).forEach((key) => {
                 evts[key](value);
+            })
+        }
+
+        let staticEvts = staticListeners[event];
+        if (staticEvts) {
+            Object.keys(staticEvts).forEach((key) => {
+                staticEvts[key](value);
             })
         }
     }

@@ -23,19 +23,12 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
-<<<<<<< HEAD
-            //new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
-            //new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
-            //new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
-            //new SlopeGraphBox(this, { alignment: "bottom" })
-=======
             new CursorInfoBox(this, { alignment: "lefttop", border: false, transparent: true, labelWidth: 50 }),
             new CameraInfoBox(this, { alignment: "lefttop", labelWidth: 50 }),
             new CameraAngleBox(this, { alignment: "lefttop", labelWidth: 50 }),
 
             new Animate(this, { alignment: "leftbottom", border: false, transparent: true }),
-            new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "min", "horizontal-max", "attribute"] }),
->>>>>>> c4958fda5d7367d0970884aa7dda3909695ab6bc
+            new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "max", "min", "horizontal-max", "attribute"] }),
         ]
     }
     refresh() {
