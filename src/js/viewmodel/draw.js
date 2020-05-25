@@ -34,6 +34,7 @@ var { PolygonWithLine } = require('../draw/polygonwithline');
 var { Spline } = require('../draw/spline');
 var { KMilSymbol } = require('../draw/kmilsymbol');
 var { QuadraticTest } = require('../draw/quadratic_test');
+var { DrawModel } = require('../draw/drawmodel');
 var { Slope } = require('../draw/slope');
 
 var drawLinker = {
@@ -69,6 +70,7 @@ var drawLinker = {
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
+    drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
     slope: { name: "경사", createFunc: function() { return new Slope(); } }
 }
 
@@ -103,7 +105,8 @@ class Draw {
             frameColor: Cesium.Color.WHITE,
             shapeStyle: 'point',
             shapeColor: Cesium.Color.WHITE,
-            shapeSize: 5
+            shapeSize: 5,
+            uri: ""
         };
 
         if (!this.viewer.scene.pickPositionSupported) {
@@ -205,6 +208,12 @@ class Draw {
         }
     }
     drawShape(positionData) {
+        if (Cesium.defined(this.activeDrawHandler)) {
+            return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
+        }
+    }
+    drawModel(positionData) {
+        this.activeDrawHandler = this.getHandler("drawModel");
         if (Cesium.defined(this.activeDrawHandler)) {
             return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
         }
