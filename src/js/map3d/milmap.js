@@ -12,7 +12,7 @@ var { CTX } = require("./ctx");
 var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 var { MarkerCollection } = require("../collection/markercollection");
 var { DrawCollection } = require("../collection/drawcollection");
-
+var { Eventable } = require('../core/eventable');
 var { WebSocketBroker } = require("../ws/websocket_broker");
 const config = require("../../conf/server.json");
 
@@ -27,8 +27,9 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-class MilMap {
+class MilMap extends Eventable {
     constructor(options) {
+        super();
         this.collectionTypes = {};
         this.collectionTypes["KMilSymbol"] = KMilSymbolCollection;
         this.collectionTypes["Marker"] = MarkerCollection;

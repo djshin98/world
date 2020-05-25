@@ -6,6 +6,7 @@ const { CursorInfoBox } = require('./dashboard/cursorinfobox');
 const { CameraInfoBox } = require('./dashboard/camerainfobox');
 const { CameraAngleBox } = require('./dashboard/cameraanglebox');
 const { SlopeGraphBox } = require('./dashboard/slopegraphbox');
+const { Animate } = require('./dashboard/animate');
 class Dashboard {
     constructor(map, options) {
         this.map = map;
@@ -22,10 +23,19 @@ class Dashboard {
             this.refresh();
         }
         this.children = [
+<<<<<<< HEAD
             //new CursorInfoBox(this, { alignment: "lefttop", x: 10, y: 0 }),
             //new CameraInfoBox(this, { alignment: "lefttop", x: 10, y: 70 }),
             //new CameraAngleBox(this, { alignment: "lefttop", x: 10, y: 130 }),
             //new SlopeGraphBox(this, { alignment: "bottom" })
+=======
+            new CursorInfoBox(this, { alignment: "lefttop", border: false, transparent: true, labelWidth: 50 }),
+            new CameraInfoBox(this, { alignment: "lefttop", labelWidth: 50 }),
+            new CameraAngleBox(this, { alignment: "lefttop", labelWidth: 50 }),
+
+            new Animate(this, { alignment: "leftbottom", border: false, transparent: true }),
+            new SlopeGraphBox(this, { alignment: "leftbottom", width: 420, height: 180, buttons: ["close", "min", "horizontal-max", "attribute"] }),
+>>>>>>> c4958fda5d7367d0970884aa7dda3909695ab6bc
         ]
     }
     refresh() {
@@ -50,50 +60,68 @@ class Dashboard {
     }
     alignment() {
         let padding = 5;
-        let margin = 3;
+        let wright = this.width - padding;
+        let wbottom = this.height - padding;
+
         let assignValue = {
-            top: { left: 0, right: 0 },
-            bottom: { left: 0, right: 0 },
-            left: { top: 0, bottom: 0 },
-            right: { top: 0, bottom: 0 },
+            top: { left: padding, right: wright },
+            bottom: { left: padding, right: wright },
+            left: { top: padding, bottom: wbottom },
+            right: { top: padding, bottom: wbottom },
         }
-        let alignOrder = ["top", "bottom", "left", "right", "lefttop", "leftbottom", "righttop", "rightbottom"];
+        let alignOrder = ["lefttop", "leftbottom", "righttop", "rightbottom"];
         let _this = this;
         let alignList = alignOrder.map(align => {
             let list = _this.children.filter(d => { if (d.alignment() == align) { return true; } return false; });
             return { align: align, list: list };
         }).filter(d => { return d.list.length > 0 ? true : false; });
 
+        let margin = 3;
         alignList.forEach(av => {
             switch (av.align) {
-                case "top":
-                    {}
-                    break;
-                case "bottom":
+                case "lefttop": //left,top을 기준으로 아래로 정렬된다.
                     {
                         av.list.forEach(group => {
-                            //left.bottom = 
-                            //group.translate(bottom.left,)
+                            let x = padding;
+                            let y = assignValue.left.top;
+                            group.translate(x, y);
+                            assignValue.top.left = Math.max(assignValue.top.left, padding + group.width() + margin);
+                            assignValue.left.top += group.height() + margin;
                         });
                     }
                     break;
-                case "left":
-                    {}
-                    break;
-                case "right":
-                    {}
-                    break;
-                case "lefttop":
-                    {}
-                    break;
                 case "leftbottom":
-                    {}
+                    {
+                        av.list.forEach(group => {
+                            let x = padding;
+                            let y = assignValue.left.bottom - group.height();
+                            group.translate(x, y);
+                            assignValue.left.bottom = y - margin;
+                            assignValue.bottom.left = Math.max(assignValue.bottom.left, x + group.width() + margin);
+                        });
+                    }
                     break;
                 case "righttop":
-                    {}
+                    {
+                        av.list.forEach(group => {
+                            let x = wright - group.width();
+                            let y = assignValue.right.top;
+                            group.translate(x, y);
+                            assignValue.top.right = Math.min(assignValue.top.right, x - margin);
+                            assignValue.right.top += group.height() + margin;
+                        });
+                    }
                     break;
                 case "rightbottom":
-                    {}
+                    {
+                        av.list.forEach(group => {
+                            let x = wright - group.width();
+                            let y = assignValue.right.bottom - group.height();
+                            group.translate(x, y);
+                            assignValue.right.bottom = y - margin;
+                            assignValue.bottom.right = Math.min(assignValue.bottom.right, x - margin);
+                        });
+                    }
                     break;
             }
         });

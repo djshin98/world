@@ -19,6 +19,30 @@ var SurfaceUtil = {
     }
 }
 var LineUtil = {
+    divides: function(points, divMeter) {
+        var total = 0;
+        var distances = [0.0];
+        var splitByDivMeter = [points[0]];
+        var restMeter = 0;
+        points.reduce((prev, curr) => {
+            let dist = CTX.distance(prev, curr);
+            total += dist;
+            let stackedDist = 0;
+            let unit = Cesium.Cartesian3.normalize(Cesium.Cartesian3.subtract(curr, prev, {}), {});
+            let newPt = Cesium.Cartesian3.clone(prev);
+            while ((dist - stackedDist) >= divMeter) {
+                let pt = Cesium.Cartesian3.multiplyByScalar(unit, divMeter - restMeter, {});
+                newPt = Cesium.Cartesian3.add(newPt, pt, {});
+                stackedDist += divMeter;
+                splitByDivMeter.push(newPt);
+                restMeter = 0;
+            }
+            restMeter = dist - stackedDist;
+            distances.push(CTX.distance(prev, curr));
+            return curr;
+        });
+        return splitByDivMeter;
+    },
     divide: function(start, end, split) {
         let polyline = [];
         let lon = (end.longitude - start.longitude) / split;

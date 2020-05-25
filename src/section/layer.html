@@ -100,11 +100,11 @@
             onSelect: function(type, tag, obj) {
                 let test = {
                     General: [{
-                        key: "Layer",
-                        value: obj.name
+                        key: "type",
+                        value: type
                     }, {
-                        key: "Your Name",
-                        value: "Djshin"
+                        key: "tag",
+                        value: tag
                     }],
                     Properties: Object.keys(obj).map(key => {
                         return {

@@ -17,6 +17,9 @@ class DrawCollection {
         this.viewer = map.viewer3d;
         this.options = Object.assign({}, options);
     }
+    getMap() {
+        return this.map;
+    }
     entities() {
         return this.viewer.entities;
     }
