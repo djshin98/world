@@ -44,6 +44,7 @@ class MilMap extends Eventable {
         this.height = 0;
 
         this.bLocateModel = false;
+        this.modelUri = "";
 
         var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
@@ -197,10 +198,13 @@ class MilMap extends Eventable {
                 //alert('Globe was not picked');
             }
 
+            /*
             if (_this.bLocateModel) {
                 app.drawModel.drawModel(cartesian);
                 _this.bLocateModel = false;
             }
+            */
+            _this.draw3DModel(cartesian, _this.modelUri);
             _this.pickedObject = _this.oliveCursor.getSelectedObjFromPoint(mousePosition);
         }, false);
 
@@ -509,6 +513,19 @@ class MilMap extends Eventable {
     tileset() {
         let ts = new Tileset(this.viewer3d);
         ts.create();
+    }
+
+    draw3DModel(position, modeluri) {
+        if (this.bLocateModel) {
+            CTX.viewer.entities.add({
+                position: position,
+                model: {
+                    uri: modeluri,
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                }
+            });
+            this.bLocateModel = false;
+        }
     }
 
     add3DModel(x, y, z, model, name) {
