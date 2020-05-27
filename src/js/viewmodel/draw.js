@@ -70,10 +70,7 @@ var drawLinker = {
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
-<<<<<<< HEAD
-=======
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
->>>>>>> 266139ed713217a2955ba804c8ea1896537b54c0
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
     slope: { name: "경사", createFunc: function() { return new Slope(); } }

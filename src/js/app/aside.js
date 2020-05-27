@@ -31,6 +31,8 @@ class Aside {
                 _this.setAttributes({});
             }
         });
+
+        this.showView();
         //this.load();
     }
     setAttributes(attrs) {
@@ -47,6 +49,8 @@ class Aside {
             }
         });
     }
+
+
     getWidth() {
 
         if (this.options.visible) {
@@ -78,6 +82,13 @@ class Aside {
         }
     }
     showView(bshow) {
+
+        var contents = document.getElementById(this.options.id).innerHTML;
+
+        if (contents == "") {
+            bshow = false;
+        }
+
         if (bshow) {
             $("#" + this.options.id).show();
             $("#" + this.options.handle.id + ">i").removeClass("left");
@@ -93,7 +104,6 @@ class Aside {
 
         } else {
             $("#" + this.options.id).hide();
-
             $("#" + this.options.handle.id + ">i").removeClass("right");
             $("#" + this.options.handle.id + ">i").addClass("left");
 
@@ -105,10 +115,13 @@ class Aside {
                 $(".section-view").transition('bounce');
             }*/
         }
+
         this.options.visible = bshow;
         this.app.onResize();
     }
 };
+
+
 
 module.exports = {
     Aside: Aside
