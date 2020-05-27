@@ -37,6 +37,7 @@ var { QuadraticTest } = require('../draw/quadratic_test');
 var { DrawModel } = require('../draw/drawmodel');
 var { Slope } = require('../draw/slope');
 var { Alert } = require('../draw/alert');
+var { DrawConstruction } = require('../draw/drawconstruction');
 
 var drawLinker = {
 
@@ -73,6 +74,7 @@ var drawLinker = {
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
+    drawConstruction: { name: "건물", createFunc: function() { return new DrawConstruction(); } },
     slope: { name: "경사", createFunc: function() { return new Slope(); } }
 }
 
