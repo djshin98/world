@@ -21,12 +21,11 @@ class Line extends DrawObject {
             var d = new Cesium.Cartesian3.distance(points[0], points[1]);
 
             return collection.add(this.index, {
-                poistion: points[0],
+                position: points[0],
                 polyline: option,
                 label: {
-                    text: "la"
+                    text: "TEST\n"
                 }
-
             });
         }
     }
