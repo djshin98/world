@@ -8,14 +8,6 @@ class Line extends DrawObject {
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {
 
-            var lg = new Cesium.LableGraphics();
-
-            var lg = {
-                show: true,
-                text: 'km',
-                font: '30px sans-serif',
-            };
-
 
             let option = {
                 positions: points,
@@ -24,8 +16,17 @@ class Line extends DrawObject {
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
+
+
+            var d = new Cesium.Cartesian3.distance(points[0], points[1]);
+
             return collection.add(this.index, {
-                polyline: option
+                poistion: points[0],
+                polyline: option,
+                label: {
+                    text: "la"
+                }
+
             });
         }
     }
