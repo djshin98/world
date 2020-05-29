@@ -28,8 +28,8 @@ class Image extends DrawObject {
 
 
             var carto = CTX.c2r(points[0]);
-            var lo = 0.1 / 100 * (Math.PI / 180); //이미지 크기에 
-            var la = 0.1 / 100 * (Math.PI / 180);
+            var lo = 0.1 / 100 * viewModel.size *(Math.PI / 180); //이미지 크기에 
+            var la = 0.1 / 100 * viewModel.size *(Math.PI / 180);
 
             carto.longitude -= lo;
             carto.latitude -= la;
