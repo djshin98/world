@@ -25,13 +25,14 @@ class Line extends DrawObject {
                     collection.add(this.index, {
                         position: a,
                         label: {
-                            text: d + "m",
+                            text: CTX.displayMeter(d,3),
                             font: '15px sans-serif',
                             fillColor: Cesium.Color.WHITE,
                             showBackground: true,
                             backgroundColor: Cesium.Color( 1,1,1,1 ),
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                         }
+                        
                     });
                 }
             }
