@@ -85,7 +85,7 @@ class JusoSearch extends Eventable {
                             response.result.items.forEach(function(d, i) {
                                 str1 += "<div class='item'>";
                                 str1 += "<i class='map marker icon'></i>";
-                                str1 += "<div class='juso' onclick='flyPosition(" + d.point.x + ", " + d.point.y + "); app.section.getPlugin(\"JusoSearch\").setAttribute(" + d.point.x + ", " + d.point.y + ")'>";
+                                str1 += "<div class='juso' onclick='flyPosition(" + d.point.x + ", " + d.point.y + "); app.section.getPlugin(\"JusoSearch\").setAttribute(this," + d.point.x + ", " + d.point.y + ")'>";
                                 if (t.type == "place") {
                                     var title = d.title ? d.title : (d.bldnm ? d.bldnm : "");
                                     str1 += "<a class='header'>" + title + "</a>";
@@ -229,15 +229,26 @@ class JusoSearch extends Eventable {
             }
         });
     }
-    setAttribute(x, y) {
+    setAttribute(ele, x, y) {
+        var header = ele.getElementsByClassName("header")[0].innerText;
+        var description = ele.getElementsByClassName("description")[0].innerText;
         var attr = {
             Position: [{
                     key: "X",
-                    value: x
+                    value: x.toFixed(5)
                 },
                 {
                     key: "Y",
-                    value: y
+                    value: y.toFixed(5)
+                }
+            ],
+            Adress: [{
+                    key: "지역",
+                    value: header
+                },
+                {
+                    key: "주소",
+                    value: description
                 }
             ]
         };
