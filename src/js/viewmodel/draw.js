@@ -28,6 +28,7 @@ var { Air2Earth } = require('../draw/air2earth');
 var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
 var { LineEO } = require('../draw/line_eo');
+var { MeasureDistance } = require('../draw/measuredistance');
 var { Wall } = require('../draw/wall');
 var { ShootingArc } = require('../draw/shootingarc');
 var { PolygonWithLine } = require('../draw/polygonwithline');
@@ -38,6 +39,7 @@ var { DrawModel } = require('../draw/drawmodel');
 var { Slope } = require('../draw/slope');
 var { Alert } = require('../draw/alert');
 var { DrawConstruction } = require('../draw/drawconstruction');
+var { Corn } = require('../draw/corn');
 
 var drawLinker = {
 
@@ -75,7 +77,10 @@ var drawLinker = {
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
     drawConstruction: { name: "건물", createFunc: function() { return new DrawConstruction(); } },
-    slope: { name: "경사", createFunc: function() { return new Slope(); } }
+    slope: { name: "경사", createFunc: function() { return new Slope(); } },
+    measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
+    corn: { name: "콘", createFunc: function() { return new Corn(); } },
+    
 }
 
 
