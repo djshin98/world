@@ -15,7 +15,7 @@ class Corn extends DrawObject {
         v2 = Cesium.Cartesian3.subtract(v2, points[0], {});
         let THETA = CTX.θ(points[0], points[1], points[2]);
         //let THETA = Math.PI / 180;
-        let len = THETA * 100;
+        let len = THETA * 10;
         let a = len * Math.tan(THETA);
 
         /*
