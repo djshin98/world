@@ -79,7 +79,7 @@ class QuadraticTest extends DrawObject {
                     };
                     collection.add(this.index, { polyline: option });
                 }
-            }, 50);
+            }, 100);
             //for (let i = 0; i < 10000; i++) {
 
             //}

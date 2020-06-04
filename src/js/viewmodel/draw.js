@@ -28,19 +28,25 @@ var { Air2Earth } = require('../draw/air2earth');
 var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
 var { TangentPlane } = require('../draw/tangentplane');
 var { LineEO } = require('../draw/line_eo');
+var { MeasureDistance } = require('../draw/measuredistance');
 var { Wall } = require('../draw/wall');
 var { ShootingArc } = require('../draw/shootingarc');
 var { PolygonWithLine } = require('../draw/polygonwithline');
 var { Spline } = require('../draw/spline');
 var { KMilSymbol } = require('../draw/kmilsymbol');
 var { QuadraticTest } = require('../draw/quadratic_test');
+var { DrawModel } = require('../draw/drawmodel');
 var { Slope } = require('../draw/slope');
+var { Alert } = require('../draw/alert');
+var { DrawConstruction } = require('../draw/drawconstruction');
+var { Corn } = require('../draw/corn');
 
 var drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
     line: { name: "선", createFunc: function() { return new Line(); } },
     point: { name: "점", createFunc: function() { return new Point(); } },
+    alert: { name: "경고", createFunc: function() { return new Alert(); } },
     o: { name: "O", createFunc: function() { return new PointO(); } },
     x: { name: "X", createFunc: function() { return new PointX(); } },
     image: { name: "이미지", createFunc: function() { return new Image(); } },
@@ -69,7 +75,12 @@ var drawLinker = {
     kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
-    slope: { name: "경사", createFunc: function() { return new Slope(); } }
+    drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
+    drawConstruction: { name: "건물", createFunc: function() { return new DrawConstruction(); } },
+    slope: { name: "경사", createFunc: function() { return new Slope(); } },
+    measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
+    corn: { name: "콘", createFunc: function() { return new Corn(); } },
+    
 }
 
 
@@ -103,7 +114,8 @@ class Draw {
             frameColor: Cesium.Color.WHITE,
             shapeStyle: 'point',
             shapeColor: Cesium.Color.WHITE,
-            shapeSize: 5
+            shapeSize: 5,
+            uri: ""
         };
 
         if (!this.viewer.scene.pickPositionSupported) {
@@ -205,6 +217,12 @@ class Draw {
         }
     }
     drawShape(positionData) {
+        if (Cesium.defined(this.activeDrawHandler)) {
+            return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
+        }
+    }
+    drawModel(positionData) {
+        this.activeDrawHandler = this.getHandler("drawModel");
         if (Cesium.defined(this.activeDrawHandler)) {
             return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
         }
