@@ -40,6 +40,7 @@ var { Slope } = require('../draw/slope');
 var { Alert } = require('../draw/alert');
 var { DrawConstruction } = require('../draw/drawconstruction');
 var { Corn } = require('../draw/corn');
+var { Radar2 } = require('../draw/radar2');
 
 var drawLinker = {
 
@@ -80,6 +81,7 @@ var drawLinker = {
     slope: { name: "경사", createFunc: function() { return new Slope(); } },
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
+    radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
     
 }
 

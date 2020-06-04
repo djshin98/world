@@ -1,4 +1,5 @@
 var { DrawObject } = require('./drawobject');
+var { CTX } = require('../map3d/ctx');
 
 class Corn extends DrawObject {
     constructor() {
