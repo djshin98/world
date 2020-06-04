@@ -144,7 +144,7 @@ class DrawObject {
         if (style != "line") {
             //return Cesium.Material.fromType('Dot');
 
-            return Cesium.PolylineDashMaterialProperty({
+            return new Cesium.PolylineDashMaterialProperty({
                 color: color,
                 dashPattern: this.dashPatternFromString(style, (width) % 8)
             });

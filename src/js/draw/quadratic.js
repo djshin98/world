@@ -12,7 +12,7 @@ class Quadratic extends DrawObject {
                 start: CTX.c2d(points[0]),
                 end: CTX.c2d(points[1])
             }
-            let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
+            let height = viewModel.size*100 + Math.max(degrees.start.height, degrees.end.height);
             let distrance = CTX.distanceD(degrees.start, degrees.end);
             //height = distrance / 2;
             let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
@@ -74,7 +74,7 @@ class Quadratic extends DrawObject {
                             //color: viewModel.lineColor,
                             glowPower: 0.3,
                             taperPower: 0.3,
-                            color: Cesium.Color.PALEGOLDENROD
+                            color: viewModel.faceColor
                         })
                         //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                 };
