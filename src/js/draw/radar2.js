@@ -38,17 +38,22 @@ class Radar2 extends DrawObject {
 
             let horizenVector = Object.assign({}, points[0]);
             horizenVector = CTX.c2r(horizenVector);
-            horizenVector.latitude += 0.02;
+            horizenVector.longitude += 0.02;
             horizenVector = CTX.r2c(horizenVector);
-            horizenVector = Cesium.Cartesian3.subtract(horizenVector, points[0], {});
-            horizenVector = Cesium.Cartesian3.normalize(horizenVector, {});
+            //horizenVector = Cesium.Cartesian3.subtract(horizenVector, points[0], {});
+            //horizenVector = Cesium.Cartesian3.normalize(horizenVector, {});
 
             let laPoint = Object.assign(points[0]);
             laPoint = CTX.c2r(laPoint);
-            let laPoint2 = Object.assign(points[1]);
+            let laPoint2 = Object.assign(m2);
             laPoint2 = CTX.c2r(laPoint2);
 
             let degree = (laPoint.latitude < laPoint2.latitude) ? 180.0 - (CTX.θ(points[0], horizenVector, m2)) : 180.0 + (CTX.θ(points[0], horizenVector, m2));
+
+            let vector1 = Cesium.Cartesian3.subtract(points[1], points[0], {});
+            let vector2 = Cesium.Cartesian3.subtract(points[2], points[0], {});
+            let normalVector = Cesium.Cartesian3.cross(vector1, vector2, {});
+            //let degree = (Cesium.Cartesian3.dot(normalVector, points[0]) > 0) ? 180.0 - (CTX.θ(points[0], horizenVector, m2)) : 180.0 + (CTX.θ(points[0], horizenVector, m2));
 
             //let normal = Cesium.Cartesian3.cross(sv2, v2, {});
             //normal = Cesium.Cartesian3.negate(normal, {});
