@@ -50,29 +50,12 @@ class Radar2 extends DrawObject {
 
             let degree = (laPoint.latitude < laPoint2.latitude) ? 180.0 - (CTX.θ(points[0], horizenVector, m2)) : 180.0 + (CTX.θ(points[0], horizenVector, m2));
 
-            //let normal = Cesium.Cartesian3.cross(sv2, v2, {});
-            //normal = Cesium.Cartesian3.negate(normal, {});
-            //var q = Cesium.Quaternion.fromAxisAngle(normal, CTX.θ(points[0], points[1], points[2]), {});
-            //var sampleposition = new Cesium.SampledProperty(Cesium.Cartesian3);
-            //var date = Cesium.JulianDate.fromIso8601('2020-01-01T00:00:00.00Z');
-            //sampleposition.addSample(date, sv);
-            //var q = new Cesium.VelocityOrientationProperty(sampleposition);
-            //var q = Cesium.Quaternion.fromAxisAngle(normal, Cesium.Math.PI * 0.2);
-
-            var q = Cesium.Quaternion.fromHeadingPitchRoll(
-                new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0.0), Cesium.Math.toRadians(0.0), Cesium.Math.toRadians(radianCone)), {}
-            );
             var hpr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(degree), Cesium.Math.toRadians(30.0), Cesium.Math.toRadians(0.0));
             var orientation = Cesium.Transforms.headingPitchRollQuaternion(
                 points[0],
                 hpr
             );
-            /*
-            var orientation = Cesium.Transforms.headingPitchRollQuaternion(
-                points[0],
-                new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0.0), radianCone* (180 / Cesium.Math.PI), Cesium.Math.PI/0.6)
-                );
-                */
+          
 
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
