@@ -72,7 +72,7 @@ class Radar2 extends DrawObject {
                 points[0],
                 hpr
             );
-
+          
 
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {

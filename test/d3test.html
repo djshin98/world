@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+</head>
+<body>
+    
+    
+<script>
+
+    var html = d3.selectAll("body")
+    .append("svg")
+    .attr('width', '500')
+    .attr('height', '500')
+    .append('g');
+    
+    var rect = html.append("rect")
+    .attr('x', '50')
+    .attr('y', '50')
+    .attr('rx', '20')
+    .attr('ry', '20')
+    .attr('width', '200')
+    .attr('height', '100')
+    .style('fill', 'skyblue');
+
+    var path = html.append("path");
+
+    var data = 
+    [{x:150, y:149},
+    {x:170, y: 149},
+    {x:160, y:180}];
+
+    var lineFunction = d3.svg.line().x(function(d) {return d.x;}).y(function(d) {return d.y;}).interpolate("linear");
+
+
+    path
+    .attr("d", lineFunction(data))
+    .attr("fill", "skyblue");
+
+    </script>
+</body>
+</html>
+
+<!--
+    <svg width="500" height="500">
+    <rect x="50" y="50" rx="20" ry="20" width="200" height="100" style="fill:skyblue;"></rect>
+    <path d="M 150 149 L 170 149 L 160 180 z" fill="skyblue" />
+    </svg>
+-->
