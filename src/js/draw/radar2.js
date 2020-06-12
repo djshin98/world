@@ -26,8 +26,6 @@ class Radar2 extends DrawObject {
             p2 = this.setHeightCartensian(p2, centerHeight);
 
             let m = CTX.cmidpoint(p1, p2);
-            let sv = CTX.csubstract(m, center);
-            sv = CTX.cnormalize(sv);
 
             //center부터 동쪽으로 뻗어있는 수평선으로 부터 p1과 p2의 중심점 m의 각도를 구하기 위해 다음과 같이 horizen을 구한다
             let horizenVector = Object.assign({}, center);
