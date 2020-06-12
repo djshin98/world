@@ -42,19 +42,10 @@ class MeasureDistance extends DrawObject {
                     collection.add(this.index, {
                         position: a,
                         billboard: {
-<<<<<<< HEAD
-                            width: 300,
-                            height: 300,
-                            image: testd3,                            
-                            heightReference: new Cesium.CallbackProperty(function(){
-                                return Cesium.HeightReference.CLAMP_TO_GROUND;
-                            }, false)
-=======
                             width: 1000,
                             height: 1000,
-                            image: img64,
+                            image: testd3,
                             heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
->>>>>>> 39f7f8407086efde381a07c2a902a736ed55a323
                         }
 
                     });
