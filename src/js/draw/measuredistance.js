@@ -44,7 +44,7 @@ class MeasureDistance extends DrawObject {
                         billboard: {
                             width: 1000,
                             height: 1000,
-                            image: img64,
+                            image: testd3,
                             heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                         }
 
