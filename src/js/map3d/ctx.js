@@ -142,6 +142,18 @@ var CTX = {
         let result = Cesium.Cartesian3.add(x, y, {})
         return result;
     },
+    csubtract: function(x, y) {
+        let result = Cesium.Cartesian3.subtract(x, y, {})
+        return result;
+    },
+    cmidpoint: function(x, y) {
+        let result = Cesium.Cartesian3.midpoint(x, y, {})
+        return result;
+    },
+    cnormalize: function(x) {
+        let result = Cesium.Cartesian3.normalize(x, {})
+        return result;
+    },
     displayMeter: function(f, d) {
         if (f >= 1000) {
             return (f / 1000).toFixed(d) + " km";
