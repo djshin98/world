@@ -50,8 +50,6 @@ class Radar2 extends DrawObject {
 
             let degree = (laPoint.latitude < laPoint2.latitude) ? 180.0 - (CTX.θ(points[0], horizenVector, m2)) : 180.0 + (CTX.θ(points[0], horizenVector, m2));
 
-<<<<<<< HEAD
-=======
             let vector1 = Cesium.Cartesian3.subtract(points[1], points[0], {});
             let vector2 = Cesium.Cartesian3.subtract(points[2], points[0], {});
             let normalVector = Cesium.Cartesian3.cross(vector1, vector2, {});
@@ -69,13 +67,12 @@ class Radar2 extends DrawObject {
             var q = Cesium.Quaternion.fromHeadingPitchRoll(
                 new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(0.0), Cesium.Math.toRadians(0.0), Cesium.Math.toRadians(radianCone)), {}
             );
->>>>>>> 39f7f8407086efde381a07c2a902a736ed55a323
             var hpr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(degree), Cesium.Math.toRadians(30.0), Cesium.Math.toRadians(0.0));
             var orientation = Cesium.Transforms.headingPitchRollQuaternion(
                 points[0],
                 hpr
             );
-          
+
 
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
