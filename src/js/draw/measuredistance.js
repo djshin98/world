@@ -2,7 +2,7 @@ var { DrawObject } = require('./drawobject');
 //var {d3} = require('../../../node_modules/d3/index.js');
 var d3 = require('d3');
 
-var { SvgToImage } = require('../util/svgtoimage');
+var {SvgToImage} = require('../util/svgtoimage');
 
 
 class MeasureDistance extends DrawObject {
@@ -19,7 +19,7 @@ class MeasureDistance extends DrawObject {
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-
+            
             var stoi = new SvgToImage();
 
             var total = 0;
@@ -32,25 +32,25 @@ class MeasureDistance extends DrawObject {
                     var a = Cesium.Cartesian3.add(dv, points[i], {});
 
                     total += d
-
+                    
                     //var imageURL = this.svg(d);
                     //var img64 = this.svg2img(d);
 
                     var testd3 = stoi.svgtoimage(CTX.displayMeter(d));
-
+                    
 
                     collection.add(this.index, {
                         position: a,
                         billboard: {
-                            width: 1000,
-                            height: 1000,
+                            width: 300,
+                            height: 300,
                             image: testd3,
-                            heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                         }
 
                     });
 
-
+                    
                 }
             }
 
@@ -58,17 +58,17 @@ class MeasureDistance extends DrawObject {
             var testtotal = stoi.svgtoimage("total:" + CTX.displayMeter(total));
 
             collection.add(this.index, {
-                position: points[points.length - 1],
+                position: points[points.length -1],
                 billboard: {
                     width: 300,
                     height: 300,
-                    image: testtotal,
-                    heightReference: new Cesium.CallbackProperty(function() {
+                    image: testtotal,                            
+                    heightReference: new Cesium.CallbackProperty(function(){
                         return Cesium.HeightReference.CLAMP_TO_GROUND;
                     }, false)
                 }
             })
-
+           
             collection.add(this.index, {
                 position: a,
                 polyline: option,
@@ -182,66 +182,67 @@ class MeasureDistance extends DrawObject {
 
     testd3(text) {
         var template
-        if (document.getElementsByTagName('template').length == 0) {
+        if(document.getElementsByTagName('template').length == 0){
             template = document.createElement('template');
-        } else {
+        }
+        else{
             template = document.getElementsByTagName('template')[0];
         }
-
+        
         template.innerHTML = "#document-fragment";
         document.body.appendChild(template);
 
-        var r = d3.selectAll("svg");
-        r.remove();
-
-
+       var r = d3.selectAll("svg");
+       r.remove();
+       
+       
 
         var html = d3.selectAll("template")
-            .append("svg")
-            .attr('width', '500')
-            .attr('height', '500')
-            .append('g')
-            .style('font-color', 'black');
-
-
+        .append("svg")
+        .attr('width', '500')
+        .attr('height', '500')
+        .append('g')
+        .style('font-color', 'black');
+        
+        
 
         var rect = html.append("rect")
-            .attr('x', '50')
-            .attr('y', '50')
-            .attr('rx', '20')
-            .attr('ry', '20')
-            .attr('width', '200')
-            .attr('height', '100')
-            .style('fill', 'skyblue');
+        .attr('x', '50')
+        .attr('y', '50')
+        .attr('rx', '20')
+        .attr('ry', '20')
+        .attr('width', '200')
+        .attr('height', '100')
+        .style('fill', 'skyblue');
 
         html
-            .append('text')
-            .text(text)
-            .attr("x", "135")
-            .attr("y", "110")
-            .attr("font-size", "20px")
-            .attr("fill", "black");
-
-
+        .append('text')
+        .text(text)
+        .attr("x", "135")
+        .attr("y", "110")
+        .attr("font-size", "20px")
+        .attr("fill", "black");
+        
+       
 
         //html.append("text").text("displayMeter" + "m");
         var path = html.append("path");
 
-        var data = [{ x: 150, y: 149 },
-            { x: 170, y: 149 },
-            { x: 160, y: 180 }
-        ];
+        var data = 
+        [{x:150, y:149},
+        {x:170, y: 149},
+        {x:160, y:180}];
 
 
 
-        var lineFunction = d3.line().x(function(d) { return d.x; }).y(function(d) { return d.y; });
+        var lineFunction = d3.line().x(function(d) {return d.x;}).y(function(d) {return d.y;});
 
 
         path
-            .attr("d", lineFunction(data))
-            .attr("fill", "skyblue");
+        .attr("d", lineFunction(data))
+        .attr("fill", "skyblue");
 
-
+        
         var svg = document.querySelector('template');
         svg = svg.firstChild;
         //svg = svg.getElementsByTagName("svg").innerHTML;
@@ -251,8 +252,8 @@ class MeasureDistance extends DrawObject {
         var b64start = 'data:image/svg+xml;base64,';
         var image64 = b64start + svg64;
         return image64;
-
-
+        
+    
     };
 
 }
