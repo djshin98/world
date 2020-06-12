@@ -5,23 +5,25 @@ class Radar2 extends DrawObject {
     constructor() {
         super(3);
     }
+    findHeightFromCartensian(c) {
+        return CTX.c2r(c).height;
+    }
+    setHeightCartensian(c, height) {
+        let r = CTX.c2r(c);
+        r.height = height;
+        return CTX.r2c(points[1]);
+    }
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {
 
+            let center = points[0];
+            let p1 = points[1];
+            let p2 = points[2];
+            var radianCone = (CTX.θ(center, p1, p2)) * (Cesium.Math.PI / 180);
 
-            var radianCone = (CTX.θ(points[0], points[1], points[2])) * (Cesium.Math.PI / 180);
-
-            points[0] = CTX.c2r(points[0]);
-            let tmp = points[0].height;
-            points[0] = CTX.r2c(points[0]);
-
-            points[1] = CTX.c2r(points[1]);
-            points[1].height = tmp;
-            points[1] = CTX.r2c(points[1]);
-
-            points[2] = CTX.c2r(points[2]);
-            points[2].height = tmp;
-            points[2] = CTX.r2c(points[2]);
+            let centerHeight = this.findHeightFromCartensian(center);
+            p1 = this.setHeightCartensian(p1, centerHeight);
+            p2 = this.setHeightCartensian(p2, centerHeight);
 
             var m = Cesium.Cartesian3.midpoint(points[1], points[2], {});
             m = CTX.c2r(m);
@@ -72,7 +74,7 @@ class Radar2 extends DrawObject {
                 points[0],
                 hpr
             );
-          
+
 
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
