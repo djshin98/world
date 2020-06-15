@@ -11,7 +11,7 @@ class Radar2 extends DrawObject {
     setHeightCartensian(c, height) {
         let r = CTX.c2r(c);
         r.height = height;
-        return CTX.r2c(points[1]);
+        return CTX.r2c(r);
     }
     create(collection, points, viewModel) {
         if (this.isValidPoints(points)) {

@@ -56,7 +56,7 @@
                     left: this.options.fontSize / 2,
                     top: this.options.fontSize / 2,
                     right: this.options.fontSize / 2,
-                    bottom: this.options.fontSize /2,
+                    bottom: this.options.fontSize / 2,
                 }
                 var border = this.options.border;
                 var box = {
@@ -117,22 +117,22 @@
                 }).interpolate("linear");
 
                 path.attr("d", lineFunction(data))
-                //.attr("stroke", this.options.strokeColor)
-                .attr("fill", this.options.backgroundColor);
+                    //.attr("stroke", this.options.strokeColor)
+                    .attr("fill", this.options.backgroundColor);
 
-                html.append("line")          
-                .style("stroke", this.options.strokeColor)
-                .attr("x1", data[0].x)    
-                .attr("y1", data[0].y+1)      
-                .attr("x2", data[1].x)     
-                .attr("y2", data[1].y); 
+                html.append("line")
+                    .style("stroke", this.options.strokeColor)
+                    .attr("x1", data[0].x)
+                    .attr("y1", data[0].y + 1)
+                    .attr("x2", data[1].x)
+                    .attr("y2", data[1].y);
 
-                html.append("line")          
-                .style("stroke", this.options.strokeColor)  
-                .attr("x1", data[2].x)     
-                .attr("y1", data[2].y+1)      
-                .attr("x2", data[1].x)    
-                .attr("y2", data[1].y);
+                html.append("line")
+                    .style("stroke", this.options.strokeColor)
+                    .attr("x1", data[2].x)
+                    .attr("y1", data[2].y + 1)
+                    .attr("x2", data[1].x)
+                    .attr("y2", data[1].y);
             }
 
             getTextWidth(text, font) {
@@ -160,7 +160,9 @@
             backgroundColor: "#0874f355",
             color: "black",
             strokeColor: "blue",
-            fontSize: 25
+            fontSize: 25,
+            tailHeight: 10,
+            tailWidth: 20
         });
 
         new Tooltip({
