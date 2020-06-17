@@ -27,7 +27,7 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-class MilMap extends Eventable {
+class m3 extends Eventable {
     constructor(options) {
         super();
         this.collectionTypes = {};
@@ -905,5 +905,5 @@ function keyInput() {
 keyInput();
 */
 module.exports = {
-    MilMap: MilMap
+    m3: m3
 };

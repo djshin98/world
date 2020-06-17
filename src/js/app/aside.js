@@ -33,7 +33,7 @@ class Aside {
         });
 
         this.showView();
-        //this.load();
+        this.load();
     }
     setAttributes(attrs) {
         if (this.attributes) {

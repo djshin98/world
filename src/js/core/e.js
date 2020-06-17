@@ -249,8 +249,6 @@ function elements(heles) {
         return this.style("display", "");
     };
 
-
-
     this.hasClass = function() {
         let l = [];
         this.elements.forEach(ele => {
