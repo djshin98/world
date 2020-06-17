@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v5.min.js" charset="utf-8"></script>
 
     <style>
         svg {
@@ -34,7 +34,10 @@
                     tailHeight: 30,
                     tailWidth: 10,
                     outlineWidth: 1,
-                    textLineMargin: 4
+                    textLineMargin: 4,
+                    taildirection: "bottom",
+                    offset: 0,
+                    degree: 90
                 }, options);
 
                 var textFont = this.options.bold == true ? "bold " + this.options.fontSize + "px " + this.options.fontFamily : this.options.fontSize + "px " + this.options.fontFamily;
@@ -56,18 +59,39 @@
                     left: this.options.fontSize / 2,
                     top: this.options.fontSize / 2,
                     right: this.options.fontSize / 2,
-                    bottom: this.options.fontSize /2,
+                    bottom: this.options.fontSize,
                 }
                 var border = this.options.border;
+
                 var box = {
+                    width:0,
+                    height:0
+                }
+
+                if(this.options.taildirection == "bottom" || this.options.taildirection == "top" ) {
+                    box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2
+                    box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.tailHeight + this.options.outlineWidth * 2
+                    
+                }else if(this.option.taildirection == "left" || this.options.taildirection == "right") {
+                    box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2 +this.options.tailHeight
+                    box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.outlineWidth * 2
+                }
+                
+                /*var box = {
                     width: border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2,
                     height: border * 2 + padding.top + padding.bottom + textHeight + this.options.tailHeight + this.options.outlineWidth * 2
                 }
+                */
                 var html = d3.selectAll("body")
                     .append("svg")
                     .attr('width', box.width)
                     .attr('height', box.height)
                     .append('g');
+
+                var path1 = html.append('g');
+                var path2 = html.append('g');
+                var path3 = html.append('g');
+                var path4 = html.append('g');
 
                 var rect = html.append("rect")
                     .attr('x', this.options.outlineWidth)
@@ -99,7 +123,34 @@
 
                 var path = html.append("path");
 
+
+                var arc1 = d3.arc()
+                .innerRadius(9)
+                .outerRadius(10)
+                .startAngle(270)
+                .endAngle(360);
+
+                var arc2 = d3.arc()
+                .innerRadius(9)
+                .outerRadius(10)
+                .startAngle(0)
+                .endAngle(Math.PI);
+
+                var arc3 = d3.arc()
+                .innerRadius(9)
+                .outerRadius(10)
+                .startAngle(0)
+                .endAngle(Math.PI);
+
+                var arc4 = d3.arc()
+                .innerRadius(9)
+                .outerRadius(10)
+                .startAngle(0)
+                .endAngle(Math.PI);
+
+
                 var data = [{
+                    
                     x: box.width / 2 - this.options.tailWidth / 2,
                     y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
                 }, {
@@ -108,17 +159,40 @@
                 }, {
                     x: box.width / 2 + this.options.tailWidth / 2,
                     y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
-                }];
+                },
+                
+                ];
 
+                /*
                 var lineFunction = d3.svg.line().x(function(d) {
                     return d.x;
                 }).y(function(d) {
                     return d.y;
                 }).interpolate("linear");
+                */
 
+                /*
                 path.attr("d", lineFunction(data))
                 //.attr("stroke", this.options.strokeColor)
                 .attr("fill", this.options.backgroundColor);
+                */
+                
+                path1.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
+                path1 = path1.append('path');
+                path1.attr("d", arc1);
+
+                path2.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
+                path2 = path2.append('path');
+                path2.attr("d", arc2);
+
+                path3.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
+                path3 = path3.append('path');
+                path3.attr("d", arc3);
+
+                path4.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
+                path4 = path4.append('path');
+                path4.attr("d", arc4);
+
 
                 html.append("line")          
                 .style("stroke", this.options.strokeColor)
