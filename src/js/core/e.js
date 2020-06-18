@@ -1,5 +1,9 @@
+'use strict';
+
 function elements(heles) {
     this.elements = heles;
+
+
 
     this.value = function(v) {
         if (v) {
@@ -419,5 +423,14 @@ function $$(a) {
     }
 }
 
+class Q {
+    static isValid(a) { return ((typeof(a) == "undefined") || (a == null)) ? false : true; }
+
+    static isFunction(a) { return (typeof(a) == "function") ? true : false; }
+
+    static isArray(a) { return (isValid(a) && a instanceof Array) ? true : false; }
+}
+
+
 global.$$ = $$;
-module.exports = { $$: $$ };
+module.exports = { $$: $$, Q: Q };

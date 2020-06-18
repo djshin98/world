@@ -1,4 +1,5 @@
-const { $$ } = require('../core/e');
+'use strict';
+const { $$, Q } = require('../core/e');
 
 class OliveTree {
     constructor(selector, arr, option) {
@@ -21,7 +22,7 @@ class OliveTree {
         $(this.selector + " li>div.folder").bind('click', function() {
             _this.toggleFolder(this);
             if (_this.options.onSelect) {
-                _this.options.onSelect('folder', this, _this.get($(ele).data('issuance')));
+                _this.options.onSelect('folder', this, _this.get($(this).data('issuance')));
             }
         });
 
@@ -85,14 +86,27 @@ class OliveTree {
     get(issuanceId) {
         return this._get(this.data, issuanceId);
     }
+    _classStr(d) {
+        if (d.children && d.children.length > 0) {
+            if (Q.isValid(d.class)) {
+                return ' class="folder ' + d.class + '" ';
+            }
+            return ' class="folder" ';
+        }
+
+        if (Q.isValid(d.class)) {
+            return ' class="file ' + d.class + '" ';
+        }
+        return ' class="file" ';
+    }
     _makeTree(arr, options) {
         let _this = this;
         let str = '';
         arr.forEach(d => {
             let attr = options.onAttribute ? options.onAttribute(d) : "";
-            let text = options.onText ? options.onText(d) : "";
-            let idstr = ""; //(d.id)?'id="' + d.id + '" ':"";
-            let classstr = (d.children && d.children.length > 0) ? ' class="folder" ' : ' class="file" ';
+            let text = options.onText ? options.onText(d) : (Q.isValid(d.name) ? d.name : "");
+            let idstr = Q.isValid(d.id) ? 'data-id="' + d.id + '" ' : "";
+            let classstr = this._classStr(d);
             let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
             let issuanceStr = (d.issuanceId) ? ' data-issuance="' + d.issuanceId + '" ' : ' ';
             if (d.type && d.type == "check") {

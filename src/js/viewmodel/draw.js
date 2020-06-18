@@ -82,7 +82,7 @@ var drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
-    
+
 }
 
 
@@ -168,6 +168,7 @@ class Draw {
             _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
 
         if (Cesium.defined(earthPosition)) {
+            /*
             if (_this.activeShapePoints.length === 0) {
                 _this.floatingPoint = _this.createPoint(earthPosition);
                 _this.activeShapePoints.push(earthPosition);
@@ -176,12 +177,21 @@ class Draw {
                         return new Cesium.PolygonHierarchy(_this.activeShapePoints);
                     }
                     return _this.activeShapePoints;
-                }, false);
+                }, true);
                 _this.activeShape = _this.drawShape(dynamicPositions);
             } else {
                 _this.activeShapePoints.push(earthPosition);
                 _this.createPoint(earthPosition);
-            }
+            }*/
+            _this.floatingPoint = _this.createPoint(earthPosition);
+            _this.activeShapePoints.push(earthPosition);
+            var dynamicPositions = new Cesium.CallbackProperty(function() {
+                if (_this.viewModel.mode === 'polygon') {
+                    return new Cesium.PolygonHierarchy(_this.activeShapePoints);
+                }
+                return _this.activeShapePoints;
+            }, true);
+            _this.activeShape = _this.drawShape(dynamicPositions);
         }
     }
     update(viewModel) {

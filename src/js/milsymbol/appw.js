@@ -76,7 +76,6 @@ function _makeModifierTree(id, arr) {
 }
 
 function makeModifierTree(id, arr) {
-
     document.getElementById(id).innerHTML = _makeModifierTree(id, arr);
 }
 

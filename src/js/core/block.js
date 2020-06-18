@@ -1,9 +1,3 @@
-function isValid(a) { return ((typeof(a) == "undefined") || (a == null)) ? false : true; }
-
-function isFunction(a) { return (typeof(a) == "function") ? true : false; }
-
-function isArray(a) { return (isValid(a) && a instanceof Array) ? true : false; }
-
 class Block {
     constructor(options) {
         this.variables = Object.assign({}, options);
@@ -22,4 +16,4 @@ class Block {
     }
 }
 
-module.exports = { Block: Block, isValid: isValid };
+module.exports = { Block: Block };

@@ -136,8 +136,8 @@
                 DESC: "mil-option-label",
             }
         }
-    }, function() {
-        new OliveTree("#viewmodel-milsymbol #function-indentifier", undefined, {
+    }, function(viewmodel) {
+        new OliveTree("#viewmodel-milsymbol #function-indentifier", viewmodel.dataset[viewmodel.options.view.FI], {
             onSelect: function(type, tag, obj) {
                 if (type == "file") {
                     if (selectedCodeTypeObj.activeType && selectedCodeTypeObj.activeType.code != "W") {
@@ -156,7 +156,7 @@
                 }
             }
         });
-        new OliveTree("#viewmodel-milsymbol #unit", undefined, {
+        new OliveTree("#viewmodel-milsymbol #unit", viewmodel.dataset[viewmodel.options.view.UNIT], {
             onSelect: function(type, tag, obj) {
                 if (type == "file") {
                     let id = tag.getAttribute("data-id");

@@ -3,7 +3,7 @@ var { dom, get, post } = require("../util/comm");
 
 var { Section } = require("./section");
 var { Aside } = require("./aside");
-var { m3 } = require("../map3d/milmap");
+var { m3 } = require("../map3d/m3");
 
 var { JsonByFolder } = require("../indexeddb/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
