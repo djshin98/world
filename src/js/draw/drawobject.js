@@ -1,3 +1,4 @@
+var { Q } = require("../core/e");
 var { PinMarkers } = require('../collection/drawcollection');
 var drawIndex = 1;
 
@@ -113,12 +114,42 @@ function setDrawViewModel(defaultViewModel, viewModel) {
     return _viewModel;
 }
 class DrawObject {
-    constructor(minPointCount) {
-        this.index = drawIndex++;
-        this.minPointCount = minPointCount;
-    }
+    constructor(minPointCount, maxPointCount) {
+            this.index = drawIndex++;
+            this.minPointCount = minPointCount;
+            if (!Q.isValid(this.minPointCount)) {
+                console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
+                return;
+            }
+            this.maxPointCount = maxPointCount;
+            if (Q.isValid(this.maxPointCount) && this.minPointCount > this.maxPointCount) {
+                console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
+                return;
+            }
+            this.completed = false;
+            this.templateEntity = null;
+        }
+        /*  minPointCount는 도형이 그려지기 위한 최소한의 포인트 갯수이다. 
+         */
     isValidPoints(points) {
-        return (points && points.length >= this.minPointCount);
+            return (Q.isValid(points) && points.length >= this.minPointCount);
+        }
+        /*  포인트의 수가 도형을 그리는 충분한 갯수를 만족할 때 return true
+            도형을 그리기에 더 이상 포인트를 불필요하다는 것을 알릴때 return true
+            maxPointCount가 undefined 이면, 무한의 포인트를 입력받기 때문에 isCompletePoints는 항상 false
+
+        */
+    ready() { this.completed = false; }
+    complete() { this.completed = true; }
+    isCompletePoints(points) {
+        if (this.isValidPoints(points)) {
+            if (Q.isValid(this.maxPointCount) && points.length == this.maxPointCount) {
+                return true;
+            } else if (this.completed) {
+                return true;
+            }
+        }
+        return false;
     }
     pniStart() {
         return PinMarkers.start;
@@ -137,8 +168,31 @@ class DrawObject {
         }
         return this.pinVia();
     }
-    create(collection, points, viewModel) {
+    create(collection, points, viewModel, templateEntity) {
 
+    }
+    createShape(collection, points, viewModel) {
+        if (this.isCompletePoints(points)) {
+            if (Q.isValid(this.templateEntity)) {
+                if (Q.isArray(this.templateEntity)) {
+                    this.templateEntity.forEach(entity => {
+                        collection.remove(entity);
+                        entity = null;
+                    })
+                } else {
+                    collection.remove(this.templateEntity);
+                }
+                this.templateEntity = null;
+            }
+            return this.create(collection, points, viewModel);
+        } else if (this.isValidPoints(points)) {
+            if (!Q.isValid(this.templateEntity)) {
+                this.templateEntity = this.create(collection, points, viewModel, true);
+                return this.templateEntity;
+            } else {
+                return this.create(collection, points, viewModel, this.templateEntity);
+            }
+        }
     }
     lineMaterial(style, color, width) {
         if (style != "line") {

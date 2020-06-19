@@ -428,9 +428,7 @@ class Q {
 
     static isFunction(a) { return (typeof(a) == "function") ? true : false; }
 
-    static isArray(a) { return (isValid(a) && a instanceof Array) ? true : false; }
+    static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
 }
-
-
 global.$$ = $$;
 module.exports = { $$: $$, Q: Q };
