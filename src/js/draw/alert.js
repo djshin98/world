@@ -1,7 +1,7 @@
 var { DrawObject } = require('./drawobject');
 class Alert extends DrawObject {
     constructor() {
-        super(1);
+        super(1, 1);
     }
     create(collection, points, viewModel) {
 

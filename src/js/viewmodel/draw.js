@@ -133,11 +133,17 @@ class Draw {
         this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
         var _this = this;
-        this.handler.setInputAction(function(event) {
+        this.handler.setInputAction((event) => {
             //console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-            _this.appendPoint(event);
+
+            let newPosition = this.baseLayerPicker ? this.viewer.scene.pickPosition(event.position) :
+                this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), this.viewer.scene.globe.ellipsoid);
+
+            if (Q.isValid(newPosition)) {
+                this.appendPoint(newPosition, true);
+            }
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -148,31 +154,36 @@ class Draw {
                     _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.endPosition.x, event.endPosition.y), _this.viewer.scene.globe.ellipsoid);
 
                 if (Q.isValid(newPosition)) {
-                    _this.floatingPoint.position.setValue(newPosition);
-                    _this.activeShapePoints.pop();
-                    _this.activeShapePoints.push(newPosition);
+                    _this.appendPoint(newPosition, false);
                 }
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
         this.handler.setInputAction(function(event) {
-            //_this.appendPoint(event);
+            let newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :
+                _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+            if (Q.isValid(newPosition)) {
+                _this.appendPoint(newPosition, true);
+            }
             _this.terminateShape();
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
     }
-    appendPoint(event) {
-        var earthPosition = this.baseLayerPicker ? this.viewer.scene.pickPosition(event.position) :
-            this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), this.viewer.scene.globe.ellipsoid);
-
+    appendPoint(earthPosition, bappend) {
         if (Q.isValid(earthPosition)) {
-            this.floatingPoint = this.createPoint(earthPosition);
-            this.activeShapePoints.push(earthPosition);
-            this.activeShape = this.drawShape(this.activeShapePoints);
+            let points;
+            if (bappend) {
+                this.floatingPoint = this.createPoint(earthPosition);
+                this.activeShapePoints.push(earthPosition);
+                points = this.activeShapePoints;
+            } else {
+                points = this.activeShapePoints.concat(earthPosition);
+            }
+            this.activeShape = this.drawShape(points);
         }
     }
     update(viewModel) {
-        var currentMode = this.viewModel.mode;
+        let currentMode = this.viewModel.mode;
 
         this.viewModel = setDrawViewModel(this.viewModel, viewModel);
 
@@ -205,11 +216,16 @@ class Draw {
             let pin = this.activeDrawHandler.pin(this.activeShapePoints.length);
 
             //{ name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 }
-            return this.markerCollection.add(CTX.c2d(worldPosition), pin);
+            this.markerCollection.add(CTX.c2d(worldPosition), pin);
+            return worldPosition;
         }
     }
     drawShape(positionData) {
         if (Q.isValid(this.activeDrawHandler)) {
+            if (this.activeDrawHandler.isCompletePoints(positionData)) {
+                this.terminateShape();
+                return;
+            }
             return this.activeDrawHandler.createShape(this.drawCollection, positionData, this.viewModel);
         }
     }
@@ -223,7 +239,11 @@ class Draw {
     terminateShape() {
         if (Q.isValid(this.activeDrawHandler)) { this.activeDrawHandler.complete(); }
         //this.activeShapePoints.pop();
-        this.drawShape(this.activeShapePoints);
+        if (Q.isValid(this.activeDrawHandler)) {
+            this.activeDrawHandler.createShape(this.drawCollection, this.activeShapePoints, this.viewModel);
+        }
+
+        //this.drawShape(this.activeShapePoints);
 
         if (Q.isValid(this.activeDrawHandler)) {
             this.activeDrawHandler.ready();

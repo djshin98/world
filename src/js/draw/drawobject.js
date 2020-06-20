@@ -111,23 +111,31 @@ function setDrawViewModel(defaultViewModel, viewModel) {
         _viewModel.faceColor = _viewModel.faceColor.withAlpha(_viewModel.faceTransparent);
     }
 
+
     return _viewModel;
 }
+const Template = {
+    faceColor: new Cesium.Color(192, 192, 192, 0.5),
+    lineColor: new Cesium.Color(90, 90, 90, 0.5)
+};
 class DrawObject {
     constructor(minPointCount, maxPointCount) {
-            this.index = drawIndex++;
-            this.minPointCount = minPointCount;
-            if (!Q.isValid(this.minPointCount)) {
-                console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
-                return;
-            }
-            this.maxPointCount = maxPointCount;
-            if (Q.isValid(this.maxPointCount) && this.minPointCount > this.maxPointCount) {
-                console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
-                return;
-            }
-            this.completed = false;
-            this.templateEntity = null;
+        this.index = drawIndex++;
+        this.minPointCount = minPointCount;
+        if (!Q.isValid(this.minPointCount)) {
+            console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
+            return;
+        }
+        this.maxPointCount = maxPointCount;
+        if (Q.isValid(this.maxPointCount) && this.minPointCount > this.maxPointCount) {
+            console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
+            return;
+        }
+        this.completed = false;
+        this.templateEntity = null;
+    }
+    template(name) {
+            return Template[name];
         }
         /*  minPointCount는 도형이 그려지기 위한 최소한의 포인트 갯수이다. 
          */
@@ -187,12 +195,39 @@ class DrawObject {
             return this.create(collection, points, viewModel);
         } else if (this.isValidPoints(points)) {
             if (!Q.isValid(this.templateEntity)) {
-                this.templateEntity = this.create(collection, points, viewModel, true);
+                this.templateEntity = true;
+                this.templateEntity = this.create(collection, points, viewModel);
                 return this.templateEntity;
             } else {
-                return this.create(collection, points, viewModel, this.templateEntity);
+                return this.create(collection, points, viewModel);
             }
         }
+    }
+    isReadyToCallbackVariable() {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity !== true) {
+                return true;
+            }
+        }
+        return false;
+    }
+    callbackValue(v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return new Cesium.CallbackProperty(function() {
+                    return v;
+                }, true);
+            }
+        }
+        return v;
+    }
+    callbackColor(name, v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return this.template(name);
+            }
+        }
+        return v[name];
     }
     lineMaterial(style, color, width) {
         if (style != "line") {
