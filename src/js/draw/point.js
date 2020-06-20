@@ -1,4 +1,5 @@
-var { DrawObject } = require('./drawobject');
+const { DrawObject } = require('./drawobject');
+
 class Point extends DrawObject {
     constructor() {
         super(1, 1);
