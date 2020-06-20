@@ -431,4 +431,5 @@ class Q {
     static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
 }
 global.$$ = $$;
+global.Q = Q;
 module.exports = { $$: $$, Q: Q };

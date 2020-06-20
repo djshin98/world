@@ -111,8 +111,9 @@ class Application {
         if (options.success) {
             options.success(this.map);
         }
-
-
+    }
+    getOpenedMap(dimension) {
+        return this.map;
     }
     setAttributes(attrs) {
         if (this.aside) {

@@ -4,6 +4,12 @@ class Line extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
+        if (this.isReadyToCallbackVariable()) {
+
+        } else {
+
+        }
+
         if (this.isValidPoints(points)) {
 
             let option = {
@@ -15,24 +21,24 @@ class Line extends DrawObject {
             };
 
 
-            for(var i=0; i<points.length; i++) {
-                if(i != points.length - 1){
-                    var d = Cesium.Cartesian3.distance(points[i], points[i+1]);
-                    var s = Cesium.Cartesian3.subtract(points[i+1], points[i], {});
+            for (var i = 0; i < points.length; i++) {
+                if (i != points.length - 1) {
+                    var d = Cesium.Cartesian3.distance(points[i], points[i + 1]);
+                    var s = Cesium.Cartesian3.subtract(points[i + 1], points[i], {});
                     var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
                     var a = Cesium.Cartesian3.add(dv, points[i], {});
 
                     collection.add(this.index, {
                         position: a,
                         label: {
-                            text: CTX.displayMeter(d,3),
+                            text: CTX.displayMeter(d, 3),
                             font: '15px sans-serif',
                             fillColor: Cesium.Color.WHITE,
                             showBackground: true,
-                            backgroundColor: Cesium.Color( 1,1,1,1 ),
+                            backgroundColor: Cesium.Color(1, 1, 1, 1),
                             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                         }
-                        
+
                     });
                 }
             }

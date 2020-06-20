@@ -1,4 +1,4 @@
-class Layer {
+class LayerDirector {
     constructor(map) {
         this.viewer = map.viewer3d;
         this.imageryLayers = this.viewer.imageryLayers;
@@ -41,19 +41,43 @@ class Layer {
             },
         };
     }
+    setBaseLayer(name, provider, options) {
+        this.addBaseLayerOption(name, new Cesium[provider](options));
+    }
     addBaseLayerOption(name, imageryProvider) {
         var layer;
         if (typeof imageryProvider === "undefined") {
             layer = this.imageryLayers.get(0);
             viewModel.selectedLayer = layer;
         } else {
+            let activeLayerIndex = 0;
+            for (let i = 0; i < this.imageryLayers.length; i++) {
+                let l = this.imageryLayers.get(i);
+                if (l.isBaseLayer()) {
+                    activeLayerIndex = i;
+                    this.imageryLayers.remove(l, false);
+                }
+            }
             layer = new Cesium.ImageryLayer(imageryProvider);
+            let index = this.imageryLayers.length == 0 ? 0 : this.imageryLayers.length - activeLayerIndex - 1;
+            this.imageryLayers.add(layer, index);
         }
-
-        layer.name = name;
-        baseLayers.push(layer);
     }
-
+    setUserLayer(name, provider, options, alpha, show) {
+        let layer;
+        for (let i = 0; i < this.imageryLayers.length; i++) {
+            let l = this.imageryLayers.get(i);
+            if (!l.isBaseLayer() && l.name == name) {
+                layer = l;
+            }
+        }
+        if (!Q.isValid(layer)) {
+            layer = this.imageryLayers.addImageryProvider(new Cesium[provider](options));
+        }
+        if (Q.isValid(alpha)) { layer.alpha = Cesium.defaultValue(alpha, 0.5); }
+        if (Q.isValid(show)) { layer.show = Cesium.defaultValue(show, true); }
+        if (Q.isValid(name)) { layer.name = Cesium.defaultValue(name, "default"); }
+    }
     addAdditionalLayerOption(name, imageryProvider, alpha, show) {
         var layer = imageryLayers.addImageryProvider(imageryProvider);
         layer.alpha = Cesium.defaultValue(alpha, 0.5);
@@ -71,54 +95,6 @@ class Layer {
     }
 
     setupLayers() {
-        // Create all the base layers that this example will support.
-        // These base layers aren't really special.  It's possible to have multiple of them
-        // enabled at once, just like the other layers, but it doesn't make much sense because
-        // all of these layers cover the entire globe and are opaque.
-        this.addBaseLayerOption("Bing Maps Aerial", undefined); // the current base layer
-        this.addBaseLayerOption(
-            "Bing Maps Road",
-            new Cesium.BingMapsImageryProvider({
-                url: "https://dev.virtualearth.net",
-                mapStyle: Cesium.BingMapsStyle.ROAD,
-            })
-        );
-        this.addBaseLayerOption(
-            "ArcGIS World Street Maps",
-            new Cesium.ArcGisMapServerImageryProvider({
-                url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer",
-            })
-        );
-        this.addBaseLayerOption(
-            "OpenStreetMaps",
-            new Cesium.OpenStreetMapImageryProvider()
-        );
-        this.addBaseLayerOption(
-            "Stamen Maps",
-            new Cesium.OpenStreetMapImageryProvider({
-                url: "https://stamen-tiles.a.ssl.fastly.net/watercolor/",
-                fileExtension: "jpg",
-                credit: "Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.",
-            })
-        );
-        this.addBaseLayerOption(
-            "Natural Earth II (local)",
-            new Cesium.TileMapServiceImageryProvider({
-                url: Cesium.buildModuleUrl("Assets/Textures/NaturalEarthII"),
-            })
-        );
-        this.addBaseLayerOption(
-            "USGS Shaded Relief (via WMTS)",
-            new Cesium.WebMapTileServiceImageryProvider({
-                url: "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS",
-                layer: "USGSShadedReliefOnly",
-                style: "default",
-                format: "image/jpeg",
-                tileMatrixSetID: "default028mm",
-                maximumLevel: 19,
-                credit: "U. S. Geological Survey",
-            })
-        );
 
         // Create the additional layers
         this.addAdditionalLayerOption(
@@ -177,3 +153,5 @@ class Layer {
         );
     }
 }
+
+module.exports = { LayerDirector: LayerDirector };

@@ -1,19 +1,21 @@
-var { IxDatabase } = require('../indexeddb/db');
-var { Animation } = require('../util/animation');
-var { Tileset } = require('./tileset');
-var { Contour } = require('./contour');
-var { OliveCamera } = require('./camera');
-var { OliveCursor } = require('./cursor');
-var { Dashboard } = require('./dashboard');
-var { dom } = require("../util/comm");
+const { IxDatabase } = require('../indexeddb/db');
+const { Animation } = require('../util/animation');
+const { Tileset } = require('./tileset');
+const { Contour } = require('./contour');
+const { OliveCamera } = require('./camera');
+const { OliveCursor } = require('./cursor');
+const { Dashboard } = require('./dashboard');
+const { dom } = require("../util/comm");
+
+const { LayerDirector } = require("./layer/layerdirector");
 
 global.Cesium = require('cesium/Cesium');
-var { CTX } = require("./ctx");
-var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
-var { MarkerCollection } = require("../collection/markercollection");
-var { DrawCollection } = require("../collection/drawcollection");
-var { Eventable } = require('../core/eventable');
-var { WebSocketBroker } = require("../ws/websocket_broker");
+const { CTX } = require("./ctx");
+const { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
+const { MarkerCollection } = require("../collection/markercollection");
+const { DrawCollection } = require("../collection/drawcollection");
+const { Eventable } = require('../core/eventable');
+const { WebSocketBroker } = require("../ws/websocket_broker");
 const config = require("../../conf/server.json");
 
 require('./grid/wgs84');
@@ -253,6 +255,10 @@ class m3 extends Eventable {
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
         }
+        this.layerDirector = new LayerDirector(this);
+    }
+    getLayerDirector() {
+        return this.layerDirector;
     }
     center() {
         return { x: this.width / 2, y: this.height / 2 };
