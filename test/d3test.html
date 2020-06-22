@@ -59,11 +59,7 @@
                     left: this.options.fontSize / 2,
                     top: this.options.fontSize / 2,
                     right: this.options.fontSize / 2,
-<<<<<<< HEAD
                     bottom: this.options.fontSize,
-=======
-                    bottom: this.options.fontSize / 2,
->>>>>>> a36fb27acfd1b21fb24da867c362cb5668a742e9
                 }
                 var border = this.options.border;
 
@@ -128,6 +124,7 @@
                 var path = html.append("path");
 
 
+                /*
                 var arc1 = d3.arc()
                 .innerRadius(9)
                 .outerRadius(10)
@@ -151,7 +148,7 @@
                 .outerRadius(10)
                 .startAngle(0)
                 .endAngle(Math.PI);
-
+                */
 
                 var data = [{
                     
@@ -177,11 +174,19 @@
 
                 /*
                 path.attr("d", lineFunction(data))
-<<<<<<< HEAD
                 //.attr("stroke", this.options.strokeColor)
                 .attr("fill", this.options.backgroundColor);
                 */
                 
+                var startAngle;
+                var endAngle;
+
+                path.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
+                path = path.append('path');
+                path.attr("d", this.d3arc(startAngle, endAngle));
+
+
+                /*
                 path1.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
                 path1 = path1.append('path');
                 path1.attr("d", arc1);
@@ -197,7 +202,7 @@
                 path4.attr('transform', 'translate(' + 10 + ', ' + 10 + ')')
                 path4 = path4.append('path');
                 path4.attr("d", arc4);
-
+                */
 
                 html.append("line")          
                 .style("stroke", this.options.strokeColor)
@@ -212,24 +217,6 @@
                 .attr("y1", data[2].y+1)      
                 .attr("x2", data[1].x)    
                 .attr("y2", data[1].y);
-=======
-                    //.attr("stroke", this.options.strokeColor)
-                    .attr("fill", this.options.backgroundColor);
-
-                html.append("line")
-                    .style("stroke", this.options.strokeColor)
-                    .attr("x1", data[0].x)
-                    .attr("y1", data[0].y + 1)
-                    .attr("x2", data[1].x)
-                    .attr("y2", data[1].y);
-
-                html.append("line")
-                    .style("stroke", this.options.strokeColor)
-                    .attr("x1", data[2].x)
-                    .attr("y1", data[2].y + 1)
-                    .attr("x2", data[1].x)
-                    .attr("y2", data[1].y);
->>>>>>> a36fb27acfd1b21fb24da867c362cb5668a742e9
             }
 
             getTextWidth(text, font) {
@@ -240,6 +227,19 @@
                 var metrics = context.measureText(text);
                 return metrics.width;
             }
+            d3arc(startAngle, endAngle) {
+                 
+                var arc = d3.arc()
+                .innerRadius(r-1)
+                .outerRadius(r)
+                .startAngle(startAngle)
+                .endAngle(endAngle);
+
+            return arc;
+           }
+            
+
+
         }
 
         new Tooltip({
