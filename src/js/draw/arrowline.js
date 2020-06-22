@@ -5,11 +5,22 @@ class ArrowLine extends DrawObject {
     }
     create(collection, points, viewModel) {
         if(this.isReadyToCallbackVariable()) {
-            this.template = points;
+            this.templateEntity.polyline.positions = points;
            }else {
-            
+                let option = {
+                    positions: this.callbackValue(points),
+                    clampToGround: true,
+                    color: viewModel.lineColor,
+                    width: viewModel.lineWidth
+                };
+                option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
+                return collection.add(this.index, {
+                    position: points[0],
+                    polyline: option,
+                });
            }
 
+           /*
         if (this.isValidPoints(points)) {   
             let option = {
                 positions: points,
@@ -17,13 +28,13 @@ class ArrowLine extends DrawObject {
                 color: viewModel.lineColor,
                 width: viewModel.lineWidth
             };
+            */
 
-            option.material = new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor);
-            return collection.add(this.index, {
-                polyline: option,
-            });
+            
+            
+           
         }
     }
-}
+//}
 
 module.exports = { ArrowLine: ArrowLine };
