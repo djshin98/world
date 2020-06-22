@@ -1,7 +1,7 @@
 var { DrawObject } = require('./drawobject');
 class Line extends DrawObject {
     constructor() {
-        super(1, 20);
+        super(1, 100);
     }
     create(collection, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
