@@ -16,7 +16,7 @@ class PolygonWithLine extends DrawObject {
             points.push(points[0]);
             points.push(points[1]);
             viewModel.lineColor.alpha = 1;
-
+            let _this = this;
             let option = {
                 positions: this.callbackValue(points),
                 clampToGround: true,

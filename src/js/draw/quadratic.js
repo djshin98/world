@@ -4,60 +4,71 @@ var { CTX } = require("../map3d/ctx");
 
 class Quadratic extends DrawObject {
     constructor() {
-        super(2);
+        super(2, 2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
-            let degrees = {
-                start: CTX.c2d(points[0]),
-                end: CTX.c2d(points[1])
+
+        let degrees = {
+            start: CTX.c2d(points[0]),
+            end: CTX.c2d(points[1])
+        }
+        let height = viewModel.size * 100 + Math.max(degrees.start.height, degrees.end.height);
+        let distrance = CTX.distanceD(degrees.start, degrees.end);
+        //height = distrance / 2;
+        let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
+
+        if (this.isReadyToCallbackVariable()) {
+            if (Q.isArray(this.templateEntity)) {
+                this.templateEntity.forEach((ent, i) => {
+                    ent.position = polylinePoints.points[i];
+                });
+            } else {
+                this.templateEntity.polyline.positions = polylinePoints.points.reverse();
             }
-            let height = viewModel.size*100 + Math.max(degrees.start.height, degrees.end.height);
-            let distrance = CTX.distanceD(degrees.start, degrees.end);
-            //height = distrance / 2;
-            let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
-            console.log("polylinePoints length : " + polylinePoints.points.length);
+        } else {
 
-            let _this = this;
-            var positions = [CTX.c2r(polylinePoints.center[0])];
-            var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
-            Cesium.when(promise, function(updatedPositions) {
-                let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
-                let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
-                collection.add(_this.index, {
-                    polyline: {
-                        positions: cpts,
-                        color: viewModel.shapeColor,
-                        width: 1,
-                        material: heightMeterial,
-                        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
-                    }
+            //console.log("polylinePoints length : " + polylinePoints.points.length);
+            if (this.isComplete()) {
+                let _this = this;
+                var positions = [CTX.c2r(polylinePoints.center[0])];
+                var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+                Cesium.when(promise, function(updatedPositions) {
+                    let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
+                    let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
+                    collection.add(_this.index, {
+                        polyline: {
+                            positions: cpts,
+                            color: viewModel.shapeColor,
+                            width: 1,
+                            material: heightMeterial,
+                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
+                        }
+                    });
+                    collection.add(_this.index, {
+                        position: cpts[1],
+                        label: {
+                            text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
+                            font: '20px sans-serif',
+                            showBackground: true,
+                            pixelOffset: new Cesium.Cartesian2(0, -20),
+                            eyeOffset: new Cesium.Cartesian3(0, 0, -50),
+                            fillColor: viewModel.shapeColor,
+                            outlineColor: Cesium.Color.BLACK,
+                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 50000)
+                        }
+                    });
                 });
-                collection.add(_this.index, {
-                    position: cpts[1],
-                    label: {
-                        text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
-                        font: '20px sans-serif',
-                        showBackground: true,
-                        pixelOffset: new Cesium.Cartesian2(0, -20),
-                        eyeOffset: new Cesium.Cartesian3(0, 0, -50),
-                        fillColor: viewModel.shapeColor,
-                        outlineColor: Cesium.Color.BLACK,
-                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 50000)
-                    }
-                });
-            });
-
+            }
 
             if (viewModel.frameEnable === true) {
-                polylinePoints.points.forEach(p => {
-                    collection.add(this.index, {
-                        position: p,
+                return polylinePoints.points.map(p => {
+                    return collection.add(this.index, {
+                        position: this.callbackValue(p),
                         point: {
                             pixelSize: viewModel.shapeSize,
                             //fill: true,
-                            material: viewModel.faceColor,
+                            material: this.callbackColor("faceColor", viewModel),
                             outline: true,
                             outlineColor: viewModel.lineColor,
                             outlineWidth: viewModel.lineWidth,
@@ -67,17 +78,20 @@ class Quadratic extends DrawObject {
                 });
             } else {
                 let option = {
-                    positions: polylinePoints.points.reverse(),
+                    positions: this.callbackValue(polylinePoints.points.reverse()),
                     color: viewModel.lineColor,
                     width: viewModel.lineWidth,
-                    material: new Cesium.PolylineGlowMaterialProperty({
-                            //color: viewModel.lineColor,
-                            glowPower: 0.3,
-                            taperPower: 0.3,
-                            color: viewModel.faceColor
-                        })
-                        //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
+
+                    //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                 };
+
+                if (this.isComplete()) {
+                    option.material = new Cesium.PolylineGlowMaterialProperty({
+                        glowPower: 0.3,
+                        taperPower: 0.3,
+                        color: this.callbackColor("faceColor", viewModel)
+                    });
+                }
                 return collection.add(this.index, { polyline: option });
             }
         }

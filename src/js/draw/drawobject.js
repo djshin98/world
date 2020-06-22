@@ -149,6 +149,7 @@ class DrawObject {
         */
     ready() { this.completed = false; }
     complete() { this.completed = true; }
+    isComplete() { return this.completed; }
     isCompletePoints(points) {
         if (this.isValidPoints(points)) {
             if (Q.isValid(this.maxPointCount) && points.length == this.maxPointCount) {
@@ -181,7 +182,8 @@ class DrawObject {
     }
     createShape(collection, points, viewModel, bclicked) {
         if (bclicked && this.isCompletePoints(points)) {
-            console.log("complete");
+            //console.log("complete");
+            this.complete();
             if (Q.isValid(this.templateEntity)) {
                 if (Q.isArray(this.templateEntity)) {
                     this.templateEntity.forEach(entity => {
@@ -221,6 +223,16 @@ class DrawObject {
             }
         }
         return v;
+    }
+    callbackFunction(v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return new Cesium.CallbackProperty(function() {
+                    return v();
+                }, true);
+            }
+        }
+        return v();
     }
     callbackColor(name, v) {
         if (Q.isValid(this.templateEntity)) {
