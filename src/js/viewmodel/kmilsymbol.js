@@ -1,6 +1,6 @@
 /* eslint-disable */
-
-var {dom} = require("../util/comm");
+var { Q } = require("../core/e");
+var { dom } = require("../util/comm");
 var basic = require("../milsymbol/mil_basic");
 var emergency = require("../milsymbol/mil_emergency");
 var operAct = require("../milsymbol/mil_operAct");
@@ -18,33 +18,34 @@ var codeTypes = [
 ];
 
 
-    //{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
+//{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
 
 class ViewModel_KMilSymbol {
-    constructor(opt,onchange) {
+    constructor(opt, onchange) {
         this.activeType;
-        this.options = Object.assign({},{
-            view:{
-                CODETYPE:"codetype",
-                AFFILIATION:"affiliation",
-                BATTLEFIELD:"battlefield",
-                STATUS:"status",
-                FI:"function-indentifier",
-                UNIT:"unit",
-                MISSION:"mission",
-                SIDC:"sidc",
-                RESULT:"sidc-img",
-                option : {
-                    FILL:"mil-option-fill",
-                    FRAME:"mil-option-frame",
-                    ICON:"mil-option-icon",
-                    SIZE:"mil-option-size",
-                    DESC:"mil-option-label"
+        this.options = Object.assign({}, {
+            view: {
+                CODETYPE: "codetype",
+                AFFILIATION: "affiliation",
+                BATTLEFIELD: "battlefield",
+                STATUS: "status",
+                FI: "function-indentifier",
+                UNIT: "unit",
+                MISSION: "mission",
+                SIDC: "sidc",
+                RESULT: "sidc-img",
+                option: {
+                    FILL: "mil-option-fill",
+                    FRAME: "mil-option-frame",
+                    ICON: "mil-option-icon",
+                    SIZE: "mil-option-size",
+                    DESC: "mil-option-label"
                 }
             }
-        },opt);
+        }, opt);
+        this.dataset = {};
         this.onchange = onchange;
-        this.symbolTest = new SymbolTest(this,this.options.view.RESULT);
+        this.symbolTest = new SymbolTest(this, this.options.view.RESULT);
         this.init();
     }
     init() {
@@ -67,9 +68,9 @@ class ViewModel_KMilSymbol {
         ele.onchange = function() {
             document.getElementById(_this.options.view.SIDC).value = "";
             _this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
-            
+
             if (_this.activeType) {
-                if( _this.activeType.code != "W" ){
+                if (_this.activeType.code != "W") {
                     document.getElementById(_this.options.view.MISSION).hidden = false;
                     document.getElementById(_this.options.view.UNIT).hidden = false;
 
@@ -77,9 +78,9 @@ class ViewModel_KMilSymbol {
                     _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "battlefield", _this.activeType.standard.battlefield);
                     _this.makeSIDCSelect(_this.options.view.STATUS, "status", _this.activeType.standard.status);
                     _this.makeSIDCSelect(_this.options.view.MISSION, "mission", _this.activeType.standard.mission);
-                    _this.makeModifierTree(_this.options.view.FI, _this.activeType.standard.identifier);
-                    _this.makeUnitTree(_this.options.view.UNIT, _this.activeType.standard.unit);
-                /*
+                    _this.dataset[_this.options.view.FI] = _this.makeModifierTreeJson(_this.options.view.FI, _this.activeType.standard.identifier);
+                    _this.dataset[_this.options.view.UNIT] = _this.makeUnitTreeJson(_this.options.view.UNIT, _this.activeType.standard.unit);
+                    /*
                     dom.$( ".functionIndentfierClickable").forEach(d=>{
                         d.addEventListener("click",()=>{
                             let id = d.getAttribute("data-id");
@@ -99,11 +100,11 @@ class ViewModel_KMilSymbol {
                             }
                         });
                     });*/
-                }else{
+                } else {
                     _this.makeSIDCSelect(_this.options.view.AFFILIATION, "pos", _this.activeType.standard.pos);
                     _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "fix", _this.activeType.standard.fix);
                     _this.makeSIDCSelect(_this.options.view.STATUS, "graphic", _this.activeType.standard.graphic);
-                    _this.makeModifierTree(_this.options.view.FI, _this.activeType.standard.identifier);
+                    _this.dataset[_this.options.view.FI] = _this.makeModifierTreeJson(_this.options.view.FI, _this.activeType.standard.identifier);
 
                     document.getElementById(_this.options.view.MISSION).hidden = true;
                     document.getElementById(_this.options.view.UNIT).hidden = true;
@@ -118,50 +119,50 @@ class ViewModel_KMilSymbol {
                         });
                     });*/
                 }
-                if( _this.onchange ){
-                    _this.onchange();
+                if (_this.onchange) {
+                    _this.onchange(_this);
                 }
-                    
+
             }
         };
-        ele.onchange();
+        ele.onchange(this);
     }
-    descriptionFromSIDC(sidc){
-        if( !sidc || sidc.length < 1 ){
+    descriptionFromSIDC(sidc) {
+        if (!sidc || sidc.length < 1) {
             return {};
         }
-        let code = new SIDC( sidc[0] , sidc );
+        let code = new SIDC(sidc[0], sidc);
         return code.toDescription();
     }
-    
-    _findFunctionIdentifier(root, id){
+
+    _findFunctionIdentifier(root, id) {
         let findObj;
         //console.log( this.tab() + " searching " + this.id );
-        if( root.id == id ){
+        if (root.id == id) {
             //console.log( this.tab() + id + " : finded to " + this.id );
-            findObj= root;
-        } else if( id.indexOf(root.id) == 0 && root.children ){
-            root.children.some((d)=>{
-                findObj = this._findFunctionIdentifier(d,id);
+            findObj = root;
+        } else if (id.indexOf(root.id) == 0 && root.children) {
+            root.children.some((d) => {
+                findObj = this._findFunctionIdentifier(d, id);
                 return findObj ? true : false;
             });
         }
         return findObj;
     }
-    findFunctionIdentifier(id){
+    findFunctionIdentifier(id) {
         let findObj;
-        this.activeType.standard.identifier.some(d=>{
-            findObj = this._findFunctionIdentifier(d,id);
+        this.activeType.standard.identifier.some(d => {
+            findObj = this._findFunctionIdentifier(d, id);
             return findObj ? true : false;
         })
         return findObj;
     }
-    findUnit(code){
+    findUnit(code) {
         let findObj;
-        Object.keys(this.activeType.standard.unit).some(d=>{
+        Object.keys(this.activeType.standard.unit).some(d => {
             let list = this.activeType.standard.unit[d];
-            list.some(v=>{
-                if( v.code == code ){
+            list.some(v => {
+                if (v.code == code) {
                     findObj = v;
                     return true;
                 }
@@ -185,8 +186,8 @@ class ViewModel_KMilSymbol {
         let sidc = new SIDC(this.activeType.code, val);
         sidc.codeType = type;
         if (type != '' && type != '*' && type != '-') document.getElementById(this.options.view.CODETYPE).value = sidc.codeType;
-        
-        if( this.activeType.code != "W"){
+
+        if (this.activeType.code != "W") {
             sidc.affiliation = affiliation;
             if (affiliation != '' && affiliation != '*' && affiliation != '-') {
                 document.getElementById(this.options.view.AFFILIATION).value = sidc.affiliation;
@@ -205,7 +206,7 @@ class ViewModel_KMilSymbol {
             } else {
                 sidc.status = document.getElementById(this.options.view.STATUS).value;
             }
-        }else{
+        } else {
             sidc.pos = affiliation;
             if (affiliation != '' && affiliation != '*' && affiliation != '-') {
                 document.getElementById(this.options.view.AFFILIATION).value = sidc.pos;
@@ -247,15 +248,15 @@ class ViewModel_KMilSymbol {
             ele.value = sidc.toCode();
             this.symbolTest.try();
         }
-    }     
+    }
     tooltipModifier(d) {
-        if( this.activeType.code != "W"){
+        if (this.activeType.code != "W") {
             return d.type + d.affiliation + d.battlefield + d.status;
-        }else{
+        } else {
             return d.type + d.pos + d.fix + d.graphic;
         }
     }
-    
+
     _makeModifierTree(id, arr) {
         let str = '';
         var _this = this;
@@ -277,6 +278,39 @@ class ViewModel_KMilSymbol {
         document.getElementById(id).innerHTML = this._makeModifierTree(id, arr);
     }
 
+    _makeModifierTreeJson(id, arr) {
+        let json = [];
+        var _this = this;
+        arr.forEach(d => {
+            if (d.children && d.children.length > 0) {
+                json.push({
+                    name: d.desc_kor,
+                    id: d.id,
+                    class: "functionIndentfierClickable",
+                    children: _this._makeModifierTreeJson(id, d.children)
+                });
+                /*
+                str += '<li><div class="folder functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div>';
+                str += '<ul>';
+                str += _this._makeModifierTreeJson(id, d.children);
+                str += '</ul>';
+                str += '</li>';*/
+            } else {
+                json.push({
+                    name: d.desc_kor,
+                    id: d.id,
+                    class: "functionIndentfierClickable"
+                });
+                //str += '<li><div class="file functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div></li>';
+            }
+        });
+        return json;
+    }
+
+    makeModifierTreeJson(id, arr) {
+        return this._makeModifierTreeJson(id, arr);
+    }
+
     makeUnitTree(id, arr) {
 
         let str = '';
@@ -292,6 +326,33 @@ class ViewModel_KMilSymbol {
 
         document.getElementById(id).innerHTML = str;
     }
+
+    makeUnitTreeJson(id, arr) {
+
+        let json = [];
+        Object.keys(arr).forEach(d => {
+            let obj = { name: d };
+            json.push(obj);
+            //str += '<li><div class="folder">' + d + '</div>';
+            //str += '<ul>';
+            if (Q.isValid(arr[d]) && arr[d].length > 0) {
+                obj.children = arr[d].map(item => {
+                    return { name: item.desc, id: item.code };
+                });
+            }
+            /*
+            arr[d].forEach(item => {
+
+                str += '<li><div class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</div></li>';
+            });
+            str += '</ul>';
+            str += '</li>';*/
+        });
+
+        //document.getElementById(id).innerHTML = str;
+        return json;
+    }
+
 }
 class SIDC {
     constructor(codeStyle, sidc) {
@@ -304,7 +365,7 @@ class SIDC {
             sidc = sidc.substring(0, 15);
         }
         this.codeType = sidc[0];
-        if( this.codeType != "W" ){
+        if (this.codeType != "W") {
             this.affiliation = sidc[1];
             this.battlefield = sidc[2];
             this.status = sidc[3];
@@ -312,55 +373,54 @@ class SIDC {
             this.echelon = sidc.substring(10, 12); //2
             this.nation = sidc.substring(12, 14);
             this.mission = sidc[14];
-        }else{
+        } else {
             this.pos = sidc[1];
             this.fix = sidc.substring(2, 4);
             this.modifier = sidc.substring(4, 10); //6
             this.graphic = sidc.substring(10, 13); //2
             this.last = "--";
         }
-        
+
     }
     toCode() {
-        if( this.codeStyle != "W" ){
+        if (this.codeStyle != "W") {
             return this.codeType + this.affiliation + this.battlefield +
                 this.status + this.modifier + this.echelon + this.nation + this.mission;
-        }else{
+        } else {
             return this.codeType + this.pos + this.fix + this.modifier + this.graphic + this.last;
         }
     }
-    _getDesc( code , arr ){
-        let obj = arr.find(d=>{ return (code == d.code) ? true : false; });
-        if( obj ){
+    _getDesc(code, arr) {
+        let obj = arr.find(d => { return (code == d.code) ? true : false; });
+        if (obj) {
             return obj.desc;
         }
         return "?";
     }
-    _getDesc2( code , arr ){
+    _getDesc2(code, arr) {
         let obj;
-        Object.keys(arr).some(d=>{
-            if( d == code[0] ){
-                obj = arr[d].find(d=>{ return (code == d.code )? true : false; });
-                if( obj ){
+        Object.keys(arr).some(d => {
+            if (d == code[0]) {
+                obj = arr[d].find(d => { return (code == d.code) ? true : false; });
+                if (obj) {
                     return true;
                 }
             }
             return false;
         });
-        
-        if( obj ){
+
+        if (obj) {
             return obj.desc;
         }
         return "?";
     }
-    _getNodeOnTree( code , tree ){
+    _getNodeOnTree(code, tree) {
         let obj;
         let _this = this;
-        tree.some(d=>{
-            if( d.modifier == code ){ obj = d; return true; }
-            else if( d.children ){
+        tree.some(d => {
+            if (d.modifier == code) { obj = d; return true; } else if (d.children) {
                 obj = _this._getNodeOnTree(code, d.children);
-                if( obj ){
+                if (obj) {
                     return true;
                 }
             }
@@ -368,47 +428,47 @@ class SIDC {
         });
         return obj;
     }
-    _getDescOnTree( code , tree ){
-        let obj = this._getNodeOnTree(code,tree);
-        if( obj ){
+    _getDescOnTree(code, tree) {
+        let obj = this._getNodeOnTree(code, tree);
+        if (obj) {
             return obj.desc_kor;
         }
         return "";
     }
-    toDescription(){
+    toDescription() {
         let desc = [];
         let item = {};
         let _this = this;
         let activeType = codeTypes.find(d => { return d.code == _this.codeType ? true : false; });
-        if( activeType.code != "W" ){
-            desc.push( { name:"파아구분", key:"affiliation" , value: this._getDesc( this.affiliation , activeType.standard.affiliation ) });
-            desc.push( { name:"전장", key:"battlefield" , value: this._getDesc( this.battlefield , activeType.standard.battlefield ) });
-            desc.push( { name:"상태", key:"status" , value: this._getDesc( this.status , activeType.standard.status ) });
-            desc.push( { name:"기능", key:"modifier" , value: this._getDescOnTree( this.modifier , activeType.standard.identifier ) });
-            desc.push( { name:"부대", key:"echelon" , value: this._getDesc2( this.echelon , activeType.standard.unit ) });
-            desc.push( { name:"국가", key:"nation" , value: ""});//this._getDesc( this.nation , activeType.standard.nation );
-            desc.push( { name:"임무", key:"mission" , value: this._getDesc( this.mission , activeType.standard.mission ) });
-        }else{
-            desc.push( { name:"위치", key:"pos" , value: this._getDesc( this.pos , activeType.standard.pos ) });
-            desc.push( { name:"상태", key:"fix" , value: this._getDesc( this.fix , activeType.standard.fix ) });
-            desc.push( { name:"형식", key:"modifier" , value: this._getDesc( this.modifier , activeType.standard.graphic ) });
-            desc.push( { name:"기능", key:"graphic" , value: this._getDescOnTree( this.graphic , activeType.standard.identifier ) });
+        if (activeType.code != "W") {
+            desc.push({ name: "파아구분", key: "affiliation", value: this._getDesc(this.affiliation, activeType.standard.affiliation) });
+            desc.push({ name: "전장", key: "battlefield", value: this._getDesc(this.battlefield, activeType.standard.battlefield) });
+            desc.push({ name: "상태", key: "status", value: this._getDesc(this.status, activeType.standard.status) });
+            desc.push({ name: "기능", key: "modifier", value: this._getDescOnTree(this.modifier, activeType.standard.identifier) });
+            desc.push({ name: "부대", key: "echelon", value: this._getDesc2(this.echelon, activeType.standard.unit) });
+            desc.push({ name: "국가", key: "nation", value: "" }); //this._getDesc( this.nation , activeType.standard.nation );
+            desc.push({ name: "임무", key: "mission", value: this._getDesc(this.mission, activeType.standard.mission) });
+        } else {
+            desc.push({ name: "위치", key: "pos", value: this._getDesc(this.pos, activeType.standard.pos) });
+            desc.push({ name: "상태", key: "fix", value: this._getDesc(this.fix, activeType.standard.fix) });
+            desc.push({ name: "형식", key: "modifier", value: this._getDesc(this.modifier, activeType.standard.graphic) });
+            desc.push({ name: "기능", key: "graphic", value: this._getDescOnTree(this.graphic, activeType.standard.identifier) });
         }
         return desc;
     }
 }
 
 class ViewModelElement {
-    constructor(container,options) {
+    constructor(container, options) {
         this.options = Object.assign({}, options);
         let ele = document.querySelector("#" + this.options.id);
 
         container.call
-        ele.addEventListener('change',function(){
+        ele.addEventListener('change', function() {
             container.symbolTest.try();
         });
         if (this.options.type == "input") {
-            ele.addEventListener('keyup',function(){
+            ele.addEventListener('keyup', function() {
                 container.symbolTest.try();
             });
         }
@@ -450,7 +510,7 @@ class ViewModelElement {
     }
 }
 class SymbolTest {
-    constructor(container,resId){
+    constructor(container, resId) {
         this.container = container;
         this.resultId = resId;
         this.viewModels = [];
@@ -470,16 +530,16 @@ class SymbolTest {
         option.category = "KMILSYMBOL";
         option.code = "";
         option.description = this.container.descriptionFromSIDC(option.sic);
-        return '<img class="symbol-sm" data-option="'+encodeURIComponent(JSON.stringify(option))+'" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
+        return '<img class="symbol-sm" data-option="' + encodeURIComponent(JSON.stringify(option)) + '" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
     }
-    try() {
+    try () {
         let output = this.create();
         if (output) {
-            let div = document.querySelector("#"+this.resultId);
+            let div = document.querySelector("#" + this.resultId);
             div.innerHTML = output;
         }
     }
 };
 
-module.exports = { SIDC : SIDC }
+module.exports = { SIDC: SIDC }
 global.ViewModel_KMilSymbol = ViewModel_KMilSymbol;

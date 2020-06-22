@@ -59,24 +59,28 @@
                     left: this.options.fontSize / 2,
                     top: this.options.fontSize / 2,
                     right: this.options.fontSize / 2,
+<<<<<<< HEAD
                     bottom: this.options.fontSize,
+=======
+                    bottom: this.options.fontSize / 2,
+>>>>>>> 2ee5c5b1fa7f0ccae2d245768acf8deff6aa4e49
                 }
                 var border = this.options.border;
 
                 var box = {
-                    width:0,
-                    height:0
+                    width: 0,
+                    height: 0
                 }
 
-                if(this.options.taildirection == "bottom" || this.options.taildirection == "top" ) {
+                if (this.options.taildirection == "bottom" || this.options.taildirection == "top") {
                     box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2
                     box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.tailHeight + this.options.outlineWidth * 2
-                    
-                }else if(this.option.taildirection == "left" || this.options.taildirection == "right") {
-                    box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2 +this.options.tailHeight
+
+                } else if (this.option.taildirection == "left" || this.options.taildirection == "right") {
+                    box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2 + this.options.tailHeight
                     box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.outlineWidth * 2
                 }
-                
+
                 /*var box = {
                     width: border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2,
                     height: border * 2 + padding.top + padding.bottom + textHeight + this.options.tailHeight + this.options.outlineWidth * 2
@@ -126,42 +130,50 @@
 
                 /*
                 var arc1 = d3.arc()
-                .innerRadius(9)
-                .outerRadius(10)
-                .startAngle(270)
-                .endAngle(360);
+                    .innerRadius(9)
+                    .outerRadius(10)
+                    .startAngle(270)
+                    .endAngle(360);
 
                 var arc2 = d3.arc()
-                .innerRadius(9)
-                .outerRadius(10)
-                .startAngle(0)
-                .endAngle(Math.PI);
+                    .innerRadius(9)
+                    .outerRadius(10)
+                    .startAngle(0)
+                    .endAngle(Math.PI);
 
                 var arc3 = d3.arc()
-                .innerRadius(9)
-                .outerRadius(10)
-                .startAngle(0)
-                .endAngle(Math.PI);
+                    .innerRadius(9)
+                    .outerRadius(10)
+                    .startAngle(0)
+                    .endAngle(Math.PI);
 
                 var arc4 = d3.arc()
+<<<<<<< HEAD
                 .innerRadius(9)
                 .outerRadius(10)
                 .startAngle(0)
                 .endAngle(Math.PI);
                 */
+=======
+                    .innerRadius(9)
+                    .outerRadius(10)
+                    .startAngle(0)
+                    .endAngle(Math.PI);
+
+>>>>>>> 2ee5c5b1fa7f0ccae2d245768acf8deff6aa4e49
 
                 var data = [{
-                    
-                    x: box.width / 2 - this.options.tailWidth / 2,
-                    y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
-                }, {
-                    x: box.width / 2,
-                    y: box.height
-                }, {
-                    x: box.width / 2 + this.options.tailWidth / 2,
-                    y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
-                },
-                
+
+                        x: box.width / 2 - this.options.tailWidth / 2,
+                        y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
+                    }, {
+                        x: box.width / 2,
+                        y: box.height
+                    }, {
+                        x: box.width / 2 + this.options.tailWidth / 2,
+                        y: box.height - this.options.tailHeight // - (this.options.outlineWidth)
+                    },
+
                 ];
 
                 /*
@@ -174,6 +186,7 @@
 
                 /*
                 path.attr("d", lineFunction(data))
+<<<<<<< HEAD
                 //.attr("stroke", this.options.strokeColor)
                 .attr("fill", this.options.backgroundColor);
                 */
@@ -217,6 +230,24 @@
                 .attr("y1", data[2].y+1)      
                 .attr("x2", data[1].x)    
                 .attr("y2", data[1].y);
+=======
+                    //.attr("stroke", this.options.strokeColor)
+                    .attr("fill", this.options.backgroundColor);
+
+                html.append("line")
+                    .style("stroke", this.options.strokeColor)
+                    .attr("x1", data[0].x)
+                    .attr("y1", data[0].y + 1)
+                    .attr("x2", data[1].x)
+                    .attr("y2", data[1].y);
+
+                html.append("line")
+                    .style("stroke", this.options.strokeColor)
+                    .attr("x1", data[2].x)
+                    .attr("y1", data[2].y + 1)
+                    .attr("x2", data[1].x)
+                    .attr("y2", data[1].y);*/
+>>>>>>> 2ee5c5b1fa7f0ccae2d245768acf8deff6aa4e49
             }
 
             getTextWidth(text, font) {

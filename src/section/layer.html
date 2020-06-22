@@ -9,41 +9,76 @@
         name: '배경 지도',
         group: 'baseMap',
         children: [{
-            name: "Bing Maps Aerial",
+            name: "Open Street Map",
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "OpenStreetMapImageryProvider",
+            options: {
+                url: 'https://a.tile.openstreetmap.org/'
+            }
         }, {
             name: 'Bing Maps Road',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "BingMapsImageryProvider",
+            options: {
+                url: "https://dev.virtualearth.net",
+                mapStyle: Cesium.BingMapsStyle.ROAD
+            }
         }, {
             name: 'ArcGIS World Street Maps',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "ArcGisMapServerImageryProvider",
+            options: {
+                url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer",
+            }
         }, {
             name: 'OpenStreetMaps',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "OpenStreetMapImageryProvider",
+            options: {}
         }, {
             name: 'Stamen Maps',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "OpenStreetMapImageryProvider",
+            options: {
+                url: "https://stamen-tiles.a.ssl.fastly.net/watercolor/",
+                fileExtension: "jpg",
+                credit: "Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.",
+            }
         }, {
             name: 'Natural Earth II (local)',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "TileMapServiceImageryProvider",
+            options: {
+                url: Cesium.buildModuleUrl("Assets/Textures/NaturalEarthII"),
+            }
         }, {
             name: 'USGS Shaded Relief (via WMTS)',
             type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "WebMapTileServiceImageryProvider",
+            options: {
+                url: "http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS",
+                layer: "USGSShadedReliefOnly",
+                style: "default",
+                format: "image/jpeg",
+                tileMatrixSetID: "default028mm",
+                maximumLevel: 19,
+                credit: "U. S. Geological Survey",
+            }
         }, {
-            name: 'Stamen Maps',
+            name: 'Ion World',
             type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Stamen Maps',
-            type: "radio",
-            group: 'baseMap'
+            group: 'baseMap',
+            provider: "createWorldImagery",
+            options: {
+                style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+            }
         }],
         parse: (parent, arr) => {
 
@@ -67,21 +102,70 @@
         children: [{
             name: "United States GOES Infrared",
             type: "check",
+            group: "userMap",
+            provider: "WebMapServiceImageryProvider",
+            options: {
+                url: "https://mesonet.agron.iastate.edu/cgi-bin/wms/goes/conus_ir.cgi?",
+                layers: "goes_conus_ir",
+                credit: "Infrared data courtesy Iowa Environmental Mesonet",
+                parameters: {
+                    transparent: "true",
+                    format: "image/png",
+                },
+            },
+            alpha: 0.5
         }, {
             name: 'United States Weather Radar',
             type: "check",
+            group: "userMap",
+            provider: "WebMapServiceImageryProvider",
+            options: {
+                url: "https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?",
+                layers: "nexrad-n0r",
+                credit: "Radar data courtesy Iowa Environmental Mesonet",
+                parameters: {
+                    transparent: "true",
+                    format: "image/png",
+                },
+            }
         }, {
             name: 'TileMapService Image',
             type: "check",
+            group: "userMap",
+            provider: "TileMapServiceImageryProvider",
+            options: {
+                url: "../images/cesium_maptiler/Cesium_Logo_Color",
+            }
         }, {
             name: 'Single Image',
             type: "check",
+            group: "userMap",
+            provider: "SingleTileImageryProvider",
+            options: {
+                url: "../images/Cesium_Logo_overlay.png",
+                rectangle: Cesium.Rectangle.fromDegrees(-115.0,
+                    38.0, -107,
+                    39.75
+                ),
+            }
         }, {
             name: 'Grid',
             type: "check",
+            group: "userMap",
+            provider: "GridImageryProvider",
+            options: {
+
+            },
+            alpha: 1.0
         }, {
             name: 'Tile Coordinates',
             type: "check",
+            group: "userMap",
+            provider: "TileCoordinatesImageryProvider",
+            options: {
+
+            },
+            alpha: 1.0
         }],
         parse: (parent, arr) => {
 
@@ -106,17 +190,39 @@
                         key: "tag",
                         value: tag
                     }],
-                    Properties: Object.keys(obj).map(key => {
+                    Properties: Object.keys(obj).filter(key => {
+                        return typeof(obj[key]) == "string" ? true : false;
+                    }).map(key => {
                         return {
                             key: key,
                             value: obj[key]
                         };
                     })
                 };
+
+                Object.keys(obj).filter(key => {
+                    return typeof(obj[key]) == "object" ? true : false;
+                }).forEach(key => {
+                    let prop = obj[key]
+                    test[key] = Object.keys(prop).map(k => {
+                        return {
+                            key: k,
+                            value: prop[k]
+                        };
+                    });
+                });
+
                 app.setAttributes(test);
             },
             onChecked: function(checked, type, tag, obj) {
 
+                if (obj.provider && obj.options) {
+                    if (obj.group == "baseMap") {
+                        app.getOpenedMap(3).getLayerDirector().setBaseLayer(obj.name, obj.provider, obj.options);
+                    } else if (obj.group == "userMap") {
+                        app.getOpenedMap(3).getLayerDirector().setUserLayer(obj.name, obj.provider, obj.options, obj.alpha, checked);
+                    }
+                }
             }
         });
     });

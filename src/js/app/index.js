@@ -3,7 +3,7 @@ var { dom, get, post } = require("../util/comm");
 
 var { Section } = require("./section");
 var { Aside } = require("./aside");
-var { MilMap } = require("../map3d/milmap");
+var { m3 } = require("../map3d/m3");
 
 var { JsonByFolder } = require("../indexeddb/json-by-folder");
 var { Draw } = require("../viewmodel/draw");
@@ -56,7 +56,7 @@ class Application {
 
         this.workStatus("map3d", false);
 
-        this.map = new MilMap(options.map3);
+        this.map = new m3(options.map3);
         this.map.createCollection("KMILSYMBOL", "KMilSymbol");
         this.map.createCollection("MARKER", "Marker");
         this.map.createCollection("EXTRA", "Draw");
@@ -111,11 +111,12 @@ class Application {
         if (options.success) {
             options.success(this.map);
         }
-
-
     }
-    setAttributes(attrs){
-        if( this.aside ){
+    getOpenedMap(dimension) {
+        return this.map;
+    }
+    setAttributes(attrs) {
+        if (this.aside) {
             this.aside.setAttributes(attrs);
         }
     }

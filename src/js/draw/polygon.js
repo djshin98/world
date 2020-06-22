@@ -1,14 +1,18 @@
 var { DrawObject } = require('./drawobject');
+var { Q } = require('../core/e');
+
 class Polygon extends DrawObject {
     constructor() {
         super(3);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isReadyToCallbackVariable()) {
+            this.templateEntity.polygon.hierarchy = points;
+        } else {
             return collection.add(this.index, {
                 polygon: {
-                    hierarchy: points,
-                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor)
+                    hierarchy: this.callbackValue(points),
+                    material: this.callbackColor("faceColor", viewModel)
                 }
             });
         }

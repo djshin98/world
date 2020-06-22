@@ -1,48 +1,49 @@
-var Cesium = require('cesium/Cesium');
+const Cesium = require('cesium/Cesium');
 
-var { MarkerCollection } = require('../collection/markercollection');
-var { DrawCollection, PinMarkers } = require('../collection/drawcollection');
+const { Q } = require("../core/e");
+const { MarkerCollection } = require('../collection/markercollection');
+const { DrawCollection, PinMarkers } = require('../collection/drawcollection');
 
-var { setDrawViewModel } = require('../draw/drawobject');
-var { Circle } = require('../draw/circle');
-var { AirCircle } = require('../draw/aircircle');
-var { Dom } = require('../draw/dom');
-var { Line } = require('../draw/line');
-var { Polygon } = require('../draw/polygon');
-var { Radar } = require('../draw/radar');
-var { Box } = require('../draw/box');
-var { Bmoa } = require('../draw/bmoa');
-var { ArrowLine } = require('../draw/arrowline');
-var { MilLine1 } = require('../draw/milline1');
-var { ShootingLine } = require('../draw/shootingline');
-var { Rectangle } = require('../draw/rectangle');
-var { PointO } = require('../draw/point_o');
-var { PointX } = require('../draw/point_x');
-var { Image } = require('../draw/image');
-var { ImageLine } = require('../draw/imageline');
-var { Point } = require('../draw/point');
-var { AirBox } = require('../draw/airbox');
-var { Parabola } = require('../draw/parabola');
-var { Quadratic } = require('../draw/quadratic');
-var { Air2Earth } = require('../draw/air2earth');
-var { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
-var { TangentPlane } = require('../draw/tangentplane');
-var { LineEO } = require('../draw/line_eo');
-var { MeasureDistance } = require('../draw/measuredistance');
-var { Wall } = require('../draw/wall');
-var { ShootingArc } = require('../draw/shootingarc');
-var { PolygonWithLine } = require('../draw/polygonwithline');
-var { Spline } = require('../draw/spline');
-var { KMilSymbol } = require('../draw/kmilsymbol');
-var { QuadraticTest } = require('../draw/quadratic_test');
-var { DrawModel } = require('../draw/drawmodel');
-var { Slope } = require('../draw/slope');
-var { Alert } = require('../draw/alert');
-var { DrawConstruction } = require('../draw/drawconstruction');
-var { Corn } = require('../draw/corn');
-var { Radar2 } = require('../draw/radar2');
+const { setDrawViewModel } = require('../draw/drawobject');
+const { Circle } = require('../draw/circle');
+const { AirCircle } = require('../draw/aircircle');
+const { Dom } = require('../draw/dom');
+const { Line } = require('../draw/line');
+const { Polygon } = require('../draw/polygon');
+const { Radar } = require('../draw/radar');
+const { Box } = require('../draw/box');
+const { Bmoa } = require('../draw/bmoa');
+const { ArrowLine } = require('../draw/arrowline');
+const { MilLine1 } = require('../draw/milline1');
+const { ShootingLine } = require('../draw/shootingline');
+const { Rectangle } = require('../draw/rectangle');
+const { PointO } = require('../draw/point_o');
+const { PointX } = require('../draw/point_x');
+const { Image } = require('../draw/image');
+const { ImageLine } = require('../draw/imageline');
+const { Point } = require('../draw/point');
+const { AirBox } = require('../draw/airbox');
+const { Parabola } = require('../draw/parabola');
+const { Quadratic } = require('../draw/quadratic');
+const { Air2Earth } = require('../draw/air2earth');
+const { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
+const { TangentPlane } = require('../draw/tangentplane');
+const { LineEO } = require('../draw/line_eo');
+const { MeasureDistance } = require('../draw/measuredistance');
+const { Wall } = require('../draw/wall');
+const { ShootingArc } = require('../draw/shootingarc');
+const { PolygonWithLine } = require('../draw/polygonwithline');
+const { Spline } = require('../draw/spline');
+const { KMilSymbol } = require('../draw/kmilsymbol');
+const { QuadraticTest } = require('../draw/quadratic_test');
+const { DrawModel } = require('../draw/drawmodel');
+const { Slope } = require('../draw/slope');
+const { Alert } = require('../draw/alert');
+const { DrawConstruction } = require('../draw/drawconstruction');
+const { Corn } = require('../draw/corn');
+const { Radar2 } = require('../draw/radar2');
 
-var drawLinker = {
+const drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
     line: { name: "선", createFunc: function() { return new Line(); } },
@@ -82,12 +83,10 @@ var drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
-    
 }
 
-
 function registryHandler(key, name, createfunc) {
-    if (Cesium.defined(drawLinker[key])) {
+    if (Q.isValid(drawLinker[key])) {
         console.error("이미 등록된 모듈 : " + key + "( " + name + " )");
         return false;
     }
@@ -125,7 +124,6 @@ class Draw {
         }
         this.index = 1;
         this.activeShapePoints = [];
-        this.activeShape;
         this.floatingPoint;
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
     }
@@ -134,58 +132,57 @@ class Draw {
         this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
         var _this = this;
-        this.handler.setInputAction(function(event) {
+        this.handler.setInputAction((event) => {
             //console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
             // we get the correct point when mousing over terrain.
-            _this.appendPoint(event);
+
+            let newPosition = this.baseLayerPicker ? this.viewer.scene.pickPosition(event.position) :
+                this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), this.viewer.scene.globe.ellipsoid);
+
+            if (Q.isValid(newPosition)) {
+                this.appendPoint(newPosition, true);
+            }
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
         this.handler.setInputAction(function(event) {
-            if (Cesium.defined(_this.floatingPoint)) {
+            if (Q.isValid(_this.floatingPoint)) {
 
                 var newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.endPosition) :
                     _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.endPosition.x, event.endPosition.y), _this.viewer.scene.globe.ellipsoid);
 
-                if (Cesium.defined(newPosition)) {
-                    _this.floatingPoint.position.setValue(newPosition);
-                    _this.activeShapePoints.pop();
-                    _this.activeShapePoints.push(newPosition);
+                if (Q.isValid(newPosition)) {
+                    _this.appendPoint(newPosition, false);
                 }
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
         this.handler.setInputAction(function(event) {
-            //_this.appendPoint(event);
+            let newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :
+                _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+            if (Q.isValid(newPosition)) {
+                _this.appendPoint(newPosition, true);
+            }
             _this.terminateShape();
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
     }
-    appendPoint(event) {
-        let _this = this;
-        var earthPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :
-            _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
-
-        if (Cesium.defined(earthPosition)) {
-            if (_this.activeShapePoints.length === 0) {
-                _this.floatingPoint = _this.createPoint(earthPosition);
-                _this.activeShapePoints.push(earthPosition);
-                var dynamicPositions = new Cesium.CallbackProperty(function() {
-                    if (_this.viewModel.mode === 'polygon') {
-                        return new Cesium.PolygonHierarchy(_this.activeShapePoints);
-                    }
-                    return _this.activeShapePoints;
-                }, false);
-                _this.activeShape = _this.drawShape(dynamicPositions);
+    appendPoint(earthPosition, bappend) {
+        if (Q.isValid(earthPosition)) {
+            let points;
+            if (bappend) {
+                this.floatingPoint = this.createPoint(earthPosition);
+                this.activeShapePoints.push(earthPosition);
+                points = this.activeShapePoints;
             } else {
-                _this.activeShapePoints.push(earthPosition);
-                _this.createPoint(earthPosition);
+                points = this.activeShapePoints.concat(earthPosition);
             }
+            this.drawShape(points, bappend);
         }
     }
     update(viewModel) {
-        var currentMode = this.viewModel.mode;
+        let currentMode = this.viewModel.mode;
 
         this.viewModel = setDrawViewModel(this.viewModel, viewModel);
 
@@ -198,10 +195,13 @@ class Draw {
             this.terminateShape();
 
             this.activeDrawHandler = this.getHandler(this.viewModel.mode);
+            if (Q.isValid(this.activeDrawHandler)) {
+                this.activeDrawHandler.ready();
+            }
         }
     }
     getHandler(key) {
-        if (Cesium.defined(drawLinker[key])) {
+        if (Q.isValid(drawLinker[key])) {
             return drawLinker[key].createFunc();
         }
     }
@@ -211,32 +211,43 @@ class Draw {
         });
     }
     createPoint(worldPosition) {
-        if (Cesium.defined(this.activeDrawHandler)) {
+        if (Q.isValid(this.activeDrawHandler)) {
             let pin = this.activeDrawHandler.pin(this.activeShapePoints.length);
 
             //{ name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 }
-            return this.markerCollection.add(CTX.c2d(worldPosition), pin);
+            this.markerCollection.add(CTX.c2d(worldPosition), pin);
+            return worldPosition;
         }
     }
-    drawShape(positionData) {
-        if (Cesium.defined(this.activeDrawHandler)) {
-            return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
+    drawShape(positionData, bappend) {
+        if (Q.isValid(this.activeDrawHandler)) {
+            if (bappend && this.activeDrawHandler.isCompletePoints(positionData)) {
+                this.terminateShape();
+                return;
+            }
+            return this.activeDrawHandler.createShape(this.drawCollection, positionData, this.viewModel, bappend);
         }
     }
     drawModel(positionData) {
         this.activeDrawHandler = this.getHandler("drawModel");
-        if (Cesium.defined(this.activeDrawHandler)) {
+        if (Q.isValid(this.activeDrawHandler)) {
             return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
         }
     }
 
     terminateShape() {
-        //this.activeShapePoints.pop();
-        this.drawShape(this.activeShapePoints);
+        if (Q.isValid(this.activeDrawHandler)) { this.activeDrawHandler.complete(); }
+
+        if (Q.isValid(this.activeDrawHandler)) {
+            this.activeDrawHandler.createShape(this.drawCollection, this.activeShapePoints, this.viewModel, true);
+        }
+
+        if (Q.isValid(this.activeDrawHandler)) {
+            this.activeDrawHandler.ready();
+        }
+
         this.drawCollection.remove(this.floatingPoint);
-        this.drawCollection.remove(this.activeShape);
         this.floatingPoint = undefined;
-        this.activeShape = undefined;
         this.activeShapePoints = [];
         this.index++;
         this.markerCollection.removeAll();

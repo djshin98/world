@@ -1,4 +1,5 @@
-const { $$ } = require('../core/e');
+'use strict';
+const { $$, Q } = require('../core/e');
 
 class OliveTree {
     constructor(selector, arr, option) {
@@ -21,7 +22,7 @@ class OliveTree {
         $(this.selector + " li>div.folder").bind('click', function() {
             _this.toggleFolder(this);
             if (_this.options.onSelect) {
-                _this.options.onSelect('folder', this, _this.get($(ele).data('issuance')));
+                _this.options.onSelect('folder', this, _this.get($(this).data('issuance')));
             }
         });
 
@@ -44,13 +45,15 @@ class OliveTree {
         });
 
         $(this.selector + " li>input[type='checkbox']").change(function() {
+            let $this = $(this);
             let type = ($(this).hasClass('file')) ? 'file' : 'folder';
-            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this); }
+            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this.get($this.data('issuance'))); }
         });
 
         $(this.selector + " li>input[type='radio']").change(function() {
+            let $this = $(this);
             let type = ($(this).hasClass('file')) ? 'file' : 'folder';
-            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this); }
+            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this.get($this.data('issuance'))); }
         });
     }
 
@@ -85,20 +88,33 @@ class OliveTree {
     get(issuanceId) {
         return this._get(this.data, issuanceId);
     }
+    _classStr(d) {
+        if (d.children && d.children.length > 0) {
+            if (Q.isValid(d.class)) {
+                return ' class="folder ' + d.class + '" ';
+            }
+            return ' class="folder" ';
+        }
+
+        if (Q.isValid(d.class)) {
+            return ' class="file ' + d.class + '" ';
+        }
+        return ' class="file" ';
+    }
     _makeTree(arr, options) {
         let _this = this;
         let str = '';
         arr.forEach(d => {
             let attr = options.onAttribute ? options.onAttribute(d) : "";
-            let text = options.onText ? options.onText(d) : "";
-            let idstr = ""; //(d.id)?'id="' + d.id + '" ':"";
-            let classstr = (d.children && d.children.length > 0) ? ' class="folder" ' : ' class="file" ';
+            let text = options.onText ? options.onText(d) : (Q.isValid(d.name) ? d.name : "");
+            let idstr = Q.isValid(d.id) ? 'data-id="' + d.id + '" ' : "";
+            let classstr = this._classStr(d);
             let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
             let issuanceStr = (d.issuanceId) ? ' data-issuance="' + d.issuanceId + '" ' : ' ';
             if (d.type && d.type == "check") {
-                str += '<li><input type="checkbox" ' + idstr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li><input type="checkbox" ' + issuanceStr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else if (d.type && d.type == "radio") {
-                str += '<li><input type="radio" ' + groupstr + idstr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li><input type="radio" ' + groupstr + issuanceStr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else {
                 str += '<li><div' + classstr + idstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             }

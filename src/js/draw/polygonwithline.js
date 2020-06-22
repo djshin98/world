@@ -9,14 +9,16 @@ class PolygonWithLine extends DrawObject {
     }
 
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
-            //let displayCondition = new Cesium.DistanceDisplayCondition(0, 100000);
+        if (this.isReadyToCallbackVariable()) {
+            this.templateEntity.polygon.hierarchy = points;
+            this.templateEntity.polyline.positions = points;
+        } else {
             points.push(points[0]);
             points.push(points[1]);
             viewModel.lineColor.alpha = 1;
 
             let option = {
-                positions: points,
+                positions: this.callbackValue(points),
                 clampToGround: true,
                 width: viewModel.lineWidth,
                 //distanceDisplayCondition: displayCondition,
@@ -24,9 +26,9 @@ class PolygonWithLine extends DrawObject {
             };
             return collection.add(this.index, {
                 polygon: {
-                    hierarchy: points,
+                    hierarchy: this.callbackValue(points),
                     //distanceDisplayCondition: displayCondition,
-                    material: new Cesium.ColorMaterialProperty(viewModel.faceColor)
+                    material: this.callbackColor("faceColor", viewModel)
                 },
                 polyline: option,
             });

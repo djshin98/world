@@ -10,7 +10,7 @@ var { base64_encode, dir, dirByExts } = require("./js/watch/image");
 const { WebSocketServer } = require('./js/ws/websocket_server');
 const { MqttAdapter } = require('./js/mqtt/mqttbroker');
 const { FileWatcher } = require('./js/watch/filewatcher');
-var { isValid } = require("./js/core/block");
+var { $$ } = require("./js/core/e");
 
 const cors = require('cors');
 
@@ -150,7 +150,7 @@ server.get('/default/', (req, res) => {
 server.get('/images/', (req, res) => {
     var param = req.query.param;
     let data = JSON.parse(param);
-    if (isValid(data.exts)) {
+    if ($$.isValid(data.exts)) {
         dirByExts(__dirname + "/" + data.url, data.exts, function(array) {
             res.json({ result: array });
         });

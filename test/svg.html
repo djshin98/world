@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="http://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+
+    <style>
+        svg {
+            border: 1px solid #ddd
+        }
+    </style>
+</head>
+
+<body>
+    <img id="img0" />
+    <img id="img1" />
+    <img id="img2" />
+    <img id="img3" />
+    <img id="img4" />
+    <script>
+        const b64start = 'data:image/svg+xml;base64,';
+        const svgImages = {};
+
+        function svg2Image(svg) {
+            return b64start + btoa(new XMLSerializer().serializeToString(svg));
+        }
+        class SvgImage {
+            constructor(options) {
+                this.options = Object.assign({
+                    width: 100,
+                    height: 100
+                }, options);
+                this._create();
+            }
+            _create() {
+                let template = d3.selectAll("body").append("template");
+                let svg = template.append("svg").attr('width', this.options.width).attr('height', this.options.height);
+                this.create(svg);
+                svgImages[this.constructor.name] = svg2Image(svg.node());
+                template.remove();
+            }
+
+        }
+        class Alert extends SvgImage {
+            constructor(options) {
+                super(options);
+            }
+            create(svg) {
+                let opt = this.options;
+                if (opt.data instanceof Array) {
+                    opt.data.forEach(d => {
+                        this._circle(svg, d, opt);
+                    });
+                } else {
+                    this._circle(svg, opt.data, opt);
+                }
+            }
+            _circle(svg, d, opt) {
+                let circle = svg.append("circle").attr("cx", opt.width / 2).attr("cy", opt.height / 2);
+                if (d.r) {
+                    circle.attr("r", d.r);
+                }
+                if (d.fill) {
+                    circle.attr("fill", d.fill);
+                } else {
+                    circle.attr("fill", "transparent");
+                }
+                if (d.stroke) {
+                    circle.attr("stroke", d.stroke);
+                }
+                if (d["stroke-width"]) {
+                    circle.attr("stroke-width", d["stroke-width"]);
+                }
+            }
+        }
+        let options = {
+            width: 54,
+            height: 54,
+            images: [
+                [{
+                    r: 5,
+                    fill: "red"
+                }, {
+                    r: 10,
+                    stroke: "red",
+                    "stroke-width": 3
+                }, {
+                    r: 15,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 20,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 23,
+                    stroke: "red",
+                    "stroke-width": 1
+                }],
+                [{
+                    r: 5,
+                    fill: "red"
+                }, {
+                    r: 10,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 15,
+                    stroke: "red",
+                    "stroke-width": 3
+                }, {
+                    r: 20,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 23,
+                    stroke: "red",
+                    "stroke-width": 1
+                }],
+                [{
+                    r: 5,
+                    fill: "red"
+                }, {
+                    r: 10,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 15,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 20,
+                    stroke: "red",
+                    "stroke-width": 3
+                }, {
+                    r: 23,
+                    stroke: "red",
+                    "stroke-width": 1
+                }],
+                [{
+                    r: 5,
+                    fill: "red"
+                }, {
+                    r: 10,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 15,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 20,
+                    stroke: "red",
+                    "stroke-width": 1
+                }, {
+                    r: 23,
+                    stroke: "red",
+                    "stroke-width": 3
+                }],
+            ]
+        };
+        options.images.forEach((d, i) => {
+            let opt = {
+                width: options.width,
+                height: options.height,
+                data: d
+            }
+            let alert = new Alert(opt);
+            document.getElementById("img" + i).setAttribute("src", svgImages.Alert);
+        });
+    </script>
+</body>
+
+</html>
