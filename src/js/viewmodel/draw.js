@@ -124,7 +124,6 @@ class Draw {
         }
         this.index = 1;
         this.activeShapePoints = [];
-        this.activeShape;
         this.floatingPoint;
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
     }
@@ -179,7 +178,7 @@ class Draw {
             } else {
                 points = this.activeShapePoints.concat(earthPosition);
             }
-            this.activeShape = this.drawShape(points);
+            this.drawShape(points, bappend);
         }
     }
     update(viewModel) {
@@ -220,13 +219,13 @@ class Draw {
             return worldPosition;
         }
     }
-    drawShape(positionData) {
+    drawShape(positionData, bappend) {
         if (Q.isValid(this.activeDrawHandler)) {
-            if (this.activeDrawHandler.isCompletePoints(positionData)) {
+            if (bappend && this.activeDrawHandler.isCompletePoints(positionData)) {
                 this.terminateShape();
                 return;
             }
-            return this.activeDrawHandler.createShape(this.drawCollection, positionData, this.viewModel);
+            return this.activeDrawHandler.createShape(this.drawCollection, positionData, this.viewModel, bappend);
         }
     }
     drawModel(positionData) {
@@ -238,21 +237,17 @@ class Draw {
 
     terminateShape() {
         if (Q.isValid(this.activeDrawHandler)) { this.activeDrawHandler.complete(); }
-        //this.activeShapePoints.pop();
-        if (Q.isValid(this.activeDrawHandler)) {
-            this.activeDrawHandler.createShape(this.drawCollection, this.activeShapePoints, this.viewModel);
-        }
 
-        //this.drawShape(this.activeShapePoints);
+        if (Q.isValid(this.activeDrawHandler)) {
+            this.activeDrawHandler.createShape(this.drawCollection, this.activeShapePoints, this.viewModel, true);
+        }
 
         if (Q.isValid(this.activeDrawHandler)) {
             this.activeDrawHandler.ready();
         }
 
         this.drawCollection.remove(this.floatingPoint);
-        this.drawCollection.remove(this.activeShape);
         this.floatingPoint = undefined;
-        this.activeShape = undefined;
         this.activeShapePoints = [];
         this.index++;
         this.markerCollection.removeAll();

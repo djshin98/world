@@ -179,8 +179,9 @@ class DrawObject {
     create(collection, points, viewModel, templateEntity) {
 
     }
-    createShape(collection, points, viewModel) {
-        if (this.isCompletePoints(points)) {
+    createShape(collection, points, viewModel, bclicked) {
+        if (bclicked && this.isCompletePoints(points)) {
+            console.log("complete");
             if (Q.isValid(this.templateEntity)) {
                 if (Q.isArray(this.templateEntity)) {
                     this.templateEntity.forEach(entity => {

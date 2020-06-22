@@ -1,7 +1,7 @@
 var { DrawObject } = require('./drawobject');
 class Circle extends DrawObject {
     constructor() {
-        super(2);
+        super(2, 2);
     }
     create(collection, points, viewModel) {
         var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
