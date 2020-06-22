@@ -61,7 +61,7 @@ class Quadratic extends DrawObject {
                 });
             }
 
-            if (viewModel.frameEnable === true) {
+            if (viewModel.frameEnable === true || !this.isComplete()) {
                 return polylinePoints.points.map(p => {
                     return collection.add(this.index, {
                         position: this.callbackValue(p),

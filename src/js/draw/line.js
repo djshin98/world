@@ -45,7 +45,7 @@ class Line extends DrawObject {
                     clampToGround: true,
                     color: viewModel.lineColor,
                     width: viewModel.lineWidth,
-                    material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+                    material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
                 },
             });
         }
