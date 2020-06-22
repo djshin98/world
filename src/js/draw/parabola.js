@@ -7,30 +7,27 @@ class Parabola extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isReadyToCallbackVariable()) {
+            if (Q.isArray(this.templateEntity)) {
+                this.templateEntity.forEach((ent, i) => {
+                    ent.position = points[i];
+                });
+            } else {
+                let degrees = {
+                    start: CTX.c2d(points[0]),
+                    end: CTX.c2d(points[1])
+                }
+                let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
+                let polylinePoints = ParabolaUtil.sin(degrees, { start: 0, end: 180 }, 100, height, true, false, 5);
+                this.templateEntity.polyline.positions = polylinePoints.reverse();
+            }
+        } else {
             let degrees = {
                 start: CTX.c2d(points[0]),
                 end: CTX.c2d(points[1])
             }
             let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
             let polylinePoints = ParabolaUtil.sin(degrees, { start: 0, end: 180 }, 100, height, true, false, 5);
-            console.log("polylinePoints length : " + polylinePoints.length);
-            /*
-            polylinePoints.forEach(p => {
-                collection.add(this.index, {
-                    position: p,
-                    point: {
-                        pixelSize: viewModel.shapeSize,
-                        fill: true,
-                        material: viewModel.faceColor,
-                        outline: true,
-                        outlineColor: viewModel.lineColor,
-                        outlineWidth: viewModel.lineWidth,
-                        heightReference: Cesium.HeightReference.NODE
-                    }
-                });
-            });
-            */
 
             let option = {
                 positions: polylinePoints,
@@ -43,8 +40,49 @@ class Parabola extends DrawObject {
             option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
             return collection.add(this.index, { polyline: option });
-
         }
+        /*
+                if (this.isValidPoints(points)) {
+                    let degrees = {
+                        start: CTX.c2d(points[0]),
+                        end: CTX.c2d(points[1])
+                    }
+                    let height = viewModel.size + Math.max(degrees.start.height, degrees.end.height);
+                    let polylinePoints = ParabolaUtil.sin(degrees, { start: 0, end: 180 }, 100, height, true, false, 5);
+                    console.log("polylinePoints length : " + polylinePoints.length);
+                    */
+        /*
+        polylinePoints.forEach(p => {
+            collection.add(this.index, {
+                position: p,
+                point: {
+                    pixelSize: viewModel.shapeSize,
+                    fill: true,
+                    material: viewModel.faceColor,
+                    outline: true,
+                    outlineColor: viewModel.lineColor,
+                    outlineWidth: viewModel.lineWidth,
+                    heightReference: Cesium.HeightReference.NODE
+                }
+            });
+        });
+        */
+        /*
+                    let option = {
+                        positions: polylinePoints,
+                        color: viewModel.lineColor,
+                        width: viewModel.lineWidth,
+                        material: viewModel.lineColor,
+                        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
+                    };
+
+                    option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
+
+                    return collection.add(this.index, { polyline: option });
+                    
+
+                }
+                */
     }
 
     _create(collection, points, viewModel) {
