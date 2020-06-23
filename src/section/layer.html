@@ -84,15 +84,27 @@
 
         }
     }, {
-        name: 'DEM',
+        name: '지형 지도',
         children: [{
-            name: "Bing Maps Aerial",
+            name: "World Terrian",
             type: "radio",
-            group: 'dem'
+            group: 'terrian',
+            provider: "createWorldTerrain",
+            options: {
+                requestVertexNormals: true,
+                requestWaterMask: true
+            }
         }, {
-            name: 'Bing Maps Road',
+            name: 'South Korea Terrian',
             type: "radio",
-            group: 'dem'
+            group: 'terrian',
+            provider: "CesiumTerrainProvider",
+            options: {
+                proxy: "/GVS/proxy.jsp", //CORS가 지원되지 않는 경우
+                url: "http://192.168.1.101:38080/tilesets/srtm/",
+                requestVertexNormals: true,
+                requestWaterMask: true
+            }
         }],
         parse: (parent, arr) => {
 
@@ -166,6 +178,30 @@
 
             },
             alpha: 1.0
+        }, {
+            name: 'Hwasung_TMS',
+            type: "check",
+            group: "userMap",
+            provider: "TileMapServiceImageryProvider",
+            options: {
+                url: 'http://192.168.1.101:8080/Map/Hwasung_TMS/'
+            }
+        }, {
+            name: 'Seoul_TMS',
+            type: "check",
+            group: "userMap",
+            provider: "TileMapServiceImageryProvider",
+            options: {
+                url: 'http://192.168.1.101:8080/Map/Seoul_TMS/'
+            }
+        }, {
+            name: 'Daejon_TMS',
+            type: "check",
+            group: "userMap",
+            provider: "TileMapServiceImageryProvider",
+            options: {
+                url: 'http://192.168.1.101:8080/Map/Daejon_TMS/'
+            }
         }],
         parse: (parent, arr) => {
 
@@ -221,6 +257,8 @@
                         app.getOpenedMap(3).getLayerDirector().setBaseLayer(obj.name, obj.provider, obj.options);
                     } else if (obj.group == "userMap") {
                         app.getOpenedMap(3).getLayerDirector().setUserLayer(obj.name, obj.provider, obj.options, obj.alpha, checked);
+                    } else if (obj.group == "terrian") {
+                        app.getOpenedMap(3).getLayerDirector().setTerrianLayer(obj.name, obj.provider, obj.options);
                     }
                 }
             }

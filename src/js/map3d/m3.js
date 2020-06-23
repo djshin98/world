@@ -73,7 +73,10 @@ class m3 extends Eventable {
             fullscreenButton: false,
             creditsDisplay: false,
             distanceDisplayCondition: false,
-
+            terrainProvider: Cesium.createWorldTerrain({
+                requestVertexNormals: true,
+                requestWaterMask: true
+            }),
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
@@ -115,35 +118,11 @@ class m3 extends Eventable {
             }*/
         };
 
-        if (this.options.mapServiceMode == "internet") {
-            this.viewOption.terrainProvider = Cesium.createWorldTerrain();
-        } else if (this.options.mapServiceMode == "offline") {
-            if (this.options.offlineOption.map) {
-                this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
-                    url: Cesium.buildModuleUrl(this.options.offlineOption.map)
-                });
-            }
-            if (this.options.offlineOption.terrain) {
-                this.viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
-                    url: this.options.offlineOption.terrain,
-                    proxy: new Cesium.DefaultProxy(this.options.offlineOption.proxy),
-                    requestWaterMask: false,
-                    requestVertexNormals: false
-                });
-            }
-        }
         this.viewer3d = new Cesium.Viewer(this.options.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
 
-        if (this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0) {
-            var imageryLayers = this.viewer3d.imageryLayers;
-            this.options.offlineBaseLayers.forEach(d => {
-                imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
-                    url: d.url
-                }));
-            });
-        }
+        this.viewer3d.scene.globe.enableLighting = true;
 
         let _this = this;
 
@@ -379,7 +358,7 @@ class m3 extends Eventable {
         }
         this.contourWidget.update(viewModel);
     }
-    terrianFromDegrees(degrees, callback) {
+    FromDegrees(degrees, callback) {
         var positions = degrees.map(d => {
             return CTX.degree(d.longitude, d.latitude);
         });

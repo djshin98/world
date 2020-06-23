@@ -1,5 +1,5 @@
-var { DrawObject } = require('./drawobject');
-var { CTX } = require('../map3d/ctx');
+const { DrawObject } = require('./drawobject');
+const { CTX } = require('../map3d/ctx');
 
 class Corn extends DrawObject {
     constructor() {
@@ -27,7 +27,7 @@ class Corn extends DrawObject {
                 Cesium.Math.toRadians(90.0)
                 );
                 */
-            var pos = Object.assign({}, points[0]);
+            let pos = Object.assign({}, points[0]);
             pos = CTX.c2r(pos);
             pos.heignt += len / 2;
             pos = CTX.r2c(pos);

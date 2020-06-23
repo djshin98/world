@@ -2,9 +2,6 @@
 
 function elements(heles) {
     this.elements = heles;
-
-
-
     this.value = function(v) {
         if (v) {
             this.elements.forEach(ele => {

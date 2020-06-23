@@ -1,0 +1,140 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    max-width: 80%;
+    margin: auto;
+}
+
+em {
+    color: #ccc;
+}
+
+figure {
+    text-align: center;
+}
+
+svg {
+    max-width: 100%;
+}
+
+@mixin tableStyle {
+    border: solid 1px #ccc;
+    padding: 5px;
+    text-align: center;
+}
+
+table.fullwidth {
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 1rem;
+    @include tableStyle;
+    thead {
+        font-weight: bold;
+        background-color: rgb(243, 243, 243);
+        display: table-header-group;
+        tr {
+            th {
+                @include tableStyle;
+            }
+            td {
+                @include tableStyle;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                @include tableStyle;
+            }
+            td:nth-child(1) {
+                text-align: left;
+            }
+        }
+    }
+}
+
+figure {
+    ul.remark {
+        font-size: 0.8em;
+        font-style: italic;
+        li {
+            list-style-type: none;
+            text-align: left;
+        }
+    }
+}
+
+table.terms {
+    border-collapse: collapse;
+    @include tableStyle;
+    tr {
+        td {
+            @include tableStyle;
+            text-align: left;
+        }
+        td:nth-child(1) {
+            text-align: center;
+        }
+    }
+}
+
+.index-h3 {
+    margin-left: 15px;
+}
+
+.na {
+    background-color: #eee;
+    color: #999;
+}
+
+ul.tree-wrapper {
+    li {
+        font-size: 0.9em;
+        background-color: #ddd;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        padding: 0.3em;
+        cursor: pointer;
+        div {
+            display: inline-block;
+        }
+    }
+}
+
+
+/* Tooltip container */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+
+/* Tooltip text */
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
