@@ -1,5 +1,4 @@
 @import "define.scss";
-
 section {
     position: absolute;
     width: 200px;
@@ -68,6 +67,23 @@ section {
             }
             .section-content {
                 //font-size: 0.8em;
+                .line-wrap {
+                    margin-top: 5px;
+                    div {
+                        display: inline-block;
+                        min-width: 50px;
+                    }
+                    select {
+                        display: inline-block;
+                        margin-left: 10px;
+                        max-width: 130px;
+                    }
+                    input {
+                        display: inline-block;
+                        margin-left: 10px;
+                        max-width: 100px;
+                    }
+                }
                 table {
                     .bl {
                         border-left: 1px solid #e8e9e9;
@@ -135,7 +151,7 @@ section {
                     height: 300px;
                     overflow: scroll;
                     font-size: 12px;
-                    li{
+                    li {
                         white-space: nowrap;
                     }
                     input[type=checkbox] {
@@ -146,15 +162,17 @@ section {
                     }
                     div.file {
                         cursor: pointer;
-                        display:inline-block;
+                        display: inline-block;
                         background: url(../libs/jquery-treeview/images/file.gif) 0 0 no-repeat;
                         &.clicked {
-                            border: 1px dotted; background-color: #00398f; color: white;
+                            border: 1px dotted;
+                            background-color: #00398f;
+                            color: white;
                         }
                     }
                     div.folder {
                         cursor: pointer;
-                        display:inline-block;
+                        display: inline-block;
                         background: url(../libs/jquery-treeview/images/folder.gif) 0 0 no-repeat;
                     }
                     div.folder,

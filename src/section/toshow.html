@@ -271,7 +271,6 @@
                 if (data[g.group] && g.parse) {
                     g.parse(g, data[g.group]);
                 }
-                console.dir(g);
             });
             new OliveTree('#toshow-view', toShowNode, {
                 onAttribute: function(d) {
@@ -427,7 +426,6 @@
                             });
                         }
 
-                        console.dir(viewdata);
                         if (!Cesium.defined(addCollection) && viewdata) {
                             addCollection = map.createCollection(group, viewdata.collection);
                         }

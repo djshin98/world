@@ -29,7 +29,7 @@ class LayerDirector {
             viewModel.selectedLayer = layer;
         } else {
             let activeLayerIndex = 0;
-            this.forEach((l) => {
+            this.forEach((l, i) => {
                 if (l.isBaseLayer()) {
                     activeLayerIndex = i;
                     this.imageryLayers.remove(l, false);
