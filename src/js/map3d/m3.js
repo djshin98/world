@@ -379,7 +379,7 @@ class m3 extends Eventable {
         }
         this.contourWidget.update(viewModel);
     }
-    terrianFromDegrees(degrees, callback) {
+    FromDegrees(degrees, callback) {
         var positions = degrees.map(d => {
             return CTX.degree(d.longitude, d.latitude);
         });

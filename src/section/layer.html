@@ -84,15 +84,22 @@
 
         }
     }, {
-        name: 'DEM',
+        name: '지형 지도',
         children: [{
-            name: "Bing Maps Aerial",
+            name: "World Terrian",
             type: "radio",
-            group: 'dem'
+            group: 'terrian',
+            provider: "createWorldTerrain",
+            options: {}
         }, {
             name: 'Bing Maps Road',
             type: "radio",
-            group: 'dem'
+            group: 'terrian',
+            provider: "CesiumTerrainProvider",
+            options: {
+                proxy: "/GVS/proxy.jsp",
+                url: "http://192.168.1.101:38080/tilesets/srtm/"
+            }
         }],
         parse: (parent, arr) => {
 
@@ -245,6 +252,8 @@
                         app.getOpenedMap(3).getLayerDirector().setBaseLayer(obj.name, obj.provider, obj.options);
                     } else if (obj.group == "userMap") {
                         app.getOpenedMap(3).getLayerDirector().setUserLayer(obj.name, obj.provider, obj.options, obj.alpha, checked);
+                    } else if (obj.group == "terrian") {
+                        app.getOpenedMap(3).getLayerDirector().setTerrianLayer(obj.name, obj.provider, obj.options);
                     }
                 }
             }
