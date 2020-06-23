@@ -62,15 +62,17 @@ class LayerDirector {
         if (Q.isValid(name)) { layer.name = Cesium.defaultValue(name, "default"); }
     }
     setTerrianLayer(name, provider, options) {
+        let opt = Object.assign({
+            requestVertexNormals: true,
+            requestWaterMask: true
+        }, options);
+        if (Q.isValid(opt.proxy)) {
+            opt.proxy = new Cesium.DefaultProxy(opt.proxy);
+        }
         if (provider == "createWorldTerrain") {
-            this.terrainProvider = Cesium.createWorldTerrain();
+            this.terrainProvider = Cesium.createWorldTerrain(opt);
         } else {
-            this.terrainProvider = new Cesium[provider]({
-                url: options.url,
-                proxy: new Cesium.DefaultProxy(options.proxy),
-                requestWaterMask: false,
-                requestVertexNormals: false
-            });
+            this.terrainProvider = new Cesium[provider](opt);
         }
     }
 }

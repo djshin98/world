@@ -116,7 +116,10 @@ class m3 extends Eventable {
         };
 
         if (this.options.mapServiceMode == "internet") {
-            this.viewOption.terrainProvider = Cesium.createWorldTerrain();
+            this.viewOption.terrainProvider = Cesium.createWorldTerrain({
+                requestVertexNormals: true,
+                requestWaterMask: true
+            });
         } else if (this.options.mapServiceMode == "offline") {
             if (this.options.offlineOption.map) {
                 this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
@@ -128,13 +131,16 @@ class m3 extends Eventable {
                     url: this.options.offlineOption.terrain,
                     proxy: new Cesium.DefaultProxy(this.options.offlineOption.proxy),
                     requestWaterMask: false,
-                    requestVertexNormals: false
+                    requestVertexNormals: true
                 });
             }
         }
+
         this.viewer3d = new Cesium.Viewer(this.options.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
+
+        this.viewer3d.scene.globe.enableLighting = true;
 
         if (this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0) {
             var imageryLayers = this.viewer3d.imageryLayers;

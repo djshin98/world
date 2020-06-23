@@ -90,15 +90,20 @@
             type: "radio",
             group: 'terrian',
             provider: "createWorldTerrain",
-            options: {}
+            options: {
+                requestVertexNormals: true,
+                requestWaterMask: true
+            }
         }, {
-            name: 'Bing Maps Road',
+            name: 'South Korea Terrian',
             type: "radio",
             group: 'terrian',
             provider: "CesiumTerrainProvider",
             options: {
-                proxy: "/GVS/proxy.jsp",
-                url: "http://192.168.1.101:38080/tilesets/srtm/"
+                proxy: "/GVS/proxy.jsp", //CORS가 지원되지 않는 경우
+                url: "http://192.168.1.101:38080/tilesets/srtm/",
+                requestVertexNormals: true,
+                requestWaterMask: true
             }
         }],
         parse: (parent, arr) => {
