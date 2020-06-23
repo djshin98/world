@@ -7,6 +7,26 @@ class ImageLine extends DrawObject {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
     }
     create(collection, points, viewModel) {
+        if (this.isReadyToCallbackVariable()) {
+            this.templateEntity.polyline.positions = points;
+        } else {
+            let option = {
+                positions: this.callbackValue(points),
+                clampToGround: true,
+                //color : viewModel.lineColor,
+                width: viewModel.lineWidth,
+                //fill:true,
+                //loop : true,
+                material: new Cesium.ImageMaterialProperty({
+                    image: viewModel.image,
+                    repeat: new Cesium.Cartesian2(10.0, 1.0)
+                })
+            };
+            return collection.add(this.index, {
+                polyline: option
+            });
+        }
+        /*
         if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
@@ -24,6 +44,7 @@ class ImageLine extends DrawObject {
                 polyline: option
             });
         }
+        */
 
 
     }

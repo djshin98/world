@@ -27,7 +27,11 @@ class Corn extends DrawObject {
                 Cesium.Math.toRadians(90.0)
                 );
                 */
+<<<<<<< HEAD
             let pos = Object.assign({}, points[0]);
+=======
+            var pos = Object.assign({}, points[0]);
+>>>>>>> 8c3dead9bc81773444cc88f8d698ec75250b0771
             pos = CTX.c2r(pos);
             pos.heignt += len / 2;
             pos = CTX.r2c(pos);

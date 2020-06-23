@@ -1,23 +1,26 @@
 var { DrawObject } = require('./drawobject');
 class Bmoa extends DrawObject {
     constructor() {
-        super(2);
+        super(2, 2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
-            var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
-            if (distance > 0) {
+        var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
+        if (distance > 0) {
+            if(this.isReadyToCallbackVariable()) {
+            this.templateEntity.ellipse.semiMinorAxis = distance;
+            this.templateEntity.ellipse.semiMajorAxis = distance;
+            } else {
                 return collection.add(this.index, {
                     position: points[0],
                     ellipse: {
-                        semiMinorAxis: distance,
-                        semiMajorAxis: distance,
+                        semiMinorAxis: this.callbackValue(distance),
+                        semiMajorAxis: this.callbackValue(distance),
                         fill: true,
                         outline: true,
                         //height : 0,
                         outlineColor: viewModel.lineColor,
                         outlineWidth: viewModel.lineWidth,
-                        material: viewModel.faceColor,
+                        material: this.callbackColor("faceColor", viewModel),
                         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                     },
                     label: {
@@ -30,6 +33,8 @@ class Bmoa extends DrawObject {
                 });
             }
         }
+ 
+               
     }
     type1(collection, name, lnglat, distance, _viewModel) {
         lnglat.height = 0;
