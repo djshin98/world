@@ -4,16 +4,18 @@ var d3 = require('d3');
 
 var {SvgToImage} = require('../util/svgtoimage');
 
+const {Tooltip} = require('../util/tooltip');
 
 class MeasureDistance extends DrawObject {
     constructor() {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
-
+        if (this.isReadyToCallbackVariable()) {
+            this.templateEntity.polyline.positions = points;
+        }else {
             let option = {
-                positions: points,
+                positions:  this.callbackValue(points),
                 clampToGround: true,
                 color: viewModel.lineColor,
                 width: viewModel.lineWidth,
@@ -24,52 +26,55 @@ class MeasureDistance extends DrawObject {
 
             var total = 0;
 
-            for (var i = 0; i < points.length; i++) {
-                if (i != points.length - 1) {
-                    var d = Cesium.Cartesian3.distance(points[i], points[i + 1]);
-                    var s = Cesium.Cartesian3.subtract(points[i + 1], points[i], {});
-                    var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
-                    var a = Cesium.Cartesian3.add(dv, points[i], {});
-
-                    total += d
-                    
-                    //var imageURL = this.svg(d);
-                    //var img64 = this.svg2img(d);
-
-                    var testd3 = stoi.svgtoimage(CTX.displayMeter(d));
-                    
-
-                    collection.add(this.index, {
-                        position: a,
-                        billboard: {
-                            width: 300,
-                            height: 300,
-                            image: testd3,
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }
-
-                    });
-
-                    
+            if (this.isComplete()){
+                for (var i = 0; i < points.length; i++) {
+                    if (i != points.length - 1) {
+                        var d = Cesium.Cartesian3.distance(points[i], points[i + 1]);
+                        var s = Cesium.Cartesian3.subtract(points[i + 1], points[i], {});
+                        var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
+                        var a = Cesium.Cartesian3.add(dv, points[i], {});
+    
+                        total += d
+                        
+                        //var imageURL = this.svg(d);
+                        //var img64 = this.svg2img(d);
+    
+                        //var testd3 = stoi.svgtoimage(CTX.displayMeter(d));
+                        let textimage = Tooltip.base64image({text:d.toFixed(3) + ""});
+    
+                        collection.add(this.index, {
+                            position: a,
+                            billboard: {
+                                width: 100,
+                                height: 100,
+                                image: textimage,
+                                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                            }
+    
+                        });
+    
+                        
+                    }
                 }
+    
+    
+                var testtotal = Tooltip.base64image({text:"total:" + CTX.displayMeter(total)});
+    
+                collection.add(this.index, {
+                    position: points[points.length -1],
+                    billboard: {
+                        width: 100,
+                        height: 100,
+                        image: testtotal,                            
+                        heightReference: new Cesium.CallbackProperty(function(){
+                            return Cesium.HeightReference.CLAMP_TO_GROUND;
+                        }, false)
+                    }
+                })
             }
-
-
-            var testtotal = stoi.svgtoimage("total:" + CTX.displayMeter(total));
-
-            collection.add(this.index, {
-                position: points[points.length -1],
-                billboard: {
-                    width: 300,
-                    height: 300,
-                    image: testtotal,                            
-                    heightReference: new Cesium.CallbackProperty(function(){
-                        return Cesium.HeightReference.CLAMP_TO_GROUND;
-                    }, false)
-                }
-            })
+            
            
-            collection.add(this.index, {
+            return collection.add(this.index, {
                 position: a,
                 polyline: option,
             });
