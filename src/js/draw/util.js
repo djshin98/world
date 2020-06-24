@@ -1,4 +1,4 @@
-var { CTX } = require("../map3d/ctx");
+//var { CTX } = require("../map3d/ctx");
 
 var SurfaceUtil = {
     height: function(lon, lat, height) {

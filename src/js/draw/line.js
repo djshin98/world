@@ -1,11 +1,12 @@
 var { DrawObject } = require('./drawobject');
 class Line extends DrawObject {
     constructor() {
-        super(1, 100);
+        super(2);
     }
     create(collection, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polyline.positions = points;
+            let result = CTX.split.polyline(points, 10);
+            this.sketch(collection, result);
         } else {
             let option = {
                 positions: this.callbackValue(points),
@@ -37,31 +38,20 @@ class Line extends DrawObject {
                         });
                     }
                 }
+
+                return collection.add(this.index, {
+                    position: points[0],
+                    polyline: {
+                        positions: this.callbackValue(points),
+                        clampToGround: true,
+                        color: viewModel.lineColor,
+                        width: viewModel.lineWidth,
+                        material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
+                    },
+                });
             }
-            return collection.add(this.index, {
-                position: points[0],
-                polyline: {
-                    positions: this.callbackValue(points),
-                    clampToGround: true,
-                    color: viewModel.lineColor,
-                    width: viewModel.lineWidth,
-                    material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
-                },
-            });
+            return [];
         }
-
-        //if (this.isValidPoints(points)) {
-
-
-
-        /*
-        var d = Cesium.Cartesian3.distance(points[i], points[i+1]);
-        var s = Cesium.Cartesian3.subtract(points[i+1], points[i], {});
-        var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
-        var a = Cesium.Cartesian3.add(dv, points[i], {});
-        */
-
-        //}
     }
 }
 module.exports = { Line: Line };
