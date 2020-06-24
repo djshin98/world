@@ -104,8 +104,9 @@ class OliveTree {
     _makeTree(arr, options) {
         let _this = this;
         let str = '';
-        arr.forEach(d => {
-            let attr = options.onAttribute ? options.onAttribute(d) : "";
+        arr.forEach((d, i) => {
+            d.order = i;
+            let attr = options.onAttribute ? options.onAttribute(d, i) : "";
             let text = options.onText ? options.onText(d) : (Q.isValid(d.name) ? d.name : "");
             let idstr = Q.isValid(d.id) ? 'data-id="' + d.id + '" ' : "";
             let classstr = this._classStr(d);

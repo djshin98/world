@@ -4,7 +4,6 @@
             <input id="juso_search_text" class="prompt" type="text" placeholder="지명, 시군구명, 지번, ...">
             <i id="juso_search_btn" class="search icon"></i>
         </div>
-        <div class="results"></div>
     </div>
 
 
@@ -80,12 +79,13 @@
         title: 'Zimbabwe'
     }, ];
 
+    /*
     $('.ui.search')
         .search({
             type: 'category',
             source: categoryContent
         });
-
+        */
     app.section.addPlugin("JusoSearch", {
         ctrl: {
             button: "juso_search_btn",
