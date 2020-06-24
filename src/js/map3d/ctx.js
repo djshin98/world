@@ -1,3 +1,4 @@
+var { ArcUtil } = require('../draw/util');
 var CTX = {
     viewer: null,
     debug: false,
@@ -25,6 +26,7 @@ var CTX = {
             }
         }
     },
+    distanceW: function(a, b) { return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2)); },
     distanceD: function(a, b) { let a1 = CTX.d2c(a); let b1 = CTX.d2c(b); return (!a1 || !b1) ? 0 : Cesium.Cartesian3.distance(a1, b1); },
     distanceR: function(a, b) { let a1 = CTX.r2c(a); let b1 = CTX.r2c(b); return (!a1 || !b1) ? 0 : Cesium.Cartesian3.distance(a1, b1); },
     distance: function(a, b) { return (!a || !b) ? 0 : Cesium.Cartesian3.distance(a, b); },
@@ -138,27 +140,63 @@ var CTX = {
     },
     radian2degree(r) { return r * (180 / Math.PI); },
 
-    ca: function(x, y) {
-        let result = Cesium.Cartesian3.add(x, y, {})
-        return result;
-    },
-    csubtract: function(x, y) {
-        let result = Cesium.Cartesian3.subtract(x, y, {})
-        return result;
-    },
-    cmidpoint: function(x, y) {
-        let result = Cesium.Cartesian3.midpoint(x, y, {})
-        return result;
-    },
-    cnormalize: function(x) {
-        let result = Cesium.Cartesian3.normalize(x, {})
-        return result;
+    math: {
+        add: (a, b) => {
+            return Cesium.Cartesian3.add(a, b, {});
+        },
+        sub: (a, b) => {
+            return Cesium.Cartesian3.subtract(a, b, {});
+        },
+        mid: (a, b) => {
+            return Cesium.Cartesian3.midpoint(a, b, {});
+        },
+        normalize: (a) => {
+            return Cesium.Cartesian3.normalize(x, {});
+        }
     },
     displayMeter: function(f, d) {
         if (f >= 1000) {
             return (f / 1000).toFixed(d) + " km";
         }
         return f.toFixed(d) + "m";
+    },
+    split: {
+        arc: (center, p1, p2, degree) => {
+            return ArcUtil.arcPoints2c(center, p1, p2, CTX.θ(center, p1, p2));
+        },
+        polyline: (array, pixels) => {
+            let result = [];
+            array.reduce((prev, curr) => {
+                let wp0 = CTX.c2w(prev);
+                let wp1 = CTX.c2w(curr);
+                if (!Q.isValid(wp0.x) || !Q.isValid(wp1.x)) {
+                    console.log("error");
+                }
+                let wdistance = CTX.distanceW(wp0, wp1);
+                let pointInterval = parseInt(wdistance / pixels);
+                if (pointInterval > 1) {
+                    for (let i = 0; i < pointInterval; i++) {
+                        let pn = CTX.c(prev.x + ((curr.x - prev.x) * i / pointInterval),
+                            prev.y + ((curr.y - prev.y) * i / pointInterval),
+                            prev.z + ((curr.z - prev.z) * i / pointInterval));
+                        result.push(pn);
+
+                        if (i + 1 == pointInterval) {
+                            wp0 = CTX.c2w(curr);
+                            wp1 = CTX.c2w(pn);
+                            let d = CTX.distanceW(wp0, wp1);
+                            if (d > pixels / 2) {
+                                result.push(curr);
+                            }
+                        }
+                    }
+                } else {
+                    result.push(curr);
+                }
+                return curr;
+            });
+            return result;
+        }
     }
 }
 

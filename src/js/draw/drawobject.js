@@ -181,6 +181,7 @@ class DrawObject {
 
     }
     createShape(collection, points, viewModel, bclicked) {
+        points = Object.assign([], points);
         if (bclicked && this.isCompletePoints(points)) {
             //console.log("complete");
             this.complete();
@@ -205,6 +206,32 @@ class DrawObject {
                 return this.create(collection, points, viewModel);
             }
         }
+    }
+    sketch(collection, points) {
+        if (Q.isValid(this.templateEntity)) {
+            if (Q.isArray(this.templateEntity)) {
+                this.templateEntity.forEach((ent, i) => {
+                    collection.remove(ent);
+                });
+            } else {
+                collection.remove(this.templateEntity);
+            }
+        }
+
+        this.templateEntity = points.map(p => { //4
+            return collection.add(this.index, {
+                position: p,
+                point: {
+                    pixelSize: 2,
+                    material: Template.faceColor,
+                    outline: true,
+                    outlineColor: Template.lineColor,
+                    outlineWidth: 1,
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                }
+            });
+        });
+
     }
     isReadyToCallbackVariable() {
         if (Q.isValid(this.templateEntity)) {

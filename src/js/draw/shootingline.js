@@ -1,82 +1,46 @@
+"use strict";
+
 var { DrawObject } = require('./drawobject');
 var { ArcUtil } = require('./util');
 var { CTX } = require('../map3d/ctx');
 
 class ShootingLine extends DrawObject {
     constructor() {
-        super(3, 3);
+        super(2, 3);
     }
     create(collection, points, viewModel) {
         let p = points;
 
 
         if (this.isReadyToCallbackVariable()) {
-
-            let result = [p[0]].concat(ArcUtil.arcPoints2c(p[0], p[1], p[2], CTX.θ(p[0], p[1], p[2])));
             // p[0] , p[1] 거리 --> 픽셀 거리 / 5 = 쪼개지는 갯수 
             // p[2] , p[0] 거리 --> 픽셀 거리 / 5 = 쪼개지는 갯수 
-            let wp0 = CTX.c2w(p[0]);
-            let wp1 = CTX.c2w(p[1]);
-            let wp2 = CTX.c2w(p[2]);
-
-            let wdistance = Math.sqrt(Math.pow(wp1.x - wp0.x, 2) + Math.pow(wp2.y - wp0.y, 2));
-            let pointInterval = wdistance / 5;
-
-            result = result.concat([p[0], p[1]]);
-
-            if (Q.isArray(this.templateEntity)) { //8
-                this.templateEntity.forEach((ent, i) => {
-                    collection.remove(ent);
-                });
-
-                this.templateEntity = result.map(p => { //4
-                    return collection.add(this.index, {
-                        position: this.callbackValue(p),
-                        point: {
-                            pixelSize: 2,
-                            //fill: true,
-                            material: this.callbackColor("faceColor", viewModel),
-                            outline: true,
-                            outlineColor: viewModel.lineColor,
-                            outlineWidth: viewModel.lineWidth,
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }
-                    });
-                });
-
+            let result = [];
+            if (p.length == 3) {
+                //CTX.splitArc(p[0],p[1],p[2]);
+                result = [p[0]].concat(CTX.split.arc(p[0], p[1], p[2]));
+                p[2] = result[result.length - 1];
+            } else {
+                p.push(p[1]);
             }
-
+            result = result.concat(CTX.split.polyline([p[0], p[1]], 10));
+            result = result.concat(CTX.split.polyline([p[0], p[2]], 10));
+            this.sketch(collection, result);
         } else {
-            let result = [p[0]].concat(ArcUtil.arcPoints2c(p[0], p[1], p[2], CTX.θ(p[0], p[1], p[2])));
-            result = result.concat([p[0], p[1]]);
-
             if (this.isComplete()) {
+                let result = [p[0]].concat(CTX.split.arc(p[0], p[1], p[2]));
+                result = result.concat([p[0], p[1]]);
                 return collection.add(this.index, {
                     position: points[0],
                     polyline: {
-                        positions: this.callbackValue(result),
+                        positions: result,
                         clampToGround: true,
                         width: viewModel.lineWidth,
                         material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
                     }
                 });
-            } else {
-                return result.map(p => { //4
-                    return collection.add(this.index, {
-                        position: this.callbackValue(p),
-                        point: {
-                            pixelSize: 2,
-                            //fill: true,
-                            material: this.callbackColor("faceColor", viewModel),
-                            outline: true,
-                            outlineColor: viewModel.lineColor,
-                            outlineWidth: viewModel.lineWidth,
-                            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-                        }
-                    });
-                });
             }
-
+            return [];
         }
     }
 }
