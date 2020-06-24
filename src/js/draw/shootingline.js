@@ -15,6 +15,13 @@ class ShootingLine extends DrawObject {
             let result = [p[0]].concat(ArcUtil.arcPoints2c(p[0], p[1], p[2], CTX.θ(p[0], p[1], p[2])));
             // p[0] , p[1] 거리 --> 픽셀 거리 / 5 = 쪼개지는 갯수 
             // p[2] , p[0] 거리 --> 픽셀 거리 / 5 = 쪼개지는 갯수 
+            let wp0 = CTX.c2w(p[0]);
+            let wp1 = CTX.c2w(p[1]);
+            let wp2 = CTX.c2w(p[2]);
+
+            let wdistance = Math.sqrt(Math.pow(wp1.x - wp0.x, 2) + Math.pow(wp2.y - wp0.y, 2));
+            let pointInterval = wdistance / 5;
+
             result = result.concat([p[0], p[1]]);
 
             if (Q.isArray(this.templateEntity)) { //8
