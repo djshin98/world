@@ -1,5 +1,5 @@
-var { ArcUtil } = require('../draw/util');
-var CTX = {
+const { ArcUtil } = require('../draw/util');
+const CTX = {
     viewer: null,
     debug: false,
     terrain: true,

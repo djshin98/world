@@ -1,3 +1,4 @@
+"use strict";
 const Cesium = require('cesium/Cesium');
 
 const { Q } = require("../core/e");
