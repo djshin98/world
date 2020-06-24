@@ -22,7 +22,9 @@ class LayerDirector {
 
         this.updateCallbacks = [];
 
-        this.restore();
+        this.db.set(LAYER_KEY, "last", this.layers);
+
+        //this.restore();
     }
     ordering() {
         if (Q.isValid(this.layers)) {
@@ -126,17 +128,17 @@ class LayerDirector {
     setLayer(obj, show, callbackable) {
         if (Q.isValid(obj.group)) {
             if (obj.group == BASE_IMAGERY_LAYER) {
-                return this.setBaseImageryLayer(obj.name, obj.provider, obj.options, callbackable);
+                return this.setBaseImageryLayer(obj, callbackable);
             } else if (obj.group == USER_IMAGERY_LAYER) {
-                return this.setUserImageryLayer(obj.name, obj.provider, obj.options, obj.alpha, show, callbackable);
+                return this.setUserImageryLayer(obj, show, callbackable);
             } else if (obj.group == TERRIAN_LAYER) {
-                return this.setTerrianLayer(obj.name, obj.provider, obj.options, callbackable);
+                return this.setTerrianLayer(obj, callbackable);
             } else if (obj.group == STATISTICS_LAYER) {
-                return this.setStatisticsLayer(obj.name, obj.provider, obj.options, obj.alpha, show, callbackable);
+                return this.setStatisticsLayer(obj, show, callbackable);
             } else if (obj.group == DATA_LAYER) {
-                return this.setDataLayer(obj.name, obj.provider, obj.options, obj.alpha, show, callbackable);
+                return this.setDataLayer(obj, show, callbackable);
             } else if (obj.group == APPLICATION_LAYER) {
-                return this.setApplicationLayer(obj.name, obj.provider, obj.options, obj.alpha, show, callbackable);
+                return this.setApplicationLayer(obj, show, callbackable);
             } else {
                 console.error("unsupported layer's group name :" + obj.group);
             }
@@ -144,14 +146,14 @@ class LayerDirector {
             console.error("layer's group name has no");
         }
     }
-    setBaseImageryLayer(name, provider, options, callbackable) {
-        if (Q.isValid(Cesium[provider])) {
-            let imageryProvider = new Cesium[provider](options);
-
+    setBaseImageryLayer(obj, callbackable) {
+        if (Q.isValid(Cesium[obj.provider])) {
+            let imageryProvider = new Cesium[obj.provider](obj.options);
+            let layer;
             if (typeof imageryProvider === "undefined") {
                 //layer = this.imageryLayers.get(0);
             } else {
-                let layer;
+
                 //let activeLayerIndex = 0;
                 this.forEach((l, i) => {
                     if (l.isBaseLayer()) {
@@ -163,54 +165,59 @@ class LayerDirector {
                 let index = this.imageryLayers.length == 0 ? 0 : this.imageryLayers.length /*- activeLayerIndex*/ - 1;
                 this.imageryLayers.add(layer, index);
             }
-            this.save(BASE_IMAGERY_LAYER, { name, provider, options, show: true }, callbackable);
+            obj.show = true;
+            this.save(BASE_IMAGERY_LAYER, obj, callbackable);
             return layer;
         } else {
-            console.error("invalid provider : " + provider);
+            console.error("invalid provider : " + obj.provider);
         }
     }
-    setUserImageryLayer(name, provider, options, order, alpha, show, callbackable) {
+    setUserImageryLayer(obj, show, callbackable) {
 
-        let layer = this.find((l) => { return (!l.isBaseLayer() && l.name == name) ? true : false; });
+        let layer = this.find((l) => { return (!l.isBaseLayer() && l.name == obj.name) ? true : false; });
 
         if (!Q.isValid(layer)) {
             if (Q.isValid(options.rectangleDegree)) {
-                options.rectangle = Cesium.Rectangle.fromDegrees(options.rectangleDegree);
+                obj.options.rectangle = Cesium.Rectangle.fromDegrees(obj.options.rectangleDegree);
             }
-            if (this.imageryLayers.length < order) { order = this.imageryLayers.length; }
-            layer = this.imageryLayers.addImageryProvider(new Cesium[provider](options), order);
+            if (this.imageryLayers.length < obj.order) { obj.order = this.imageryLayers.length; }
+            layer = this.imageryLayers.addImageryProvider(new Cesium[obj.provider](obj.options), obj.order);
         }
-        if (Q.isValid(alpha)) { layer.alpha = Cesium.defaultValue(alpha, 0.5); }
-        if (Q.isValid(show)) { layer.show = Cesium.defaultValue(show, true); }
-        if (Q.isValid(name)) { layer.name = Cesium.defaultValue(name, "default"); }
-        this.save(USER_IMAGERY_LAYER, { name, provider, options, alpha, show }, callbackable);
+        if (Q.isValid(obj.alpha)) { layer.alpha = Cesium.defaultValue(obj.alpha, 0.5); }
+        if (Q.isValid(obj.show)) { layer.show = Cesium.defaultValue(obj.show, true); }
+        if (Q.isValid(obj.name)) { layer.name = Cesium.defaultValue(obj.name, "default"); }
+        this.save(USER_IMAGERY_LAYER, obj, callbackable);
         return layer;
     }
-    setTerrianLayer(name, provider, options, callbackable) {
-        this.db.set(LAYER_KEY, TERRIAN_LAYER, { name, provider, options });
+    setTerrianLayer(obj, callbackable) {
         let opt = Object.assign({
             requestVertexNormals: true,
             requestWaterMask: true
-        }, options);
+        }, obj.options);
+
         if (Q.isValid(opt.proxy)) {
             opt.proxy = new Cesium.DefaultProxy(opt.proxy);
         }
-        if (provider == "createWorldTerrain") {
+        if (obj.provider == "createWorldTerrain") {
             this.terrainProvider = Cesium.createWorldTerrain(opt);
         } else {
-            this.terrainProvider = new Cesium[provider](opt);
+            this.terrainProvider = new Cesium[obj.provider](opt);
         }
-        this.save(TERRIAN_LAYER, { name, provider, options }, callbackable);
+        obj.show = true;
+        this.save(TERRIAN_LAYER, obj, callbackable);
         return this.terrainProvider;
     }
-    setStatisticsLayer(name, provider, options, alpha, show, callbackable) {
-        this.save(STATISTICS_LAYER, { name, provider, options, alpha, show }, callbackable);
+    setStatisticsLayer(obj, show, callbackable) {
+        obj.show = show;
+        this.save(STATISTICS_LAYER, obj, callbackable);
     }
-    setDataLayer(name, provider, options, alpha, show, callbackable) {
-        this.save(DATA_LAYER, { name, provider, options, alpha, show }, callbackable);
+    setDataLayer(obj, show, callbackable) {
+        obj.show = show;
+        this.save(DATA_LAYER, obj, callbackable);
     }
-    setApplicationLayer(name, provider, options, alpha, show, callbackable) {
-        this.save(APPLICATION_LAYER, { name, provider, options, alpha, show }, callbackable);
+    setApplicationLayer(obj, show, callbackable) {
+        obj.show = show;
+        this.save(APPLICATION_LAYER, obj, callbackable);
     }
 }
 
