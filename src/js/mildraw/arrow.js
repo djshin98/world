@@ -1,6 +1,7 @@
 "use strict";
 
 var { DrawObject } = require('../draw/drawobject');
+const { CTX } = require('../map3d/ctx');
 
 class Arrow extends DrawObject {
     constructor() {
@@ -10,6 +11,7 @@ class Arrow extends DrawObject {
         let p = points;
         if (this.isReadyToCallbackVariable()) {
             let result = [];
+            CTX.transformOrigin(p[0], points);
 
             result = result.concat(CTX.split.polyline([p[2], p[0], p[1]], 10));
             this.sketch(collection, result);
