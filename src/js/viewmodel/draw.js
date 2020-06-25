@@ -1,3 +1,4 @@
+"use strict";
 const Cesium = require('cesium/Cesium');
 
 const { Q } = require("../core/e");
@@ -44,6 +45,8 @@ const { Corn } = require('../draw/corn');
 const { Radar2 } = require('../draw/radar2');
 const { MissionObstruction } = require('../mildraw/missionobstruction');
 
+const { Arrow } = require('../mildraw/arrow');
+
 const drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -84,7 +87,8 @@ const drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
-    MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } }
+    MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } },
+    arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
 }
 
 function registryHandler(key, name, createfunc) {

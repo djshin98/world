@@ -1,7 +1,8 @@
+"use strict";
 var { DrawObject } = require('./drawobject');
 class PolygonWithLine extends DrawObject {
     constructor() {
-        super(3);
+        super(2);
     }
 
     static getName() {
@@ -10,8 +11,11 @@ class PolygonWithLine extends DrawObject {
 
     create(collection, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polygon.hierarchy = points;
-            this.templateEntity.polyline.positions = points;
+            let result = CTX.split.polyline(points, 10);
+            this.sketch(collection, result);
+
+            //this.templateEntity.polygon.hierarchy = points;
+            //this.templateEntity.polyline.positions = points;
         } else {
             points.push(points[0]);
             points.push(points[1]);
