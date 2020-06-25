@@ -8,7 +8,7 @@ const {ArcUtil} = require('../draw/util');
 
 class Delay extends DrawObject {
     constructor() {
-        super(2, 3);
+        super(3, 3);
     }
     create(collection, points, viewModel) {
         let p = points;
@@ -18,6 +18,7 @@ class Delay extends DrawObject {
         let result = [];
 
         if(this.isReadyToCallbackVariable()) {
+            
             if(p.length == 3) {
                 result = pt1.concat(arc.ArcUtil.arcPoints2c(CTX.math.mid(p[1], p[2]), p[1], p[2], 180));
             } 

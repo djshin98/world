@@ -87,11 +87,8 @@ const drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
-<<<<<<< HEAD
     delay: { name: "delay", createFunc: function() { return new Delay(); } },
-=======
     arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
->>>>>>> 621c4ccb588babe5e019e862227c512d82e4f1d1
 }
 
 function registryHandler(key, name, createfunc) {
