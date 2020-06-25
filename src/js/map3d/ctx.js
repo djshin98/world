@@ -36,6 +36,7 @@ const CTX = {
     cartesian: function(longitude, latitude, height) { return Cesium.Cartesian3.fromDegrees(longitude, latitude, height); },
     c: function(x, y, z) { return new Cesium.Cartesian3(x, y, z); },
     r: function(x, y, z) { return new Cesium.Cartographic(x, y, z); },
+    c2: (x, y) => { return new Cesium.Cartesian2(x, y); },
     r2d: function(r) {
         if (CTX.debug) {
             console.log("r2d : ");
@@ -195,6 +196,9 @@ const CTX = {
             return (f / 1000).toFixed(d) + " km";
         }
         return f.toFixed(d) + "m";
+    },
+    corridor: (width, a, b) => {
+
     },
     split: {
         arc: (center, p1, p2, degree) => {
