@@ -138,6 +138,7 @@ const CTX = {
         let degree = radian * (180 / Math.PI);
         return degree;
     },
+
     radian2degree(r) { return r * (180 / Math.PI); },
 
     math: {
