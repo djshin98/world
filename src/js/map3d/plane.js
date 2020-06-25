@@ -19,20 +19,52 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     corrido(width, a, b) {
         let pts = [a.clone(), b.clone()];
         let rTranslate = this.origin(pts);
-        let rRotate = this.rotate(pts);
+
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        pts[1] = this.rotate(matrix, pts[1]);
+
+        //----------------------------------------------------------
+        pts = [
+            /*
+            CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x - (width / 2), pts[1].y),
+            CTX.c2(pts[0].x + (width / 2), pts[1].y), CTX.c2(pts[0].x + (width / 2), 0),
+            CTX.c2(pts[0].x - (width / 2), 0)
+            */
+            pts[0],
+            CTX.c2(pts[0].x - (width / 2), (width / 2)),
+            CTX.c2(pts[0].x + (width / 2), (width / 2)),
+            pts[0], pts[1]
+        ];
+        //circle, arrow , 
+        //----------------------------------------------------------   
+
+        let inv = Cesium.Matrix2.fromRotation(-θ);
+        pts = pts.map(p => {
+            return this.rotate(inv, p);
+        });
+
+        pts.forEach(p => {
+            p.x += rTranslate.x;
+            p.y += rTranslate.y;
+        });
+        return pts;
     }
     origin(pts) {
         let org = pts[0].clone();
-        pts.forEach(p => { p.x -= org.x;
-            p.y -= org.y; });
+        pts.forEach(p => {
+            p.x -= org.x;
+            p.y -= org.y;
+        });
         return org;
     }
-    rotate(pts) {
-        let θ = Math.atan2(pts[1].y, pts[0].x);
-        let matrix = new Cesium.Matrix2(Math.cos(θ), -Math.sin(θ), Math.sin(θ), Math.cos(θ));
-        pts.forEach(p => { p = Cesium.Matrix2.multiplyByVector(matrix, p, new Cesium.Cartesian2()); });
-        return matrix;
+    rotate(matrix, p) {
+        return Cesium.Matrix2.multiplyByVector(matrix, p, new Cesium.Cartesian2());
     }
+    inverseMatrix(matrix) {
+        return Cesium.Matrix2.negate(matrix, new Cesium.Matrix2());
+    }
+
 
 }
 
