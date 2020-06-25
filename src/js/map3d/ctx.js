@@ -36,6 +36,7 @@ const CTX = {
     cartesian: function(longitude, latitude, height) { return Cesium.Cartesian3.fromDegrees(longitude, latitude, height); },
     c: function(x, y, z) { return new Cesium.Cartesian3(x, y, z); },
     r: function(x, y, z) { return new Cesium.Cartographic(x, y, z); },
+    c2: (x, y) => { return new Cesium.Cartesian2(x, y); },
     r2d: function(r) {
         if (CTX.debug) {
             console.log("r2d : ");
@@ -104,6 +105,7 @@ const CTX = {
         }
         return !c ? c : Cesium.SceneTransforms.wgs84ToWindowCoordinates(CTX.viewer.scene, c);
     },
+    c2wA: function(cs) { return cs.map(c => { return CTX.c2w(c) }); },
     w2r: function(x, y) {
         if (CTX.debug) {
             console.log("w2r : ");
@@ -153,13 +155,50 @@ const CTX = {
         },
         normalize: (a) => {
             return Cesium.Cartesian3.normalize(x, {});
-        }
+        },
+        forward: (a, b, ratio) => {
+            return CTX.c(a.x + ((b.x - a.x) * ratio),
+                a.y + ((b.y - a.y) * ratio),
+                a.z + ((b.z - a.z) * ratio));
+        },
+        /*
+        pivot : cartesian3
+        quaternion : quaternion
+        point : cartesian3
+        */
+        rotate: (pivot, quaternion, point) => {
+            let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
+                pivot,
+                quaternion,
+                new Cesium.Cartesian3(1.0, 1.0, 1.0), {}
+            );
+            let p = Cesium.Matrix4.multiplyByPoint(transform, point, {});
+            return p;
+        },
+        rotateBasedMatrix: (pivot, matrix, point) => {
+            let quaternion = Cesium.Quaternion.fromRotationMatrix(matrix, {});
+            let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
+                pivot,
+                quaternion,
+                new Cesium.Cartesian3(1.0, 1.0, 1.0), {}
+            );
+            let p = Cesium.Matrix4.multiplyByPoint(transform, point, {});
+            return p;
+        },
+        translate: () => {}
     },
-    displayMeter: function(f, d) {
+    pixels: (a, b) => {
+        let ar = CTX.c2wA([a, b]);
+        return CTX.distanceW(ar[0], ar[1]);
+    },
+    displayMeter: (f, d) => {
         if (f >= 1000) {
             return (f / 1000).toFixed(d) + " km";
         }
         return f.toFixed(d) + "m";
+    },
+    corridor: (width, a, b) => {
+
     },
     split: {
         arc: (center, p1, p2, degree) => {
@@ -168,25 +207,14 @@ const CTX = {
         polyline: (array, pixels) => {
             let result = [];
             array.reduce((prev, curr) => {
-                let wp0 = CTX.c2w(prev);
-                let wp1 = CTX.c2w(curr);
-                if (!Q.isValid(wp0.x) || !Q.isValid(wp1.x)) {
-                    console.log("error");
-                }
-                let wdistance = CTX.distanceW(wp0, wp1);
-                let pointInterval = parseInt(wdistance / pixels);
+                let pointInterval = parseInt(CTX.pixels(prev, curr) / pixels);
                 if (pointInterval > 1) {
                     for (let i = 0; i < pointInterval; i++) {
-                        let pn = CTX.c(prev.x + ((curr.x - prev.x) * i / pointInterval),
-                            prev.y + ((curr.y - prev.y) * i / pointInterval),
-                            prev.z + ((curr.z - prev.z) * i / pointInterval));
+                        let pn = CTX.math.forward(prev, curr, i / pointInterval);
                         result.push(pn);
 
                         if (i + 1 == pointInterval) {
-                            wp0 = CTX.c2w(curr);
-                            wp1 = CTX.c2w(pn);
-                            let d = CTX.distanceW(wp0, wp1);
-                            if (d > pixels / 2) {
+                            if (CTX.pixels(curr, pn) > (pixels / 2)) {
                                 result.push(curr);
                             }
                         }
