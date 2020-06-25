@@ -43,6 +43,7 @@ const { Alert } = require('../draw/alert');
 const { DrawConstruction } = require('../draw/drawconstruction');
 const { Corn } = require('../draw/corn');
 const { Radar2 } = require('../draw/radar2');
+const { MissionObstruction } = require('../mildraw/missionobstruction');
 const { Delay } = require('../mildraw/delay');
 
 const { Arrow } = require('../mildraw/arrow');
@@ -87,6 +88,7 @@ const drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
+    MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } },
     delay: { name: "delay", createFunc: function() { return new Delay(); } },
     arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
 }
