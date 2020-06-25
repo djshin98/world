@@ -1,12 +1,13 @@
 /* eslint-disable */
-var { Q } = require("../core/e");
-var { dom } = require("../util/comm");
-var basic = require("../milsymbol/mil_basic");
-var emergency = require("../milsymbol/mil_emergency");
-var operAct = require("../milsymbol/mil_operAct");
-var safe = require("../milsymbol/mil_safe");
-var signal = require("../milsymbol/mil_signal");
-var weather = require("../milsymbol/mil_weather");
+const { Q } = require("../core/e");
+//var { dom } = require("../util/comm");
+const basic = require("../milsymbol/mil_basic");
+const emergency = require("../milsymbol/mil_emergency");
+const operAct = require("../milsymbol/mil_operAct");
+const safe = require("../milsymbol/mil_safe");
+const signal = require("../milsymbol/mil_signal");
+const weather = require("../milsymbol/mil_weather");
+//const { ms } = require("../kmilsymbol/milsymbol");
 
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
@@ -52,7 +53,7 @@ class ViewModel_KMilSymbol {
         let ele = document.querySelector("#" + this.options.view.CODETYPE);
 
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "size", id: this.options.view.option.SIZE, type: "input", dataType: "number", dataDefault: 30 }));
-        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "sic", id: this.options.view.SIDC, type: "input", dataType: "text" }));
+        this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "SIDC", id: this.options.view.SIDC, type: "input", dataType: "text" }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "uniqueDesignation", id: this.options.view.option.DESC, type: "input", dataType: "text" }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "fill", id: this.options.view.option.FILL, type: "select", dataType: "bool" }));
         this.symbolTest.viewModels.push(new ViewModelElement(this, { dataKey: "frame", id: this.options.view.option.FRAME, type: "select", dataType: "bool" }));
@@ -518,8 +519,8 @@ class SymbolTest {
     create() {
         var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
-        if (option.sic && option.sic.length > 0) {
-            var symbol = new ms.Symbol(option.sic, option);
+        if (option.SIDC && option.SIDC.length > 0) {
+            var symbol = new ms.Symbol(option.SIDC, { size: 30 } /*option*/ );
 
             option.code = symbol.toDataURL();
             return this.template(option);
@@ -529,7 +530,7 @@ class SymbolTest {
         let imgData = option.code;
         option.category = "KMILSYMBOL";
         option.code = "";
-        option.description = this.container.descriptionFromSIDC(option.sic);
+        option.description = this.container.descriptionFromSIDC(option.SIDC);
         return '<img class="symbol-sm" data-option="' + encodeURIComponent(JSON.stringify(option)) + '" ondragstart="app.dragger().drag(event)" src="' + imgData + '"/>';
     }
     try () {

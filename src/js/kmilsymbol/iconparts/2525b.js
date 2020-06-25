@@ -1,6 +1,6 @@
-import { defaultProperties } from "./iconparts-functions.js";
+const { defaultProperties } = require("./iconparts-functions");
 
-export default function(
+module.exports = function(
     iconParts,
     metadata,
     colors,

@@ -1,7 +1,7 @@
 "use strict";
 
 var { DrawObject } = require('../draw/drawobject');
-const { Plane } = require('../map3d/plane');
+const { Plane } = require('../map3d/tangent/plane');
 const { CTX } = require('../map3d/ctx');
 
 class Arrow extends DrawObject {

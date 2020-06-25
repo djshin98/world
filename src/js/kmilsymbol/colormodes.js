@@ -2,7 +2,7 @@
 Default color modes
 *************************************************************************************** */
 
-export default {
+module.exports = {
     Black: {
         Civilian: "black",
         Friend: "black",

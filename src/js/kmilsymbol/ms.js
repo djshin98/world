@@ -3,9 +3,9 @@ var ms = new(function() {
     this._autoValidation = false;
     this.version = "2.0.1";
     if (typeof console === "object" && typeof process !== "object") {
-        console.log('-------------------------------------------------------------------------' );
-        console.log('|                 Korean Military Symbol ( version '+this.version+' )              |' );
-        console.log('-------------------------------------------------------------------------' );
+        console.log('-------------------------------------------------------------------------');
+        console.log('|                 Korean Military Symbol ( version ' + this.version + ' )              |');
+        console.log('-------------------------------------------------------------------------');
         /*
         console.info(
             "kmilsymbol.js " +
@@ -18,15 +18,15 @@ var ms = new(function() {
     }
 })();
 
-import ColorModes from "./colormodes.js";
-import basegeometry from "./symbolfunctions/basegeometry.js";
-import icon from "./symbolfunctions/icon.js";
-import modifier from "./symbolfunctions/modifier.js";
-import statusmodifier from "./symbolfunctions/statusmodifier.js";
-import engagmentbar from "./symbolfunctions/engagmentbar.js";
-import affliationdimension from "./symbolfunctions/affliationdimension.js";
-import textfields from "./symbolfunctions/textfields.js";
-import directionarrow from "./symbolfunctions/directionarrow.js";
+const ColorModes = require("./colormodes");
+const basegeometry = require("./symbolfunctions/basegeometry");
+const { icon } = require("./symbolfunctions/icon");
+const modifier = require("./symbolfunctions/modifier");
+const statusmodifier = require("./symbolfunctions/statusmodifier");
+const engagmentbar = require("./symbolfunctions/engagmentbar");
+const affliationdimension = require("./symbolfunctions/affliationdimension");
+const textfields = require("./symbolfunctions/textfields");
+const directionarrow = require("./symbolfunctions/directionarrow");
 
 ms.setColorMode = function(mode, colorMode) {
     this._colorModes[mode] = {};
@@ -93,8 +93,8 @@ ms.reset = function() {
 
 ms.reset();
 
-import { BBox } from "./ms/bbox.js";
-import { Colormode } from "./ms/colormode.js";
+const { BBox } = require("./ms/bbox");
+const { Colormode } = require("./ms/colormode");
 
 ms.BBox = BBox;
 ms.ColorMode = Colormode;
@@ -209,7 +209,7 @@ ms.getVersion = function() {
     return this.version;
 };
 
-import outline from "./ms/outline.js";
+const outline = require("./ms/outline");
 
 ms.outline = outline;
 
@@ -239,7 +239,7 @@ ms.setStandard = function(standard) {
 /* ***************************************************************************************
 Add base geometries
 *************************************************************************************** */
-import geometries from "./ms/symbolgeometries.js";
+const geometries = require("./ms/symbolgeometries");
 
 ms._symbolGeometries = geometries;
 
