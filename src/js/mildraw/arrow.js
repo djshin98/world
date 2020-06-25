@@ -1,7 +1,6 @@
 "use strict";
 
 var { DrawObject } = require('../draw/drawobject');
-var { ArcUtil } = require('../draw/util');
 var { CTX } = require('../map3d/ctx');
 
 class Arrow extends DrawObject {
@@ -38,4 +37,4 @@ class Arrow extends DrawObject {
         }
     }
 }
-module.exports = { ShootingLine: ShootingLine };
+module.exports = { Arrow: Arrow };

@@ -1,5 +1,5 @@
-var { ArcUtil } = require('../draw/util');
-var CTX = {
+const { ArcUtil } = require('../draw/util');
+const CTX = {
     viewer: null,
     debug: false,
     terrain: true,
@@ -205,5 +205,6 @@ baseLayerPicker true or false 따라 가져오는 함수가 다르다?
 var cartesian = this.map.viewOption.baseLayerPicker ? this.map.viewer3d.scene.pickPosition(new Cesium.Cartesian2(pos.x, pos.y)) :
                         this.map.viewer3d.camera.pickEllipsoid(new Cesium.Cartesian3(pos.x, pos.y), this.map.viewer3d.scene.globe.ellipsoid);                  
 */
+
 module.exports = { CTX: CTX };
 global.CTX = CTX;
