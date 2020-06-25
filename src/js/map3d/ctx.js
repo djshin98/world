@@ -160,7 +160,30 @@ const CTX = {
                 a.y + ((b.y - a.y) * ratio),
                 a.z + ((b.z - a.z) * ratio));
         },
-        rotate: () => {},
+        /*
+        pivot : cartesian3
+        quaternion : quaternion
+        point : cartesian3
+        */
+        rotate: (pivot, quaternion, point) => {
+            let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
+                pivot,
+                quaternion,
+                new Cesium.Cartesian3(1.0, 1.0, 1.0), {}
+            );
+            let p = Cesium.Matrix4.multiplyByPoint(transform, point, {});
+            return p;
+        },
+        rotateBasedMatrix: (pivot, matrix, point) => {
+            let quaternion = Cesium.Quaternion.fromRotationMatrix(matrix, {});
+            let transform = Cesium.Matrix4.fromTranslationQuaternionRotationScale(
+                pivot,
+                quaternion,
+                new Cesium.Cartesian3(1.0, 1.0, 1.0), {}
+            );
+            let p = Cesium.Matrix4.multiplyByPoint(transform, point, {});
+            return p;
+        },
         translate: () => {}
     },
     pixels: (a, b) => {

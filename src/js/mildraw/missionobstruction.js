@@ -27,6 +27,7 @@ class MissionObstruction extends DrawObject {
             let line1array = [points[0], points[1]];
 
             if (this.isComplete()) {
+                /*
                 let pHeight = this.findHeightFromCartensian(points[0]);
                 points[1] = this.setHeightCartensian(points[1], pHeight);
                 points[2] = this.setHeightCartensian(points[2], pHeight);
@@ -43,7 +44,7 @@ class MissionObstruction extends DrawObject {
                 //if(CTX.c2r(midpoint)
                 let v2 = Object.assign(midpoint);
                 v2 = CTX.c2r(v2);
-                v2.height += 100;
+                v2.height += 1000;
                 v2 = CTX.r2c(v2);
                 v2 = CTX.math.sub(v2, midpoint);
 
@@ -53,7 +54,8 @@ class MissionObstruction extends DrawObject {
                 let normal = Cesium.Cartesian3.cross(v1, v2, {});
                 //normal = Cesium.Cartesian3.normalize(normal, {});
                 //방향 판별 후 normal vector 다시 산출
-                v1 = (Cesium.Cartesian3.dot(Cesium.Cartesian3.cross(v1, normal, {}), v2)) > 0 ? CTX.math.sub(p0, midpoint) : CTX.math.sub(p1, midpoint);
+                //let tvector = CTX.math.sub(p0, p1);
+                v1 = (Cesium.Cartesian3.dot(Cesium.Cartesian3.cross(v1, normal, {}), v2) > 0) ? CTX.math.sub(p0, midpoint) : CTX.math.sub(p1, midpoint);
                 normal = Cesium.Cartesian3.cross(v1, v2, {});
                 normal = Cesium.Cartesian3.normalize(normal, {});
 
@@ -65,6 +67,17 @@ class MissionObstruction extends DrawObject {
                 let d = Cesium.Cartesian3.distance(p0, p2);
 
                 let line2array = [midpoint, point3];
+                */
+
+                let d = Cesium.Cartesian3.distance(p0, p2);
+                let midpoint = CTX.math.mid(points[0], points[1]);
+                let p0 = Object.assign({}, points[0]);
+                let p1 = Object.assign({}, points[1]);
+                let p2 = Object.assign({}, points[2]);
+                p0 = CTX.math.sub(p0, midpoint);
+                p1 = CTX.math.sub(p1, midpoint);
+                p2 = CTX.math.sub(p2, midpoint);
+
 
                 collection.add(this.index, {
                     position: points[0],
