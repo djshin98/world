@@ -2,7 +2,7 @@
 
 var { DrawObject } = require('../draw/drawobject');
 const {ArcUtil} = require('../draw/util');
-const { Plane } = require('../map3d/plane');
+//const { Plane } = require('../map3d/plane');
 
 
 class Delay extends DrawObject {
@@ -11,20 +11,8 @@ class Delay extends DrawObject {
     }
     create(collection, points, viewModel) {
         
+
         
-        var plane = new Plane(points);
-        let result = plane.input(arc);
-        result.plane(arc);
-
-        arc = [
-            arc[0],
-            CTX.c2(arc[0].x + (width/2), (width/2)),
-            CTX.c2(arc[0].x + (width/2), (-width/2)),
-            arc[0], arc[1]
-        ]
-
-
-        /*
         let p = points;
         let pt1 =  [p[0], p[1]];
         
@@ -72,7 +60,7 @@ class Delay extends DrawObject {
 
     }
         return result;
-*/
+
     }
     
     
