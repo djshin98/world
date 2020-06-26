@@ -314,7 +314,7 @@ class DrawObject {
             let imgstr = Cesium.defined(img) ? '<img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/>' : '';
             return descriptionCss + '<table><tbody><tr><td rowspan="3">' + imgstr + '</td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음') + ' </span></td>\
-            <th><span>부호</span></th><td><span>' + options.sic + ' </span></td></tr>\
+            <th><span>부호</span></th><td><span>' + options.SIDC + ' </span></td></tr>\
             <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\
             <th><span>경도</span></th><td><span>' + (degree.longitude).toFixed(5) + ' </span></td></tr>\
             <tr><th><span>고도</span></th><td><span>' + (degree.height).toFixed(2) + ' m</span></td><td></td><td></td></tr>\

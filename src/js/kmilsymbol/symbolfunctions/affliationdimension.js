@@ -1,6 +1,8 @@
+"use strict";
 /* eslint-disable */
 //Affiliation and dimension addons to base geometries ####################################
-export default function affliationdimension(ms) {
+
+function affliationdimension(ms) {
     var drawArray1 = [];
     var drawArray2 = [];
     var bbox = this.metadata.baseGeometry.bbox;
@@ -100,3 +102,5 @@ export default function affliationdimension(ms) {
         );
     return { pre: drawArray1, post: drawArray2, bbox: bbox };
 }
+
+module.exports = { affliationdimension: affliationdimension };

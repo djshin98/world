@@ -1,23 +1,25 @@
+"use strict";
 /* eslint-disable */
 /* ***************************************************************************************
 Letter based SIDC
 *************************************************************************************** */
-import space from "./lettersidc/sidc/space.js";
-import air from "./lettersidc/sidc/air.js";
-import ground from "./lettersidc/sidc/ground.js";
-import equipment from "./lettersidc/sidc/equipment.js";
-import installations from "./lettersidc/sidc/installations.js";
-import sea from "./lettersidc/sidc/sea.js";
-import subsurface from "./lettersidc/sidc/subsurface.js";
-import sof from "./lettersidc/sidc/sof.js";
-import signalsIntelligence from "./lettersidc/sidc/signalsIntelligence.js";
-import stabilityoperations from "./lettersidc/sidc/stabilityoperations.js";
-import emergencymanagementsymbols from "./lettersidc/sidc/emergencymanagementsymbols.js";
-// Adding support for symbols in MIL-STD-2525B change 2 that are missing in 2525C
-import std2525bextra from "./lettersidc/sidc/2525b-ch2.js";
+const space = require("./lettersidc/sidc/space");
 
-import tacticalpoints2525 from "./lettersidc/sidc/tactical-points-2525.js";
-import tacticalpointsapp6 from "./lettersidc/sidc/tactical-points-app6.js";
+const air = require("./lettersidc/sidc/air");
+const ground = require("./lettersidc/sidc/ground");
+const equipment = require("./lettersidc/sidc/equipment");
+const installations = require("./lettersidc/sidc/installations");
+const sea = require("./lettersidc/sidc/sea");
+const subsurface = require("./lettersidc/sidc/subsurface");
+const sof = require("./lettersidc/sidc/sof");
+const signalsIntelligence = require("./lettersidc/sidc/signalsIntelligence");
+const stabilityoperations = require("./lettersidc/sidc/stabilityoperations");
+const emergencymanagementsymbols = require("./lettersidc/sidc/emergencymanagementsymbols");
+// Adding support for symbols in MIL-STD-2525B change 2 that are missing in 2525C
+const std2525bextra = require("./lettersidc/sidc/2525b-ch2");
+
+const tacticalpoints2525 = require("./lettersidc/sidc/tactical-points-2525");
+const tacticalpointsapp6 = require("./lettersidc/sidc/tactical-points-app6");
 
 var app6b = [
     space,
