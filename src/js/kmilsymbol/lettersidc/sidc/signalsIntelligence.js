@@ -1,6 +1,6 @@
-const metadata_letter = require("../metadata");
-const getIcons_letter = require("../geticons");
-const signalsintelligence = require("../../iconparts/signals-intelligence");
+const metadata_letter = require("../metadata").metadata;
+const getIcons_letter = require("../geticons").geticons;
+const signalsintelligence = require("../../iconparts/signals-intelligence").icons;
 
 module.exports = {
     type: "letter",

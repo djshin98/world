@@ -3,7 +3,8 @@
 //########################################################################################
 // Support for Path2D in IE 11, if you only use other browsers, you can remove the following
 //########################################################################################
-module.exports = function(ctx, d) {
+
+function draw(ctx, d) {
     // This function converts a svg path to canvas instructions, it does not support everything
     // but most of the commands in paths.
     ctx.beginPath();
@@ -198,3 +199,5 @@ module.exports = function(ctx, d) {
         }
     }
 }
+
+module.exports = { draw: draw };

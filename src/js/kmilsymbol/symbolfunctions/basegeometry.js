@@ -1,3 +1,4 @@
+"use strict";
 //Base Geometry for the Symbol ###########################################################
 function basegeometry(ms) {
     var modifier;

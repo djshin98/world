@@ -1,3 +1,4 @@
+"use strict";
 /* eslint-disable */
 //Affiliation and dimension addons to base geometries ####################################
 

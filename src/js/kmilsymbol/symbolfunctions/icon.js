@@ -1,7 +1,7 @@
 "use strict";
 //Icon #################################################################################
 
-function icon(ms) {
+function sicon(ms) {
     var drawArray1 = [];
     var drawArray2 = [];
     var gbbox = new ms.BBox({ x1: 50, x2: 150, y1: 50, y2: 150 });
@@ -379,4 +379,4 @@ function icon(ms) {
     return { pre: drawArray1, post: drawArray2, bbox: gbbox };
 }
 
-module.exports = { icon: icon };
+module.exports = { sicon: sicon };

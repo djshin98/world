@@ -18,15 +18,16 @@ var ms = new(function() {
     }
 })();
 
+
 const ColorModes = require("./colormodes");
-const basegeometry = require("./symbolfunctions/basegeometry");
-const { icon } = require("./symbolfunctions/icon");
-const modifier = require("./symbolfunctions/modifier");
-const statusmodifier = require("./symbolfunctions/statusmodifier");
-const engagmentbar = require("./symbolfunctions/engagmentbar");
-const affliationdimension = require("./symbolfunctions/affliationdimension");
-const textfields = require("./symbolfunctions/textfields");
-const directionarrow = require("./symbolfunctions/directionarrow");
+const { basegeometry } = require("./symbolfunctions/basegeometry");
+const { sicon } = require("./symbolfunctions/icon");
+const { modifier } = require("./symbolfunctions/modifier");
+const { statusmodifier } = require("./symbolfunctions/statusmodifier");
+const { engagmentbar } = require("./symbolfunctions/engagmentbar");
+const { affliationdimension } = require("./symbolfunctions/affliationdimension");
+const { textfields } = require("./symbolfunctions/textfields");
+const { directionarrow } = require("./symbolfunctions/directionarrow");
 
 ms.setColorMode = function(mode, colorMode) {
     this._colorModes[mode] = {};
@@ -82,7 +83,7 @@ ms.reset = function() {
     this._symbolParts = [];
 
     ms.addSymbolPart(basegeometry);
-    ms.addSymbolPart(icon);
+    ms.addSymbolPart(sicon);
     ms.addSymbolPart(modifier);
     ms.addSymbolPart(statusmodifier);
     ms.addSymbolPart(engagmentbar);

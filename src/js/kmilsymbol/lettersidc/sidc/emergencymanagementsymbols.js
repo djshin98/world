@@ -1,8 +1,8 @@
 const { ms } = require("../../ms");
-const metadata_letter = require("../metadata");
-const getIcons_letter = require("../geticons");
-const icons = require("../../iconparts/ground");
-const tacticalpoints = require("../../iconparts/tactical-points");
+const metadata_letter = require("../metadata").metadata;
+const getIcons_letter = require("../geticons").geticons;
+const icons = require("../../iconparts/ground").icons;
+const tacticalpoints = require("../../iconparts/tactical-points").icons;
 
 module.exports = {
     type: "letter",

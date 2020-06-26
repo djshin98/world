@@ -1,5 +1,7 @@
 //import { ms } from "../ms.js";
 
+//실행 전에 호출되어야 하는가?
+
 
 function metadata(ms, metadata, mapping) {
     this.options.sidc = this.options.sidc.toUpperCase();
@@ -378,4 +380,5 @@ function metadata(ms, metadata, mapping) {
 
     return metadata;
 }
+
 module.exports = { metadata: metadata };

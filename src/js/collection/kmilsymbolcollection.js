@@ -21,8 +21,8 @@ class KMilSymbolCollection extends OliveEntityCollection {
         }
     }
     isAirEntity(entity) {
-        if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.sic) {
-            return entity.billboard.options.sic[2] == 'A' ? true : false;
+        if (entity && entity.billboard && entity.billboard.options && entity.billboard.options.SIDC) {
+            return entity.billboard.options.SIDC[2] == 'A' ? true : false;
         }
         return false;
     }
@@ -58,8 +58,8 @@ class KMilSymbolCollection extends OliveEntityCollection {
     }
 
     add(degree, options) {
-        let image = new ms.Symbol(options.sic, options);
-        let desc = (new SIDC(options.sic[0], options.sic)).toDescription();
+        let image = new ms.Symbol(options.SIDC, options);
+        let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
         return this._add(degree, options, desc, image);
     }
     _add(degree, options, desc, img) {
@@ -95,18 +95,18 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 distanceDisplayCondition: this.labelOptions.distanceDisplayCondition,
             }
         }
-        let height = this.defaultHeight(options.sic);
+        let height = this.defaultHeight(options.SIDC);
 
         let carto = CTX.d2r(degree);
         let terrainHeight = degree.height;
         height += terrainHeight;
         degree.height = height;
         //console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
-        billboard.heightReference = this.defaultHRef(options.sic);
+        billboard.heightReference = this.defaultHRef(options.SIDC);
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;
         billboard.position = cartesian;
-        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.sic));
+        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.SIDC));
         //entityOption.polyline = polyline;
         //entityOption.billboard = billboard;
         let ellipse = {
@@ -201,7 +201,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
             return css + '<table><tbody><tr><td rowspan="3"><img width="' + img.width + 'px" height="' + img.height + 'px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/></td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음') + ' </span></td>\
-            <th><span>부호</span></th><td><span>' + options.sic + ' </span></td></tr>\
+            <th><span>부호</span></th><td><span>' + options.SIDC + ' </span></td></tr>\
             <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\
             <th><span>경도</span></th><td><span>' + (degree.longitude).toFixed(5) + ' </span></td></tr>\
             <tr><th><span>고도</span></th><td><span>' + (degree.height).toFixed(2) + ' m</span></td><td></td></tr>\
@@ -229,7 +229,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
         return new Cesium.CallbackProperty(function(time, result) {
             return '<img width="60px" style="float:left; margin: 0 1em 1em 0;" src="' + img.toDataURL() + '"/>\
             <p>대한민국 군대 부호코드.</p>\
-            <p>부호 : ' + options.sic + ' </p>\
+            <p>부호 : ' + options.SIDC + ' </p>\
             <p>위도 : ' + (degree.latitude).toFixed(5) + ' </p>\
             <p>경도 : ' + (degree.longitude).toFixed(5) + ' </p>\
             <p>고도 : ' + (degree.height).toFixed(2) + ' m</p>\
@@ -241,7 +241,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
     }
 
     /*
-        if (options.sic === "SPAAMFB--------") {
+        if (options.SIDC === "SPAAMFB--------") {
             var cartoSet = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
             var lon = Cesium.Math.toDegrees(cartoSet.longitude);
             var lat = Cesium.Math.toDegrees(cartoSet.latitude);
@@ -255,7 +255,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
                 [targetSet[0], 6000] // 그냥 임시로 시작지점과 같은높이로 설정
             ];
         }*/
-    /*(options.sic === "SPAAMFB--------") ? new Cesium.CallbackProperty(function(time, getPos) {
+    /*(options.SIDC === "SPAAMFB--------") ? new Cesium.CallbackProperty(function(time, getPos) {
                     var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
                     if (carto.height >= cartoSet.height)
                         cartesian = _this.posCollback(cartesian, targetSet, xcountSet, ycountSet, arrLonSet, arrPointSet);

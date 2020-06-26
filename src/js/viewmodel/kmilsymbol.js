@@ -7,7 +7,7 @@ const operAct = require("../milsymbol/mil_operAct");
 const safe = require("../milsymbol/mil_safe");
 const signal = require("../milsymbol/mil_signal");
 const weather = require("../milsymbol/mil_weather");
-//const { ms } = require("../kmilsymbol/milsymbol");
+const { ms } = require("../kmilsymbol/milsymbol");
 
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
@@ -520,7 +520,7 @@ class SymbolTest {
         var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
         if (option.SIDC && option.SIDC.length > 0) {
-            var symbol = new ms.Symbol(option.SIDC, { size: 30 } /*option*/ );
+            var symbol = new ms.Symbol(option.SIDC, option);
 
             option.code = symbol.toDataURL();
             return this.template(option);

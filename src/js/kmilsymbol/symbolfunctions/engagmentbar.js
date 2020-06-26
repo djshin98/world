@@ -1,6 +1,6 @@
 // Engagment bar ##################################################################################
 
-function engagement(ms) {
+function engagmentbar(ms) {
     var drawArray1 = [];
     var drawArray2 = [];
     var bbox = this.bbox;
@@ -92,4 +92,4 @@ function engagement(ms) {
         bbox: { x1: x1, x2: x2, y1: y1, y2: y2 }
     };
 }
-module.exports = { engagement: engagement };
+module.exports = { engagmentbar: engagmentbar };

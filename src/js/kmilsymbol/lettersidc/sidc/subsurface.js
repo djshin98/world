@@ -1,6 +1,6 @@
-const metadata_letter = require("../metadata");
-const getIcons_letter = require("../geticons");
-const icons = require("../../iconparts/subsurface");
+const metadata_letter = require("../metadata").metadata;
+const getIcons_letter = require("../geticons").geticons;
+const icons = require("../../iconparts/subsurface").icons;
 
 module.exports = {
     type: "letter",

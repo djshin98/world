@@ -1,6 +1,6 @@
 const { defaultProperties } = require("./iconparts-functions");
 
-module.exports = function(
+function icons(
     iconParts,
     metadata,
     colors,
@@ -70,3 +70,5 @@ module.exports = function(
         iconParts[key] = icn[key];
     }
 }
+
+module.exports = { icons: icons };
