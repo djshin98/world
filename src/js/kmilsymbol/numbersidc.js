@@ -2,22 +2,22 @@
 /* ***************************************************************************************
  based SIDC
 *************************************************************************************** */
-import air from "./numbersidc/sidc/air.js";
-import airmissile from "./numbersidc/sidc/airmissile.js";
-import space from "./numbersidc/sidc/space.js";
-import spacemissile from "./numbersidc/sidc/spacemissile.js";
-import landunit from "./numbersidc/sidc/landunit.js";
-import landcivilian from "./numbersidc/sidc/landcivilian.js";
-import landequipment from "./numbersidc/sidc/landequipment.js";
-import landinstallation from "./numbersidc/sidc/landinstallation.js";
-import sea from "./numbersidc/sidc/sea.js";
-import subsurface from "./numbersidc/sidc/subsurface.js";
-import minewarfare from "./numbersidc/sidc/minewarfare.js";
-import activites from "./numbersidc/sidc/activites.js";
-import signalsintelligence from "./numbersidc/sidc/signalsintelligence.js";
-import cyberspace from "./numbersidc/sidc/cyberspace.js";
-import dismountedindividual from "./numbersidc/sidc/dismountedindividual.js";
-import tacticalpoints from "./numbersidc/sidc/control-measure.js";
+const air = require("./numbersidc/sidc/air");
+const airmissile = require("./numbersidc/sidc/airmissile");
+const space = require("./numbersidc/sidc/space");
+const spacemissile = require("./numbersidc/sidc/spacemissile");
+const landunit = require("./numbersidc/sidc/landunit");
+const landcivilian = require("./numbersidc/sidc/landcivilian");
+const landequipment = require("./numbersidc/sidc/landequipment");
+const landinstallation = require("./numbersidc/sidc/landinstallation");
+const sea = require("./numbersidc/sidc/sea");
+const subsurface = require("./numbersidc/sidc/subsurface");
+const minewarfare = require("./numbersidc/sidc/minewarfare");
+const activites = require("./numbersidc/sidc/activites");
+const signalsintelligence = require("./numbersidc/sidc/signalsintelligence");
+const cyberspace = require("./numbersidc/sidc/cyberspace");
+const dismountedindividual = require("./numbersidc/sidc/dismountedindividual");
+const tacticalpoints = require("./numbersidc/sidc/control-measure");
 
 var app6d = [
     air,

@@ -30,11 +30,13 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x - (width / 2), pts[1].y),
             CTX.c2(pts[0].x + (width / 2), pts[1].y), CTX.c2(pts[0].x + (width / 2), 0),
             CTX.c2(pts[0].x - (width / 2), 0)
-            */
+            
             pts[0],
             CTX.c2(pts[0].x - (width / 2), (width / 2)),
             CTX.c2(pts[0].x + (width / 2), (width / 2)),
             pts[0], pts[1]
+            */
+            CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x + (width / 2), 0), pts[0], pts[1]
         ];
         //circle, arrow , 
         //----------------------------------------------------------   
