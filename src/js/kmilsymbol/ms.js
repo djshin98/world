@@ -240,17 +240,12 @@ ms.setStandard = function(standard) {
 };
 
 ms.graphics = new Graphics(ms);
+
 ms.graphics.addModular(require("./graphics/modulars"));
 
-ms.addSIDCgraphics = require("./ms/addsidcgraphics.js");
-ms._getLetterSIDCgraphic = require("./letter-sidc/getgraphic.js");
-ms.addSIDCgraphics(require("./letter-sidc/tactical-2525.js"), "letter");
-ms.addSIDCgraphics(require("./letter-sidc/tactical-app6.js"), "letter");
+ms.graphics.addGraphics(require("./graphics/tactical-2525"));
+ms.graphics.addGraphics(require("./graphics/tactical-app6"));
 
-ms.addGraphics = function(obj) {
-    this.graphics.addModule(obj);
-    this._graphicCache = {};
-}
 ms.Graphics = function(option) {
     let module = this.graphics.get(option.SIDC);
     if (Q.isValid(module)) {

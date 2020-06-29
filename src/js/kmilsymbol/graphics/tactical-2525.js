@@ -1,5 +1,3 @@
-var ms = require("milsymbol");
-
 // Tactical graphics in 2525C + some extra
 module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-T-B-----"] = modular["BLOCK"]; //TACGRP.TSK.BLK
@@ -327,6 +325,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc["G-F-ATC---"] = []; //modular.circle;
     //sidc["G-F-AZIC--"] = []; //modular.circle;
 
+    /*
     // Army XML compability
     sidc["C-R-LE----"] = ms.geometry.circle;
 
@@ -334,4 +333,5 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["X---C-----"] = modular.corridor;
     sidc["X---I-----"] = ms.geometry.circle;
     sidc["X---A-----"] = modular["SUPPORTING ATTACK"];
+    */
 };
