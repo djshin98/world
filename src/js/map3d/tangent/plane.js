@@ -109,28 +109,41 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
         pts[2] = this.rotate(matrix, pts[2]);
 
+        //----------------------------------------------------------
         let res = [];
 
         for(let i=0; i<180; i=i+2) {
-        let p = new Cesium.Cartesian2(p[1]);
-        let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(-i));
-        let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
+            let p = pts[1];
+            let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(-i));
+            let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
+            res.push(rotated);
         }
-        res.concat(rotated);
+        
 
-        //----------------------------------------------------------
+        //res[res.length] = pts[1];
+        res[res.length] = pts[2];
+        let tmpPts = Object.assign(pts);
 
-        pts = [
-            /*
-            CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x - (width / 2), pts[1].y),
-            CTX.c2(pts[0].x + (width / 2), pts[1].y), CTX.c2(pts[0].x + (width / 2), 0),
-            CTX.c2(pts[0].x - (width / 2), 0)
-            */
-            pts[0],
-            CTX.c2(pts[0].x - (width / 2), (width / 2)),
-            CTX.c2(pts[0].x + (width / 2), (width / 2)),
-            pts[0], pts[1]
-        ];
+        //pts = res;
+
+        let pts2 = [];
+        
+
+        pts2 = [
+            
+            CTX.c2(tmpPts[2].x - (width / 2), tmpPts[2].y - (width / 2)),
+            tmpPts[2],
+            CTX.c2(tmpPts[2].x + (width / 2), tmpPts[2].y - (width / 2)),
+
+        ]
+        
+        //res.concat(pts2);
+        res[res.length] = pts2[0];
+        res[res.length] = pts2[1];
+        res[res.length] = pts2[2];
+        pts = res;
+        
+
         //circle, arrow , 
         //----------------------------------------------------------   
 
