@@ -1,5 +1,5 @@
 const { DrawObject } = require('../draw/drawobject');
-const { Plane } = require('../map3d/plane');
+const { Plane } = require('../map3d/tangent/plane');
 class MissionObstruction extends DrawObject {
     constructor() {
         super(2, 3);
