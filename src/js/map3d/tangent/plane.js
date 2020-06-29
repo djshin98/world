@@ -16,6 +16,40 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     distance(a, b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
+    obstruction(width, height, a, b) {
+        let pts = [a.clone(), b.clone()];
+        let rTranslate = this.origin(pts);
+
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        pts[1] = this.rotate(matrix, pts[1]);
+
+        //----------------------------------------------------------
+        pts = [
+            CTX.c2(0, height), pts[0],
+            CTX.c2(pts[0].x - (width / 2), 0),
+            CTX.c2(pts[0].x + (width / 2), 0)
+
+            /*
+             pts[0],
+             CTX.c2(pts[0].x - (width / 2), (width / 2)),
+             CTX.c2(pts[0].x + (width / 2), (width / 2)),
+             pts[0], pts[1]
+             */
+        ];
+        //----------------------------------------------------------   
+
+        let inv = Cesium.Matrix2.fromRotation(-θ);
+        pts = pts.map(p => {
+            return this.rotate(inv, p);
+        });
+
+        pts.forEach(p => {
+            p.x += rTranslate.x;
+            p.y += rTranslate.y;
+        });
+        return pts;
+    }
     corrido(width, a, b) {
         let pts = [a.clone(), b.clone()];
         let rTranslate = this.origin(pts);

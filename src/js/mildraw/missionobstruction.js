@@ -1,5 +1,5 @@
-var { DrawObject } = require('../draw/drawobject');
-var { CTX } = require('../map3d/ctx');
+const { DrawObject } = require('../draw/drawobject');
+const { Plane } = require('../map3d/tangent/plane');
 class MissionObstruction extends DrawObject {
     constructor() {
         super(2, 3);
@@ -12,10 +12,30 @@ class MissionObstruction extends DrawObject {
         r.height = height;
         return CTX.r2c(r);
     }
+    rotate2dPoint(point, radian) {
+        let matrix = new Cesium.Matrix2(Math.cos(radian), Math.sin(radian), -Math.sin(radian), Math.cos(radian));
+        return Cesium.Matrix2.multiplyByVector(matrix, point, {});
+    }
     create(collection, points, viewModel) {
+        let p = points;
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polyline.positions = [points[0], points[1]];
+            let result = [];
+
+            var plane = new Plane(p[0]);
+            let pts = plane.input(p);
+            let width = plane.distance(pts[0], pts[1]);
+
+            let height = 0;
+            if (pts[2])
+                height = plane.distance(pts[0], pts[2]);
+            result = plane.obstruction(width, height, pts[0], pts[1]);
+
+            result = plane.output(result);
+            result = CTX.split.polyline(result, 10);
+            this.sketch(collection, result);
+            //this.templateEntity.polyline.positions = [points[0], points[1]];
         } else {
+            /*
             let option = {
                 positions: this.callbackValue(points),
                 clampToGround: true,
@@ -25,7 +45,7 @@ class MissionObstruction extends DrawObject {
             };
 
             let line1array = [points[0], points[1]];
-
+            */
             if (this.isComplete()) {
                 /*
                 let pHeight = this.findHeightFromCartensian(points[0]);
@@ -69,15 +89,61 @@ class MissionObstruction extends DrawObject {
                 let line2array = [midpoint, point3];
                 */
 
-                let d = Cesium.Cartesian3.distance(p0, p2);
+                /*
                 let midpoint = CTX.math.mid(points[0], points[1]);
                 let p0 = Object.assign({}, points[0]);
                 let p1 = Object.assign({}, points[1]);
                 let p2 = Object.assign({}, points[2]);
+                let d = Cesium.Cartesian3.distance(p0, p2);
                 p0 = CTX.math.sub(p0, midpoint);
                 p1 = CTX.math.sub(p1, midpoint);
                 p2 = CTX.math.sub(p2, midpoint);
+                //points.push(midpoint);
+                let plane = new Plane(points[0]);
+                let targetPoints = plane.input(points);
+                let offset = Object.assign({}, targetPoints[0]);
+                Cesium.Cartesian2.subtract(targetPoints[0], offset, targetPoints[0]);
+                Cesium.Cartesian2.subtract(targetPoints[1], offset, targetPoints[1]);
+                Cesium.Cartesian2.subtract(targetPoints[2], offset, targetPoints[2]);
+                let xAxisPoint = new Cesium.Cartesian2(Math.abs(targetPoints[2].x), 0);
 
+                let v1 = Object.assign({}, targetPoints[1]);
+                //let v1 = Cesium.Cartesian2.subtract(targetPoints[1], targetPoints[3]);
+                let v2 = xAxisPoint;
+                Cesium.Cartesian2.normalize(v1, v1);
+                Cesium.Cartesian2.normalize(v2, v2);
+
+                let radian = Math.acos(Cesium.Cartesian2.dot(v1, v2));
+                //let radian2 = Cesium.Cartesian2.dot(Cesium.Cartesian2.negate(v1, {}), v2);
+                //radian = (Math.abs(radian) < Math.abs(radian2)) ? radian : radian2;
+                let degree = radian * (180 / Math.PI);
+
+                let transPoints = [];
+                transPoints[0] = targetPoints[0];
+                transPoints[1] = this.rotate2dPoint(targetPoints[1], -radian);
+                transPoints[2] = this.rotate2dPoint(targetPoints[2], -radian);
+                //let  = Math.acos(Cesium.Cartesian2.dot(transPoints[1], transPoints[2]));
+                let yDirection = ((transPoints[1].x * transPoints[2].y - transPoints[1].y * transPoints[2].x) > 0) ? 1 : -1;
+                //let yDirection = transPoints[2].y > 0 ? 1 : -1;
+                let distance = Cesium.Cartesian2.distance(transPoints[0], transPoints[1]) / 2;
+                let p3 = (transPoints[1].x > 0) ? new Cesium.Cartesian2(distance, d * yDirection) : new Cesium.Cartesian2(-distance, d * yDirection);
+                transPoints.push(p3);
+
+                transPoints[1] = this.rotate2dPoint(transPoints[1], radian);
+                transPoints[2] = this.rotate2dPoint(transPoints[2], radian);
+                transPoints[3] = this.rotate2dPoint(transPoints[3], radian);
+
+                Cesium.Cartesian2.add(transPoints[0], offset, transPoints[0]);
+                Cesium.Cartesian2.add(transPoints[1], offset, transPoints[1]);
+                Cesium.Cartesian2.add(transPoints[2], offset, transPoints[2]);
+                Cesium.Cartesian2.add(transPoints[3], offset, transPoints[3]);
+
+                targetPoints = plane.output(transPoints);
+
+                midpoint = CTX.math.mid(targetPoints[0], targetPoints[1]);
+                line1array = [targetPoints[0], targetPoints[1]];
+                let line2array = [midpoint, targetPoints[3]];
+                
 
                 collection.add(this.index, {
                     position: points[0],
@@ -99,17 +165,43 @@ class MissionObstruction extends DrawObject {
                         material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
                     },
                 });
+                
+                collection.add(this.index, {
+                    position: points[0],
+                    polyline: {
+                        positions: points,
+                        clampToGround: true,
+                        color: viewModel.lineColor,
+                        width: viewModel.lineWidth,
+                        material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
+                    },
+                });
+                */
+                let result = [];
+
+                var plane = new Plane(p[0]);
+                let pts = plane.input(p);
+                let width = plane.distance(pts[0], pts[1]);
+
+                let height = 0;
+                if (pts[2])
+                    height = plane.distance(pts[0], pts[2]);
+                result = plane.obstruction(width, height, pts[0], pts[1]);
+
+                result = plane.output(result);
+
+                return collection.add(this.index, {
+                    position: points[0],
+                    polyline: {
+                        positions: result,
+                        clampToGround: true,
+                        color: viewModel.lineColor,
+                        width: viewModel.lineWidth,
+                        material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
+                    },
+                });
             }
-            return collection.add(this.index, {
-                position: points[0],
-                polyline: {
-                    positions: line1array,
-                    clampToGround: true,
-                    color: viewModel.lineColor,
-                    width: viewModel.lineWidth,
-                    material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
-                },
-            });
+            return [];
         }
 
         //if (this.isValidPoints(points)) {
