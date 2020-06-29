@@ -29,6 +29,8 @@ const { affliationdimension } = require("./symbolfunctions/affliationdimension")
 const { textfields } = require("./symbolfunctions/textfields");
 const { directionarrow } = require("./symbolfunctions/directionarrow");
 
+const { Graphics } = require("./ms/graphics");
+
 ms.setColorMode = function(mode, colorMode) {
     this._colorModes[mode] = {};
     this._colorModes[mode].Hostile = colorMode.Hostile;
@@ -237,6 +239,23 @@ ms.setStandard = function(standard) {
     return false;
 };
 
+ms.graphics = new Graphics(ms);
+
+ms.graphics.addModular(require("./graphics/modulars"));
+
+ms.graphics.addGraphics(require("./graphics/tactical-2525"));
+ms.graphics.addGraphics(require("./graphics/tactical-app6"));
+
+ms.Graphics = function(option) {
+    let module = this.graphics.get(option.SIDC);
+    if (Q.isValid(module)) {
+        return module;
+    } else {
+        var symbol = new ms.Symbol(option.SIDC, option);
+        return symbol;
+    }
+};
+
 /* ***************************************************************************************
 Add base geometries
 *************************************************************************************** */
@@ -244,4 +263,4 @@ const geometries = require("./ms/symbolgeometries");
 
 ms._symbolGeometries = geometries;
 
-export { ms };
+module.exports = { ms: ms };

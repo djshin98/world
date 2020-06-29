@@ -1,11 +1,11 @@
 var { DrawObject } = require('./drawobject');
 let { SIDC } = require("../viewmodel/kmilsymbol");
-let { CTX } = require("../map3d/ctx");
 let { OliveDescription } = require("../ui/olive-description");
+const { kms } = require("../kmilsymbol/milsymbol");
 
 class KMilSymbol extends DrawObject {
     constructor() {
-        super(1);
+        super(1,1);
 
         this.labelOptions = {
             //eyeOffset : new Cesium.Cartesian3(0, -1, -500),
@@ -20,16 +20,22 @@ class KMilSymbol extends DrawObject {
         };
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isComplete()) {
             points.forEach(point => {
-                this.add(collection, CTX.c2d(point), { name: "테스트", sidc: "SFGAEWMASR-----", size: 30 });
+                this.add(collection, CTX.c2d(point), { name: "테스트", SIDC: "SFGAEWMASR-----", size: 30 });
             });
         }
     }
     add(collection, degree, options) {
-        let image = new ms.Symbol(options.sidc, options);
-        let desc = (new SIDC(options.sidc[0], options.sidc)).toDescription();
-        return this._add(collection, degree, options, desc, image);
+        //let image = new kms.Symbol(options.sidc, options);
+
+        var graphic = kms.Graphics(options);
+        if (!graphic.isIcon()) {
+            app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
+        } else {
+            let desc = (new SIDC(options.sidc[0], options.sidc)).toDescription();
+            return this._add(collection, degree, options, desc, graphic);
+        }
     }
     _add(collection, degree, options, desc, img) {
 

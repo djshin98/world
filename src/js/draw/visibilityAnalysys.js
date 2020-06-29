@@ -1,6 +1,5 @@
 var { DrawObject } = require('./drawobject');
 var { VisibilityUtil } = require('./util');
-var { CTX } = require("../map3d/ctx");
 class VisibilityAnalysys extends DrawObject {
     constructor() {
         super(2);

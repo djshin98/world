@@ -13,7 +13,6 @@ require("../ui/olive-input");
 require("../ui/olive-tree");
 require("../ui/olive-dialog");
 
-var { CTX } = require("../map3d/ctx");
 var { OliveVideo } = require("../ui/olive-video");
 global.OliveVideo = OliveVideo;
 

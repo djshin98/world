@@ -1,6 +1,5 @@
 var { DrawObject } = require('./drawobject');
 var { ParabolaUtil } = require('./util');
-var { CTX } = require("../map3d/ctx");
 
 class Air2Earth extends DrawObject {
     constructor() {

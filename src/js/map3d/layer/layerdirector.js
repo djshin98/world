@@ -1,4 +1,7 @@
 "use strict";
+const { StatisticsLayers } = require("./group/statisticslayers");
+const { DataLayers } = require("./group/datalayers");
+const { ApplicationLayers } = require("./group/applicationlayers");
 
 const { IxDatabase } = require('../../indexeddb/db');
 const configLayers = require("../../../conf/layers.json");
@@ -13,10 +16,16 @@ const APPLICATION_LAYER = "application";
 
 class LayerDirector {
     constructor(map) {
+        this.map = map;
         this.viewer = map.viewer3d;
         this.terrainProvider = map.viewOption.terrainProvider;
         this.imageryLayers = this.viewer.imageryLayers;
         this.layers = configLayers;
+
+        this.statisticsLayers = new StatisticsLayers("default", STATISTICS_LAYER);
+        this.dataLayers = new DataLayers("default", DATA_LAYER);
+        this.applicationLayers = new ApplicationLayers("default", APPLICATION_LAYER);
+
         this.db = new IxDatabase(1);
         this.ordering();
 
@@ -24,6 +33,26 @@ class LayerDirector {
 
         this.db.set(LAYER_KEY, "last", this.layers);
 
+        if (!Q.isValid(this.getActiveLayer())) {
+            let appLayers = this.getLayers(APPLICATION_LAYER);
+            if (Q.isValid(appLayers)) {
+                let layer;
+                if (Q.isValid(appLayers.children) && appLayers.children.length > 0) {
+                    layer = appLayers.children[0];
+                    layer.focus = true;
+                } else {
+                    layer = {
+                        name: "사용자 어플리케이션 레이어",
+                        type: "check",
+                        focus: true,
+                        group: APPLICATION_LAYER,
+                        provider: "ApplicationLayer",
+                        options: {}
+                    };
+                }
+                this.setApplicationLayer(layer, true, true);
+            }
+        }
         //this.restore();
     }
     ordering() {
@@ -86,33 +115,40 @@ class LayerDirector {
     }
     save(url, obj, callbackable) {
         let group = this.layers.find((g) => { return g.group == url ? true : false; });
-        if (Q.isValid(group)) {
-            if (!Q.isValid(group.children)) { group.children = []; }
-            let layer = group.children.find((layer) => { return layer.name == obj.name ? true : false; });
-            if (Q.isValid(layer)) {
-                group.children = group.children.map((layer) => {
-                    if (layer.name == obj.name) { return obj; }
-                    return layer;
+        if (Q.isValid(obj)) {
+            if (Q.isValid(group)) {
+                if (!Q.isValid(group.children)) { group.children = []; }
+                let layer = group.children.find((layer) => { return layer.name == obj.name ? true : false; });
+                if (Q.isValid(layer)) {
+                    group.children = group.children.map((layer) => {
+                        if (layer.name == obj.name) { return obj; }
+                        return layer;
+                    });
+                } else {
+                    group.children.push(obj);
+                }
+                group.children.sort((a, b) => {
+                    if (a.order && b.order) return a.order - b.order;
+                    if (a.order) return -1;
+                    if (b.order) return 1;
                 });
-            } else {
-                group.children.push(obj);
             }
-            group.children.sort((a, b) => {
-                if (a.order && b.order) return a.order - b.order;
-                if (a.order) return -1;
-                if (b.order) return 1;
-            });
-        }
-        this.db.set(LAYER_KEY, "last", this.layers);
-        if (callbackable === false) {
+            this.db.set(LAYER_KEY, "last", this.layers);
+            if (callbackable === false) {
 
-        } else {
-            if (Q.isValid(this.updateCallbacks)) {
-                this.updateCallbacks.forEach((callback) => {
-                    callback(this.layers);
-                });
+            } else {
+                if (Q.isValid(this.updateCallbacks)) {
+                    this.updateCallbacks.forEach((callback) => {
+                        callback(this.layers);
+                    });
+                }
+            }
+            if (Q.isValid(group)) {
+                return true;
             }
         }
+
+        return false;
     }
     addUpdateCallback(callback, bfirstCall) {
         if (Q.isValid(callback) && Q.isFunction(callback)) {
@@ -122,8 +158,21 @@ class LayerDirector {
             }
         }
     }
-    getLayers() {
+    getLayers(group) {
+        if (Q.isValid(group)) {
+            return this.layers.find(layerGroup => { return layerGroup.group == group ? true : false; });
+        }
         return this.layers;
+    }
+    getActiveLayer() {
+        let appLayers = this.getLayers(APPLICATION_LAYER);
+        if (Q.isValid(appLayers)) {
+            if (Q.isValid(appLayers.children)) {
+                return appLayers.children.find((layer) => {
+                    return layer.focus === true ? true : false;
+                });
+            }
+        }
     }
     setLayer(obj, show, callbackable) {
         if (Q.isValid(obj.group)) {
@@ -177,14 +226,14 @@ class LayerDirector {
         let layer = this.find((l) => { return (!l.isBaseLayer() && l.name == obj.name) ? true : false; });
 
         if (!Q.isValid(layer)) {
-            if (Q.isValid(options.rectangleDegree)) {
+            if (Q.isValid(obj.options.rectangleDegree)) {
                 obj.options.rectangle = Cesium.Rectangle.fromDegrees(obj.options.rectangleDegree);
             }
             if (this.imageryLayers.length < obj.order) { obj.order = this.imageryLayers.length; }
             layer = this.imageryLayers.addImageryProvider(new Cesium[obj.provider](obj.options), obj.order);
         }
         if (Q.isValid(obj.alpha)) { layer.alpha = Cesium.defaultValue(obj.alpha, 0.5); }
-        if (Q.isValid(obj.show)) { layer.show = Cesium.defaultValue(obj.show, true); }
+        if (Q.isValid(show)) { layer.show = Cesium.defaultValue(show, true); }
         if (Q.isValid(obj.name)) { layer.name = Cesium.defaultValue(obj.name, "default"); }
         this.save(USER_IMAGERY_LAYER, obj, callbackable);
         return layer;
@@ -217,7 +266,9 @@ class LayerDirector {
     }
     setApplicationLayer(obj, show, callbackable) {
         obj.show = show;
-        this.save(APPLICATION_LAYER, obj, callbackable);
+        if (this.save(APPLICATION_LAYER, obj, callbackable)) {
+
+        }
     }
 }
 
