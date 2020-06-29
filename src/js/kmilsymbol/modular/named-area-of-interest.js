@@ -1,4 +1,4 @@
-var ms = require("milsymbol");
+const circleCorridorPolygon = require("../geometry/circlecorridorpolygon");
 
 // Draws a NAI
 module.exports = function(feature) {
@@ -12,7 +12,7 @@ module.exports = function(feature) {
     annotations[0].properties.text +=
       "\n" + feature.properties.uniqueDesignation;
 
-  var polygon = ms.geometry.circleCorridorPolygon(feature);
+  var polygon = circleCorridorPolygon(feature);
   geometry = polygon.geometry;
   if (polygon.annotation.hasOwnProperty("geometry")) {
     annotations[0].geometry = polygon.annotation.geometry;

@@ -20,4 +20,4 @@ class Graphics {
         }
     }
 }
-module.exports = { Graphic: Graphic };
+module.exports = { Graphics: Graphics };

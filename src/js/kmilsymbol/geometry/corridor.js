@@ -1,6 +1,5 @@
-const toDistanceBearing = require("./toDistanceBearing");
-const bearingBetween = require("./bearingBetween");
-const bearingBetween = require("./bearingBetween");
+const toDistanceBearing = require("./todistancebearing");
+const bearingBetween = require("./bearingbetween");
 
 // Draws a corridor with a widht in meters
 function corridor(feature) {

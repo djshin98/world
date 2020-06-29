@@ -25,7 +25,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
 
         //----------------------------------------------------------
-        if (pts.length == 1, == 2, == 3)
+       // if (pts.length == 1, == 2, == 3)
             pts = [
                 CTX.c2(0, height), pts[0],
                 CTX.c2(pts[0].x - (width / 2), 0),

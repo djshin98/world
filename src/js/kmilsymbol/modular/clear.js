@@ -1,4 +1,6 @@
-var ms = require("milsymbol");
+const bearingBetween = require("../geometry/bearingbetween");
+const pointBetween = require("../geometry/pointbetween");
+const toDistanceBearing = require("../geometry/todistancebearing");
 
 function clear(feature) {
   //var direction, width;
@@ -6,58 +8,58 @@ function clear(feature) {
 
   var points = feature.geometry.coordinates;
   var geometry = { type: "MultiLineString" };
-  var scale = ms.geometry.distanceBetween(points[0], points[1]);
+  var scale = distanceBetween(points[0], points[1]);
 
   geometry.coordinates = [];
 
   var geom = [points[0], points[1]];
   geometry.coordinates.push(geom);
 
-  var pMid = ms.geometry.pointBetween(points[0], points[1], 0.5);
-  var length = ms.geometry.distanceBetween(pMid, points[2]);
-  var bearing = ms.geometry.bearingBetween(points[0], points[1]);
+  var pMid = pointBetween(points[0], points[1], 0.5);
+  var length = distanceBetween(pMid, points[2]);
+  var bearing = bearingBetween(points[0], points[1]);
 
-  geom = [pMid, ms.geometry.toDistanceBearing(pMid, length, bearing + 90)];
+  geom = [pMid, toDistanceBearing(pMid, length, bearing + 90)];
   geometry.coordinates.push(geom);
 
   annotations[0].geometry = { type: "Point" };
   annotations[0].properties = {};
   annotations[0].properties.text = "C";
-  annotations[0].geometry.coordinates = ms.geometry.pointBetween(
+  annotations[0].geometry.coordinates = pointBetween(
     pMid,
     geom[1],
     0.5
   );
 
   geom = [];
-  geom.push(ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60));
+  geom.push(toDistanceBearing(pMid, scale * 0.15, bearing + 60));
   geom.push(pMid);
   geom.push(
-    ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
+    toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
   );
   geometry.coordinates.push(geom);
 
-  pMid = ms.geometry.pointBetween(points[0], points[1], 0.2);
-  geom = [pMid, ms.geometry.toDistanceBearing(pMid, length, bearing + 90)];
+  pMid = pointBetween(points[0], points[1], 0.2);
+  geom = [pMid, toDistanceBearing(pMid, length, bearing + 90)];
   geometry.coordinates.push(geom);
 
   geom = [];
-  geom.push(ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60));
+  geom.push(toDistanceBearing(pMid, scale * 0.15, bearing + 60));
   geom.push(pMid);
   geom.push(
-    ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
+    toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
   );
   geometry.coordinates.push(geom);
 
-  pMid = ms.geometry.pointBetween(points[0], points[1], 0.8);
-  geom = [pMid, ms.geometry.toDistanceBearing(pMid, length, bearing + 90)];
+  pMid = pointBetween(points[0], points[1], 0.8);
+  geom = [pMid, toDistanceBearing(pMid, length, bearing + 90)];
   geometry.coordinates.push(geom);
 
   geom = [];
-  geom.push(ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60));
+  geom.push(toDistanceBearing(pMid, scale * 0.15, bearing + 60));
   geom.push(pMid);
   geom.push(
-    ms.geometry.toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
+    toDistanceBearing(pMid, scale * 0.15, bearing + 60 + 60)
   );
   geometry.coordinates.push(geom);
 

@@ -1,4 +1,4 @@
-var ms = require("milsymbol");
+const toDistanceBearing = require("../geometry/todistancebearing");
 
 // Draws a circle withe a radius in meters
 module.exports = function(feature) {
@@ -8,7 +8,7 @@ module.exports = function(feature) {
   geometry.coordinates = [[]];
   for (var direction = 360; direction >= 0; direction -= 5) {
     geometry.coordinates[0].push(
-      ms.geometry.toDistanceBearing(p, r, direction)
+      toDistanceBearing(p, r, direction)
     );
   }
   return { geometry: geometry };

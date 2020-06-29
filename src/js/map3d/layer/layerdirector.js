@@ -41,7 +41,7 @@ class LayerDirector {
                     layer = appLayers.children[0];
                     layer.focus = true;
                 } else {
-                    let layer = {
+                    layer = {
                         name: "사용자 어플리케이션 레이어",
                         type: "check",
                         focus: true,

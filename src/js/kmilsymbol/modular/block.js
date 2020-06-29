@@ -1,4 +1,4 @@
-var ms = require("milsymbol");
+const pointBetween = require("../geometry/pointbetween");
 
 function block(feature) {
   //var direction, width;
@@ -12,7 +12,7 @@ function block(feature) {
   geometry1.push(points[0], points[1]);
 
   var geometry2 = [];
-  var midpoint = ms.geometry.pointBetween(points[0], points[1], 0.5);
+  var midpoint = pointBetween(points[0], points[1], 0.5);
   geometry2.push(points[2], midpoint);
 
   geometry.coordinates = [geometry1, geometry2];
@@ -20,7 +20,7 @@ function block(feature) {
   annotations[0].geometry = { type: "Point" };
   annotations[0].properties = {};
   annotations[0].properties.text = "B";
-  annotations[0].geometry.coordinates = ms.geometry.pointBetween(
+  annotations[0].geometry.coordinates = pointBetween(
     midpoint,
     points[2],
     0.5

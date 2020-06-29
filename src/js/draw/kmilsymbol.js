@@ -1,6 +1,5 @@
 var { DrawObject } = require('./drawobject');
 let { SIDC } = require("../viewmodel/kmilsymbol");
-let { CTX } = require("../map3d/ctx");
 let { OliveDescription } = require("../ui/olive-description");
 
 class KMilSymbol extends DrawObject {

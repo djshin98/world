@@ -1,4 +1,6 @@
-var ms = require("milsymbol");
+const bearingBetween = require("../geometry/bearingbetween");
+const pointBetween = require("../geometry/pointbetween");
+const toDistanceBearing = require("../geometry/todistancebearing");
 
 function canalize(feature) {
   //var direction, width;
@@ -6,34 +8,34 @@ function canalize(feature) {
 
   var points = feature.geometry.coordinates;
   var geometry = { type: "MultiLineString" };
-  var scale = ms.geometry.distanceBetween(points[0], points[1]);
-  var pMid = ms.geometry.pointBetween(points[0], points[1], 0.5);
-  var length = ms.geometry.distanceBetween(pMid, points[2]);
-  var bearing = ms.geometry.bearingBetween(points[0], points[1]);
+  var scale = distanceBetween(points[0], points[1]);
+  var pMid = pointBetween(points[0], points[1], 0.5);
+  var length = distanceBetween(pMid, points[2]);
+  var bearing = bearingBetween(points[0], points[1]);
 
   geometry.coordinates = [];
 
   var geom = [points[0]];
-  geom.push(ms.geometry.toDistanceBearing(points[0], length, bearing + 90));
-  geom.push(ms.geometry.toDistanceBearing(points[1], length, bearing + 90));
+  geom.push(toDistanceBearing(points[0], length, bearing + 90));
+  geom.push(toDistanceBearing(points[1], length, bearing + 90));
   geom.push(points[1]);
   geometry.coordinates.push(geom);
 
   geom = [];
   geom.push(
-    ms.geometry.toDistanceBearing(points[0], scale * 0.2, bearing + 45)
+    toDistanceBearing(points[0], scale * 0.2, bearing + 45)
   );
   geom.push(
-    ms.geometry.toDistanceBearing(points[0], scale * 0.2, bearing + 45 + 180)
+    toDistanceBearing(points[0], scale * 0.2, bearing + 45 + 180)
   );
   geometry.coordinates.push(geom);
 
   geom = [];
   geom.push(
-    ms.geometry.toDistanceBearing(points[1], scale * 0.2, bearing - 45)
+    toDistanceBearing(points[1], scale * 0.2, bearing - 45)
   );
   geom.push(
-    ms.geometry.toDistanceBearing(points[1], scale * 0.2, bearing - 45 + 180)
+    toDistanceBearing(points[1], scale * 0.2, bearing - 45 + 180)
   );
   geometry.coordinates.push(geom);
 
