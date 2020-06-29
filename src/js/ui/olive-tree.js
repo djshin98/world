@@ -89,7 +89,7 @@ class OliveTree {
         return this._get(this.data, issuanceId);
     }
     _classStr(d) {
-        if (d.children && d.children.length > 0) {
+        if (d.children) {
             if (Q.isValid(d.class)) {
                 return ' class="folder ' + d.class + '" ';
             }
