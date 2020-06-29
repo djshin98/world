@@ -21,7 +21,7 @@ class Line extends DrawObject {
                     var s = Cesium.Cartesian3.subtract(points[i+1], points[i], {});
                     var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
                     var a = Cesium.Cartesian3.add(dv, points[i], {});
-
+                    /*
                     collection.add(this.index, {
                         position: a,
                         label: {
@@ -34,6 +34,7 @@ class Line extends DrawObject {
                         }
                         
                     });
+                    */
                 }
             }
 
