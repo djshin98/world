@@ -6,6 +6,21 @@ class LineEO extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
+        if (this.isReadyToCallbackVariable()) {
+            this.templateEntity.polyline.positions = points;
+        } else {
+            let option = {
+                positions: this.callbackValue(points),
+                clampToGround: true,
+                color: viewModel.lineColor,
+                width: viewModel.lineWidth,
+                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+            };
+            return collection.add(this.index, {
+                polyline: option
+            });
+        }
+        /*
         if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
@@ -18,6 +33,7 @@ class LineEO extends DrawObject {
                 polyline: option
             });
         }
+        */
     }
     type1(collection, name, points, viewModel) {
         if (points && points.length >= this.minPointCount) {

@@ -7,7 +7,13 @@ class Air2Earth extends DrawObject {
         super(2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isReadyToCallbackVariable()) {
+            let degrees = {
+                start: CTX.c2d(points[0]),
+                end: CTX.c2d(points[1])
+            }
+            this.templateEntity.polyline.positions = ParabolaUtil.quadraticHalf(degrees, 100, true);
+        } else {
             let degrees = {
                 start: CTX.c2d(points[0]),
                 end: CTX.c2d(points[1])

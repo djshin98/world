@@ -1,12 +1,13 @@
 var { dom } = require('../util/comm');
 var { Eventable } = require('../core/eventable');
+var { Q } = require('../core/e');
 
 class Cursor extends Eventable {
     constructor(viewer) {
         super();
         this.viewer = viewer;
         this.cursorWidgetHandler = undefined;
-        this.load();
+        //this.load();
     }
     destroy() {
         if (this.cursorWidgetHandler) {
@@ -43,9 +44,12 @@ class Cursor extends Eventable {
 
                 let ent = {};
                 let desc = ent["Description"] = [];
-                pickedObject.id._olive_description.forEach(item => {
-                    desc.push({ key: item.name, value: item.value });
-                });
+                if (Q.isValid(pickedObject.id._olive_description)) {
+                    pickedObject.id._olive_description.forEach(item => {
+                        desc.push({ key: item.name, value: item.value });
+                    });
+                }
+
                 let option = ent["Option"] = [];
                 let other = Object.keys(pickedObject.id._olive_option).filter(item => { return item == "degree" ? false : true; });
 

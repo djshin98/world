@@ -76,7 +76,6 @@ function _makeModifierTree(id, arr) {
 }
 
 function makeModifierTree(id, arr) {
-
     document.getElementById(id).innerHTML = _makeModifierTree(id, arr);
 }
 
@@ -186,8 +185,8 @@ var symbolTest = {
     create: function() {
         var sel = this.viewModels.filter(d => { let v = d.val(); return v != undefined ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
-        if (option.sic && option.sic.length > 0) {
-            var symbol = new ms.Symbol(option.sic, option);
+        if (option.SIDC && option.SIDC.length > 0) {
+            var symbol = new ms.Symbol(option.SIDC, option);
 
             option.code = symbol.toDataURL();
             return symbolTest.template(option.code);

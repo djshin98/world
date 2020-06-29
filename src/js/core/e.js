@@ -1,6 +1,7 @@
+'use strict';
+
 function elements(heles) {
     this.elements = heles;
-
     this.value = function(v) {
         if (v) {
             this.elements.forEach(ele => {
@@ -249,8 +250,6 @@ function elements(heles) {
         return this.style("display", "");
     };
 
-
-
     this.hasClass = function() {
         let l = [];
         this.elements.forEach(ele => {
@@ -421,5 +420,13 @@ function $$(a) {
     }
 }
 
+class Q {
+    static isValid(a) { return ((typeof(a) == "undefined") || (a == null)) ? false : true; }
+
+    static isFunction(a) { return (typeof(a) == "function") ? true : false; }
+
+    static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
+}
 global.$$ = $$;
-module.exports = { $$: $$ };
+global.Q = Q;
+module.exports = { $$: $$, Q: Q };

@@ -1,19 +1,21 @@
-var { IxDatabase } = require('../indexeddb/db');
-var { Animation } = require('../util/animation');
-var { Tileset } = require('./tileset');
-var { Contour } = require('./contour');
-var { OliveCamera } = require('./camera');
-var { OliveCursor } = require('./cursor');
-var { Dashboard } = require('./dashboard');
-var { dom } = require("../util/comm");
+const { IxDatabase } = require('../indexeddb/db');
+const { Animation } = require('../util/animation');
+const { Tileset } = require('./tileset');
+const { Contour } = require('./contour');
+const { OliveCamera } = require('./camera');
+const { OliveCursor } = require('./cursor');
+const { Dashboard } = require('./dashboard');
+const { dom } = require("../util/comm");
+
+const { LayerDirector } = require("./layer/layerdirector");
 
 global.Cesium = require('cesium/Cesium');
-var { CTX } = require("./ctx");
-var { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
-var { MarkerCollection } = require("../collection/markercollection");
-var { DrawCollection } = require("../collection/drawcollection");
-var { Eventable } = require('../core/eventable');
-var { WebSocketBroker } = require("../ws/websocket_broker");
+const { CTX } = require("./ctx");
+const { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
+const { MarkerCollection } = require("../collection/markercollection");
+const { DrawCollection } = require("../collection/drawcollection");
+const { Eventable } = require('../core/eventable');
+const { WebSocketBroker } = require("../ws/websocket_broker");
 const config = require("../../conf/server.json");
 
 require('./grid/wgs84');
@@ -27,7 +29,7 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-class MilMap extends Eventable {
+class m3 extends Eventable {
     constructor(options) {
         super();
         this.collectionTypes = {};
@@ -71,29 +73,15 @@ class MilMap extends Eventable {
             fullscreenButton: false,
             creditsDisplay: false,
             distanceDisplayCondition: false,
-
+            terrainProvider: Cesium.createWorldTerrain({
+                requestVertexNormals: true,
+                requestWaterMask: true
+            }),
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
             //clockViewModel: new Cesium.ClockViewModel(clock),
 
             /*
-                       imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-                           url: 'https://a.tile.openstreetmap.org/'
-                       }),
-            */
-
-
-
-            imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-                url: 'https://a.tile.openstreetmap.org/'
-            }),
-
-            /*
-             imageryProvider: Cesium.createWorldImagery({
-                 style: Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
-             }),
-                                  
-             
              terrainProvider: Cesium.createWorldTerrain(),
              shadows: false,
              scene3DOnly: true, //3차원 화면으로 구성 // ,
@@ -130,35 +118,11 @@ class MilMap extends Eventable {
             }*/
         };
 
-        if (this.options.mapServiceMode == "internet") {
-            this.viewOption.terrainProvider = Cesium.createWorldTerrain();
-        } else if (this.options.mapServiceMode == "offline") {
-            if (this.options.offlineOption.map) {
-                this.viewOption.imageryProvider = new Cesium.TileMapServiceImageryProvider({
-                    url: Cesium.buildModuleUrl(this.options.offlineOption.map)
-                });
-            }
-            if (this.options.offlineOption.terrain) {
-                this.viewOption.terrainProvider = new Cesium.CesiumTerrainProvider({
-                    url: this.options.offlineOption.terrain,
-                    proxy: new Cesium.DefaultProxy(this.options.offlineOption.proxy),
-                    requestWaterMask: false,
-                    requestVertexNormals: false
-                });
-            }
-        }
         this.viewer3d = new Cesium.Viewer(this.options.id, this.viewOption);
         //좌표변환 모듈부터 적용한다.
         CTX.viewer = this.viewer3d;
 
-        if (this.options.mapServiceMode == "offline" && this.options.offlineBaseLayers && this.options.offlineBaseLayers.length > 0) {
-            var imageryLayers = this.viewer3d.imageryLayers;
-            this.options.offlineBaseLayers.forEach(d => {
-                imageryLayers.addImageryProvider(new Cesium.TileMapServiceImageryProvider({
-                    url: d.url
-                }));
-            });
-        }
+        this.viewer3d.scene.globe.enableLighting = true;
 
         let _this = this;
 
@@ -253,6 +217,10 @@ class MilMap extends Eventable {
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
         }
+        this.layerDirector = new LayerDirector(this);
+    }
+    getLayerDirector() {
+        return this.layerDirector;
     }
     center() {
         return { x: this.width / 2, y: this.height / 2 };
@@ -390,7 +358,7 @@ class MilMap extends Eventable {
         }
         this.contourWidget.update(viewModel);
     }
-    terrianFromDegrees(degrees, callback) {
+    FromDegrees(degrees, callback) {
         var positions = degrees.map(d => {
             return CTX.degree(d.longitude, d.latitude);
         });
@@ -905,5 +873,5 @@ function keyInput() {
 keyInput();
 */
 module.exports = {
-    MilMap: MilMap
+    m3: m3
 };

@@ -1,4 +1,3 @@
-function isValid(a) { return ((typeof(a) == "undefined") || (a == null)) ? false : true; }
 class Block {
     constructor(options) {
         this.variables = Object.assign({}, options);
@@ -17,4 +16,4 @@ class Block {
     }
 }
 
-module.exports = { Block: Block, isValid: isValid };
+module.exports = { Block: Block };

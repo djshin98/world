@@ -5,119 +5,57 @@
 </div>
 
 <script>
-    var layers = [{
-        name: '배경 지도',
-        group: 'baseMap',
-        children: [{
-            name: "Bing Maps Aerial",
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Bing Maps Road',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'ArcGIS World Street Maps',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'OpenStreetMaps',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Stamen Maps',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Natural Earth II (local)',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'USGS Shaded Relief (via WMTS)',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Stamen Maps',
-            type: "radio",
-            group: 'baseMap'
-        }, {
-            name: 'Stamen Maps',
-            type: "radio",
-            group: 'baseMap'
-        }],
-        parse: (parent, arr) => {
-
-        }
-    }, {
-        name: 'DEM',
-        children: [{
-            name: "Bing Maps Aerial",
-            type: "radio",
-            group: 'dem'
-        }, {
-            name: 'Bing Maps Road',
-            type: "radio",
-            group: 'dem'
-        }],
-        parse: (parent, arr) => {
-
-        }
-    }, {
-        name: '사용자 지도',
-        children: [{
-            name: "United States GOES Infrared",
-            type: "check",
-        }, {
-            name: 'United States Weather Radar',
-            type: "check",
-        }, {
-            name: 'TileMapService Image',
-            type: "check",
-        }, {
-            name: 'Single Image',
-            type: "check",
-        }, {
-            name: 'Grid',
-            type: "check",
-        }, {
-            name: 'Tile Coordinates',
-            type: "check",
-        }],
-        parse: (parent, arr) => {
-
-        }
-    }];
     app.onReady(function(_app, _map) {
-        new OliveTree("#layer-view", layers, {
-            onAttribute: function(d) {
-                return {
-                    id: d.id
-                };
-            },
-            onText: function(d) {
-                return d.name;
-            },
-            onSelect: function(type, tag, obj) {
-                let test = {
-                    General: [{
-                        key: "type",
-                        value: type
-                    }, {
-                        key: "tag",
-                        value: tag
-                    }],
-                    Properties: Object.keys(obj).map(key => {
-                        return {
-                            key: key,
-                            value: obj[key]
-                        };
-                    })
-                };
-                app.setAttributes(test);
-            },
-            onChecked: function(checked, type, tag, obj) {
+        app.getOpenedMap(3).getLayerDirector().addUpdateCallback((layers) => {
+            new OliveTree("#layer-view", layers, {
+                onAttribute: function(d) {
+                    return {
+                        id: d.id
+                    };
+                },
+                onText: function(d) {
+                    return d.name;
+                },
+                onSelect: function(type, tag, obj) {
+                    let test = {
+                        General: [{
+                            key: "type",
+                            value: type
+                        }, {
+                            key: "tag",
+                            value: tag
+                        }],
+                        Properties: Object.keys(obj).filter(key => {
+                            return typeof(obj[key]) == "string" ? true : false;
+                        }).map(key => {
+                            return {
+                                key: key,
+                                value: obj[key]
+                            };
+                        })
+                    };
 
-            }
-        });
+                    Object.keys(obj).filter(key => {
+                        return typeof(obj[key]) == "object" ? true : false;
+                    }).forEach(key => {
+                        let prop = obj[key]
+                        test[key] = Object.keys(prop).map(k => {
+                            return {
+                                key: k,
+                                value: prop[k]
+                            };
+                        });
+                    });
+
+                    app.setAttributes(test);
+                },
+                onChecked: function(checked, type, tag, obj) {
+                    if (obj.provider && obj.options) {
+                        app.getOpenedMap(3).getLayerDirector().setLayer(obj, checked, false);
+                    }
+                }
+            });
+        }, true);
+
     });
 </script>

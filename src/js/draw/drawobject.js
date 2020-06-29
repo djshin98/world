@@ -1,3 +1,4 @@
+var { Q } = require("../core/e");
 var { PinMarkers } = require('../collection/drawcollection');
 var drawIndex = 1;
 
@@ -110,15 +111,54 @@ function setDrawViewModel(defaultViewModel, viewModel) {
         _viewModel.faceColor = _viewModel.faceColor.withAlpha(_viewModel.faceTransparent);
     }
 
+
     return _viewModel;
 }
+const Template = {
+    faceColor: new Cesium.Color(192, 192, 192, 0.5),
+    lineColor: new Cesium.Color(90, 90, 90, 0.5)
+};
 class DrawObject {
-    constructor(minPointCount) {
+    constructor(minPointCount, maxPointCount) {
         this.index = drawIndex++;
         this.minPointCount = minPointCount;
+        if (!Q.isValid(this.minPointCount)) {
+            console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
+            return;
+        }
+        this.maxPointCount = maxPointCount;
+        if (Q.isValid(this.maxPointCount) && this.minPointCount > this.maxPointCount) {
+            console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
+            return;
+        }
+        this.completed = false;
+        this.templateEntity = null;
     }
+    template(name) {
+            return Template[name];
+        }
+        /*  minPointCount는 도형이 그려지기 위한 최소한의 포인트 갯수이다. 
+         */
     isValidPoints(points) {
-        return (points && points.length >= this.minPointCount);
+            return (Q.isValid(points) && points.length >= this.minPointCount);
+        }
+        /*  포인트의 수가 도형을 그리는 충분한 갯수를 만족할 때 return true
+            도형을 그리기에 더 이상 포인트를 불필요하다는 것을 알릴때 return true
+            maxPointCount가 undefined 이면, 무한의 포인트를 입력받기 때문에 isCompletePoints는 항상 false
+
+        */
+    ready() { this.completed = false; }
+    complete() { this.completed = true; }
+    isComplete() { return this.completed; }
+    isCompletePoints(points) {
+        if (this.isValidPoints(points)) {
+            if (Q.isValid(this.maxPointCount) && points.length == this.maxPointCount) {
+                return true;
+            } else if (this.completed) {
+                return true;
+            }
+        }
+        return false;
     }
     pniStart() {
         return PinMarkers.start;
@@ -137,8 +177,97 @@ class DrawObject {
         }
         return this.pinVia();
     }
-    create(collection, points, viewModel) {
+    create(collection, points, viewModel, templateEntity) {
 
+    }
+    createShape(collection, points, viewModel, bclicked) {
+        points = Object.assign([], points);
+        if (bclicked && this.isCompletePoints(points)) {
+            //console.log("complete");
+            this.complete();
+            if (Q.isValid(this.templateEntity)) {
+                if (Q.isArray(this.templateEntity)) {
+                    this.templateEntity.forEach(entity => {
+                        collection.remove(entity);
+                        entity = null;
+                    })
+                } else {
+                    collection.remove(this.templateEntity);
+                }
+                this.templateEntity = null;
+            }
+            return this.create(collection, points, viewModel);
+        } else if (this.isValidPoints(points)) {
+            if (!Q.isValid(this.templateEntity)) {
+                this.templateEntity = true;
+                this.templateEntity = this.create(collection, points, viewModel);
+                return this.templateEntity;
+            } else {
+                return this.create(collection, points, viewModel);
+            }
+        }
+    }
+    sketch(collection, points) {
+        if (Q.isValid(this.templateEntity)) {
+            if (Q.isArray(this.templateEntity)) {
+                this.templateEntity.forEach((ent, i) => {
+                    collection.remove(ent);
+                });
+            } else {
+                collection.remove(this.templateEntity);
+            }
+        }
+
+        this.templateEntity = points.map(p => { //4
+            return collection.add(this.index, {
+                position: p,
+                point: {
+                    pixelSize: 2,
+                    material: Template.faceColor,
+                    outline: true,
+                    outlineColor: Template.lineColor,
+                    outlineWidth: 1,
+                    heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                }
+            });
+        });
+
+    }
+    isReadyToCallbackVariable() {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity !== true) {
+                return true;
+            }
+        }
+        return false;
+    }
+    callbackValue(v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return new Cesium.CallbackProperty(function() {
+                    return v;
+                }, true);
+            }
+        }
+        return v;
+    }
+    callbackFunction(v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return new Cesium.CallbackProperty(function() {
+                    return v();
+                }, true);
+            }
+        }
+        return v();
+    }
+    callbackColor(name, v) {
+        if (Q.isValid(this.templateEntity)) {
+            if (this.templateEntity === true) {
+                return this.template(name);
+            }
+        }
+        return v[name];
     }
     lineMaterial(style, color, width) {
         if (style != "line") {
@@ -185,7 +314,7 @@ class DrawObject {
             let imgstr = Cesium.defined(img) ? '<img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/>' : '';
             return descriptionCss + '<table><tbody><tr><td rowspan="3">' + imgstr + '</td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음') + ' </span></td>\
-            <th><span>부호</span></th><td><span>' + options.sic + ' </span></td></tr>\
+            <th><span>부호</span></th><td><span>' + options.SIDC + ' </span></td></tr>\
             <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\
             <th><span>경도</span></th><td><span>' + (degree.longitude).toFixed(5) + ' </span></td></tr>\
             <tr><th><span>고도</span></th><td><span>' + (degree.height).toFixed(2) + ' m</span></td><td></td><td></td></tr>\

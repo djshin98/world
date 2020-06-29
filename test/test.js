@@ -1,4 +1,4 @@
-var { isValid } = require('../src/js/core/block');
+var { Q } = require('../src/js/core/e');
 var { dirByExts } = require('../src/js/watch/image');
 
 describe('images', function() {
@@ -6,10 +6,10 @@ describe('images', function() {
         it('should return list for files', function() {
             dirByExts(__dirname + "/../src/models/3DModels", ["glb", "glbf"], (array) => {
                 function displayFiles(i, array) {
-                    if (isValid(array)) {
+                    if (Q.isValid(array)) {
                         array.forEach(f => {
                             console.log("\t".repeat(i) + f.name);
-                            if (isValid(f.children)) {
+                            if (Q.isValid(f.children)) {
                                 displayFiles(i + 1, f.children);
                             }
                         });

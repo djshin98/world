@@ -24,31 +24,18 @@
 
     <link rel="stylesheet" href="libs/jquery-treeview/jquery.treeview.css" />
     <script src="libs/jquery-treeview/jquery.treeview.js"></script>
-
+    <!--
     <script src="libs/milsymbol/kmilsymbol.development.js"></script>
+-->
     <script>
         var modelUrl = "";
         $(function() {
-
             window.app = new Application({
                 header: {
                     height: 0
                 },
                 map3: {
                     id: "map3d",
-                    mapServiceMode: "internet", //"internet offline"
-                    offlineOption: {
-                        proxy: "/GVS/proxy.jsp",
-                        map: "http://192.168.1.101:8080/Map/World_TMS/", //""http://192.168.0.153:8180/Map/World_TMS/", //'Assets/Textures/World_TMS'
-                        terrain: "http://192.168.1.101:38080/tilesets/srtm/"
-                    },
-                    offlineBaseLayers: [{
-                        url: 'http://192.168.1.101:8080/Map/Hwasung_TMS/'
-                    }, {
-                        url: 'http://192.168.1.101:8080/Map/Seoul_TMS/'
-                    }, {
-                        url: 'http://192.168.1.101:8080/Map/Daejon_TMS/'
-                    }],
                     websocket: {
                         reconnectable: true
                     },

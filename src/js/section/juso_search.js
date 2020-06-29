@@ -9,7 +9,7 @@ var { Eventable } = require("../core/eventable");
 //pin = { name: 'start', type: 'text', text: 'S', color: Cesium.Color.NAVY, size: 48 };
 function flyPosition(x, y) {
     //markerCollection.add(CTX.c2d(worldPosition), pin);
-    map.oliveCamera.flyTo(x, y);
+    map.oliveCamera.flyOver(x, y, 400);
 }
 global.flyPosition = flyPosition;
 
@@ -92,8 +92,10 @@ class JusoSearch extends Eventable {
                                     str1 += "<div class='description'>" + d.address.parcel + "</div>";
                                 } else if (t.type == "road") {
                                     str1 += "<a class='header'>" + d.address.road + "</a>";
+                                    str1 += "<div class='description'>" + d.address.parcel + "</div>";
                                 } else {
                                     str1 += "<a class='header'>" + d.address.parcel + "</a>";
+                                    str1 += "<div class='description'>" + d.address.road + "</div>";
                                 }
                                 str1 += "</div>"
                                 str1 += "</div><br/>"

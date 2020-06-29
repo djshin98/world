@@ -1,13 +1,16 @@
-var { DrawObject } = require('./drawobject');
+const { DrawObject } = require('./drawobject');
+
 class Point extends DrawObject {
     constructor() {
-        super(1);
+        super(1, 1);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isReadyToCallbackVariable()) {
+
+        } else {
             let distance = viewModel.size;
-            points.forEach(point => {
-                collection.add(this.index, {
+            return points.map(point => {
+                return collection.add(this.index, {
                     position: point,
                     point: {
                         pixelSize: distance,
@@ -16,7 +19,6 @@ class Point extends DrawObject {
                         outline: true,
                         outlineColor: viewModel.lineColor,
                         outlineWidth: viewModel.lineWidth,
-
                         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                     }
                 });

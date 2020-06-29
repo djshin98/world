@@ -1,17 +1,26 @@
 <div class="section-content" id="viewmodel-milsymbol">
-    <div class="ui sub header" id="codetype-text">코드 타입</div>
-    <select class="ui dropdown" id="codetype"></select>
-    <div class="ui sub header" id="affiliation-text">피아관계</div>
-    <select class="ui dropdown" id="affiliation"></select>
-    <div class="ui sub header" id="battlefield-text">전장</div>
-    <select class="ui dropdown" id="battlefield"></select>
-    <div class="ui sub header" id="status-text">상태</div>
-    <select class="ui dropdown" id="status"></select>
-    <div class="ui sub header" id="mission-text">임무</div>
-    <select class="ui dropdown" id="mission"></select>
-
+    <div class="line-wrap">
+        <div class="ui sub header" id="codetype-text">코드 타입</div>
+        <select class="ui dropdown" id="codetype"></select>
+    </div>
+    <div class="line-wrap">
+        <div class="ui sub header" id="affiliation-text">피아관계</div>
+        <select class="ui dropdown" id="affiliation"></select>
+    </div>
+    <div class="line-wrap">
+        <div class="ui sub header" id="battlefield-text">전장</div>
+        <select class="ui dropdown" id="battlefield"></select>
+    </div>
+    <div class="line-wrap">
+        <div class="ui sub header" id="status-text">상태</div>
+        <select class="ui dropdown" id="status"></select>
+    </div>
+    <div class="line-wrap">
+        <div class="ui sub header" id="mission-text">임무</div>
+        <select class="ui dropdown" id="mission"></select>
+    </div>
     <div class="ui sub header" id="function-indentifier-text">기능 조정자</div>
-    <ul id="function-indentifier" class="filetree" style="height:300px;">
+    <ul id="function-indentifier" class="filetree" style="height:180px;">
         <li><span class="folder">Folder 1</span>
             <ul>
                 <li><span class="file">Item 1.1</span></li>
@@ -41,7 +50,7 @@
     </ul>
 
     <div class="ui sub header">부대단위 및 이동수단</div>
-    <ul id="unit" class="filetree" style="height:120px;">
+    <ul id="unit" class="filetree" style="height:100px;">
         <li><span class="folder">Folder 1</span>
             <ul>
                 <li><span class="file">Item 1.1</span></li>
@@ -136,8 +145,8 @@
                 DESC: "mil-option-label",
             }
         }
-    }, function() {
-        new OliveTree("#viewmodel-milsymbol #function-indentifier", undefined, {
+    }, function(viewmodel) {
+        new OliveTree("#viewmodel-milsymbol #function-indentifier", viewmodel.dataset[viewmodel.options.view.FI], {
             onSelect: function(type, tag, obj) {
                 if (type == "file") {
                     if (selectedCodeTypeObj.activeType && selectedCodeTypeObj.activeType.code != "W") {
@@ -156,7 +165,7 @@
                 }
             }
         });
-        new OliveTree("#viewmodel-milsymbol #unit", undefined, {
+        new OliveTree("#viewmodel-milsymbol #unit", viewmodel.dataset[viewmodel.options.view.UNIT], {
             onSelect: function(type, tag, obj) {
                 if (type == "file") {
                     let id = tag.getAttribute("data-id");

@@ -1,7 +1,7 @@
 var { dirByExts } = require("../watch/image");
 var mysql = require('mysql');
 var mybatisMapper = require('mybatis-mapper');
-var { isValid } = require("../core/block");
+var { Q } = require("../core/e");
 
 class Mapper {
     constructor(options) {
@@ -45,7 +45,7 @@ class Mapper {
         //let jsonParam = JSON.parse(param);
         let retObj = {};
         let completeStack = [];
-        let unusedMybatis = (isValid(jsonParam.unusedMybatis) && jsonParam.unusedMybatis == true) ? true : false;
+        let unusedMybatis = (Q.isValid(jsonParam.unusedMybatis) && jsonParam.unusedMybatis == true) ? true : false;
         Object.keys(uris).forEach(key => {
             let accessUri = unusedMybatis ? [key, uris[key]] : uris[key].split("/");
             if (accessUri.length == 2) {

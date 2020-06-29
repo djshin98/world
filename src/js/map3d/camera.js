@@ -55,7 +55,7 @@ class Camera extends Eventable {
             _this.fireEvent("changed", _this.camera);
         });
     }
-    position(){
+    position() {
         return this.camera.position;
     }
     pitch(bfixCenter, radian) {
@@ -100,7 +100,7 @@ class Camera extends Eventable {
         //return CTX.distance(map.oliveCamera.center(), this.camera.position);
         return 0;
     }
-    distance(d) {
+    setDistance(d) {
         this.distance = d;
         this.camera.lookAt(this.center(), new Cesium.HeadingPitchRange(this.camera.heading, this.camera.pitch, this.distance));
     }
@@ -142,7 +142,8 @@ class Camera extends Eventable {
             }*/
         });
     }
-    flyOver(lon, lat) {
+    flyOver(lon, lat, height) {
+        this.distance = height;
         let c = this.cameraFocus(lon, lat);
         this.flyTo(c.lon, c.lat);
     }
@@ -183,7 +184,9 @@ class Camera extends Eventable {
     cameraFocus(lon, lat) {
         let headingDegree = map.viewer3d.camera.heading * Cesium.Math.DEGREES_PER_RADIAN;
         let pitTangent = Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180));
-        let cameraHeight = map.oliveCamera.distance;
+
+
+        let cameraHeight = this.distance;
         let latDistance = cameraHeight / pitTangent;
         let areaDegree;
         //   위도거리는 어디서나 1도=111Km

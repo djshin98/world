@@ -1,32 +1,34 @@
 var { DrawObject } = require('./drawobject');
 class AirCircle extends DrawObject {
     constructor() {
-        super(2);
+        super(2,2);
     }
     create(collection, points, viewModel) {
-        if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
-
-                return collection.add(this.index, {
-                    position: points[0],
-                    ellipse: {
-                        semiMinorAxis: distance,
-                        semiMajorAxis: distance,
-                        fill: true,
-                        outline: true,
-                        outlineColor: viewModel.lineColor,
-                        outlineWidth: viewModel.lineWidth,
-                        material: new Cesium.ColorMaterialProperty(viewModel.faceColor),
-                        height: viewModel.size * 1000,
-                        extrudedHeight: viewModel.shapeSize * 1000,
-                        extrudedHeightReference: Cesium.HeightReference.NONE ,
-                        heightReference: Cesium.HeightReference.NONE 
-                    }
-                });
-            }
+                if(this.isReadyToCallbackVariable()) {
+                    this.templateEntity.ellipse.semiMinorAxis = distance;
+                    this.templateEntity.ellipse.semiMajorAxis = distance;
+                } else {
+                    return collection.add(this.index, {
+                        position: points[0],
+                        ellipse: {
+                            semiMinorAxis: this.callbackValue(distance),
+                            semiMajorAxis: this.callbackValue(distance),
+                            fill: true,
+                            outline: true,
+                            outlineColor: viewModel.lineColor,
+                            outlineWidth: viewModel.lineWidth,
+                            material: this.callbackColor("faceColor", viewModel),
+                            height: viewModel.size * 1000,
+                            extrudedHeight: viewModel.shapeSize * 1000,
+                            extrudedHeightReference: Cesium.HeightReference.NONE ,
+                            heightReference: Cesium.HeightReference.NONE 
+                        }
+                    });
+                }
+             }        
         }
-    }
     type1(collection, name, lnglat, radus, minHeight, maxHeight, _viewModel) {
         if (collection) {
             lnglat.height = minHeight;
