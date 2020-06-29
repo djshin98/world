@@ -25,18 +25,19 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
 
         //----------------------------------------------------------
-        pts = [
-            CTX.c2(0, height), pts[0],
-            CTX.c2(pts[0].x - (width / 2), 0),
-            CTX.c2(pts[0].x + (width / 2), 0)
+        if (pts.length == 1, == 2, == 3)
+            pts = [
+                CTX.c2(0, height), pts[0],
+                CTX.c2(pts[0].x - (width / 2), 0),
+                CTX.c2(pts[0].x + (width / 2), 0)
 
-            /*
-             pts[0],
-             CTX.c2(pts[0].x - (width / 2), (width / 2)),
-             CTX.c2(pts[0].x + (width / 2), (width / 2)),
-             pts[0], pts[1]
-             */
-        ];
+                /*
+                 pts[0],
+                 CTX.c2(pts[0].x - (width / 2), (width / 2)),
+                 CTX.c2(pts[0].x + (width / 2), (width / 2)),
+                 pts[0], pts[1]
+                 */
+            ];
         //----------------------------------------------------------   
 
         let inv = Cesium.Matrix2.fromRotation(-θ);
@@ -92,11 +93,11 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         let startAngel = 0;
         let endAngle = -180;
 
-        
+
         let matrix = Cesium.Matrix2.fromRotation(i);
 
-    Cesium.Matrix2.multiplyByVector(matrix, points[1], new Cesium.Cartesian2()); 
-    
+        Cesium.Matrix2.multiplyByVector(matrix, points[1], new Cesium.Cartesian2());
+
 
     }
 

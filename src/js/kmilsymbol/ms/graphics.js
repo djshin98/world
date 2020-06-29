@@ -10,7 +10,7 @@ class Graphics {
     }
     addModular(f) {
         if (Q.isValid(f)) {
-            f(this.graphicCache, this.graphicModulars);
+            f(this.graphicModulars);
         }
     }
     get(SIDC) {
