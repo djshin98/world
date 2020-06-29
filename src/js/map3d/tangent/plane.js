@@ -75,6 +75,15 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
         pts[2] = this.rotate(matrix, pts[2]);
 
+        let res = [];
+
+        for(let i=0; i<180; i=i+2) {
+        let p = new Cesium.Cartesian2(p[1]);
+        let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(-i));
+        let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
+        }
+        res.concat(rotated);
+
         //----------------------------------------------------------
 
         pts = [
