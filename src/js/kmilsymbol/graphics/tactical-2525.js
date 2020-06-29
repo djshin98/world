@@ -1,4 +1,5 @@
 // Tactical graphics in 2525C + some extra
+
 module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-T-B-----"] = modular["BLOCK"]; //TACGRP.TSK.BLK
     sidc["G-T-H-----"] = modular["BREACH"]; //TACGRP.TSK.BRH
