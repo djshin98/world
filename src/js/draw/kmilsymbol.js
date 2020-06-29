@@ -5,7 +5,7 @@ const { kms } = require("../kmilsymbol/milsymbol");
 
 class KMilSymbol extends DrawObject {
     constructor() {
-        super(1,1);
+        super(1, 1);
 
         this.labelOptions = {
             //eyeOffset : new Cesium.Cartesian3(0, -1, -500),
@@ -33,7 +33,7 @@ class KMilSymbol extends DrawObject {
         if (!graphic.isIcon()) {
             app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
         } else {
-            let desc = (new SIDC(options.sidc[0], options.sidc)).toDescription();
+            let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
             return this._add(collection, degree, options, desc, graphic);
         }
     }
@@ -69,18 +69,18 @@ class KMilSymbol extends DrawObject {
                 distanceDisplayCondition: this.labelOptions.distanceDisplayCondition,
             }
         }
-        let height = this.defaultHeight(options.sidc);
+        let height = this.defaultHeight(options.SIDC);
 
         let carto = CTX.d2r(degree);
         let terrainHeight = degree.height;
         height += terrainHeight;
         degree.height = height;
         //console.log("[ add entity ] terrian : " + terrainHeight + " , height : " + height);
-        billboard.heightReference = this.defaultHRef(options.sidc);
+        billboard.heightReference = this.defaultHRef(options.SIDC);
         let cartesian = CTX.d2c(degree);
         entityOption.position = cartesian;
         billboard.position = cartesian;
-        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.sidc));
+        let polyline = this.cretePolylineOptions(degree, terrainHeight, height, 2, this.defaultPolylineColor(options.SIDC));
         let ellipse = {
             material: 'img/pos2.png',
             semiMajorAxis: 30.0,
@@ -129,7 +129,7 @@ class KMilSymbol extends DrawObject {
 
             return css + '<table><tbody><tr><td rowspan="3"><img width="' + img.width + 'px" height="' + img.height + 'px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/></td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음') + ' </span></td>\
-            <th><span>부호</span></th><td><span>' + options.sidc + ' </span></td></tr>\
+            <th><span>부호</span></th><td><span>' + options.SIDC + ' </span></td></tr>\
             <tr><th><span>위도</span></th><td><span>' + (degree.latitude).toFixed(5) + ' </span></td>\
             <th><span>경도</span></th><td><span>' + (degree.longitude).toFixed(5) + ' </span></td></tr>\
             <tr><th><span>고도</span></th><td><span>' + (degree.height).toFixed(2) + ' m</span></td><td></td></tr>\
