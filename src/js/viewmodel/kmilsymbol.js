@@ -7,7 +7,8 @@ const operAct = require("../milsymbol/mil_operAct");
 const safe = require("../milsymbol/mil_safe");
 const signal = require("../milsymbol/mil_signal");
 const weather = require("../milsymbol/mil_weather");
-const { ms } = require("../kmilsymbol/milsymbol");
+const { kms } = require("../kmilsymbol/milsymbol");
+const { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
@@ -520,10 +521,17 @@ class SymbolTest {
         var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
         if (option.SIDC && option.SIDC.length > 0) {
-            var symbol = new ms.Symbol(option.SIDC, option);
-
-            option.code = symbol.toDataURL();
-            return this.template(option);
+            option.SIDC = option.SIDC.trim();
+            if (option.SIDC == "G*G*GPPA--****X") {
+                option.icon = false;
+            }
+            var graphic = kms.Graphics(option);
+            if (!graphic.isIcon()) {
+                app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
+            } else {
+                option.code = graphic.toDataURL();
+                return this.template(option);
+            }
         }
     }
     template(option) {

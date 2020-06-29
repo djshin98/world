@@ -1,0 +1,36 @@
+function registryModular(geometryConverter) {
+    geometryConverter["AIRSPACE COORDINATION AREA"] = require("../modular/airspace-coordination-area.js");
+    geometryConverter["AMBUSH"] = require("../modular/ambush.js");
+    geometryConverter["ARTILLERY TARGET INTELLIGENCE ZONE"] = require("../modular/artillery-target-intelligence-zone.js");
+    geometryConverter["BLOCK"] = require("../modular/block.js");
+    geometryConverter["BREACH"] = require("../modular/breach.js");
+    geometryConverter["BYPASS"] = require("../modular/bypass.js");
+    geometryConverter["CALL FOR FIRE ZONE"] = require("../modular/call-for-fire-zone.js");
+    geometryConverter["CANALIZE"] = require("../modular/canalize.js");
+    geometryConverter["CENSOR ZONE"] = require("../modular/censor-zone.js");
+    //geometryConverter.circle = require("../modular/circle.js");
+    geometryConverter["CLEAR"] = require("../modular/clear.js");
+    geometryConverter.corridor = require("../modular/corridor.js");
+    geometryConverter.cover = require("../modular/cover.js");
+    geometryConverter["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
+    geometryConverter["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
+    geometryConverter["DELAY"] = require("../modular/delay.js");
+    geometryConverter["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
+    geometryConverter["FIX"] = require("../modular/fix.js");
+    geometryConverter["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
+    geometryConverter.guard = require("../modular/guard.js");
+    geometryConverter["ISOLATE"] = require("../modular/isolate.js");
+    geometryConverter["MAIN ATTACK"] = require("../modular/main-attack.js");
+    geometryConverter["NAMED AREA OF INTEREST"] = require("../modular/named-area-of-interest.js");
+    geometryConverter.occupy = require("../modular/occupy.js");
+    geometryConverter["RESTRICTIVE FIRE AREA"] = require("../modular/restrictive-fire-area.js");
+    geometryConverter.searchArea = require("../modular/search-area.js");
+    geometryConverter["SENSOR ZONE"] = require("../modular/sensor-zone.js");
+    geometryConverter["SUPPORTING ATTACK"] = require("../modular/supporting-attack.js");
+    geometryConverter["TARGET BUILD-UP AREA"] = require("../modular/target-build-up-area.js");
+    geometryConverter["TARGET VALUE AREA"] = require("../modular/target-value-area.js");
+    geometryConverter["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
+    geometryConverter["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
+    geometryConverter["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+}
+module.exports = registryModular;

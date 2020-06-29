@@ -74,6 +74,7 @@ function Symbol() {
     this.symbolAnchor = { x: 50, y: 50 }; // The anchor point for the current symbol
     this.validIcon = true; // If we were able to find a valid icon or not.
     // Initiate symbol.
+    this.isIcon = function() { return this.style.icon; }
     if (arguments.length > 0) {
         this.setOptions.apply(this, arguments);
     }
