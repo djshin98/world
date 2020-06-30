@@ -110,6 +110,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
         pts[2] = this.rotate(matrix, pts[2]);
 
+
         //----------------------------------------------------------
         let res = [];
 
@@ -120,30 +121,52 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             res.push(rotated);
         }
         
-
         //res[res.length] = pts[1];
-        res[res.length] = pts[2];
-        let tmpPts = Object.assign(pts);
+        res.push(pts[2])
 
-        //pts = res;
+        let tmp_res = res;
 
-        let pts2 = [];
+        let d = this.distance(points[0], points[1]);
+        for(let i=0; i<tmp_res.length; i++) {
+            let da = new Cesium.Cartesian2(tmp_res[i].x + d, tmp_res[i].y);
+            tmp_res[i] = da;
+        }
+
+       //let tmpPts = Object.assign(pts);
+
+        tmp_res.push(
+            CTX.c2(tmp_res[tmp_res.length - 1].x - (width / 2), tmp_res[tmp_res.length - 1].y - (width / 2)),
+            tmp_res[tmp_res.length - 1],
+            CTX.c2(tmp_res[tmp_res.length - 1].x + (width / 2), tmp_res[tmp_res.length - 1].y - (width / 2)),);
         
 
+        
+        for(let i=0; i<tmp_res.length; i++) {
+            let da = new Cesium.Cartesian2(tmp_res[i].x - d, tmp_res[i].y);
+            tmp_res[i] = da;
+        }
+        
+
+
+        res = tmp_res;
+
+        pts = res;
+
+
+        /*
+        let pts2 = [];
         pts2 = [
-            
             CTX.c2(tmpPts[2].x - (width / 2), tmpPts[2].y - (width / 2)),
             tmpPts[2],
             CTX.c2(tmpPts[2].x + (width / 2), tmpPts[2].y - (width / 2)),
-
         ]
         
-        //res.concat(pts2);
-        res[res.length] = pts2[0];
-        res[res.length] = pts2[1];
-        res[res.length] = pts2[2];
-        pts = res;
         
+        res.push(pts2[0]); 
+        res.push(pts2[1]); 
+        res.push(pts2[2]);
+        pts = res;
+        */
 
         //circle, arrow , 
         //----------------------------------------------------------   
