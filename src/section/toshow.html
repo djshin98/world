@@ -316,7 +316,7 @@
                     let group = $(tag).data('group');
                     if (group === "bmoa") {
                         let appLayer = omap.getApplicationLayer(group);
-                        if (Cesium.defined(appLayer)) {
+                        if (Q.isValid(appLayer)) {
                             appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
@@ -337,7 +337,7 @@
                         }
                     } else if (group === "eo_line") {
                         let appLayer = omap.getApplicationLayer(group);
-                        if (Cesium.defined(appLayer)) {
+                        if (Q.isValid(appLayer)) {
                             appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
@@ -360,7 +360,7 @@
                     } else if (group === "air_area") {
                         let appLayer = omap.getApplicationLayer(group);
 
-                        if (Cesium.defined(appLayer)) {
+                        if (Q.isValid(appLayer)) {
                             appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
@@ -381,7 +381,7 @@
                         }
                     } else if (group === "air_control") {
                         let appLayer = omap.getApplicationLayer(group);
-                        if (Cesium.defined(appLayer)) {
+                        if (Q.isValid(appLayer)) {
                             appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
@@ -421,7 +421,7 @@
                             });
                         }
 
-                        if (Cesium.defined(appLayer)) {
+                        if (Q.isValid(appLayer)) {
                             appLayer.removeAll();
                             if (checked) {
 

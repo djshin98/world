@@ -101,13 +101,13 @@ class Application {
             options.success(this.articles, this.section, this.aside);
         }
 
-        if (Cesium.defined(options.websocket)) {
+        if (Q.isValid(options.websocket)) {
             let websocketConfig = options.websocket;
             this.websocket = new WebSocketBroker({
                 host: config.WebSocket.host,
                 port: config.WebSocket.port,
                 uri: '',
-                reconnectable: (Cesium.defined(websocketConfig.reconnectable) && websocketConfig.reconnectable == true) ? true : false,
+                reconnectable: (Q.isValid(websocketConfig.reconnectable) && websocketConfig.reconnectable == true) ? true : false,
                 onreconnected: (websockerbroker) => {
                     this.websocket = websockerbroker;
                 },
@@ -224,7 +224,7 @@ class Application {
         }
     }
     dragger() {
-        if (!Cesium.defined(this.oliveDragger)) {
+        if (!Q.isValid(this.oliveDragger)) {
             this.oliveDragger = new OliveDragger(this);
         }
         return this.oliveDragger;

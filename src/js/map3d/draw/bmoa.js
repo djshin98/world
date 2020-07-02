@@ -6,9 +6,9 @@ class Bmoa extends DrawObject {
     create(collection, points, viewModel) {
         var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
         if (distance > 0) {
-            if(this.isReadyToCallbackVariable()) {
-            this.templateEntity.ellipse.semiMinorAxis = distance;
-            this.templateEntity.ellipse.semiMajorAxis = distance;
+            if (this.isReadyToCallbackVariable()) {
+                this.templateEntity.ellipse.semiMinorAxis = distance;
+                this.templateEntity.ellipse.semiMajorAxis = distance;
             } else {
                 return collection.add(this.index, {
                     position: points[0],
@@ -33,8 +33,8 @@ class Bmoa extends DrawObject {
                 });
             }
         }
- 
-               
+
+
     }
     type1(collection, name, lnglat, distance, _viewModel) {
         lnglat.height = 0;
@@ -44,7 +44,7 @@ class Bmoa extends DrawObject {
             faceTransparent: 0.6,
             lineColor: Cesium.Color.YELLOW,
             lineTransparent: 0.6
-        }, Cesium.defined(_viewModel) ? _viewModel : {});
+        }, Q.isValid(_viewModel) ? _viewModel : {});
 
         let option = {
             position: point,
@@ -59,7 +59,7 @@ class Bmoa extends DrawObject {
             }
         };
 
-        if (Cesium.defined(name) && name.length > 0) {
+        if (Q.isValid(name) && name.length > 0) {
             option.label = {
                 text: name,
                 fillColor: viewModel.lineColor,

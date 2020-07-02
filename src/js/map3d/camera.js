@@ -148,9 +148,9 @@ class Camera extends Eventable {
         this.flyTo(c.lon, c.lat);
     }
     flyOverEntity(layer, id) {
-        if (Cesium.defined(layer)) {
+        if (Q.isValid(layer)) {
             let entity = layer.get(id);
-            if (Cesium.defined(entity)) {
+            if (Q.isValid(entity)) {
                 var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
                 var lon = Cesium.Math.toDegrees(carto.longitude);
                 var lat = Cesium.Math.toDegrees(carto.latitude);

@@ -51,7 +51,7 @@ class AirBox extends DrawObject {
                 }
             };
 
-            if (Cesium.defined(name) && name.length > 0) {
+            if (Q.isValid(name) && name.length > 0) {
                 option.label = {
                     text: name,
                     fillColor: viewModel.lineColor,

@@ -29,6 +29,7 @@ class Layer {
     }
     getName() { return this.options.name; }
     setName(newName) { this.options.name = newName; }
+    get(id) { console.warn("unsupported layer get : " + this.constructor.name + "::get"); }
 }
 
 module.exports = { Layer: Layer };

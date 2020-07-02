@@ -145,7 +145,6 @@ class m3 extends MapCentent {
             } else {
                 //alert('Globe was not picked');
             }
-            _this.draw3DModel(cartesian, _this.modelUri);
             _this.pickedObject = _this.oliveCursor.getSelectedObjFromPoint(mousePosition);
         }, false);
 
@@ -349,7 +348,7 @@ class m3 extends MapCentent {
     }
     testGrid(bshow) {
         var scene = this.viewer3d.scene;
-        if (Cesium.defined(this.pri)) {
+        if (Q.isValid(this.pri)) {
             scene.primitives.remove(this.pri);
         }
 
@@ -378,7 +377,7 @@ class m3 extends MapCentent {
     }
     testGrid2(bshow) {
         var scene = this.viewer3d.scene;
-        if (Cesium.defined(this.pri)) {
+        if (Q.isValid(this.pri)) {
             scene.primitives.remove(this.pri);
         }
 

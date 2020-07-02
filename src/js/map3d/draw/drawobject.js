@@ -36,53 +36,53 @@ function setDrawViewModel(defaultViewModel, viewModel) {
         shapeSize: 5
     };
     _viewModel = Object.assign(_viewModel, defaultViewModel);
-    _viewModel.mode = Cesium.defined(viewModel.mode) ? viewModel.mode : _viewModel.mode;
-    _viewModel.enableStyle = Cesium.defined(viewModel.enableStyle) ? viewModel.enableStyle : _viewModel.enableStyle;
-    _viewModel.lineStyle = Cesium.defined(viewModel.lineStyle) ? viewModel.lineStyle : _viewModel.lineStyle;
-    _viewModel.frameEnable = Cesium.defined(viewModel.frameEnable) ? viewModel.frameEnable : _viewModel.frameEnable;
-    _viewModel.shapeStyle = Cesium.defined(viewModel.shapeStyle) ? viewModel.shapeStyle : _viewModel.shapeStyle;
+    _viewModel.mode = Q.isValid(viewModel.mode) ? viewModel.mode : _viewModel.mode;
+    _viewModel.enableStyle = Q.isValid(viewModel.enableStyle) ? viewModel.enableStyle : _viewModel.enableStyle;
+    _viewModel.lineStyle = Q.isValid(viewModel.lineStyle) ? viewModel.lineStyle : _viewModel.lineStyle;
+    _viewModel.frameEnable = Q.isValid(viewModel.frameEnable) ? viewModel.frameEnable : _viewModel.frameEnable;
+    _viewModel.shapeStyle = Q.isValid(viewModel.shapeStyle) ? viewModel.shapeStyle : _viewModel.shapeStyle;
 
-    _viewModel.size = Cesium.defined(viewModel.size) ? parseInt(viewModel.size) : _viewModel.size;
-    _viewModel.shapeSize = Cesium.defined(viewModel.shapeSize) ? parseInt(viewModel.shapeSize) : _viewModel.shapeSize;
-    _viewModel.lineWidth = Cesium.defined(viewModel.lineWidth) ? parseInt(viewModel.lineWidth) : _viewModel.lineWidth;
+    _viewModel.size = Q.isValid(viewModel.size) ? parseInt(viewModel.size) : _viewModel.size;
+    _viewModel.shapeSize = Q.isValid(viewModel.shapeSize) ? parseInt(viewModel.shapeSize) : _viewModel.shapeSize;
+    _viewModel.lineWidth = Q.isValid(viewModel.lineWidth) ? parseInt(viewModel.lineWidth) : _viewModel.lineWidth;
     _viewModel.image = viewModel.image;
 
-    if (Cesium.defined(viewModel.lineColor)) {
+    if (Q.isValid(viewModel.lineColor)) {
         if (typeof(viewModel.lineColor) == "string") {
             _viewModel.lineColor = Cesium.Color.fromCssColorString(viewModel.lineColor);
         } else {
             _viewModel.lineColor = viewModel.lineColor;
         }
     }
-    if (Cesium.defined(viewModel.faceColor)) {
+    if (Q.isValid(viewModel.faceColor)) {
         if (typeof(viewModel.faceColor) == "string") {
             _viewModel.faceColor = Cesium.Color.fromCssColorString(viewModel.faceColor);
         } else {
             _viewModel.faceColor = viewModel.faceColor;
         }
     }
-    if (Cesium.defined(viewModel.frameColor)) {
+    if (Q.isValid(viewModel.frameColor)) {
         if (typeof(viewModel.frameColor) == "string") {
             _viewModel.frameColor = Cesium.Color.fromCssColorString(viewModel.frameColor);
         } else {
             _viewModel.frameColor = viewModel.frameColor;
         }
     }
-    if (Cesium.defined(viewModel.shapeColor)) {
+    if (Q.isValid(viewModel.shapeColor)) {
         if (typeof(viewModel.shapeColor) == "string") {
             _viewModel.shapeColor = Cesium.Color.fromCssColorString(viewModel.shapeColor);
         } else {
             _viewModel.shapeColor = viewModel.shapeColor;
         }
     }
-    if (Cesium.defined(viewModel.faceTransparent)) {
+    if (Q.isValid(viewModel.faceTransparent)) {
         if (typeof(viewModel.faceTransparent) == "string") {
             _viewModel.faceTransparent = parseFloat(viewModel.faceTransparent) / 100;
         } else {
             _viewModel.faceTransparent = viewModel.faceTransparent;
         }
     }
-    if (Cesium.defined(viewModel.lineTransparent)) {
+    if (Q.isValid(viewModel.lineTransparent)) {
         if (typeof(viewModel.lineTransparent) == "string") {
             _viewModel.lineTransparent = parseFloat(viewModel.lineTransparent) / 100;
         } else {
@@ -90,24 +90,24 @@ function setDrawViewModel(defaultViewModel, viewModel) {
         }
     }
 
-    if (Cesium.defined(viewModel.size)) {
+    if (Q.isValid(viewModel.size)) {
         if (typeof(viewModel.size) == "string") {
             _viewModel.size = parseInt(viewModel.size);
         } else {
             _viewModel.size = viewModel.size;
         }
     }
-    if (Cesium.defined(viewModel.shapeSize)) {
+    if (Q.isValid(viewModel.shapeSize)) {
         if (typeof(viewModel.shapeSize) == "string") {
             _viewModel.shapeSize = parseInt(viewModel.shapeSize);
         } else {
             _viewModel.shapeSize = viewModel.shapeSize;
         }
     }
-    if (Cesium.defined(_viewModel.lineTransparent)) {
+    if (Q.isValid(_viewModel.lineTransparent)) {
         _viewModel.lineColor = _viewModel.lineColor.withAlpha(_viewModel.lineTransparent);
     }
-    if (Cesium.defined(_viewModel.faceTransparent)) {
+    if (Q.isValid(_viewModel.faceTransparent)) {
         _viewModel.faceColor = _viewModel.faceColor.withAlpha(_viewModel.faceTransparent);
     }
 
@@ -311,7 +311,7 @@ class DrawObject {
         }
         return new Cesium.CallbackProperty(function(time, result) {
 
-            let imgstr = Cesium.defined(img) ? '<img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/>' : '';
+            let imgstr = Q.isValid(img) ? '<img width="60px" style="margin: 0.1em;" src="' + img.toDataURL() + '"/>' : '';
             return descriptionCss + '<table><tbody><tr><td rowspan="3">' + imgstr + '</td>\
             <th><span>부대명</span></th><td><span>' + ((options.name) ? options.name : '알수없음') + ' </span></td>\
             <th><span>부호</span></th><td><span>' + options.SIDC + ' </span></td></tr>\

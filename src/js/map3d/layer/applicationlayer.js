@@ -17,7 +17,7 @@ class ApplicationLayer extends Layer {
 
     terrianFromDegrees(objs, callback) {
         let _this = this;
-        let selObj = objs.filter(d => { return Cesium.defined(d.degree) ? true : false; });
+        let selObj = objs.filter(d => { return Q.isValid(d.degree) ? true : false; });
         if (selObj.length > 0) {
             var positions = selObj.map(d => {
                 let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);
@@ -44,15 +44,15 @@ class ApplicationLayer extends Layer {
         }
     }
     createCollection(name, type) {
-        if (Cesium.defined(name) && Cesium.defined(type) && Cesium.defined(this.collectionTypes[type])) {
-            if (!Cesium.defined(this.collections[name])) {
+        if (Q.isValid(name) && Q.isValid(type) && Q.isValid(this.collectionTypes[type])) {
+            if (!Q.isValid(this.collections[name])) {
                 this.collections[name] = new this.collectionTypes[type](this.map, { name: name });
             }
             return this.collections[name];
         }
     }
     destroyCollection(name) {
-        if (Cesium.defined(name) && Cesium.defined(this.collections[name])) {
+        if (Q.isValid(name) && Q.isValid(this.collections[name])) {
             this.collections[name].destroy();
             delete(this.collections[name]);
         }

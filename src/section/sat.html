@@ -154,14 +154,14 @@
         handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
         handler.setInputAction(function(movement) {
             var pickedObject = scene.pick(movement.endPosition);
-            if (Cesium.defined(pickedObject) && (pickedObject.id === entity)) {
-                if (Cesium.defined(lastPicked)) {
+            if (Q.isValid(pickedObject) && (pickedObject.id === entity)) {
+                if (Q.isValid(lastPicked)) {
                     return;
                 }
                 color = Cesium.Color.YELLOW;
                 scene.requestRender();
                 lastPicked = pickedObject;
-            } else if (Cesium.defined(lastPicked)) {
+            } else if (Q.isValid(lastPicked)) {
                 color = Cesium.Color.CORNFLOWERBLUE;
                 scene.requestRender();
                 lastPicked = undefined;

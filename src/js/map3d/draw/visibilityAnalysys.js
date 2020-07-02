@@ -18,7 +18,7 @@ class VisibilityAnalysys extends DrawObject {
             });
             var lineMaterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
-            if (Cesium.defined(polylines)) {
+            if (Q.isValid(polylines)) {
                 polylines.forEach(polyline => {
                     var centerHeight = polyline[0].height;
                     var positions = polyline.map(d => {
@@ -56,7 +56,7 @@ class VisibilityAnalysys extends DrawObject {
             let polylines = VisibilityUtil.radiation(CTX.c2d(points[0]), CTX.c2d(points[1]), radiationOptions);
             var lineMaterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
-            if (Cesium.defined(polylines)) {
+            if (Q.isValid(polylines)) {
                 var center = CTX.radian(polylines[0][0].longitude, polylines[0][0].latitude, polylines[0][0].height);
                 let all = polylines.reduce((prev, curr) => { return prev.concat(curr.slice(1)); }, []);
                 var positions = all.map(d => {

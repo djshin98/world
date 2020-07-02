@@ -105,7 +105,7 @@ class Quadratic extends DrawObject {
             lineWidth: 5,
             frameEnable: false
         }, viewModel);
-        if (collection && Cesium.defined(degrees.start) && Cesium.defined(degrees.end)) {
+        if (collection && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
             let distance = CTX.distanceD(degrees.start, degrees.end);
 

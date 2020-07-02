@@ -1,4 +1,4 @@
-if (!Cesium.defined($)) {
+if (!Q.isValid($)) {
     alert('jquery unsupported in OliveDragger');
 }
 class OliveDragger {
@@ -24,7 +24,7 @@ class OliveDragger {
             let pos = { x: event.clientX - (mpos.left + moffset.left), y: event.clientY - (mpos.top + moffset.top) };
 
             var options = JSON.parse(decodeURIComponent(event.dataTransfer.getData("option")));
-            if (Cesium.defined(options) && Cesium.defined(options.category)) {
+            if (Q.isValid(options) && Q.isValid(options.category)) {
                 omap_.add(pos.x, pos.y, options);
 
             }

@@ -1,5 +1,3 @@
-
-
 var SurfaceUtil = {
     height: function(lon, lat, height) {
         var earth = Cesium.Ellipsoid.WGS84;
@@ -9,7 +7,7 @@ var SurfaceUtil = {
         return degree.height;
     },
     polyline: function(collection, points, callback) {
-        if (Cesium.defined(points) && points.length > 0 && callback) {
+        if (Q.isValid(points) && points.length > 0 && callback) {
             var positions = CTX.c2rA(points);
             var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
             Cesium.when(promise, function(updatedPositions) { callback(CTX.r2cA(updatedPositions)); });
@@ -136,7 +134,7 @@ var ParabolaUtil = {
 
                     points.push(CTX.cartesian(lon, lat, h));
                 }
-                if (Cesium.defined(inverse) && inverse == false) {
+                if (Q.isValid(inverse) && inverse == false) {
                     return points.reverse();
                 } else {
                     return points;
@@ -331,14 +329,14 @@ var VisibilityUtil = {
         do {
             let ps = updatedPositions.splice(divide);
             let polyline = [center].concat(updatedPositions);
-            if (Cesium.defined(callback)) {
+            if (Q.isValid(callback)) {
                 let terrianPolyline = VisibilityUtil.terrianEI(polyline, options);
                 outline.push(terrianPolyline[terrianPolyline.length - 1]);
                 callback(terrianPolyline);
             }
             updatedPositions = ps;
         } while (updatedPositions.length > 0);
-        if (Cesium.defined(callback)) {
+        if (Q.isValid(callback)) {
             callback(outline);
         }
     }

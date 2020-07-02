@@ -28,7 +28,7 @@ class OliveEntityCollection {
         let entity = this.addEntity(opt);
 
         let _this = this;
-        if (Cesium.defined(entity)) {
+        if (Q.isValid(entity)) {
             //let subOption = {position:opt.position,parent:entity,polyline:subObjects[0].polyline};
             //subOption[key] = sub[key];
             //_this.viewer.entities.add(new Cesium.Entity(subOption)); 

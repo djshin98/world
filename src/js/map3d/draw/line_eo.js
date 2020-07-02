@@ -43,7 +43,7 @@ class LineEO extends DrawObject {
                 faceTransparent: 0.6,
                 lineColor: Cesium.Color.YELLOW,
                 lineTransparent: 0.6
-            }, Cesium.defined(viewModel) ? viewModel : {});
+            }, Q.isValid(viewModel) ? viewModel : {});
 
             let option = {
                 positions: CTX.d2cA(points),
