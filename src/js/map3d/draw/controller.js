@@ -1,52 +1,52 @@
 "use strict";
 const Cesium = require('cesium/Cesium');
+const { DrawController } = require("../../draw/drawcontroller");
+const { Q } = require("../../core/e");
+const { MarkerCollection } = require('../../collection/markercollection');
+const { DrawCollection, PinMarkers } = require('../../collection/drawcollection');
 
-const { Q } = require("../core/e");
-const { MarkerCollection } = require('../collection/markercollection');
-const { DrawCollection, PinMarkers } = require('../collection/drawcollection');
+const { setDrawViewModel } = require('./drawobject');
+const { Circle } = require('./circle');
+const { AirCircle } = require('./aircircle');
+const { Dom } = require('./dom');
+const { Line } = require('./line');
+const { Polygon } = require('./polygon');
+const { Radar } = require('./radar');
+const { Box } = require('./box');
+const { Bmoa } = require('./bmoa');
+const { ArrowLine } = require('./arrowline');
+const { MilLine1 } = require('./milline1');
+const { ShootingLine } = require('./shootingline');
+const { Rectangle } = require('./rectangle');
+const { PointO } = require('./point_o');
+const { PointX } = require('./point_x');
+const { Image } = require('./image');
+const { ImageLine } = require('./imageline');
+const { Point } = require('./point');
+const { AirBox } = require('./airbox');
+const { Parabola } = require('./parabola');
+const { Quadratic } = require('./quadratic');
+const { Air2Earth } = require('./air2earth');
+const { VisibilityAnalysys } = require('./visibilityAnalysys');
+const { TangentPlane } = require('./tangentplane');
+const { LineEO } = require('./line_eo');
+const { MeasureDistance } = require('./measuredistance');
+const { Wall } = require('./wall');
+const { ShootingArc } = require('./shootingarc');
+const { PolygonWithLine } = require('./polygonwithline');
+const { Spline } = require('./spline');
+const { KMilSymbol } = require('./kmilsymbol');
+const { QuadraticTest } = require('./quadratic_test');
+const { DrawModel } = require('./drawmodel');
+const { Slope } = require('./slope');
+const { Alert } = require('./alert');
+const { DrawConstruction } = require('./drawconstruction');
+const { Corn } = require('./corn');
+const { Radar2 } = require('./radar2');
+const { MissionObstruction } = require('../../mildraw/missionobstruction');
+const { Delay } = require('../../mildraw/delay');
 
-const { setDrawViewModel } = require('../draw/drawobject');
-const { Circle } = require('../draw/circle');
-const { AirCircle } = require('../draw/aircircle');
-const { Dom } = require('../draw/dom');
-const { Line } = require('../draw/line');
-const { Polygon } = require('../draw/polygon');
-const { Radar } = require('../draw/radar');
-const { Box } = require('../draw/box');
-const { Bmoa } = require('../draw/bmoa');
-const { ArrowLine } = require('../draw/arrowline');
-const { MilLine1 } = require('../draw/milline1');
-const { ShootingLine } = require('../draw/shootingline');
-const { Rectangle } = require('../draw/rectangle');
-const { PointO } = require('../draw/point_o');
-const { PointX } = require('../draw/point_x');
-const { Image } = require('../draw/image');
-const { ImageLine } = require('../draw/imageline');
-const { Point } = require('../draw/point');
-const { AirBox } = require('../draw/airbox');
-const { Parabola } = require('../draw/parabola');
-const { Quadratic } = require('../draw/quadratic');
-const { Air2Earth } = require('../draw/air2earth');
-const { VisibilityAnalysys } = require('../draw/visibilityAnalysys');
-const { TangentPlane } = require('../draw/tangentplane');
-const { LineEO } = require('../draw/line_eo');
-const { MeasureDistance } = require('../draw/measuredistance');
-const { Wall } = require('../draw/wall');
-const { ShootingArc } = require('../draw/shootingarc');
-const { PolygonWithLine } = require('../draw/polygonwithline');
-const { Spline } = require('../draw/spline');
-const { KMilSymbol } = require('../draw/kmilsymbol');
-const { QuadraticTest } = require('../draw/quadratic_test');
-const { DrawModel } = require('../draw/drawmodel');
-const { Slope } = require('../draw/slope');
-const { Alert } = require('../draw/alert');
-const { DrawConstruction } = require('../draw/drawconstruction');
-const { Corn } = require('../draw/corn');
-const { Radar2 } = require('../draw/radar2');
-const { MissionObstruction } = require('../mildraw/missionobstruction');
-const { Delay } = require('../mildraw/delay');
-
-const { Arrow } = require('../mildraw/arrow');
+const { Arrow } = require('../../mildraw/arrow');
 
 const drawLinker = {
 
@@ -103,9 +103,9 @@ function registryHandler(key, name, createfunc) {
 }
 // widget 에 대한 표준을 만든다.
 
-class Draw {
+class DrawController3 extends DrawController {
     constructor(map, baseLayerPicker) {
-        this.viewer = map.getView();
+        super(map);
         this.baseLayerPicker = baseLayerPicker;
         this.markerCollection = new MarkerCollection(map, { name: "DRAW" });
         this.drawCollection = new DrawCollection(map, { name: "DRAW" });
@@ -138,8 +138,6 @@ class Draw {
 
     init() {
         this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-
-        var _this = this;
         this.handler.setInputAction((event) => {
             //console.log( event.position.x + "," + event.position.y );
             // We use `viewer.scene.pickPosition` here instead of `viewer.camera.pickEllipsoid` so that
@@ -154,25 +152,24 @@ class Draw {
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-        this.handler.setInputAction(function(event) {
-            if (Q.isValid(_this.floatingPoint)) {
-
-                var newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.endPosition) :
-                    _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.endPosition.x, event.endPosition.y), _this.viewer.scene.globe.ellipsoid);
+        this.handler.setInputAction((event) => {
+            if (Q.isValid(this.floatingPoint)) {
+                var newPosition = this.baseLayerPicker ? this.viewer.scene.pickPosition(event.endPosition) :
+                    this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.endPosition.x, event.endPosition.y), this.viewer.scene.globe.ellipsoid);
 
                 if (Q.isValid(newPosition)) {
-                    _this.appendPoint(newPosition, false);
+                    this.appendPoint(newPosition, false);
                 }
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
-        this.handler.setInputAction(function(event) {
-            let newPosition = _this.baseLayerPicker ? _this.viewer.scene.pickPosition(event.position) :
-                _this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), _this.viewer.scene.globe.ellipsoid);
+        this.handler.setInputAction((event) => {
+            let newPosition = this.baseLayerPicker ? this.viewer.scene.pickPosition(event.position) :
+                this.viewer.camera.pickEllipsoid(new Cesium.Cartesian3(event.position.x, event.position.y), this.viewer.scene.globe.ellipsoid);
             if (Q.isValid(newPosition)) {
-                _this.appendPoint(newPosition, true);
+                this.appendPoint(newPosition, true);
             }
-            _this.terminateShape();
+            this.terminateShape();
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
     }
@@ -262,4 +259,4 @@ class Draw {
     }
 
 }
-module.exports = { Draw: Draw, registryHandler: registryHandler };
+module.exports = { DrawController3: DrawController3, registryHandler: registryHandler };

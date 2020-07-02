@@ -1,6 +1,6 @@
 "use strict";
 var { DrawObject } = require('./drawobject');
-var { Q } = require('../core/e');
+var { Q } = require('../../core/e');
 
 class Polygon extends DrawObject {
     constructor() {

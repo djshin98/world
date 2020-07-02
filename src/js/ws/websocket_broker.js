@@ -1,5 +1,3 @@
-var { isValid } = require('../core/block');
-
 const BROKER_INNER_TOPIC = "__websocket_broker__";
 class WebSocketBroker {
     constructor(options) {

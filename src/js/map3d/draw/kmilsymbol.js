@@ -1,7 +1,7 @@
 var { DrawObject } = require('./drawobject');
-let { SIDC } = require("../viewmodel/kmilsymbol");
-let { OliveDescription } = require("../ui/olive-description");
-const { kms } = require("../kmilsymbol/milsymbol");
+let { SIDC } = require("../../viewmodel/kmilsymbol");
+let { OliveDescription } = require("../../ui/olive-description");
+const { kms } = require("../../kmilsymbol/milsymbol");
 
 class KMilSymbol extends DrawObject {
     constructor() {

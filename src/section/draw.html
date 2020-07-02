@@ -116,21 +116,15 @@
 </div>
 
 <script>
-    $("#edit-mode").bind("change", function(e) {
-        if (Cesium.defined(app)) {
-            app.draw($(this).val());
-            console.log("mode : " + $(this).val());
-        }
-
-
-
-    });
-
-    var select = $("#draw-mode");
+    let select = $("#draw-mode");
     select.append("<option value='view'>선택</option>");
-    app.drawList().forEach(row => {
-        select.append("<option value='" + row.key + "'>" + row.name + "</option>");
-    });
+    let _map_ = app.getOpenedMap();
+    if (Q.isValid(_map_)) {
+        _map_.getDrawList().forEach(row => {
+            select.append("<option value='" + row.key + "'>" + row.name + "</option>");
+        });
+    }
+
     serverAdapter.get('images', {
         url: 'img/maki'
     }, function(data) {
@@ -139,7 +133,8 @@
             selectImg.append("<option value='img/maki/" + row + "'>" + row + "</option>");
         });
     });
-    map.connectViewModel('olive-draw', {
+    let m = app.getOpenedMap();
+    m.connectViewModel('olive-draw', {
         mode: 'view',
         enableStyle: false,
         lineWidth: 1,
@@ -161,9 +156,11 @@
         } else {
             viewModel.enableStyle = true;
         }
-        if (Cesium.defined(app)) {
-            console.log("viewmodel olive-draw " + app);
-            app.draw(viewModel);
+        if (Q.isValid(app)) {
+            let _map_ = app.getOpenedMap();
+            if (Q.isValid(_map_)) {
+                _map_.setDrawMode(viewModel);
+            }
         }
         viewer.scene.requestRender();
     });
@@ -171,7 +168,7 @@
     var marker = new ViewModel_Marker({
         selector: "#olive-marker-result"
     });
-    map.connectViewModel('olive-marker', {
+    m.connectViewModel('olive-marker', {
         type: 'color',
         text: 'A',
         size: 48,

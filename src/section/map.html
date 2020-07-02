@@ -209,7 +209,8 @@
 
     $("#map-viewmodel input[name=gars]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        app.map.gridGARS(ui.boolean("gars"), {
+        let m = app.getOpenedMap();
+        m.gridGARS(ui.boolean("gars"), {
             tile: ui.boolean("tileset"),
             cells: ui.number("cell"),
             glowWidth: ui.number("glow-width"),
@@ -221,18 +222,24 @@
     });
     $("#map-viewmodel input[name=turn]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        if (ui.boolean("turn")) {
-            app.map.oliveCamera.turn();
-        } else {
-            app.map.oliveCamera.turnoff();
+        let m = app.getOpenedMap();
+        if (Q.isValid(m) && m.dimension() == 3) {
+            if (ui.boolean("turn")) {
+                m.oliveCamera.turn();
+            } else {
+                m.oliveCamera.turnoff();
+            }
         }
     });
 
     function widget(tag, name) {
-        if ($(tag).prop("checked") == true) {
-            app.map.show(name, true);
-        } else {
-            app.map.show(name, false);
+        let m = app.getOpenedMap();
+        if (Q.isValid(m) && m.dimension() == 3) {
+            if ($(tag).prop("checked") == true) {
+                m.show(name, true);
+            } else {
+                m.show(name, false);
+            }
         }
     }
 </script>

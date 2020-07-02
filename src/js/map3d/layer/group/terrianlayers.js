@@ -1,10 +1,12 @@
-const { LayerGroup } = require("./layergroup");
+const { LayerGroup } = require("../../../layer/layergroup");
+const { TerrianLayer } = require("../terrianlayer");
+const { TERRIAN_LAYER } = require("../../../layer/layerdirector");
 class TerrianLayers extends LayerGroup {
-    constructor(filename, group) {
-        super(filename, group, false);
+    constructor(viewer, director) {
+        super(director, TERRIAN_LAYER, true);
     }
-    create(map, filename, group, json) {
-        console.warn("unsupported layergroup : " + this.constructor.name);
+    create(json) {
+        return new TerrianLayer(this, json);
     }
 }
 module.exports = { TerrianLayers: TerrianLayers };

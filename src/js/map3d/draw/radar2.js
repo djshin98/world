@@ -1,5 +1,5 @@
 var { DrawObject } = require('./drawobject');
-var { CTX } = require('../map3d/ctx');
+var { CTX } = require('../ctx');
 
 class Radar2 extends DrawObject {
     constructor() {

@@ -1,6 +1,6 @@
 var { DrawObject } = require('./drawobject');
 var { ParabolaUtil } = require('./util');
-var { CTX } = require("../map3d/ctx");
+var { CTX } = require("../ctx");
 
 class Quadratic extends DrawObject {
     constructor() {

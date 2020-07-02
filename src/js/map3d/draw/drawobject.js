@@ -1,5 +1,5 @@
-var { Q } = require("../core/e");
-var { PinMarkers } = require('../collection/drawcollection');
+var { Q } = require("../../core/e");
+var { PinMarkers } = require('../../collection/drawcollection');
 var drawIndex = 1;
 
 let descriptionCss = '<style>.cesium-infoBox-description table{\

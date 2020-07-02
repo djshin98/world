@@ -1,26 +1,32 @@
-const { IxDatabase } = require('../../../indexeddb/db');
+const { IxDatabase } = require('../indexeddb/db');
+const { Layer } = require("./layer");
 class LayerGroup {
-    constructor(filename, group, editable) {
-        this.fileName = filename;
+    constructor(director, group, editable, selectedOnlyOne, onlyOneOnLayer) {
+        this.director = director;
         this.group = group;
         this.editable = editable;
+        this.selectedOnlyOne = (selectedOnlyOne === true) ? true : false;
+        this.onlyOneOnLayer = (onlyOneOnLayer === true) ? true : false;
         this.db = new IxDatabase(1);
         this.list = [];
     }
-    create(map, filename, group, json) {
+    create(json) {
         console.warn("unsupported layergroup : " + this.constructor.name);
     }
+    getMap() { return this.director.getMap() }
+    getName() { return this.group; }
     get(name) {
-        return this.list.find((layer) => { return layer.name === name ? true : false; });
+        return this.list.find((layer) => { return layer.getName() === name ? true : false; });
     }
     getIndex(name) {
         let index = -1;
-        this.list.some((layer, i) => { if (layer.name === name) { index = i; return true; } return false; });
+        let layer = (name instanceof Layer) ? name : this.get(name);
+        this.list.some((l, i) => { if (layer === l) { index = i; return true; } return false; });
         return index;
     }
     focus(name, callback) {
         if (editable) {
-            let layer = this.get(name);
+            let layer = (name instanceof Layer) ? name : this.get(name);
             if (Q.isValid(layer)) {
                 this.list.forEach((l) => { l.focus = false; });
                 layer.focus = true;
@@ -28,37 +34,63 @@ class LayerGroup {
             }
         }
     }
-    put(map, json, callback) {
-        let layer = this.get(name);
+    _exclusiveShow(layer) {
+
+    }
+    show(name) {
+        let layer = (name instanceof Layer) ? name : this.get(name);
+        if (Q.isValid(layer)) {
+            layer.show();
+        }
+    }
+    hide(name) {
+        let layer = (name instanceof Layer) ? name : this.get(name);
+        if (Q.isValid(layer)) {
+            layer.hide();
+        }
+    }
+    json() {
+        return {
+            name: this.group,
+            group: this.group,
+            children: this.list.map(layer => { return layer.json(); })
+        }
+    }
+    put(json, callback) {
+        let layer = this.get(json.name);
         if (Q.isValid(layer)) {
             layer.update(json);
-            if (Q.isValid(callback)) { callback(layer.json()); }
+            if (Q.isValid(callback)) { callback(layer); }
         } else {
-            layer = this.create(map, filename, group, json);
+            layer = this.create(json);
             if (Q.isValid(layer)) {
                 this.list.push(layer);
-                if (Q.isValid(callback)) { callback(layer.json()); }
+                if (Q.isValid(callback)) { callback(layer); }
             }
         }
     }
     rename(newName, oldName, callback) {
         let layer = this.get(oldName);
         if (Q.isValid(layer)) {
-            layer.name = newName;
-            if (Q.isValid(callback)) { callback(layer.json()); }
+            layer.setName(newName);
         }
+        if (Q.isValid(callback)) { callback(layer.json()); }
     }
-    delete(name, callback) {
-        let layer = this.get(name);
+
+    remove(name, callback) {
+        let layer = (name instanceof Layer) ? name : this.get(name);
         if (Q.isValid(layer)) {
-            this.list = this.list.filter((l) => { return l.name === name ? false : true; });
+            this.list = this.list.filter((l) => { return l.getName() === name ? false : true; });
             if (Q.isValid(callback)) { callback(layer.json()); }
             layer.remove();
             layer = null;
         }
     }
+    removeAll() {
+
+    }
     clear(name, callback) {
-        let layer = this.get(name);
+        let layer = (name instanceof Layer) ? name : this.get(name);
         if (Q.isValid(layer)) {
             layer.clear();
             if (Q.isValid(callback)) { callback(layer.json()); }
@@ -68,14 +100,14 @@ class LayerGroup {
         return this.fileName + "." + this.group + "." + name;
     }
     save(name, callback) {
-        let layer = this.get(name);
+        let layer = (name instanceof Layer) ? name : this.get(name);
         if (Q.isValid(layer)) {
             this.db.set("layer", this._url(name), layer.json());
             if (Q.isValid(callback)) { callback(layer.json()); }
         }
     }
     load(name, callback) {
-        let layer = this.get(name);
+        let layer = (name instanceof Layer) ? name : this.get(name);
         if (Q.isValid(layer)) {
             this.db.get("layer", this._url(name), (result) => {
                 if (result && result.value) {

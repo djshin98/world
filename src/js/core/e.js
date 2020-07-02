@@ -165,22 +165,24 @@ function elements(heles) {
         });
     }
     this.style = function(name, value, callback) {
-        if (value) {
+        if (Q.isValid(value)) {
             this.elements.forEach(ele => {
                 let styles = [];
                 let bfind = false;
                 let str = ele.getAttribute("style");
-                str.split(";").forEach(seg => {
-                    let kv = seg.split(":");
-                    if (kv.length == 2) {
-                        if (name === kv[0]) {
-                            styles.push(kv[0] + ":" + value);
-                            bfind = true;
-                        } else {
-                            styles.push(kv[0] + ":" + kv[1]);
+                if (Q.isValid(str)) {
+                    str.split(";").forEach(seg => {
+                        let kv = seg.split(":");
+                        if (kv.length == 2) {
+                            if (name === kv[0]) {
+                                styles.push(kv[0] + ":" + value);
+                                bfind = true;
+                            } else {
+                                styles.push(kv[0] + ":" + kv[1]);
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 if (!bfind) {
                     styles.push(name + ":" + value);
                 }
@@ -194,7 +196,20 @@ function elements(heles) {
         } else {
             let list = [];
             this.elements.forEach(ele => {
-                list.push(ele.getAttribute("style"));
+                let style = ele.getAttribute("style");
+                if (Q.isValid(style)) {
+                    if (!style.split(";").some(seg => {
+                            let kv = seg.split(":");
+                            if (kv[0].trim() == name && kv.length == 2) {
+                                list.push(kv[1].trim());
+                                return true;
+                            }
+                            return false;
+                        })) { list.push(""); }
+                } else {
+                    list.push("");
+                }
+                //list.push(ele.getAttribute("style"));
             });
             return list;
         }
@@ -248,6 +263,16 @@ function elements(heles) {
 
     this.show = function() {
         return this.style("display", "");
+    };
+
+    this.isVisible = function() {
+        let ret = this.style("display");
+        if (Q.isValid(ret) && ret.length > 0) {
+            return ret.some(d => {
+                return (d === "") ? true : false;
+            });
+        }
+        return false;
     };
 
     this.hasClass = function() {
@@ -426,6 +451,24 @@ class Q {
     static isFunction(a) { return (typeof(a) == "function") ? true : false; }
 
     static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
+
+    static keys(a, callback) {
+        if (Q.isValid(a) && Q.isValid(callback)) {
+            Object.keys(a).forEach(key => {
+                callback(key, a[key]);
+            });
+        }
+    }
+    static findByKey(a, callback) {
+        if (Q.isValid(a) && Q.isValid(callback)) {
+            let key = Object.keys(a).find(key => {
+                return callback(key, a[key]);
+            });
+            if (Q.isValid(key)) {
+                return a[key];
+            }
+        }
+    }
 }
 global.$$ = $$;
 global.Q = Q;

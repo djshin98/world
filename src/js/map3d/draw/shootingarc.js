@@ -1,15 +1,15 @@
-"use strict";
-
 var { DrawObject } = require('./drawobject');
 var { ArcUtil } = require('./util');
-var { CTX } = require('../map3d/ctx');
+var { CTX } = require('../ctx');
 
-class ShootingLine extends DrawObject {
+class ShootingArc extends DrawObject {
     constructor() {
         super(2, 3);
     }
     create(collection, points, viewModel) {
         let p = points;
+
+
         if (this.isReadyToCallbackVariable()) {
             let result = [];
             if (p.length == 3) {
@@ -23,11 +23,18 @@ class ShootingLine extends DrawObject {
         } else {
             if (this.isComplete()) {
                 let result = [p[0]].concat(CTX.split.arc(p[0], p[1], p[2]));
-                result = result.concat([p[0], p[1]]);
+                let result_line = result;
+
+                result_line.push(points[0]);
                 return collection.add(this.index, {
                     position: points[0],
+                    polygon: {
+                        hierarchy: this.callbackValue(result),
+                        material: this.callbackColor("faceColor", viewModel),
+                        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+                    },
                     polyline: {
-                        positions: result,
+                        positions: this.callbackValue(result_line),
                         clampToGround: true,
                         width: viewModel.lineWidth,
                         material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
@@ -38,4 +45,4 @@ class ShootingLine extends DrawObject {
         }
     }
 }
-module.exports = { ShootingLine: ShootingLine };
+module.exports = { ShootingArc: ShootingArc };

@@ -1,6 +1,6 @@
 "use strict";
 
-var { DrawObject } = require('../draw/drawobject');
+const { DrawObject } = require('../map3d/draw/drawobject');
 const { Plane } = require('../map3d/tangent/plane');
 const { CTX } = require('../map3d/ctx');
 

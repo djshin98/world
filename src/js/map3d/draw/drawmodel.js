@@ -1,6 +1,6 @@
 var { DrawObject } = require('./drawobject');
 var { ArcUtil } = require('./util');
-var { CTX } = require('../map3d/ctx');
+var { CTX } = require('../ctx');
 
 class DrawModel extends DrawObject {
     constructor() {

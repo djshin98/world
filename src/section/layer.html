@@ -6,7 +6,7 @@
 
 <script>
     app.onReady(function(_app, _map) {
-        app.getOpenedMap(3).getLayerDirector().addUpdateCallback((layers) => {
+        _app.getOpenedMap().getLayerDirector().addUpdateCallback((layers) => {
             new OliveTree("#layer-view", layers, {
                 onAttribute: function(d) {
                     return {
@@ -47,11 +47,11 @@
                         });
                     });
 
-                    app.setAttributes(test);
+                    _app.setAttributes(test);
                 },
                 onChecked: function(checked, type, tag, obj) {
                     if (obj.provider && obj.options) {
-                        app.getOpenedMap(3).getLayerDirector().setLayer(obj, checked, false);
+                        _app.getOpenedMap(3).getLayerDirector().setLayer(obj, checked, false);
                     }
                 }
             });

@@ -1,5 +1,5 @@
 const { DrawObject } = require('./drawobject');
-const { CTX } = require('../map3d/ctx');
+const { CTX } = require('../ctx');
 const { SurfaceUtil, LineUtil } = require('./util');
 class Slope extends DrawObject {
     constructor() {

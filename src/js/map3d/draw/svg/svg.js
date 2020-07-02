@@ -1,5 +1,5 @@
 const d3 = require('d3');
-const { Q } = require("../../core/e");
+const { Q } = require("../../../core/e");
 const b64start = 'data:image/svg+xml;base64,';
 const svgImages = {};
 

@@ -1,7 +1,10 @@
-const { Layer } = require("./layer");
+const { Layer } = require("../../layer/layer");
 class StatisticsLayer extends Layer {
-    constructor(map, json) {
-        super(map);
+    constructor(layerGroup, options) {
+        super(layerGroup, options);
+    }
+    create(layerGroup, options) {
+        console.warn("unsupported layer create : " + this.constructor.name);
     }
 }
 module.exports = { StatisticsLayer: StatisticsLayer };

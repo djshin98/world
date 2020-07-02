@@ -36,9 +36,6 @@
                 },
                 map3: {
                     id: "map3d",
-                    websocket: {
-                        reconnectable: true
-                    },
                     dashboard: {
                         id: "dashboard",
                         center: {
@@ -46,6 +43,20 @@
                             color: "red"
                         }
                     }
+                },
+                map2: {
+                    id: "map2d",
+                    index: 0,
+                    zoomToolbox: true,
+                    drawingToolbox: true,
+                    utilToolbox: true,
+                    scale: true,
+                    openDoor: true,
+                    createBaseLayer: true,
+                    baselayerSelectId: "baseLayers"
+                },
+                websocket: {
+                    reconnectable: true
                 },
                 section: {
                     id: "section",
@@ -114,32 +125,10 @@
                         id: "aside-handle",
                         height: 15
                     }
-                },
-                success: function(map) {
-                    //map.contour(true);
-                    //viewer.scene.globe.enableLighting = true;
-                    //updateMaterial(viewer);
-                    /*
-                    map.gridGARS(true,{
-                            tile:true,
-                            cells: 1,
-                            glowWidth: 1,
-                            glowColor: 1,
-                            backgroundColor: new Cesium.Color( 1,1,1,1 ),
-                            color: new Cesium.Color( 1,1,1,0 ) });
-                    */
-                    //
-                    if (map.viewOption.infoBox == true) {
-                        map.viewer3d.infoBox.frame.removeAttribute('sandbox');
-                        var cssLink = document.createElement("link");
-                        cssLink.href = Cesium.buildModuleUrl('css/infobox.css');
-                        cssLink.rel = "stylesheet";
-                        cssLink.type = "text/css";
-                        map.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
-                    }
-                    console.log("success end");
                 }
             });
+
+            app.load();
 
         });
     </script>

@@ -86,42 +86,48 @@
     });
 
     function kmzShow() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/ROK-Airspace.kmz',
             name: 'ROK-Airspace.kmz'
         }, true);
     }
 
     function kmzHide() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/ROK-Airspace.kmz',
             name: 'ROK-Airspace.kmz'
         }, false);
     }
 
     function kmzShowForJapan() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/korea.kmz',
             name: 'japan.sua'
         }, true);
     }
 
     function kmzHideForJapan() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/japan.kmz',
             name: 'japan.sua'
         }, false);
     }
 
     function kmzShowForSouthKorea() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/South_Korea.kmz',
             name: 'South_Korea'
         }, true);
     }
 
     function kmzHideForSouthKorea() {
-        map.dataSource({
+        let m = app.getOpenedMap();
+        m.dataSource({
             url: 'models/South_Korea.kmz',
             name: 'South_Korea'
         }, false);

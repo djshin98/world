@@ -1,4 +1,4 @@
-const { Q } = require("../../core/e");
+const { Q } = require("../../../core/e");
 const { SvgImage } = require("./svg");
 class Alert extends SvgImage {
     constructor(options) {

@@ -40,7 +40,11 @@
     </div>
 </div>
 <script>
-    var scene = map.viewer3d.scene;
+    app.onReady(function(_app, _map_) {
+
+    });
+    let m = app.getOpenedMap();
+    var scene = m.viewer3d.scene;
     scene.debugShowFramesPerSecond = true;
 
     var tileset;
@@ -60,18 +64,21 @@
     var handler;
 
     function resetScene() {
-        map.viewer3d.trackedEntity = undefined;
-        map.viewer3d.dataSources.removeAll();
-        map.viewer3d.entities.removeAll();
-        map.viewer3d.scene.primitives.remove(tileset);
-        map.viewer3d.clock.shouldAnimate = false;
-        handler = handler && handler.destroy();
-        scene.skyBox.show = true;
-        scene.camera.flyHome(0.0);
-        scene.requestRender();
-        viewModel.showTimeOptions = false;
-        viewModel.timeChangeEnabled = false;
-        viewModel.maximumRenderTimeChange = 0;
+        let m = app.getOpenedMap();
+        if (m.dimension() == 3) {
+            m.viewer3d.trackedEntity = undefined;
+            m.viewer3d.dataSources.removeAll();
+            m.viewer3d.entities.removeAll();
+            m.viewer3d.scene.primitives.remove(tileset);
+            m.viewer3d.clock.shouldAnimate = false;
+            handler = handler && handler.destroy();
+            scene.skyBox.show = true;
+            scene.camera.flyHome(0.0);
+            scene.requestRender();
+            viewModel.showTimeOptions = false;
+            viewModel.timeChangeEnabled = false;
+            viewModel.maximumRenderTimeChange = 0;
+        }
     }
 
     // Load a tileset and set the view.

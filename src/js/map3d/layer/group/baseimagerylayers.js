@@ -1,10 +1,14 @@
-const { LayerGroup } = require("./layergroup");
+const { LayerGroup } = require("../../../layer/layergroup");
+const { BaseImageryLayer } = require("../baseimagerylayer");
+const { BASE_IMAGERY_LAYER } = require("../../../layer/layerdirector");
 class BaseImageryLayers extends LayerGroup {
-    constructor(filename, group) {
-        super(filename, group, false);
+    constructor(viewer, director) {
+        super(director, BASE_IMAGERY_LAYER, false, true, true);
+        this.viewer = viewer;
+        this.imageryLayers = this.viewer.imageryLayers;
     }
-    create(map, filename, group, json) {
-        console.warn("unsupported layergroup : " + this.constructor.name);
+    create(json) {
+        return new BaseImageryLayer(this, json);
     }
 }
 module.exports = { BaseImageryLayers: BaseImageryLayers };

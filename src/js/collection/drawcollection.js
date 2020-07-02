@@ -1,4 +1,3 @@
-let { OliveEntityCollection } = require('./entity_collection');
 let { CTX } = require('../map3d/ctx');
 
 var pinBuilder = new Cesium.PinBuilder();

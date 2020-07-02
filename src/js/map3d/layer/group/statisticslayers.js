@@ -1,10 +1,12 @@
-const { LayerGroup } = require("./layergroup");
+const { LayerGroup } = require("../../../layer/layergroup");
+const { StatisticsLayer } = require("../statisticslayer");
+const { STATISTICS_LAYER } = require("../../../layer/layerdirector");
 class StatisticsLayers extends LayerGroup {
-    constructor(filename, group) {
-        super(filename, group, false);
+    constructor(viewer, director) {
+        super(director, STATISTICS_LAYER, true);
     }
-    create(map, filename, group, json) {
-        console.warn("unsupported layergroup : " + this.constructor.name);
+    create(json) {
+        return new StatisticsLayer(this, json);
     }
 }
 module.exports = { StatisticsLayers: StatisticsLayers };
