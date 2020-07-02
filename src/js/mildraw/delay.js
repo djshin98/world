@@ -1,8 +1,7 @@
 "use strict";
 const { DrawObject } = require('../map3d/draw/drawobject');
 const { ArcUtil } = require('../map3d/draw/util');
-//const { Plane } = require('../map3d/plane');
-
+const { Plane } = require('../map3d/tangent/plane');
 
 class Delay extends DrawObject {
     constructor() {
