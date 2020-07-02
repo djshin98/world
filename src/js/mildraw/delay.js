@@ -103,7 +103,6 @@ class Delay extends DrawObject {
                         width: viewModel.lineWidth,
                         //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
 
-<<<<<<< HEAD
                     }
 
                 });
@@ -115,15 +114,11 @@ class Delay extends DrawObject {
     }
 
 
-=======
     }*/
-            return result;
+            //return result;
 
         }
     }
-
-    >>>
-    >>> > ec38823819add51820e6419781c832ece09e1e07
 }
 
 module.exports = { Delay: Delay };
