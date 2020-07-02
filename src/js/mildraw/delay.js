@@ -1,7 +1,14 @@
 "use strict";
+<<<<<<< HEAD
 const { DrawObject } = require('../map3d/draw/drawobject');
 const { ArcUtil } = require('../map3d/draw/util');
 //const { Plane } = require('../map3d/plane');
+=======
+
+var { DrawObject } = require('../draw/drawobject');
+const {ArcUtil} = require('../draw/util');
+const { Plane } = require('../map3d/tangent/plane');
+>>>>>>> ec38823819add51820e6419781c832ece09e1e07
 
 
 class Delay extends DrawObject {
@@ -9,9 +16,66 @@ class Delay extends DrawObject {
         super(3, 3);
     }
     create(collection, points, viewModel) {
+<<<<<<< HEAD
 
 
 
+=======
+        let p = points;
+        if (this.isReadyToCallbackVariable()) {
+            let result = [];
+
+            var plane = new Plane(p[0]);
+            let mp = CTX.math.mid(p[1], p[2]);
+            p.push(mp);
+            
+            let pts = plane.input(p);
+            let width = plane.distance(pts[0], pts[1]);
+
+            let height = 0;
+            if (pts[2])
+                height = plane.distance(pts[0], pts[2]);
+            result = plane.delay(width, pts);
+
+            result = plane.output(result);
+            result = CTX.split.polyline(result, 10);
+            //result.reverse();
+            this.sketch(collection, result);
+            
+        } else {
+            
+            if (this.isComplete()) {
+               
+                let result = [];
+
+                var plane = new Plane(p[0]);
+                let mp = CTX.math.mid(p[1], p[2]);
+                p.push(mp);
+                
+                let pts = plane.input(p);
+                let width = plane.distance(pts[0], pts[1]);
+
+                let height = 0;
+                if (pts[2])
+                    height = plane.distance(pts[0], pts[2]);
+                result = plane.delay(width, pts);
+                result = plane.output(result);
+                
+                return collection.add(this.index, {
+                    position: points[0],
+                    polyline: {
+                        positions: result,
+                        clampToGround: true,
+                        color: viewModel.lineColor,
+                        width: viewModel.lineWidth,
+                        material: this.isComplete() ? this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth) : this.callbackColor("lineColor", viewModel)
+                    },
+                });
+            }
+            return [];
+
+        /*
+>>>>>>> ec38823819add51820e6419781c832ece09e1e07
         let p = points;
         let pt1 = [p[0], p[1]];
 
@@ -52,6 +116,7 @@ class Delay extends DrawObject {
                         width: viewModel.lineWidth,
                         //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
 
+<<<<<<< HEAD
                     }
 
                 });
@@ -63,6 +128,14 @@ class Delay extends DrawObject {
     }
 
 
+=======
+    }*/
+        return result;
+
+    }
+}
+    
+>>>>>>> ec38823819add51820e6419781c832ece09e1e07
 }
 
 module.exports = { Delay: Delay };
