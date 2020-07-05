@@ -1,6 +1,6 @@
-var { DrawObject } = require('./drawobject');
-let { SIDC } = require("../../viewmodel/kmilsymbol");
-let { OliveDescription } = require("../../ui/olive-description");
+const { DrawObject } = require('./drawobject');
+const { SIDC } = require("../../viewmodel/kmilsymbol");
+const { OliveDescription } = require("../../ui/olive-description");
 const { kms } = require("../../kmilsymbol/milsymbol");
 
 class KMilSymbol extends DrawObject {
@@ -27,9 +27,7 @@ class KMilSymbol extends DrawObject {
         }
     }
     add(collection, degree, options) {
-        //let image = new kms.Symbol(options.sidc, options);
-
-        var graphic = kms.Graphics(options);
+        let graphic = kms.Graphics(options);
         if (!graphic.isIcon()) {
             app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
         } else {
@@ -39,7 +37,7 @@ class KMilSymbol extends DrawObject {
     }
     _add(collection, degree, options, desc, img) {
 
-        var billboard = {
+        let billboard = {
             image: img.toDataURL(),
             scale: 1.0,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
@@ -101,8 +99,8 @@ class KMilSymbol extends DrawObject {
     }
 
     callbackDescirption(degree, options, desc, img) {
-        var sidc_desc = "";
-        var count = 0;
+        let sidc_desc = "";
+        let count = 0;
         if (desc) {
             sidc_desc = desc.reduce((prev, curr) => {
                 return prev + " " + curr.value;

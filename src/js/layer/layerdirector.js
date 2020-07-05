@@ -25,44 +25,23 @@ class LayerDirector {
 
         //this.db.set(this.key, "last", this.layers);
 
-        if (!Q.isValid(this.getActiveLayer())) {
-            let appLayers = this.getLayers(APPLICATION_LAYER);
-            if (Q.isValid(appLayers)) {
-                let layerOption;
-                if (Q.isValid(appLayers.children) && appLayers.children.length > 0) {
-                    layerOption = appLayers.children[0];
-                    layerOption.focus = true;
-                } else {
-                    layerOption = {
-                        name: "사용자 어플리케이션 레이어",
-                        type: "check",
-                        focus: true,
-                        group: APPLICATION_LAYER,
-                        provider: "ApplicationLayer",
-                        options: {}
-                    };
-                }
-                this.setApplicationLayer(layerOption, true, true);
-            }
-        }
         //this.restore();
     }
     getMap() { return this.map; }
-    createLayerGroup(group) {
-        return new LayerGroup(this, group, false);
+    createLayerGroup(g) {
+        return new LayerGroup(this, g, false);
     }
     create(config) {
         if (Q.isValid(config)) {
             config.forEach(g => {
                 let layerGroup = this.getLayers(g.group);
-                if (!Q.isValid(layerGroup)) {
-                    layerGroup = this.createLayerGroup(g.group);
+                if (Q.isValid(layerGroup)) {
+                    if (Q.isValid(g.children)) {
+                        g.children.forEach(l => { layerGroup.put(l); })
+                    }
+                } else {
+                    layerGroup = this.createLayerGroup(g);
                     this.layers.push(layerGroup);
-                }
-                if (Q.isValid(layerGroup) && Q.isValid(g.children)) {
-                    g.children.forEach((layer, i) => {
-                        layerGroup.create(layer);
-                    });
                 }
             });
         }
@@ -103,9 +82,7 @@ class LayerDirector {
                 this.layers.forEach(g => {
                     if (Q.isValid(g.children)) {
                         g.children.forEach(layer => {
-                            if (layer.show === true) {
-                                this.setLayer(layer, layer.show);
-                            }
+                            this.setLayer(layer);
                         });
                     }
                 });
@@ -159,7 +136,7 @@ class LayerDirector {
         if (Q.isValid(callback) && Q.isFunction(callback)) {
             this.updateCallbacks.push(callback);
             if (bfirstCall === true) {
-                callback(this.layers);
+                callback(this.json());
             }
         }
     }
@@ -179,100 +156,17 @@ class LayerDirector {
             }
         }
     }
-    setLayer(obj, show, callbackable) {
+    setLayer(obj, callbackable) {
         if (Q.isValid(obj.group)) {
-            if (obj.group == BASE_IMAGERY_LAYER) {
-                return this.setBaseImageryLayer(obj, callbackable);
-            } else if (obj.group == USER_IMAGERY_LAYER) {
-                return this.setUserImageryLayer(obj, show, callbackable);
-            } else if (obj.group == TERRIAN_LAYER) {
-                return this.setTerrianLayer(obj, callbackable);
-            } else if (obj.group == STATISTICS_LAYER) {
-                return this.setStatisticsLayer(obj, show, callbackable);
-            } else if (obj.group == DATA_LAYER) {
-                return this.setDataLayer(obj, show, callbackable);
-            } else if (obj.group == APPLICATION_LAYER) {
-                return this.setApplicationLayer(obj, show, callbackable);
+            let group = this.getLayers(obj.group);
+            if (Q.isValid(group)) {
+                group.put(obj, callbackable);
             } else {
-                console.error("unsupported layer's group name :" + obj.group);
+                console.error("unsupported layer's group name : " + obj.group);
             }
+
         } else {
             console.error("layer's group name has no");
-        }
-    }
-    setBaseImageryLayer(obj, callbackable) {
-        if (Q.isValid(Cesium[obj.provider])) {
-            let imageryProvider = new Cesium[obj.provider](obj.options);
-            let layer;
-            if (typeof imageryProvider === "undefined") {
-                //layer = this.imageryLayers.get(0);
-            } else {
-
-                //let activeLayerIndex = 0;
-                this.imageryLayers.forEach((l, i) => {
-                    if (l.isBaseLayer()) {
-                        //activeLayerIndex = i;
-                        this.imageryLayers.remove(l, false);
-                    }
-                });
-                layer = new Cesium.ImageryLayer(imageryProvider);
-                let index = this.imageryLayers.length == 0 ? 0 : this.imageryLayers.length /*- activeLayerIndex*/ - 1;
-                this.imageryLayers.add(layer, index);
-            }
-            obj.show = true;
-            this.save(BASE_IMAGERY_LAYER, obj, callbackable);
-            return layer;
-        } else {
-            console.error("invalid provider : " + obj.provider);
-        }
-    }
-    setUserImageryLayer(obj, show, callbackable) {
-
-        let layer = this.find((l) => { return (!l.isBaseLayer() && l.name == obj.name) ? true : false; });
-
-        if (!Q.isValid(layer)) {
-            if (Q.isValid(obj.options.rectangleDegree)) {
-                obj.options.rectangle = Cesium.Rectangle.fromDegrees(obj.options.rectangleDegree);
-            }
-            if (this.imageryLayers.length < obj.order) { obj.order = this.imageryLayers.length; }
-            layer = this.imageryLayers.addImageryProvider(new Cesium[obj.provider](obj.options), obj.order);
-        }
-        if (Q.isValid(obj.alpha)) { layer.alpha = Cesium.defaultValue(obj.alpha, 0.5); }
-        if (Q.isValid(show)) { layer.show = Cesium.defaultValue(show, true); }
-        if (Q.isValid(obj.name)) { layer.name = Cesium.defaultValue(obj.name, "default"); }
-        this.save(USER_IMAGERY_LAYER, obj, callbackable);
-        return layer;
-    }
-    setTerrianLayer(obj, callbackable) {
-        let opt = Object.assign({
-            requestVertexNormals: true,
-            requestWaterMask: true
-        }, obj.options);
-
-        if (Q.isValid(opt.proxy)) {
-            opt.proxy = new Cesium.DefaultProxy(opt.proxy);
-        }
-        if (obj.provider == "createWorldTerrain") {
-            this.terrainProvider = Cesium.createWorldTerrain(opt);
-        } else {
-            this.terrainProvider = new Cesium[obj.provider](opt);
-        }
-        obj.show = true;
-        this.save(TERRIAN_LAYER, obj, callbackable);
-        return this.terrainProvider;
-    }
-    setStatisticsLayer(obj, show, callbackable) {
-        obj.show = show;
-        this.save(STATISTICS_LAYER, obj, callbackable);
-    }
-    setDataLayer(obj, show, callbackable) {
-        obj.show = show;
-        this.save(DATA_LAYER, obj, callbackable);
-    }
-    setApplicationLayer(obj, show, callbackable) {
-        obj.show = show;
-        if (this.save(APPLICATION_LAYER, obj, callbackable)) {
-
         }
     }
 }

@@ -11,7 +11,9 @@ const { dom } = require("../util/comm");
 const { LayerDirector3 } = require("./layer/layerdirector");
 const { CTX } = require("./ctx");
 const { MapCentent } = require("../app/article");
-var { DrawController3 } = require("./draw/controller");
+const { DrawController3 } = require("./draw/controller");
+const configLayers = require("../../conf/layers.json");
+
 require('./grid/wgs84');
 
 require('cesium/Widgets/widgets.css');
@@ -29,9 +31,6 @@ class m3 extends MapCentent {
         this.mode = "3D";
         this.db = new IxDatabase(1);
 
-        this.bLocateModel = false;
-        this.modelUri = "";
-
         var extent = Cesium.Rectangle.fromDegrees(120.896284, 31.499028, 134.597380, 43.311528);
         Cesium.Camera.DEFAULT_VIEW_RECTANGLE = extent;
         Cesium.Camera.DEFAULT_VIEW_FACTOR = 0.1;
@@ -40,6 +39,7 @@ class m3 extends MapCentent {
             //디폴트 레이어로 World_TMS 설정
 
             shadows: true,
+            terrainShadows: Cesium.ShadowMode.ENABLED,
             baseLayerPicker: true,
             geocoder: false,
             infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
@@ -109,8 +109,6 @@ class m3 extends MapCentent {
         this.viewer3d.scene.globe.enableLighting = true;
 
         let _this = this;
-
-
         var entity = this.viewer3d.entities.add({
             label: {
                 show: true,
@@ -174,7 +172,7 @@ class m3 extends MapCentent {
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
         }
-        this.layerDirector = new LayerDirector3(this);
+        this.layerDirector = new LayerDirector3(this, configLayers);
 
         this.drawModel = new DrawController3(this, this.viewOption.baseLayerPicker);
         //this.init(options, () => {
@@ -209,7 +207,6 @@ class m3 extends MapCentent {
     getDrawModel(name) {
         return this.drawModel.getHandler(name);
     }
-
     getLayerDirector() {
         return this.layerDirector;
     }
@@ -328,12 +325,19 @@ class m3 extends MapCentent {
     wireframe(bshow) {
         this.viewer3d.scene.globe._surface.tileProvider._debug.wireframe = bshow;
     }
+    shadows(bshow) {
+        this.viewer3d.shadows = bshow;
+    }
+    terrianShadows(bshow) {
+        this.viewer3d.terrainShadows = (bshow === true) ? Cesium.ShadowMode.ENABLED : Cesium.ShadowMode.DISABLE;
+    }
     contour(viewModel) {
         if (!this.contourWidget) {
             this.contourWidget = new Contour(this.viewer3d);
         }
         this.contourWidget.update(viewModel);
     }
+
     FromDegrees(degrees, callback) {
         var positions = degrees.map(d => {
             return CTX.degree(d.longitude, d.latitude);

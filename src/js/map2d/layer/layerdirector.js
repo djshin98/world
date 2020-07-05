@@ -1,7 +1,6 @@
 "use strict";
 
 const { IxDatabase } = require('../../indexeddb/db');
-const configLayers = require("../../../conf/layers.json");
 
 const {
     LayerDirector,
@@ -14,7 +13,7 @@ const {
 } = require("../../layer/layerdirector");
 
 class LayerDirector2 extends LayerDirector {
-    constructor(map) {
+    constructor(map, configLayers) {
         super(map, configLayers);
 
         if (!Q.isValid(this.getActiveLayer())) {

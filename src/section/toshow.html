@@ -312,7 +312,7 @@
 
                     }
                 },
-                onChecked: function(checked, type, tag, obj) {
+                onChecked: function(inputtype, checked, type, tag, obj) {
                     let group = $(tag).data('group');
                     if (group === "bmoa") {
                         let appLayer = omap.getApplicationLayer(group);

@@ -1,20 +1,34 @@
 const { IxDatabase } = require('../indexeddb/db');
 const { Layer } = require("./layer");
 class LayerGroup {
-    constructor(director, group, editable, selectedOnlyOne, onlyOneOnLayer) {
+    constructor(director, g, editable, selectedOnlyOne, onlyOneOnLayer) {
         this.director = director;
-        this.group = group;
+        this.group = g.group;
         this.editable = editable;
         this.selectedOnlyOne = (selectedOnlyOne === true) ? true : false;
         this.onlyOneOnLayer = (onlyOneOnLayer === true) ? true : false;
         this.db = new IxDatabase(1);
         this.list = [];
+        this.options = {};
+        Q.keys(g, (key, value) => {
+            if (key !== "children") { this.options[key] = value; }
+        });
+        if (Q.isValid(g.children)) {
+            let len = g.children.length;
+            g.children.forEach((layer, i) => {
+                if (!Q.isValid(layer.order)) {
+                    layer.order = len - i;
+                }
+                this.put(layer);
+            })
+        }
     }
     create(json) {
         console.warn("unsupported layergroup : " + this.constructor.name);
     }
     getMap() { return this.director.getMap() }
-    getName() { return this.group; }
+    getName() { return this.options.name; }
+    getGroup() { return this.options.group; }
     get(name) {
         return this.list.find((layer) => { return layer.getName() === name ? true : false; });
     }
@@ -25,11 +39,11 @@ class LayerGroup {
         return index;
     }
     focus(name, callback) {
-        if (editable) {
+        if (this.editable === true) {
             let layer = (name instanceof Layer) ? name : this.get(name);
             if (Q.isValid(layer)) {
-                this.list.forEach((l) => { l.focus = false; });
-                layer.focus = true;
+                this.list.forEach((l) => { l.setFocus(false); });
+                layer.setFocus(true);
                 if (Q.isValid(callback)) { callback(layer.json()); }
             }
         }
@@ -50,11 +64,9 @@ class LayerGroup {
         }
     }
     json() {
-        return {
-            name: this.group,
-            group: this.group,
-            children: this.list.map(layer => { return layer.json(); })
-        }
+        let j = Object.assign(this.options);
+        j.children = this.list.map(layer => { return layer.json(); })
+        return j;
     }
     put(json, callback) {
         let layer = this.get(json.name);
@@ -87,7 +99,10 @@ class LayerGroup {
         }
     }
     removeAll() {
-
+        this.list.forEach(layer => {
+            layer.remove();
+        });
+        this.list = [];
     }
     clear(name, callback) {
         let layer = (name instanceof Layer) ? name : this.get(name);
@@ -97,7 +112,7 @@ class LayerGroup {
         }
     }
     _url(name) {
-        return this.fileName + "." + this.group + "." + name;
+        return this.director.getName() + "." + this.group + "." + name;
     }
     save(name, callback) {
         let layer = (name instanceof Layer) ? name : this.get(name);

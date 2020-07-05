@@ -1,5 +1,5 @@
 const { Layer } = require("../../layer/layer");
-
+const { OliveCollection } = require("../../collection/olivecollection")
 const { KMilSymbolCollection } = require("../../collection/kmilsymbolcollection");
 const { MarkerCollection } = require("../../collection/markercollection");
 const { DrawCollection } = require("../../collection/drawcollection");
@@ -8,11 +8,10 @@ class ApplicationLayer extends Layer {
     constructor(layerGroup, json) {
         super(layerGroup, json);
         this.collection = new OliveCollection(layerGroup.getMap(), { name: "app" });
-        this.create(this.layerGroup, this.options);
     }
-    create(layerGroup, options) {
-        this.collection = new DrawCollection(layerGroup.getMap(), { name: options.name });
-        console.warn("unsupported layer create : " + this.constructor.name);
+    create(layerGroup, options) {}
+    remove() {
+
     }
 
     terrianFromDegrees(objs, callback) {
@@ -24,8 +23,6 @@ class ApplicationLayer extends Layer {
                 //let position = _this.viewer.scene.clampToHeight(c);
                 return c;
             });
-
-
             var promise = Cesium.sampleTerrain(this.viewer.terrainProvider, 11, positions);
 
             Cesium.when(promise, function(updatedPositions) {
@@ -167,9 +164,6 @@ class ApplicationLayer extends Layer {
             map.viewer3d.trackedEntity = ds.entities.getById(name);
         });
     }
-
-
-
     addModel() {
         this.add3DModel(127.0215633, 37.4890219, 0, "../models/Cesium_Air.glb", "Jet1");
     }

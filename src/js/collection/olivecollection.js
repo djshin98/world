@@ -1,3 +1,5 @@
+"use strict";
+
 const { CTX } = require("../map3d/ctx");
 const { Plane } = require("../map3d/tangent/plane");
 class OliveCollection {
@@ -13,7 +15,6 @@ class OliveCollection {
         this.removeAll();
     }
     add(parent, options, movable) {
-        let parent;
         let entities = options.map((opt, i) => {
             let obj = {};
             opt.parent = parent;
@@ -36,6 +37,7 @@ class OliveCollection {
                 this.viewer.entities.remove(object.entity);
             });
         });
+        //this.viewer.entities.removeAll();
         this.objects = [];
     }
     get(id, callback) {

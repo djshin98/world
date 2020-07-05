@@ -48,7 +48,9 @@ class MapCentent extends ArticleContent {
     constructor(name, options) {
         super(name, options);
     }
-
+    getLayerDirector() {
+        console.warn("unsupported getLayerDirector() : " + this.constructor.name);
+    }
     setDrawMode(mode) {
         console.warn("unsupported map setDrawMode() : " + this.constructor.name);
     }

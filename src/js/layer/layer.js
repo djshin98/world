@@ -1,9 +1,10 @@
 "use strict";
 class Layer {
-    constructor(layerGroup, options) {
+    constructor(layerGroup, jsonLayer) {
         this.layerGroup = layerGroup;
-        this.options = Object.assign(options);
+        this.jsonLayer = Object.assign(jsonLayer);
         this.layerOnMap = null;
+        this.create(this.layerGroup, this.jsonLayer);
     }
 
     terrianFromDegrees(objs, callback) {
@@ -16,19 +17,35 @@ class Layer {
         });
     }
     json() {
-        return this.options;
+        return this.jsonLayer;
     }
-    create(layerGroup, options) {
+    create(layerGroup, jsonLayer) {
         console.warn("unsupported layer create : " + this.constructor.name);
     }
+    update(options) {
+        this.jsonLayer = Object.assign(options);
+        this.create(this.layerGroup, this.jsonLayer);
+    }
+    remove() {
+
+    }
     show() {
-        this.options.show = true;
+        this.update({ show: true });
     }
     hide() {
-        this.options.show = false;
+        this.update({ show: false });
     }
-    getName() { return this.options.name; }
-    setName(newName) { this.options.name = newName; }
+    setFocus(bfocus) {
+        this.update({ focus: bfocus });
+    }
+    isFocus() {
+        if (this.jsonLayer.focus === true) {
+            return true;
+        }
+        return false;
+    }
+    getName() { return this.jsonLayer.name; }
+    setName(newName) { this.jsonLayer.name = newName; }
     get(id) { console.warn("unsupported layer get : " + this.constructor.name + "::get"); }
 }
 

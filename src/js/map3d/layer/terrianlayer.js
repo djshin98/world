@@ -1,29 +1,19 @@
 const { Layer } = require("../../layer/layer");
 class TerrianLayer extends Layer {
-    constructor(layerGroup, options) {
-        super(layerGroup, options);
+    constructor(layerGroup, jsonLayer) {
+        super(layerGroup, jsonLayer);
     }
-    create(layerGroup, options) {
-        console.warn("unsupported layer create : " + this.constructor.name);
-    }
-
-    setTerrianLayer(obj, callbackable) {
-        let opt = Object.assign({
-            requestVertexNormals: true,
-            requestWaterMask: true
-        }, obj.options);
-
-        if (Q.isValid(opt.proxy)) {
-            opt.proxy = new Cesium.DefaultProxy(opt.proxy);
+    create(layerGroup, jsonLayer) {
+        if (jsonLayer.show === true) {
+            if (Q.isValid(jsonLayer.options.proxy)) {
+                jsonLayer.options.proxy = new Cesium.DefaultProxy(jsonLayer.options.proxy);
+            }
+            if (jsonLayer.provider == "createWorldTerrain") {
+                layerGroup.setTerrianProvider(Cesium.createWorldTerrain(jsonLayer.options));
+            } else {
+                layerGroup.setTerrianProvider(new Cesium[jsonLayer.provider](jsonLayer.options));
+            }
         }
-        if (obj.provider == "createWorldTerrain") {
-            this.terrainProvider = Cesium.createWorldTerrain(opt);
-        } else {
-            this.terrainProvider = new Cesium[obj.provider](opt);
-        }
-        obj.show = true;
-        this.save(TERRIAN_LAYER, obj, callbackable);
-        return this.terrainProvider;
     }
 }
 module.exports = { TerrianLayer: TerrianLayer };

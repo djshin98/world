@@ -1,14 +1,22 @@
 const { LayerGroup } = require("../../../layer/layergroup");
 const { UserImageryLayer } = require("../userimagerylayer");
-const { USER_IMAGERY_LAYER } = require("../../../layer/layerdirector");
 class UserImageryLayers extends LayerGroup {
-    constructor(viewer, director) {
-        super(director, USER_IMAGERY_LAYER, false);
-        this.viewer = director.getMap().viewer3d;
-        this.imageryLayers = this.viewer.imageryLayers;
+    constructor(viewer, director, g) {
+        super(director, g, false);
     }
     create(json) {
         return new UserImageryLayer(this, json);
+    }
+    getImageryLayers() {
+        return this.director.getMap().viewer3d.imageryLayers;
+    }
+    removeAll() {
+        let imageryLayers = this.getImageryLayers();
+        imageryLayers._layers.forEach((l, i) => {
+            if (!l.isBaseLayer()) {
+                imageryLayers.remove(l, true);
+            }
+        });
     }
 }
 module.exports = { UserImageryLayers: UserImageryLayers };

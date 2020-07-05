@@ -46,14 +46,14 @@ class OliveTree {
 
         $(this.selector + " li>input[type='checkbox']").change(function() {
             let $this = $(this);
-            let type = ($(this).hasClass('file')) ? 'file' : 'folder';
-            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this.get($this.data('issuance'))); }
+            let filetype = ($(this).hasClass('file')) ? 'file' : 'folder';
+            if (_this.options.onChecked) { _this.options.onChecked("checkbox", $(this).is(":checked"), filetype, $(this).next(), _this.get($this.data('issuance'))); }
         });
 
         $(this.selector + " li>input[type='radio']").change(function() {
             let $this = $(this);
-            let type = ($(this).hasClass('file')) ? 'file' : 'folder';
-            if (_this.options.onChecked) { _this.options.onChecked($(this).is(":checked"), type, $(this).next(), _this.get($this.data('issuance'))); }
+            let filetype = ($(this).hasClass('file')) ? 'file' : 'folder';
+            if (_this.options.onChecked) { _this.options.onChecked("radio", $(this).is(":checked"), filetype, $(this).next(), _this.get($this.data('issuance'))); }
         });
     }
 
@@ -112,10 +112,21 @@ class OliveTree {
             let classstr = this._classStr(d);
             let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
             let issuanceStr = (d.issuanceId) ? ' data-issuance="' + d.issuanceId + '" ' : ' ';
-            if (d.type && d.type == "check") {
-                str += '<li><input type="checkbox" ' + issuanceStr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
-            } else if (d.type && d.type == "radio") {
-                str += '<li><input type="radio" ' + groupstr + issuanceStr + '/><div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+            if (Q.isValid(d.type)) {
+                let types = d.type.split("|");
+                types = types.map(t => { return t.trim(); }).filter(t => { return t.length > 0 ? true : false; });
+                let typestr = "";
+                types.forEach(type => {
+                    let checkedstr = "";
+                    if (type == "check") {
+                        if (Q.isValid(this.options.onQueryChecked) && this.options.onQueryChecked("checkbox", d)) { checkedstr = ' checked="checked" '; }
+                        typestr += '<input type="checkbox" ' + issuanceStr + checkedstr + '/>';
+                    } else if (type == "radio") {
+                        if (Q.isValid(this.options.onQueryChecked) && this.options.onQueryChecked("radio", d)) { checkedstr = ' checked="checked" '; }
+                        typestr += '<input type="radio" ' + groupstr + issuanceStr + checkedstr + '/>';
+                    }
+                });
+                str += '<li>' + typestr + '<div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else {
                 str += '<li><div' + classstr + idstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             }

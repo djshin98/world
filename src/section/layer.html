@@ -8,6 +8,22 @@
     app.onReady(function(_app, _map) {
         _app.getOpenedMap().getLayerDirector().addUpdateCallback((layers) => {
             new OliveTree("#layer-view", layers, {
+                onQueryChecked(inputtype, d) {
+                    if (d.group == "baseImagery") {
+                        if (inputtype == "radio") {
+                            return (d.show === true) ? true : false;
+                        }
+                    } else if (d.group == "application") {
+                        if (inputtype == "radio") {
+                            return (d.focus === true) ? true : false;
+                        } else if (inputtype == "checkbox") {
+                            return (d.show === true) ? true : false;
+                        }
+                    } else {
+                        return (d.show === true) ? true : false;
+                    }
+                    return false;
+                },
                 onAttribute: function(d) {
                     return {
                         id: d.id
@@ -49,9 +65,22 @@
 
                     _app.setAttributes(test);
                 },
-                onChecked: function(checked, type, tag, obj) {
-                    if (obj.provider && obj.options) {
-                        _app.getOpenedMap(3).getLayerDirector().setLayer(obj, checked, false);
+                onChecked: function(inputtype, checked, filetype, tag, obj) {
+                    if (obj.group) { // obj.provider && obj.options) {
+                        if (obj.group == "baseImagery") {
+                            if (inputtype == "radio") {
+                                obj.show = checked;
+                            }
+                        } else {
+                            if (inputtype == "checkbox") {
+                                obj.show = checked;
+                            } else if (inputtype == "radio") {
+                                obj.focus = checked;
+                            }
+                        }
+                        _app.getOpenedMap().getLayerDirector().setLayer(obj, function(layer) {
+
+                        });
                     }
                 }
             });
