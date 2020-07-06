@@ -3,7 +3,7 @@ const L = require('leaflet');
 require("./leaflet/korean");
 const { MapContent } = require("../app/article");
 const { LayerDirector2 } = require("./layer/layerdirector");
-const configLayers = require("../../conf/layers.json");
+const configLayers = require("../../conf/layers2d.json");
 
 class m2 extends MapContent {
     constructor(name, options) {
@@ -22,11 +22,11 @@ class m2 extends MapContent {
             /* crs: L.CRS.EPSG4326, */
             crs: L.Proj.CRS.VWorld,
             /* crs: L.Proj.CRS.TMS.NgiiMap, */
-            continuousWorld: true,
+            continuousWorld: false,
             worldCopyJump: false,
             zoom: 7,
-            minZoom: 7,
-            maxZoom: 19,
+            minZoom: 0,
+            maxZoom: 24,
             // center : [ 127.29833984375, 36.85904339525896 ],
             center: [127.90283, 36.1358642],
             /*
@@ -56,9 +56,7 @@ class m2 extends MapContent {
             }
 
         }
-        this.synchronizeMap = function(syncMap) {
-            this.syncMap = syncMap;
-        }
+
         this.map.setView({ lng: 128.0785804, lat: 36.1358642 }, this.map.getZoom());
 
         this.baseLayers = {
@@ -72,9 +70,20 @@ class m2 extends MapContent {
                  */
         };
 
-        this.setBaseLayer(this.baseLayers['브이월드']);
+        this.setBaseLayer(this.baseLayers['브이월드(위성)']);
+
+        this.zoomControl = L.control.zoom({
+            position: "topright",
+        }).addTo(this.map);
+
+        L.control.scale({ imperial: false, position: 'bottomright' }).addTo(this.map);
+
+        //new L.Proj.TileLayer.TMS.Provider('NaverMap.Street').addTo(this.map);
 
         this.layerDirector = new LayerDirector2(this, configLayers);
+    }
+    synchronizeMap(syncMap) {
+        this.syncMap = syncMap;
     }
     setBaseLayer(layer) {
         if (Q.isValid(this.baseLayer)) {
@@ -104,6 +113,10 @@ class m2 extends MapContent {
 		if( Q.isValid(this.extraBaseLayer) ){
 			this.extraBaseLayer.bringToFront();
 		}*/
+    }
+    resize(x, y, width, height) {
+        super.resize(x, y, width, height);
+        this.map.invalidateSize();
     }
     json() {
         return this.getLayerDirector().json();

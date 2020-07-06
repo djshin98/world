@@ -2,6 +2,7 @@ var { dom, get, post } = require("../util/comm");
 
 var { JusoSearch } = require("../section/juso_search");
 const { cache } = require("ejs");
+const { $$ } = require("../core/e");
 
 class Section {
     constructor(app, opt) {
@@ -40,7 +41,7 @@ class Section {
         get({
             url: content.page,
             success: (status, statusText, data) => {
-                console.log("loading a section page :" + content.page);
+                //console.log("loading a section page :" + content.page);
                 let tv = dom.$(this.path.sidebar)[0];
                 tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
                     "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
@@ -50,13 +51,20 @@ class Section {
                 tabNode.classList.add("tab");
                 sv.appendChild(tabNode);
                 try {
+                    $$(tabNode).append(data);
+                } catch (e) {
+                    console.error("error loading section page : " + content.page);
+                    console.error(e.message);
+                }
+                /*
+                try {
                     this.onload ? ((parent, html) => {
                         let children = this.onload.call(this.app, parent, html);
                     })(tabNode, data) : (tabNode.innerHTML = data);
                 } catch (e) {
                     console.error("error loading section page : " + content.page);
                     console.error(e.message);
-                }
+                }*/
 
                 content.complete = true;
                 this.options.contents.every((d) => { return d.complete ? true : false; }) && this._loadComplete();

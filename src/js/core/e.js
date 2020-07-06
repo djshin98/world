@@ -392,7 +392,7 @@ function elements(heles) {
                     let x = a.cloneNode(true);
                     !callback || callback(ele, x);
                     if (x.tagName.toUpperCase() === "SCRIPT") {
-                        x.textContent = x.textContent.replace(/["]/g, "'");
+                        x.textContent = x.textContent.replace(/["]/g, "\"");
                         window.eval(x.textContent.trim());
                     }
                 });
