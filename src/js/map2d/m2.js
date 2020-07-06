@@ -72,7 +72,38 @@ class m2 extends MapContent {
                  */
         };
 
+        this.setBaseLayer(this.baseLayers['브이월드']);
+
         this.layerDirector = new LayerDirector2(this, configLayers);
+    }
+    setBaseLayer(layer) {
+        if (Q.isValid(this.baseLayer)) {
+            // this.baseLayer.removeTo(this.map);
+            this.map.removeLayer(this.baseLayer);
+            this.baseLayer = null;
+        }
+        this.baseLayer = layer;
+
+        if (Q.isValid(this.baseLayer)) {
+            this.baseLayer.addTo(this.map);
+        }
+        this.refreshLayer();
+    }
+    refreshLayer() {
+        if (Q.isValid(this.baseLayer)) {
+            this.baseLayer.bringToFront();
+        }
+        /*
+		if( Q.isValid(this.applicationLayer) ){
+			this.applicationLayer.bringToFront();
+			if( Q.isValid(this.applicationLayer.showLabelLayer) ){
+				this.applicationLayer.showLabelLayer(this.isLabelVisibility);	
+			}
+			this.applicationLayer.refresh(this.map);
+		}
+		if( Q.isValid(this.extraBaseLayer) ){
+			this.extraBaseLayer.bringToFront();
+		}*/
     }
     json() {
         return this.getLayerDirector().json();

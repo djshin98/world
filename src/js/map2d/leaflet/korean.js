@@ -3,7 +3,7 @@ const L = require("leaflet");
 require("proj4");
 require("proj4leaflet");
 
-const vworldKey = '8F4F285D-6FE7-3930-BBC1-91EDE686EEC9';
+const vworldKey = '9FE5EFED-83FA-3344-9435-C052AF054E0B';
 
 L.Proj.CRS.Daum = new L.Proj.CRS(
     'EPSG:5181',
@@ -30,17 +30,17 @@ L.Proj.CRS.VWorld = L.CRS.EPSG900913;
 //	L.Proj.CRS.VWorld = L.CRS.EPSG4326;
 //	L.Proj.CRS.VWorld = L.CRS.EPSG3857;
 /*
-	L.Proj.CRS.VWorld = new L.Proj.CRS(
-			'EPSG:900913',
-			'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs',
-	    {
-		  resolutions: [156543.0339, 78271.517, 39135.7585, 19567.8793, 9783.93965, 4891.96983, 2445.98492, 1222.99246, 611.49623, 305.748115, 152.874058, 76.437029, 38.2185145, 19.1092573, 9.55462865, 4.77731433, 2.38865717, 1.19432859, 0.5971643, 0.29858215, 0.14929108],
-		  origin: [-10045.7255859375, 668996.4375],
-	      bounds: L.bounds([-10045.7255859375, 668996.4375 ], [632509.5, 58100.15625])
-	    }
-		
-	);
-	*/
+L.Proj.CRS.VWorld = new L.Proj.CRS(
+        'EPSG:900913',
+        '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs',
+    {
+      resolutions: [156543.0339, 78271.517, 39135.7585, 19567.8793, 9783.93965, 4891.96983, 2445.98492, 1222.99246, 611.49623, 305.748115, 152.874058, 76.437029, 38.2185145, 19.1092573, 9.55462865, 4.77731433, 2.38865717, 1.19432859, 0.5971643, 0.29858215, 0.14929108],
+      origin: [-10045.7255859375, 668996.4375],
+      bounds: L.bounds([-10045.7255859375, 668996.4375 ], [632509.5, 58100.15625])
+    }
+    
+);
+*/
 L.TileLayer.KoreaProvider = L.TileLayer.extend({
 
     initialize: function(arg, options) {

@@ -129,10 +129,11 @@
             }
         );
     }
+
     app.onReady(function(_app, _map_) {
-        _app.articles.getMap(3);
-        if (Q.isValid(_map_)) {
-            _map_.connectViewModel('olive-bloom', {
+        let m = _app.articles.getMap(3);
+        if (Q.isValid(m)) {
+            m.connectViewModel('olive-bloom', {
                 show: false,
                 glowOnly: false,
                 contrast: 128,
@@ -152,14 +153,14 @@
                 viewer.scene.requestRender();
             });
 
-            _map_.connectViewModel('olive-label', {
+            m.connectViewModel('olive-label', {
                 label: true
             }, function(viewer, viewModel) {
-                _map_.oliveCursor.tooltip(Boolean(viewModel.label));
+                m.oliveCursor.tooltip(Boolean(viewModel.label));
                 viewer.scene.requestRender();
             });
 
-            _map_.connectViewModel('olive-contour', {
+            m.connectViewModel('olive-contour', {
                 selectedShading: 'none',
                 enableContour: false,
                 contourSpacing: 80,
@@ -170,7 +171,7 @@
                     }, this.contourColor);
                 }
             }, function(viewer, viewModel) {
-                _map_.contour(viewModel);
+                m.contour(viewModel);
                 viewer.scene.requestRender();
             });
         }

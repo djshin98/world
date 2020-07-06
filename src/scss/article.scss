@@ -1,5 +1,4 @@
 @import "define.scss";
-
 article {
     position: absolute;
     top: 0px;
@@ -44,6 +43,9 @@ article {
             font-size: 0.8em;
             vertical-align: top;
         }
+    }
+    .article-content {
+        position: relative;
     }
 }
 

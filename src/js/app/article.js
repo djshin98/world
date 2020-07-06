@@ -20,16 +20,13 @@ class ArticleContent extends Eventable {
     }
     resize(x, y, width, height) {
         let ele = $$("#" + this.getId());
-        ele.style("left", x + "px");
-        ele.style("top", y + "px");
+        ele.style("left", "0px");
+        ele.style("top", "0px");
         ele.style("width", width + "px");
         ele.style("height", height + "px");
 
         this.width = parseInt(width);
         this.height = parseInt(height);
-        if (Q.isValid(this.dashboard)) {
-            this.dashboard.resize(x, y, width, height);
-        }
     }
     center() {
         return { x: this.width / 2, y: this.height / 2 };

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="libs/lobipanel/css/lobipanel.min.css" />
 
+    <link rel="stylesheet" href="libs/leaflet.1.6.0/leaflet.css" />
+
     <script src="libs/jquery/jquery.min.js"></script>
     <script src="libs/jquery-ui/jquery-ui.min.js"></script>
     <script src="libs/popper/umd/popper.min.js"></script>
@@ -51,7 +53,7 @@
                     },
                     map2: {
                         id: "map2d",
-                        show: false,
+                        show: true,
                         index: 0,
                         zoomToolbox: true,
                         drawingToolbox: true,
@@ -64,7 +66,7 @@
                     setting: {
                         id: "setting",
                         page: "article/setting.html",
-                        show: true
+                        show: false
                     }
                 },
                 section: {
@@ -171,9 +173,9 @@
     <article>
         <div id="door-handle" style="display:none;"><i class="angle left icon"></i></div>
         <div id="aside-handle" style="display:none;"><i class="angle right icon"></i></div>
-        <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
-        <div id="map2d"></div>
-        <div id="setting"></div>
+        <div class="article-content map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
+        <div class="article-content" id="map2d"></div>
+        <div class="article-content" id="setting"></div>
         <svg id="dashboard" class="olive-dashboard">
         </svg>
     </article>
