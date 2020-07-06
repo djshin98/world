@@ -1,4 +1,8 @@
+"use strict";
+
 const { Eventable } = require('../core/eventable');
+const { get } = require("../util/comm");
+const { $$ } = require('../core/e');
 
 class ArticleContent extends Eventable {
     constructor(name, options) {
@@ -31,20 +35,26 @@ class ArticleContent extends Eventable {
         return { x: this.width / 2, y: this.height / 2 };
     }
     show() {
+        this.options.show = true;
         $$("#" + this.getId()).show();
     }
     hide() {
+        this.options.show = false;
         $$("#" + this.getId()).hide();
     }
     isVisible() {
-        return $$("#" + this.getId()).isVisible();
+        if (this.options.show === true) {
+            return true;
+        }
+        return false;
+        //return $$("#" + this.getId()).isVisible();
     }
-    add(windowX, windowY, options) {
-        console.warn("unsupported add : " + windowX + "," + windowY);
+    json() {
+        return this.options;
     }
-}
+};
 
-class MapCentent extends ArticleContent {
+class MapContent extends ArticleContent {
     constructor(name, options) {
         super(name, options);
     }
@@ -60,5 +70,31 @@ class MapCentent extends ArticleContent {
     getDrawModel(name) {
         console.warn("unsupported map getDrawModule() : " + this.constructor.name);
     }
-}
-module.exports = { ArticleContent: ArticleContent, MapCentent: MapCentent };
+    add(position, options) {
+        console.warn("unsupported add() : " + this.constructor.name);
+    }
+};
+
+class Setting extends ArticleContent {
+    constructor(name, options) {
+        super(name, options);
+        if (Q.isValid(this.options.page)) {
+            get({
+                url: this.options.page,
+                success: (status, statusText, data) => {
+                    $$("#" + this.getId()).append(data);
+
+                    console.log("sss");
+                }
+            });
+        }
+    }
+};
+
+
+
+module.exports = {
+    ArticleContent: ArticleContent,
+    MapContent: MapContent,
+    Setting: Setting
+};

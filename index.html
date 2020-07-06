@@ -31,32 +31,41 @@
         var modelUrl = "";
         $(function() {
             window.app = new Application({
+                websocket: {
+                    reconnectable: true
+                },
                 header: {
                     height: 0
                 },
-                map3: {
-                    id: "map3d",
-                    dashboard: {
-                        id: "dashboard",
-                        center: {
-                            type: "cross",
-                            color: "red"
+                article: {
+                    map3: {
+                        id: "map3d",
+                        show: false,
+                        dashboard: {
+                            id: "dashboard",
+                            center: {
+                                type: "cross",
+                                color: "red"
+                            }
                         }
+                    },
+                    map2: {
+                        id: "map2d",
+                        show: false,
+                        index: 0,
+                        zoomToolbox: true,
+                        drawingToolbox: true,
+                        utilToolbox: true,
+                        scale: true,
+                        openDoor: true,
+                        createBaseLayer: true,
+                        baselayerSelectId: "baseLayers"
+                    },
+                    setting: {
+                        id: "setting",
+                        page: "article/setting.html",
+                        show: true
                     }
-                },
-                map2: {
-                    id: "map2d",
-                    index: 0,
-                    zoomToolbox: true,
-                    drawingToolbox: true,
-                    utilToolbox: true,
-                    scale: true,
-                    openDoor: true,
-                    createBaseLayer: true,
-                    baselayerSelectId: "baseLayers"
-                },
-                websocket: {
-                    reconnectable: true
                 },
                 section: {
                     id: "section",
@@ -164,6 +173,7 @@
         <div id="aside-handle" style="display:none;"><i class="angle right icon"></i></div>
         <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
         <div id="map2d"></div>
+        <div id="setting"></div>
         <svg id="dashboard" class="olive-dashboard">
         </svg>
     </article>

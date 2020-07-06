@@ -10,7 +10,7 @@ const { dom } = require("../util/comm");
 
 const { LayerDirector3 } = require("./layer/layerdirector");
 const { CTX } = require("./ctx");
-const { MapCentent } = require("../app/article");
+const { MapContent } = require("../app/article");
 const { DrawController3 } = require("./draw/controller");
 const configLayers = require("../../conf/layers.json");
 
@@ -24,7 +24,7 @@ var clock = new Cesium.Clock({
     shouldAnimate: true
 });
 
-class m3 extends MapCentent {
+class m3 extends MapContent {
     constructor(name, options) {
         super(name, options);
 
@@ -198,6 +198,9 @@ class m3 extends MapCentent {
             this.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
         }
     }
+    json() {
+        return this.getLayerDirector().json();
+    }
     setDrawMode(mode) {
         this.drawModel.update(mode);
     }
@@ -229,17 +232,17 @@ class m3 extends MapCentent {
     setMode(m) {
         this.savedCameraObj = this.oliveCamera.cache();
         if (m == 2) {
-            if (map.viewer3d.scene.mode != 2) {
+            if (this.viewer3d.scene.mode != 2) {
                 this.viewer3d.scene.morphTo2D(2);
                 this.mode = "2D";
             }
         } else if (m == 2.5) {
-            if (map.viewer3d.scene.mode != 1) {
+            if (this.viewer3d.scene.mode != 1) {
                 this.viewer3d.scene.morphToColumbusView(2);
                 this.mode = "2.5D";
             }
         } else if (m == 3) {
-            if (map.viewer3d.scene.mode != 3) {
+            if (this.viewer3d.scene.mode != 3) {
                 this.viewer3d.scene.morphTo3D(2);
                 this.mode = "3D";
             }

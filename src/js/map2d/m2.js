@@ -1,18 +1,23 @@
+"use strict";
 const L = require('leaflet');
 require("./leaflet/korean");
-const { MapCentent } = require("../app/article");
+const { MapContent } = require("../app/article");
+const { LayerDirector2 } = require("./layer/layerdirector");
+const configLayers = require("../../conf/layers.json");
 
-class m2 extends MapCentent {
+class m2 extends MapContent {
     constructor(name, options) {
-        super(name, Object.assign({
+        super(name, options);
+        /*
+        Object.assign({
             index: 0,
             zoomToolbox: true,
             drawingToolbox: false,
             utilToolbox: false,
             scale: false,
             openDoor: true
-        }, options));
-
+        }, options);
+        */
         this.map = L.map(this.getId(), {
             /* crs: L.CRS.EPSG4326, */
             crs: L.Proj.CRS.VWorld,
@@ -67,6 +72,13 @@ class m2 extends MapCentent {
                  */
         };
 
+        this.layerDirector = new LayerDirector2(this, configLayers);
+    }
+    json() {
+        return this.getLayerDirector().json();
+    }
+    getLayerDirector() {
+        return this.layerDirector;
     }
 }
 

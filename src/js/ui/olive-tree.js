@@ -113,10 +113,8 @@ class OliveTree {
             let groupstr = (d.group) ? ' name="' + d.group + '" ' : ' ';
             let issuanceStr = (d.issuanceId) ? ' data-issuance="' + d.issuanceId + '" ' : ' ';
             if (Q.isValid(d.type)) {
-                let types = d.type.split("|");
-                types = types.map(t => { return t.trim(); }).filter(t => { return t.length > 0 ? true : false; });
                 let typestr = "";
-                types.forEach(type => {
+                Q.splits(d.type, "|", type => {
                     let checkedstr = "";
                     if (type == "check") {
                         if (Q.isValid(this.options.onQueryChecked) && this.options.onQueryChecked("checkbox", d)) { checkedstr = ' checked="checked" '; }

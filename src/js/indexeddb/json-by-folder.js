@@ -31,7 +31,7 @@ class JsonByFolder {
     save(path, callback) {
         let obj = this.new(path);
         if (obj) {
-            let _map_ = this.application.getOpenedMap();
+            let _map_ = this.application.articles.getOpenedMap();
             if (Q.isValid(_map_)) {
                 let data = _map_.getLayerGroup();
             }!this.collection || this.db.set(ITEM_CATEGORY, obj.id, this.collection.entities());

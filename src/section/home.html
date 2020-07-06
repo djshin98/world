@@ -38,9 +38,9 @@
 -->
     <div class="ui sub header">지도 모드</div>
     <div id="olive-label" class="demo-container">
-        <div class="ui inline"><button class="ui primary button mini" style="color:white;" onclick="map.setMode(2)">2D</button>
-            <button class="ui second button mini" onclick="map.setMode(2.5)">2.5D</button>
-            <button class="ui secondary button mini" style="color:white;" onclick="map.setMode(3)">3D</button></div>
+        <div class="ui inline"><button class="ui primary button mini" style="color:white;" onclick="app.articles.switch('m2')">2D</button>
+            <button class="ui second button mini" onclick="app.articles.switch('m3',2.5)">2.5D</button>
+            <button class="ui secondary button mini" style="color:white;" onclick="app.articles.switch('m3',3)">3D</button></div>
     </div>
     <div class="ui horizontal divider"></div>
     <div class="ui sub header">화면 조정</div>
@@ -130,46 +130,49 @@
         );
     }
     app.onReady(function(_app, _map_) {
-        _map_.connectViewModel('olive-bloom', {
-            show: false,
-            glowOnly: false,
-            contrast: 128,
-            brightness: -0.3,
-            delta: 1.0,
-            sigma: 3.78,
-            stepSize: 5.0
-        }, function(viewer, viewModel) {
-            var bloom = viewer.scene.postProcessStages.bloom;
-            bloom.enabled = Boolean(viewModel.show);
-            bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
-            bloom.uniforms.contrast = Number(viewModel.contrast);
-            bloom.uniforms.brightness = Number(viewModel.brightness);
-            bloom.uniforms.delta = Number(viewModel.delta);
-            bloom.uniforms.sigma = Number(viewModel.sigma);
-            bloom.uniforms.stepSize = Number(viewModel.stepSize);
-            viewer.scene.requestRender();
-        });
+        _app.articles.getMap(3);
+        if (Q.isValid(_map_)) {
+            _map_.connectViewModel('olive-bloom', {
+                show: false,
+                glowOnly: false,
+                contrast: 128,
+                brightness: -0.3,
+                delta: 1.0,
+                sigma: 3.78,
+                stepSize: 5.0
+            }, function(viewer, viewModel) {
+                var bloom = viewer.scene.postProcessStages.bloom;
+                bloom.enabled = Boolean(viewModel.show);
+                bloom.uniforms.glowOnly = Boolean(viewModel.glowOnly);
+                bloom.uniforms.contrast = Number(viewModel.contrast);
+                bloom.uniforms.brightness = Number(viewModel.brightness);
+                bloom.uniforms.delta = Number(viewModel.delta);
+                bloom.uniforms.sigma = Number(viewModel.sigma);
+                bloom.uniforms.stepSize = Number(viewModel.stepSize);
+                viewer.scene.requestRender();
+            });
 
-        _map_.connectViewModel('olive-label', {
-            label: true
-        }, function(viewer, viewModel) {
-            _map_.oliveCursor.tooltip(Boolean(viewModel.label));
-            viewer.scene.requestRender();
-        });
+            _map_.connectViewModel('olive-label', {
+                label: true
+            }, function(viewer, viewModel) {
+                _map_.oliveCursor.tooltip(Boolean(viewModel.label));
+                viewer.scene.requestRender();
+            });
 
-        _map_.connectViewModel('olive-contour', {
-            selectedShading: 'none',
-            enableContour: false,
-            contourSpacing: 80,
-            contourWidth: 1.0,
-            changeColor: function() {
-                this.contourUniforms.color = Cesium.Color.fromRandom({
-                    alpha: 1.0
-                }, this.contourColor);
-            }
-        }, function(viewer, viewModel) {
-            _map_.contour(viewModel);
-            viewer.scene.requestRender();
-        });
+            _map_.connectViewModel('olive-contour', {
+                selectedShading: 'none',
+                enableContour: false,
+                contourSpacing: 80,
+                contourWidth: 1.0,
+                changeColor: function() {
+                    this.contourUniforms.color = Cesium.Color.fromRandom({
+                        alpha: 1.0
+                    }, this.contourColor);
+                }
+            }, function(viewer, viewModel) {
+                _map_.contour(viewModel);
+                viewer.scene.requestRender();
+            });
+        }
     });
 </script>

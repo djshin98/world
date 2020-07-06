@@ -86,51 +86,63 @@
     });
 
     function kmzShow() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/ROK-Airspace.kmz',
-            name: 'ROK-Airspace.kmz'
-        }, true);
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/ROK-Airspace.kmz',
+                name: 'ROK-Airspace.kmz'
+            }, true);
+        }
     }
 
     function kmzHide() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/ROK-Airspace.kmz',
-            name: 'ROK-Airspace.kmz'
-        }, false);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/ROK-Airspace.kmz',
+                name: 'ROK-Airspace.kmz'
+            }, false);
+        }
     }
 
     function kmzShowForJapan() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/korea.kmz',
-            name: 'japan.sua'
-        }, true);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/korea.kmz',
+                name: 'japan.sua'
+            }, true);
+        }
     }
 
     function kmzHideForJapan() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/japan.kmz',
-            name: 'japan.sua'
-        }, false);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/japan.kmz',
+                name: 'japan.sua'
+            }, false);
+        }
     }
 
     function kmzShowForSouthKorea() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/South_Korea.kmz',
-            name: 'South_Korea'
-        }, true);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/South_Korea.kmz',
+                name: 'South_Korea'
+            }, true);
+        }
     }
 
     function kmzHideForSouthKorea() {
-        let m = app.getOpenedMap();
-        m.dataSource({
-            url: 'models/South_Korea.kmz',
-            name: 'South_Korea'
-        }, false);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.dataSource({
+                url: 'models/South_Korea.kmz',
+                name: 'South_Korea'
+            }, false);
+        }
     }
 
     function kmzShowForNorthKorea() {

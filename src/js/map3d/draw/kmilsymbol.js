@@ -27,12 +27,17 @@ class KMilSymbol extends DrawObject {
         }
     }
     add(collection, degree, options) {
-        let graphic = kms.Graphics(options);
-        if (!graphic.isIcon()) {
-            app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
-        } else {
-            let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
-            return this._add(collection, degree, options, desc, graphic);
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            let graphic = kms.Graphics(options);
+            if (!graphic.isIcon()) {
+                m.add(graphic);
+            } else {
+                let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
+                m.add(degree, { type: "milsymbol", symbol: graphic, desc: desc, options: options });
+
+                //return this._add(collection, degree, options, desc, graphic);
+            }
         }
     }
     _add(collection, degree, options, desc, img) {

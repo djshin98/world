@@ -264,7 +264,7 @@
 
     function toshowView() {
         serverAdapter.get('Entities', {}, function(data) {
-            let omap = app.getOpenedMap();
+            let omap = app.articles.getOpenedMap();
             toShowNode.forEach((g) => {
 
                 if (data[g.group] && g.parse) {

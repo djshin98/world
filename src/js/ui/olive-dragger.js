@@ -16,7 +16,7 @@ class OliveDragger {
         event.dataTransfer.setData("option", event.target.getAttribute("data-option"));
     }
     drop(event) {
-        let omap_ = this.app.getOpenedMap();
+        let omap_ = this.app.articles.getOpenedMap();
         if (Q.isValid(omap_)) {
             let mpos = $("#" + omap_.getId()).position();
             let moffset = $("#" + omap_.getId()).offset();

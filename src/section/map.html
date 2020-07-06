@@ -209,21 +209,24 @@
 
     $("#map-viewmodel input[name=gars]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        let m = app.getOpenedMap();
-        m.gridGARS(ui.boolean("gars"), {
-            tile: ui.boolean("tileset"),
-            cells: ui.number("cell"),
-            glowWidth: ui.number("glow-width"),
-            glowColor: ui.color("glow-color"),
-            backgroundColor: ui.color("background-color", "transparent"),
-            color: ui.color("color")
-        });
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.gridGARS(ui.boolean("gars"), {
+                tile: ui.boolean("tileset"),
+                cells: ui.number("cell"),
+                glowWidth: ui.number("glow-width"),
+                glowColor: ui.color("glow-color"),
+                backgroundColor: ui.color("background-color", "transparent"),
+                color: ui.color("color")
+            });
+        }
+
 
     });
     $("#map-viewmodel input[name=turn]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        let m = app.getOpenedMap();
-        if (Q.isValid(m) && m.dimension() == 3) {
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
             if (ui.boolean("turn")) {
                 m.oliveCamera.turn();
             } else {
@@ -233,8 +236,8 @@
     });
 
     function widget(tag, name) {
-        let m = app.getOpenedMap();
-        if (Q.isValid(m) && m.dimension() == 3) {
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
             if ($(tag).prop("checked") == true) {
                 m.show(name, true);
             } else {

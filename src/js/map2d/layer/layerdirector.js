@@ -15,7 +15,7 @@ const {
 class LayerDirector2 extends LayerDirector {
     constructor(map, configLayers) {
         super(map, configLayers);
-
+        /*
         if (!Q.isValid(this.getActiveLayer())) {
             let appLayers = this.getLayers(APPLICATION_LAYER);
             if (Q.isValid(appLayers)) {
@@ -35,7 +35,7 @@ class LayerDirector2 extends LayerDirector {
                 }
                 this.setApplicationLayer(layer, true, true);
             }
-        }
+        }*/
         //this.restore();
     }
 

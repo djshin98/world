@@ -43,7 +43,7 @@
     app.onReady(function(_app, _map_) {
 
     });
-    let m = app.getOpenedMap();
+    let m = app.articles.getOpenedMap();
     var scene = m.viewer3d.scene;
     scene.debugShowFramesPerSecond = true;
 
@@ -64,8 +64,8 @@
     var handler;
 
     function resetScene() {
-        let m = app.getOpenedMap();
-        if (m.dimension() == 3) {
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
             m.viewer3d.trackedEntity = undefined;
             m.viewer3d.dataSources.removeAll();
             m.viewer3d.entities.removeAll();

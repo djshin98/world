@@ -1,23 +1,22 @@
-var { IxDatabase } = require("../indexeddb/db");
-var { dom, get, post } = require("../util/comm");
+const { IxDatabase } = require("../indexeddb/db");
+const { dom, get, post } = require("../util/comm");
 
-var { Section } = require("./section");
-var { Aside } = require("./aside");
-var { m3 } = require("../map3d/m3");
-var { m2 } = require("../map2d/m2");
+const { Section } = require("./section");
+const { Aside } = require("./aside");
+const { ArticleDirector } = require("./articledirector");
 
-var { JsonByFolder } = require("../indexeddb/json-by-folder");
+const { JsonByFolder } = require("../indexeddb/json-by-folder");
 
-var { OliveDragger } = require("../ui/olive-dragger");
+const { OliveDragger } = require("../ui/olive-dragger");
 require("../util/serveradapter");
 require("../ui/olive-input");
 require("../ui/olive-tree");
 require("../ui/olive-dialog");
 
-var { OliveVideo } = require("../ui/olive-video");
+const { OliveVideo } = require("../ui/olive-video");
 global.OliveVideo = OliveVideo;
 
-require("../viewmodel/Marker");
+require("../viewmodel/marker");
 
 require("../ui/olive-gltf");
 
@@ -54,18 +53,15 @@ class Application {
 
         this.header = Object.assign({ height: 0 }, options.header);
 
-        this.articles = {};
         this.readyFunctions = [];
 
         window.onresize = this.onResize;
 
         this.workStatus("map3d", false);
 
-        if (Q.isValid(options.map3)) { this.createArticle(new m3("m3", options.map3)); }
-        if (Q.isValid(options.map2)) { this.createArticle(new m2("m2", options.map2)); }
+        this.articles = new ArticleDirector(this, options.article);
 
         this.favorite = new JsonByFolder(this, "favorite");
-
 
         this.workStatus("map3d", true);
         //});
@@ -116,28 +112,7 @@ class Application {
             });
         }
     }
-    currentArticle() {
-        return Q.findByKey(this.articles, (key, obj) => {
-            return (obj.isVisible()) ? true : false;
-        });
-    }
-    switchArticle(art, mode) {
-        if (Q.isValid(art)) {
-            if (Q.isValid(this.articles[art])) {
-                if (currentArticle() !== this.articles[art]) {
-                    this.articles.forEach(art => { art.hide(); });
-                    this.articles[art].show();
-                    this.onResize();
-                }
-                if (Q.isValid(mode)) {
-                    currentArticle().setMode(mode);
-                }
-            }
-        }
-    }
-    getOpenedMap() {
-        return this.currentArticle();
-    }
+
     setAttributes(attrs) {
         if (this.aside) {
             this.aside.setAttributes(attrs);
@@ -167,10 +142,7 @@ class Application {
             this.section.load();
         }
     }
-    createArticle(articleContent) {
-        this.articles[articleContent.getName()] = articleContent;
-        return articleContent;
-    }
+
     createAside(options) {
         return new Aside(this, options);
     }
@@ -186,7 +158,7 @@ class Application {
                 this.workStatus("section", true);
                 //let _this = this;
                 this.readyFunctions.forEach(d => {
-                    d(this, this.getOpenedMap());
+                    d(this, this.articles.getOpenedMap());
                 });
                 //_this.map.viewer3d.scene.debugShowFramesPerSecond = false;
             }
@@ -199,27 +171,20 @@ class Application {
         let application = (typeof(app) == "undefined") ? this : app;
 
         if (Q.isValid(application)) {
-            var height = window.innerHeight - application.getHeaderHeight();
+            var hh = application.getHeaderHeight();
+            var height = window.innerHeight - hh;
             var sectionWidth = (application.section) ? application.section.getWidth() : 0;
             var asideWidth = (application.aside) ? application.aside.getWidth() : 0;
 
             let articleWidth = (window.innerWidth - sectionWidth - asideWidth);
-            let ele = $$("article");
-            if (Q.isValid(ele)) {
-                ele.style("left", sectionWidth + "px");
-                ele.style("top", application.getHeaderHeight() + "px");
-                ele.style("width", articleWidth + "px");
-                ele.style("height", height + "px");
-            }
-            let article = application.currentArticle();
-            if (Q.isValid(article)) {
-                article.resize(sectionWidth, application.getHeaderHeight(), articleWidth, height);
+            if (application.articles) {
+                application.articles.resize(sectionWidth, hh, articleWidth, height);
             }
             if (application.section) {
-                application.section.resize(0, application.header.height, sectionWidth, height);
+                application.section.resize(0, hh, sectionWidth, height);
             }
             if (application.aside) {
-                application.aside.resize(window.innerWidth - asideWidth, application.header.height, asideWidth, height);
+                application.aside.resize(window.innerWidth - asideWidth, hh, asideWidth, height);
             }
         }
     }

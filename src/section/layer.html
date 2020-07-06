@@ -6,7 +6,8 @@
 
 <script>
     app.onReady(function(_app, _map) {
-        _app.getOpenedMap().getLayerDirector().addUpdateCallback((layers) => {
+        //getOpenedMap().getLayerDirector().addUpdateCallback
+        _app.articles.on("opened|updated", (layers) => {
             new OliveTree("#layer-view", layers, {
                 onQueryChecked(inputtype, d) {
                     if (d.group == "baseImagery") {
@@ -78,9 +79,10 @@
                                 obj.focus = checked;
                             }
                         }
-                        _app.getOpenedMap().getLayerDirector().setLayer(obj, function(layer) {
-
-                        });
+                        let m = _app.articles.getOpenedMap();
+                        if (Q.isValid(m)) {
+                            m.getLayerDirector().setLayer(obj, (layer) => {});
+                        }
                     }
                 }
             });

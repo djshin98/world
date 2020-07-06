@@ -171,15 +171,12 @@ function elements(heles) {
                 let bfind = false;
                 let str = ele.getAttribute("style");
                 if (Q.isValid(str)) {
-                    str.split(";").forEach(seg => {
-                        let kv = seg.split(":");
-                        if (kv.length == 2) {
-                            if (name === kv[0]) {
-                                styles.push(kv[0] + ":" + value);
-                                bfind = true;
-                            } else {
-                                styles.push(kv[0] + ":" + kv[1]);
-                            }
+                    Q.splitsByPair(str, ";", ":", (key, v) => {
+                        if (key == name) {
+                            styles.push(key + ":" + value);
+                            bfind = true;
+                        } else {
+                            styles.push(key + ":" + v);
                         }
                     });
                 }
@@ -198,7 +195,7 @@ function elements(heles) {
             this.elements.forEach(ele => {
                 let style = ele.getAttribute("style");
                 if (Q.isValid(style)) {
-                    if (!style.split(";").some(seg => {
+                    if (!style.split(";").map(v => { return v.trim(); }).some(seg => {
                             let kv = seg.split(":");
                             if (kv[0].trim() == name && kv.length == 2) {
                                 list.push(kv[1].trim());
@@ -384,6 +381,7 @@ function elements(heles) {
     this.add = function(a, callback) {
         if (typeof(a) == "string") {
             this.add(this.h2e(a), callback);
+
         } else if (typeof(a) == "object") {
             if (a instanceof NodeList) {
                 a.forEach(i => {
@@ -394,7 +392,8 @@ function elements(heles) {
                     let x = a.cloneNode(true);
                     !callback || callback(ele, x);
                     if (x.tagName.toUpperCase() === "SCRIPT") {
-                        eval(x.textContent);
+                        x.textContent = x.textContent.replace(/["]/g, "'");
+                        window.eval(x.textContent.trim());
                     }
                 });
             }
@@ -452,6 +451,19 @@ class Q {
 
     static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
 
+    static splits(a, div, callback) {
+        a.split(div).map(t => { return t.trim(); }).filter(t => { return t.length > 0 ? true : false; }).forEach((t, i) => { callback(t, i); });
+    }
+    static splitsByPair(a, div, pairDiv, callback) {
+        if (Q.isValid(callback)) {
+            Q.splits(a, div, (seg, i) => {
+                let kv = seg.split(pairDiv).map(t => { return t.trim(); });
+                if (kv.length == 2) {
+                    callback(kv[0], kv[1]);
+                }
+            });
+        }
+    }
     static keys(a, callback) {
         if (Q.isValid(a) && Q.isValid(callback)) {
             Object.keys(a).forEach(key => {

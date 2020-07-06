@@ -1,0 +1,22 @@
+<script>
+    class Mapp {
+        constructor() {
+
+        }
+        set(d) {
+            if (d == 2) {
+                app.articles.switch("m2");
+            } else if (d == 3) {
+                app.articles.switch("m3");
+            }
+        }
+    }
+
+    function setMap(d) {
+        new Mapp().set(d);
+    }
+</script>
+
+<div>Test Setting</div>
+<button onclick="setMap(2)">2D Map</button>
+<button onclick="setMap(3)">3D Map</button>

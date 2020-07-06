@@ -118,7 +118,7 @@
 <script>
     let select = $("#draw-mode");
     select.append("<option value='view'>선택</option>");
-    let _map_ = app.getOpenedMap();
+    let _map_ = app.articles.getMap(3);
     if (Q.isValid(_map_)) {
         _map_.getDrawList().forEach(row => {
             select.append("<option value='" + row.key + "'>" + row.name + "</option>");
@@ -133,50 +133,52 @@
             selectImg.append("<option value='img/maki/" + row + "'>" + row + "</option>");
         });
     });
-    let m = app.getOpenedMap();
-    m.connectViewModel('olive-draw', {
-        mode: 'view',
-        enableStyle: false,
-        lineWidth: 1,
-        lineColor: "#ffffff",
-        lineTransparent: 1,
-        lineStyle: 'line',
-        size: 10,
-        faceColor: "#ffffff",
-        faceTransparent: 1,
-        frameEnable: false,
-        frameColor: "#ffffff",
-        shapeStyle: 'point',
-        shapeColor: "#ffffff",
-        shapeSize: 5,
-        image: ''
-    }, function(viewer, viewModel) {
-        if (viewModel.mode == 'view') {
-            viewModel.enableStyle = false;
-        } else {
-            viewModel.enableStyle = true;
-        }
-        if (Q.isValid(app)) {
-            let _map_ = app.getOpenedMap();
-            if (Q.isValid(_map_)) {
-                _map_.setDrawMode(viewModel);
+    let m = app.articles.getMap(3);
+    if (Q.isValid(m)) {
+        m.connectViewModel('olive-draw', {
+            mode: 'view',
+            enableStyle: false,
+            lineWidth: 1,
+            lineColor: "#ffffff",
+            lineTransparent: 1,
+            lineStyle: 'line',
+            size: 10,
+            faceColor: "#ffffff",
+            faceTransparent: 1,
+            frameEnable: false,
+            frameColor: "#ffffff",
+            shapeStyle: 'point',
+            shapeColor: "#ffffff",
+            shapeSize: 5,
+            image: ''
+        }, function(viewer, viewModel) {
+            if (viewModel.mode == 'view') {
+                viewModel.enableStyle = false;
+            } else {
+                viewModel.enableStyle = true;
             }
-        }
-        viewer.scene.requestRender();
-    });
+            if (Q.isValid(app)) {
+                let _map_ = app.articles.getOpenedMap();
+                if (Q.isValid(_map_)) {
+                    _map_.setDrawMode(viewModel);
+                }
+            }
+            viewer.scene.requestRender();
+        });
 
-    var marker = new ViewModel_Marker({
-        selector: "#olive-marker-result"
-    });
-    m.connectViewModel('olive-marker', {
-        type: 'color',
-        text: 'A',
-        size: 48,
-        height: 0,
-        color: "#da2970",
-        icon: 'hospital',
-        url: "img/flag/KR.png",
-    }, function(viewer, viewModel) {
-        marker.update(viewModel);
-    });
+        var marker = new ViewModel_Marker({
+            selector: "#olive-marker-result"
+        });
+        m.connectViewModel('olive-marker', {
+            type: 'color',
+            text: 'A',
+            size: 48,
+            height: 0,
+            color: "#da2970",
+            icon: 'hospital',
+            url: "img/flag/KR.png",
+        }, function(viewer, viewModel) {
+            marker.update(viewModel);
+        });
+    }
 </script>
