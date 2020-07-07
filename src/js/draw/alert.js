@@ -111,9 +111,9 @@ class Alert extends DrawObject {
 
         } else {
             let createTime = new Date().getTime();
+
             return collection.add(this.index, {
                 position: points[0],
-
                 billboard: {
                     height: alertImages[0].height,
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,

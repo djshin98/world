@@ -25,19 +25,71 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[1] = this.rotate(matrix, pts[1]);
 
         //----------------------------------------------------------
-       // if (pts.length == 1, == 2, == 3)
-            pts = [
-                CTX.c2(0, height), pts[0],
-                CTX.c2(pts[0].x - (width / 2), 0),
-                CTX.c2(pts[0].x + (width / 2), 0)
+        // if (pts.length == 1, == 2, == 3)
+        pts = [
+            CTX.c2(0, height), pts[0],
+            CTX.c2(pts[0].x - (width / 2), 0),
+            CTX.c2(pts[0].x + (width / 2), 0)
 
-                /*
-                 pts[0],
-                 CTX.c2(pts[0].x - (width / 2), (width / 2)),
-                 CTX.c2(pts[0].x + (width / 2), (width / 2)),
-                 pts[0], pts[1]
-                 */
+            /*
+             pts[0],
+             CTX.c2(pts[0].x - (width / 2), (width / 2)),
+             CTX.c2(pts[0].x + (width / 2), (width / 2)),
+             pts[0], pts[1]
+             */
+        ];
+        //----------------------------------------------------------   
+
+        let inv = Cesium.Matrix2.fromRotation(-θ);
+        pts = pts.map(p => {
+            return this.rotate(inv, p);
+        });
+
+        pts.forEach(p => {
+            p.x += rTranslate.x;
+            p.y += rTranslate.y;
+        });
+        return pts;
+    }
+    debacle(points) {
+        let pts = Object.assign(points);
+        let rTranslate = this.origin(pts);
+
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        //pts[1] = this.rotate(matrix, pts[1]);
+        pts = pts.map((e) => { return this.rotate(matrix, e) });
+
+        //----------------------------------------------------------
+        // if (pts.length == 1, == 2, == 3)
+        let width = this.distance(pts[0], pts[1]);
+        let height = 0;
+
+        if (pts[2])
+            height = this.distance(pts[0], pts[2]);
+
+        pts = [
+            pts[0], pts[1],
+            CTX.c2(0, pts[0].y + width / 2),
+            CTX.c2((width / 5), pts[0].y + width / 2)
+            /*
+             pts[0],
+             CTX.c2(pts[0].x - (width / 2), (width / 2)),
+             CTX.c2(pts[0].x + (width / 2), (width / 2)),
+             pts[0], pts[1]
+             */
+        ];
+        if (height != 0) {
+            pts = [
+                pts[0], CTX.c2(pts[0].x - (height / 4) * 2), pts[0],
+                CTX.c2(0, pts[0].y + width / 2),
+                CTX.c2((width / 5), pts[0].y + width / 2),
+                CTX.c2(-(height / 4) * 3, pts[0].y + width / 2),
+                CTX.c2(0, pts[0].y + width / 2),
+                pts[1],
+                CTX.c2(-(height / 4) * 4, pts[1].y),
             ];
+        }
         //----------------------------------------------------------   
 
         let inv = Cesium.Matrix2.fromRotation(-θ);
