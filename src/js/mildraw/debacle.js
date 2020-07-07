@@ -1,4 +1,4 @@
-const { DrawObject } = require('../draw/drawobject');
+const { DrawObject } = require('../map3d/draw/drawobject');
 const { Plane } = require('../map3d/tangent/plane');
 class Debacle extends DrawObject {
     constructor() {

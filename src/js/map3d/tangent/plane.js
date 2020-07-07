@@ -13,11 +13,8 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 0301632d497a5dc0dabe69b90e71253293bfe4f1
     turnStack(points, originIndex, verticalizeIndex, turningWork) {
+        let pts = Object.assign(points);
         let rTranslate = this.origin(pts, originIndex);
 
         let θ = Math.atan2(pts[verticalizeIndex].x, pts[verticalizeIndex].y);
@@ -48,7 +45,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         let rTranslate = this.origin(pts);
 
         let result = [];
-        result.push(turnStack(pts, 0, 1, (pts) => {
+        result.push(this.turnStack(pts, 0, 1, (pts) => {
             return {
                 type: "polyline",
                 geometry: [
@@ -59,7 +56,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             };
         }));
 
-        result.push(turnStack(pts, 1, 2, (pts) => {
+        result.push(this.turnStack(pts, 1, 2, (pts) => {
             return {
                 type: "polylgon",
                 geometry: [
@@ -70,7 +67,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             };
         }));
 
-        result.push(turnStack(pts, 2, 3, (pts) => {
+        result.push(this.turnStack(pts, 2, 3, (pts) => {
             return {
                 type: "polylgon",
                 geometry: [
