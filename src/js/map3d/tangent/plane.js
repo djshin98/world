@@ -13,8 +13,8 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
     }
-
     turnStack(points, originIndex, verticalizeIndex, turningWork) {
+        let pts = Object.assign(points);
         let rTranslate = this.origin(pts, originIndex);
 
         let θ = Math.atan2(pts[verticalizeIndex].x, pts[verticalizeIndex].y);
@@ -40,12 +40,10 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     }
     obstruction(width, height, a, b) {
         let pts = [a.clone(), b.clone()];
-
-        // 1. verticalize
         let rTranslate = this.origin(pts);
 
         let result = [];
-        result.push(turnStack(pts, 0, 1, (pts) => {
+        result.push(this.turnStack(pts, 0, 1, (pts) => {
             return {
                 type: "polyline",
                 geometry: [
@@ -56,7 +54,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             };
         }));
 
-        result.push(turnStack(pts, 1, 2, (pts) => {
+        result.push(this.turnStack(pts, 1, 2, (pts) => {
             return {
                 type: "polylgon",
                 geometry: [
@@ -67,7 +65,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             };
         }));
 
-        result.push(turnStack(pts, 2, 3, (pts) => {
+        result.push(this.turnStack(pts, 2, 3, (pts) => {
             return {
                 type: "polylgon",
                 geometry: [
@@ -79,19 +77,28 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         }));
 
         return result;
+    }
+    debacle(points) {
+        let pts = Object.assign(points);
+        let rTranslate = this.origin(pts);
 
         let θ = Math.atan2(pts[1].x, pts[1].y);
         let matrix = Cesium.Matrix2.fromRotation(θ);
-        pts[1] = this.rotate(matrix, pts[1]);
+        //pts[1] = this.rotate(matrix, pts[1]);
+        pts = pts.map((e) => { return this.rotate(matrix, e) });
 
         //----------------------------------------------------------
         // if (pts.length == 1, == 2, == 3)
-        // 2. drawing
-        pts = [
-            CTX.c2(0, height), pts[0],
-            CTX.c2(pts[0].x - (width / 2), 0),
-            CTX.c2(pts[0].x + (width / 2), 0)
+        let width = this.distance(pts[0], pts[1]);
+        let height = 0;
 
+        if (pts[2])
+            height = this.distance(pts[0], pts[2]);
+
+        pts = [
+            pts[0], pts[1],
+            CTX.c2(0, pts[0].y + width / 2),
+            CTX.c2((width / 5), pts[0].y + width / 2)
             /*
              pts[0],
              CTX.c2(pts[0].x - (width / 2), (width / 2)),
@@ -99,9 +106,19 @@ class Plane extends Cesium.EllipsoidTangentPlane {
              pts[0], pts[1]
              */
         ];
+        if (height != 0) {
+            pts = [
+                pts[0], CTX.c2(pts[0].x - (height / 4) * 2), pts[0],
+                CTX.c2(0, pts[0].y + width / 2),
+                CTX.c2((width / 5), pts[0].y + width / 2),
+                CTX.c2(-(height / 4) * 3, pts[0].y + width / 2),
+                CTX.c2(0, pts[0].y + width / 2),
+                pts[1],
+                CTX.c2(-(height / 4) * 4, pts[1].y),
+            ];
+        }
         //----------------------------------------------------------   
 
-        // 3. unverticalize
         let inv = Cesium.Matrix2.fromRotation(-θ);
         pts = pts.map(p => {
             return this.rotate(inv, p);
@@ -311,8 +328,6 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
         rp.push(pts[0]);
         rp.push(pts[1]);
-
-
 
 
         for (let i = 0; i < 330; i = i + 2) {
