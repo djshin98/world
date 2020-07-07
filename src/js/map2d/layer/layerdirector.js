@@ -2,6 +2,13 @@
 
 const { IxDatabase } = require('../../indexeddb/db');
 
+const { BaseImageryLayers } = require("./group/baseimagerylayers");
+const { UserImageryLayers } = require("./group/userimagerylayers");
+const { TerrianLayers } = require("./group/terrianlayers");
+const { StatisticsLayers } = require("./group/statisticslayers");
+const { DataLayers } = require("./group/datalayers");
+const { ApplicationLayers } = require("./group/applicationlayers");
+
 const {
     LayerDirector,
     BASE_IMAGERY_LAYER,

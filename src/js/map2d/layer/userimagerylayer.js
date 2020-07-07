@@ -1,7 +1,7 @@
 "use strict";
 const { Layer } = require("../../layer/layer");
 class UserImageryLayer extends Layer {
-    constructor(layerGroup, layerJson) {
+    constructor(viewer, layerGroup, layerJson) {
         super(layerGroup, layerJson);
     }
     create(layerGroup, layerJson) {

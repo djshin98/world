@@ -43,7 +43,7 @@ class m2 extends MapContent {
         });
         this.attributionControl.onAdd = (map) => {
             var div = L.DomUtil.create("div", "leaflet-control-attribution " + this.getId() + "-attribution");
-            div.innerHTML = "<span class='hidden-xs'>농업공간정보서비스<a href='http://https://njy.mafra.go.kr/'> | njy.mafra.go.kr</a></span>";
+            div.innerHTML = "<span class='hidden-xs'>Olive 2D Map<a href='http://www.u3cnc.com/'> | www.u3cnc.com</a></span>";
             return div;
         };
         this.viewer2d.addControl(this.attributionControl);
@@ -52,7 +52,7 @@ class m2 extends MapContent {
             if (!qU(str)) {
                 $("." + this.getId() + "-attribution").html("<span class='hidden-xs'>" + str + "</span>");
             } else {
-                $("." + this.getId() + "-attribution").html("<span class='hidden-xs'>농업공간정보서비스<a href='http://https://njy.mafra.go.kr/'> | njy.mafra.go.kr</a></span>");
+                $("." + this.getId() + "-attribution").html("<span class='hidden-xs'>Olive 2D Map<a href='http://www.u3cnc.com/'> | www.u3cnc.com</a></span>");
             }
 
         }
