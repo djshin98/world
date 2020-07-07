@@ -290,20 +290,6 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         */
 
 
-        /*
-        let pts2 = [];
-        pts2 = [
-            CTX.c2(tmpPts[2].x - (width / 2), tmpPts[2].y - (width / 2)),
-            tmpPts[2],
-            CTX.c2(tmpPts[2].x + (width / 2), tmpPts[2].y - (width / 2)),
-        ]
-        
-        
-        res.push(pts2[0]); 
-        res.push(pts2[1]); 
-        res.push(pts2[2]);
-        pts = res;
-        */
 
         //circle, arrow , 
         //----------------------------------------------------------   
