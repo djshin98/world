@@ -525,12 +525,15 @@ class SymbolTest {
             if (option.SIDC == "G*G*GPPA--****X") {
                 option.icon = false;
             }
-            var graphic = kms.Graphics(option);
-            if (!graphic.isIcon()) {
-                app.getOpenedMap(3).getActiveLayer().appendGraphic(graphic);
-            } else {
-                option.code = graphic.toDataURL();
-                return this.template(option);
+            let m = app.articles.getOpenedMap();
+            if (Q.isValid(m)) {
+                var graphic = kms.Graphics(option);
+                if (!graphic.isIcon()) {
+                    m.add(graphic);
+                } else {
+                    option.code = graphic.toDataURL();
+                    return this.template(option);
+                }
             }
         }
     }

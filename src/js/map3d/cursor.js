@@ -35,7 +35,7 @@ class Cursor extends Eventable {
 
             var pickedObject = _this.viewer.scene.pick(movement.position);
 
-            if (Cesium.defined(pickedObject)) {
+            if (Q.isValid(pickedObject)) {
                 //var d = new Dialog({ width: "300px", height: "500px" });
                 //var description = pickedObject.id._description;
                 //$("#" + d.id + ">.panel-body").append(description.getValue(Cesium.JulianDate.now()))
@@ -73,7 +73,7 @@ class Cursor extends Eventable {
     getSelectedObjFromPoint(position) {
         var valueToReturn = null;
         var pickedObject = this.viewer.scene.pick(position);
-        if (!Cesium.defined(pickedObject)) {
+        if (!Q.isValid(pickedObject)) {
             picked = null;
             valueToReturn = null;
             if (this.labelEntity) {
@@ -90,8 +90,8 @@ class Cursor extends Eventable {
             if (this.labelEntity) {
                 if (this.labelEntity.ref && this.labelEntity.ref == picked.id) {
 
-                } else if (Cesium.defined(picked.id) && Cesium.defined(picked.id.position)) {
-                    if (Cesium.defined(picked.id.position._value)) {
+                } else if (Q.isValid(picked.id) && Q.isValid(picked.id.position)) {
+                    if (Q.isValid(picked.id.position._value)) {
                         var cartesian = picked.id.position._value; //this.viewer.scene.pickPosition(position);
                         var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
                         var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);

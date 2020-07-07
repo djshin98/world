@@ -1,9 +1,9 @@
-class Tileset{
-    constructor(viewer){
+class Tileset {
+    constructor(viewer) {
         this.viewer = viewer;
     }
-    create(){
-// A simple demo of 3D Tiles feature picking with hover and select behavior
+    create() {
+        // A simple demo of 3D Tiles feature picking with hover and select behavior
         // Building data courtesy of NYC OpenData portal: http://www1.nyc.gov/site/doitt/initiatives/3d-building.page
         var viewer = this.viewer;
         viewer.scene.globe.depthTestAgainstTerrain = true;
@@ -68,7 +68,7 @@ class Tileset{
 
                 // Pick a new feature
                 var pickedFeature = viewer.scene.pick(movement.endPosition);
-                if (!Cesium.defined(pickedFeature)) {
+                if (!Q.isValid(pickedFeature)) {
                     nameOverlay.style.display = 'none';
                     return;
                 }
@@ -93,7 +93,7 @@ class Tileset{
 
                 // Pick a new feature
                 var pickedFeature = viewer.scene.pick(movement.position);
-                if (!Cesium.defined(pickedFeature)) {
+                if (!Q.isValid(pickedFeature)) {
                     clickHandler(movement);
                     return;
                 }
@@ -135,13 +135,13 @@ class Tileset{
             // Color a feature yellow on hover.
             viewer.screenSpaceEventHandler.setInputAction(function onMouseMove(movement) {
                 // If a feature was previously highlighted, undo the highlight
-                if (Cesium.defined(highlighted.feature)) {
+                if (Q.isValid(highlighted.feature)) {
                     highlighted.feature.color = highlighted.originalColor;
                     highlighted.feature = undefined;
                 }
                 // Pick a new feature
                 var pickedFeature = viewer.scene.pick(movement.endPosition);
-                if (!Cesium.defined(pickedFeature)) {
+                if (!Q.isValid(pickedFeature)) {
                     nameOverlay.style.display = 'none';
                     return;
                 }
@@ -150,7 +150,7 @@ class Tileset{
                 nameOverlay.style.bottom = viewer.canvas.clientHeight - movement.endPosition.y + 'px';
                 nameOverlay.style.left = movement.endPosition.x + 'px';
                 var name = pickedFeature.getProperty('name');
-                if (!Cesium.defined(name)) {
+                if (!Q.isValid(name)) {
                     name = pickedFeature.getProperty('id');
                 }
                 nameOverlay.textContent = name;
@@ -165,13 +165,13 @@ class Tileset{
             // Color a feature on selection and show metadata in the InfoBox.
             viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement) {
                 // If a feature was previously selected, undo the highlight
-                if (Cesium.defined(selected.feature)) {
+                if (Q.isValid(selected.feature)) {
                     selected.feature.color = selected.originalColor;
                     selected.feature = undefined;
                 }
                 // Pick a new feature
                 var pickedFeature = viewer.scene.pick(movement.position);
-                if (!Cesium.defined(pickedFeature)) {
+                if (!Q.isValid(pickedFeature)) {
                     clickHandler(movement);
                     return;
                 }
@@ -206,9 +206,9 @@ class Tileset{
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         }
     }
-    destory(){
+    destory() {
 
     }
 };
 
-module.exports = { Tileset : Tileset };
+module.exports = { Tileset: Tileset };

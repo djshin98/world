@@ -1,43 +1,36 @@
-if( !Cesium.defined($) ){
+if (!Q.isValid($)) {
     alert('jquery unsupported in OliveDragger');
 }
-class OliveDragger{
-    constructor(app){
-        this.map = app.map;
+class OliveDragger {
+    constructor(app) {
         this.app = app;
     }
-    enter(event){
+    enter(event) {
         event.preventDefault();
         return true;
     }
-    over(event){
+    over(event) {
         event.preventDefault();
     }
-    drag(event){
+    drag(event) {
         event.dataTransfer.setData("option", event.target.getAttribute("data-option"));
     }
-    drop(event){
-        let mpos = $("#"+this.map.getId()).position();
-        let moffset = $("#"+this.map.getId()).offset();
+    drop(event) {
+        let omap_ = this.app.articles.getOpenedMap();
+        if (Q.isValid(omap_)) {
+            let mpos = $("#" + omap_.getId()).position();
+            let moffset = $("#" + omap_.getId()).offset();
 
-        let pos = { x : event.clientX - (mpos.left + moffset.left) , y : event.clientY - (mpos.top + moffset.top) };
+            let pos = { x: event.clientX - (mpos.left + moffset.left), y: event.clientY - (mpos.top + moffset.top) };
 
-        var options = JSON.parse(decodeURIComponent(event.dataTransfer.getData("option")));
-        if( Cesium.defined(options) && Cesium.defined(options.category) ){
-            switch(options.category){
-                case "KMILSYMBOL":{
-                    let kMilSymbolCollection = this.map.collection("KMILSYMBOL");
-                    kMilSymbolCollection.add( CTX.w2d(pos.x,pos.y) , options);
-                }
-                break;
-                case "MARKER":{
-                    let markerCollection = this.map.collection("MARKER");
-                    markerCollection.add( CTX.w2d(pos.x,pos.y) , options );
-                }
-                break;
+            var options = JSON.parse(decodeURIComponent(event.dataTransfer.getData("option")));
+            if (Q.isValid(options) && Q.isValid(options.category)) {
+                omap_.add(pos.x, pos.y, options);
+
             }
         }
+
     }
 }
 
-module.exports = { OliveDragger : OliveDragger };
+module.exports = { OliveDragger: OliveDragger };

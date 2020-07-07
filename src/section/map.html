@@ -209,30 +209,40 @@
 
     $("#map-viewmodel input[name=gars]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        app.map.gridGARS(ui.boolean("gars"), {
-            tile: ui.boolean("tileset"),
-            cells: ui.number("cell"),
-            glowWidth: ui.number("glow-width"),
-            glowColor: ui.color("glow-color"),
-            backgroundColor: ui.color("background-color", "transparent"),
-            color: ui.color("color")
-        });
+        let m = app.articles.getOpenedMap();
+        if (Q.isValid(m)) {
+            m.gridGARS(ui.boolean("gars"), {
+                tile: ui.boolean("tileset"),
+                cells: ui.number("cell"),
+                glowWidth: ui.number("glow-width"),
+                glowColor: ui.color("glow-color"),
+                backgroundColor: ui.color("background-color", "transparent"),
+                color: ui.color("color")
+            });
+        }
+
 
     });
     $("#map-viewmodel input[name=turn]").bind('change', function() {
         var ui = new OliveInput("#map-viewmodel");
-        if (ui.boolean("turn")) {
-            app.map.oliveCamera.turn();
-        } else {
-            app.map.oliveCamera.turnoff();
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
+            if (ui.boolean("turn")) {
+                m.oliveCamera.turn();
+            } else {
+                m.oliveCamera.turnoff();
+            }
         }
     });
 
     function widget(tag, name) {
-        if ($(tag).prop("checked") == true) {
-            app.map.show(name, true);
-        } else {
-            app.map.show(name, false);
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
+            if ($(tag).prop("checked") == true) {
+                m.show(name, true);
+            } else {
+                m.show(name, false);
+            }
         }
     }
 </script>

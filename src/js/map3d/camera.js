@@ -147,10 +147,10 @@ class Camera extends Eventable {
         let c = this.cameraFocus(lon, lat);
         this.flyTo(c.lon, c.lat);
     }
-    flyOverEntity(coll, id) {
-        if (Cesium.defined(coll)) {
-            let entity = coll.get(id);
-            if (Cesium.defined(entity)) {
+    flyOverEntity(layer, id) {
+        if (Q.isValid(layer)) {
+            let entity = layer.get(id);
+            if (Q.isValid(entity)) {
                 var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(entity.position._value);
                 var lon = Cesium.Math.toDegrees(carto.longitude);
                 var lat = Cesium.Math.toDegrees(carto.latitude);
@@ -242,5 +242,63 @@ class Camera extends Eventable {
         return { lat: lat, lon: lon };
     }
 }
+
+
+/*
+function keyInput() {
+    const zoomAmount = 15,
+        rotateAmount = 5;
+    const ARROW_UP = 38;
+    const ARROW_LEFT = 37;
+    const ARROW_DOWN = 40;
+    const ARROW_RIGHT = 39;
+    document.addEventListener('keydown', e => {
+        let viewer = map.viewer3d;
+        // 87 -> W
+        // 65 -> A
+        // 83 -> S
+        // 68 -> D
+        // 38 -> up
+        // 37 -> left
+        // 40 -> down
+        // 39 -> right
+        // 81 -> Q
+        // 69 -> E
+        // 107 -> + (add)
+        // 109 -> - (sub)
+        switch (e.keyCode) {
+            case ARROW_UP:
+                viewer.camera.moveForward(rotateAmount);
+                break;
+                case 81:
+                    viewer.camera.moveUp(rotateAmount);
+                    break;
+                case 69:
+                    viewer.camera.moveDown(rotateAmount);
+                    break;
+            case ARROW_LEFT:
+                viewer.camera.moveLeft(rotateAmount);
+                break;
+            case ARROW_DOWN:
+                viewer.camera.moveBackward(rotateAmount);
+                break;
+            case ARROW_RIGHT:
+                viewer.camera.moveRight(rotateAmount);
+                break;
+
+            case 107:
+                viewer.camera.zoomIn(zoomAmount);
+                break;
+            case 109:
+                viewer.camera.zoomOut(zoomAmount);
+                break;
+        }
+
+        //e.preventDefault();
+    });
+}
+
+keyInput();
+*/
 
 module.exports = { OliveCamera: Camera };
