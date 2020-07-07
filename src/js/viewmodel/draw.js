@@ -48,6 +48,8 @@ const { Delay } = require('../mildraw/delay');
 
 const { Arrow } = require('../mildraw/arrow');
 
+const { Secure } = require('../mildraw/secure');
+
 const drawLinker = {
 
     circle: { name: "원", createFunc: function() { return new Circle(); } },
@@ -91,6 +93,7 @@ const drawLinker = {
     MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } },
     delay: { name: "delay", createFunc: function() { return new Delay(); } },
     arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
+    secure: { name: "secure", createFunc: function() { return new Secure(); } },
 }
 
 function registryHandler(key, name, createfunc) {

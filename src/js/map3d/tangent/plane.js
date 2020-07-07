@@ -13,6 +13,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
     }
+    
     distance(a, b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
@@ -119,19 +120,9 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
         //----------------------------------------------------------
         
-        //res[res.length] = pts[1];
-        
-
-        let p =pts;
+        let p = pts;
         let tp = [];
-        /*
-        tp = [
-            CTX.c2(p[0].x + (width/3), (width/3)),
-            p[0],
-            CTX.c2(p[0].x + (width/3), - (width/3)),
-            p[0]
-        ];
-        */
+      
         tp = [
             CTX.c2(p[0].x - (width/3), (width/3)),
             p[0],
@@ -143,24 +134,23 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         tp.push(p[1]);
         tp.push(p[2]);
 
-
         let res = [];
-
         
         let mid = pts[pts.length - 1];
-        let targetPoint = CTX.c2(pts[1].x + mid.x, pts[1].y - mid.y);
-        for(let i=180; i>0; i=i-2) {
+        let targetPoint = CTX.c2(pts[2].x - mid.x, pts[2].y - mid.y);
+        for(let i=180; i<360; i=i+2) {
             let p = targetPoint;
             let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(i));
             let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
             res.push(rotated);
         }
+        
         for(let i = 0; i < res.length; i++){
-            res[i] = CTX.c2(res[i].x - mid.x, res[i].y + mid.y);
+            res[i] = CTX.c2(res[i].x + mid.x, res[i].y + mid.y);
         }
         
        //res.push(pts[2])
-       res.reverse();
+       //res.reverse();
        tp[tp.length - 1] = res[0];
        for(let i = 1; i < res.length; i++){
            tp.push(res[i]);
@@ -228,6 +218,83 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         });
         return pts;
     }
+
+
+
+
+
+    secure(points) {
+        let pts = [];
+        for(let i = 0; i < points.length; i++){
+            pts.push(points[i].clone());
+        }
+        let rTranslate = this.origin(pts);
+
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        pts[0] = this.rotate(matrix, pts[0]);
+        pts[1] = this.rotate(matrix, pts[1]);
+        
+        let width = this.distance(pts[0], pts[1]);
+
+        //------------------------------------------------
+
+        let rp = [];
+        let res = [];
+
+        rp = [
+            CTX.c2(pts[1].x - (width/3), (width/3)),
+            pts[1],
+            CTX.c2(pts[1].x + (width/3), (width/3)),
+            pts[1]
+        ];
+        
+
+       //res.push(pts[2])
+       
+       rp[rp.length - 1] = res[0];
+       for(let i = 1; i < res.length; i++){
+           rp.push(res[i]);
+       }
+       
+        rp.push(pts[0]);
+        rp.push(pts[1]);
+
+
+        
+        
+        for(let i=0; i<330; i=i+2) {
+            let p = pts[1];
+            let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(i));
+            let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
+            res.push(rotated);
+        }
+
+        pts = res;
+
+
+        //------------------------------------------------
+
+            let inv = Cesium.Matrix2.fromRotation(-θ);
+            pts = pts.map(p => {
+                return this.rotate(inv, p);
+            });
+    
+            pts.forEach(p => {
+                p.x += rTranslate.x;
+                p.y += rTranslate.y;
+            });
+            return pts;
+
+
+    }
+ 
+
+
+
+
+
+
 
     origin(pts) {
         let org = pts[0].clone();
