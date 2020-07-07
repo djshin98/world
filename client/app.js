@@ -5,8 +5,9 @@ var targetAlignRefs;
 
 class SyLab {
     constructor(app) {
+        this.app = app;
         this.map = app.map;
-        init();
+        this.init();
     }
     init() {
         var _this = this;
@@ -163,12 +164,12 @@ class SyLab {
                                             _this.addEntity(_this.map.collection("KMILSYMBOL"), parseFloat(row.lon), parseFloat(row.lat), { sic: "SPZP----------G", name: row.t_name, id: row.t_id }, (entity) => {
                                                 let ustr = "<tr onclick=\"map.oliveCamera.flyOver(" + row.lon + "," + row.lat + ")\">";
                                                 ustr += "<td class='tdata'>" + row.dt + "</td>";
-                                                ustr += "<td class='tdata' data-token='" + entity.id + "' onclick=\"app.reqUnknown('" + entity.id + "'," + row.lon + "," + row.lat + ")\" style='background-color:red;'>미확인</td>";
+                                                ustr += "<td class='tdata' data-token='" + entity.id + "' onclick=\"sylab.reqUnknown('" + entity.id + "'," + row.lon + "," + row.lat + ")\" style='background-color:red;'>미확인</td>";
                                                 ustr += "<td class='tdata' >" + row.lon + "</td>";
                                                 ustr += "<td class='tdata' >" + row.lat + "</td>";
                                                 ustr += "<td class='tdata'>" + row.wt + "</td>";
-                                                ustr += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                                ustr += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                                ustr += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled disabled onclick=\"sylab.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                                ustr += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"sylab.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                                 ustr += "</tr>";
                                                 $(body).find("tbody").append(ustr);
                                             }, false);
@@ -180,8 +181,8 @@ class SyLab {
                                         str += "<td class='tdata' >" + row.lon + "</td>";
                                         str += "<td class='tdata' >" + row.lat + "</td>";
                                         str += "<td class='tdata'>" + row.wt + "</td>";
-                                        str += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled onclick=\"app.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
-                                        str += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"app.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
+                                        str += "<td class='tdata'><button type='button' class='btn btn-warning' data-token='ref' disabled onclick=\"sylab.popupTarget('" + row.t_id + "');\">무장추천</button></td>";
+                                        str += "<td class='tdata'><button type='button' class='btn btn-primary' data-token='align' disabled onclick=\"sylab.popupTargetAlign('" + row.t_id + "');\">무장할당</button></td>";
                                         str += "</tr>";
 
                                         if (row.lon && row.lat) {
@@ -451,7 +452,7 @@ class SyLab {
             }
         }
 
-        this.map.websocket.onmessage('TIA.HANDLER', function(jsonMessage) {
+        this.app.websocket.onmessage('TIA.HANDLER', function(jsonMessage) {
             if (jsonMessage.cmd == "RES_TIA") {
                 if (!Cesium.defined(_this.dialog.tia)) {
                     _this.dialog.tia = _this.dialogFunc.tia(jsonMessage);
@@ -472,52 +473,63 @@ class SyLab {
                 }
             }
         });
-        this.map.websocket.onmessage('WAA.HANDLER', function(jsonMessage) {
+        this.app.websocket.onmessage('WAA.HANDLER', function(jsonMessage) {
             if (Cesium.defined(jsonMessage.type) && jsonMessage.type != null) {
                 let type = jsonMessage.type;
                 if (type == 0) {
                     serverAdapter.get('type0', {}, function(resultdata) {
-                        var addCollection = map.collection("type0");
-                        if (!Cesium.defined(addCollection)) {
-                            addCollection = map.createCollection("type0", "Draw");
-                        }
-                        addCollection.removeAll();
-                        var viewdata = resultdata.bmoa;
-                        if (viewdata) {
-                            viewdata.forEach(row => {
-                                row.degree = { longitude: row.geocd_lngt, latitude: row.geocd_ltd };
-                                app.drawObject("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
-                                    faceColor: "#ffffff",
-                                    faceTransparent: 0.5,
-                                    lineColor: "#ff0000",
-                                    lineTransparent: 1
+                        let _map_ = this.app.getOpenedMap();
+                        if (Q.isValid(_map_)) {
+                            let ld = _map_.getLayerDirector();
+                            let appLayer = ld.getLayers("application");
+                            let addCollection = appLayer.get("type0", true);
+                            addCollection.removeAll();
+                            var viewdata = resultdata.bmoa;
+                            if (viewdata) {
+                                viewdata.forEach(row => {
+                                    row.degree = { longitude: row.geocd_lngt, latitude: row.geocd_ltd };
+                                    let _map_ = this.app.getOpenedMap();
+                                    addCollection.addModel("bmoa", {
+                                        id: row.bmoa_id,
+                                        pos: row.degree,
+                                        radius: row.bmoa_rads * 1000
+                                    }, {
+                                        faceColor: "#ffffff",
+                                        faceTransparent: 0.5,
+                                        lineColor: "#ff0000",
+                                        lineTransparent: 1
+                                    });
+                                    if (Q.isValid(_map_)) {
+                                        _map_.getDrawModel("bmoa").type1(addCollection, row.bmoa_id, row.degree, row.bmoa_rads * 1000, {
+                                            faceColor: "#ffffff",
+                                            faceTransparent: 0.5,
+                                            lineColor: "#ff0000",
+                                            lineTransparent: 1
+                                        });
+                                    }
+
                                 });
-                            });
-                        }
+                            }
+                            let airCollection = appLayer.get("type0:air", true);
+                            airCollection.removeAll();
 
-                        var airCollection = map.collection("type0:air");
-                        if (!Cesium.defined(airCollection)) {
-                            airCollection = map.createCollection("type0:air", "KMilSymbol");
+                            viewdata = resultdata.aircraft;
+                            if (viewdata) {
+                                viewdata.forEach(d => {
+                                    d.degree = {
+                                        longitude: d.lng,
+                                        latitude: d.lat
+                                    };
+                                })
+                                airCollection.terrianFromDegrees(viewdata, function(d) {
+                                    d.size = 30;
+                                    let entity = airCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, parseFloat(d.height) * 1000), d);
+                                    //console.dir(entity);
+                                    //let ele = $("#toshow-view [data-id=" + d.id + "]");
+                                    //ele.data("id", entity.id);
+                                });
+                            }
                         }
-                        airCollection.removeAll();
-
-                        viewdata = resultdata.aircraft;
-                        if (viewdata) {
-                            viewdata.forEach(d => {
-                                d.degree = {
-                                    longitude: d.lng,
-                                    latitude: d.lat
-                                };
-                            })
-                            airCollection.terrianFromDegrees(viewdata, function(d) {
-                                d.size = 30;
-                                let entity = airCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, parseFloat(d.height) * 1000), d);
-                                //console.dir(entity);
-                                //let ele = $("#toshow-view [data-id=" + d.id + "]");
-                                //ele.data("id", entity.id);
-                            });
-                        }
-
                     });
                 }
 
@@ -585,7 +597,7 @@ class SyLab {
             }
         });
 
-        this.map.websocket.onmessage('DSW.HANDLER', function(jsonMessage) {
+        this.app.websocket.onmessage('DSW.HANDLER', function(jsonMessage) {
             if (!Cesium.defined(_this.dialog.dsw)) {
                 _this.dialog.dsw = _this.dialogFunc.dsw(jsonMessage);
             } else {
@@ -707,4 +719,6 @@ class SyLab {
     }
 }
 
-new SyLab(app);
+$(function() {
+    var sylab = new SyLab(app);
+});

@@ -1,5 +1,6 @@
-var staticListeners = {};
-var staticKey = 1;
+"use strict";
+const staticListeners = {};
+let staticKey = 1;
 
 class Eventable {
     constructor() {

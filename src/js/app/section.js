@@ -1,6 +1,8 @@
 var { dom, get, post } = require("../util/comm");
 
 var { JusoSearch } = require("../section/juso_search");
+const { cache } = require("ejs");
+const { $$ } = require("../core/e");
 
 class Section {
     constructor(app, opt) {
@@ -15,13 +17,12 @@ class Section {
         }
         if (this.options.handle) {
             if (this.options.handle.id) {
-                let _this = this;
-                document.getElementById(this.options.handle.id).onclick = function(e) {
-                    _this.toggleView();
+                document.getElementById(this.options.handle.id).onclick = (e) => {
+                    this.toggleView();
                 };
             }
         }
-        this.load();
+        this.loading();
     }
     getWidth() {
         if (this.options.visible) {
@@ -36,58 +37,71 @@ class Section {
     getHandleHeight() {
         return this.options.handle.height;
     }
-    load() {
-        var _this = this;
-        this.options.contents.forEach(function(content) {
-            get({
-                url: content.page,
-                success: function(status, statusText, data) {
-                    console.log("loading a section page :" + content.page);
-                    let tv = dom.$(_this.path.sidebar)[0];
-                    tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
-                        "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
-                    let sv = dom.$(_this.path.view)[0];
-                    let tabNode = document.createElement("div");
-                    tabNode.setAttribute("data-content", content.name);
-                    tabNode.classList.add("tab");
-                    sv.appendChild(tabNode);
-
-                    _this.onload ? (function(parent, html) {
-                        let children = _this.onload.call(_this.app, parent, html);
-                    })(tabNode, data) : (tabNode.innerHTML = data);
-                    content.complete = true;
-                    _this.options.contents.every((d) => { return d.complete ? true : false; }) && _this._loadComplete();
+    loadPage(content) {
+        get({
+            url: content.page,
+            success: (status, statusText, data) => {
+                //console.log("loading a section page :" + content.page);
+                let tv = dom.$(this.path.sidebar)[0];
+                tv.innerHTML += "<a class='item' onclick='app.section.select(this,\"" + content.name + "\")'>" +
+                    "<i class='" + content.icon + " icon'></i>" + content.name + "</a>";
+                let sv = dom.$(this.path.view)[0];
+                let tabNode = document.createElement("div");
+                tabNode.setAttribute("data-content", content.name);
+                tabNode.classList.add("tab");
+                sv.appendChild(tabNode);
+                try {
+                    $$(tabNode).append(data);
+                } catch (e) {
+                    console.error("error loading section page : " + content.page);
+                    console.error(e.message);
                 }
+                /*
+                try {
+                    this.onload ? ((parent, html) => {
+                        let children = this.onload.call(this.app, parent, html);
+                    })(tabNode, data) : (tabNode.innerHTML = data);
+                } catch (e) {
+                    console.error("error loading section page : " + content.page);
+                    console.error(e.message);
+                }*/
+
+                content.complete = true;
+                this.options.contents.every((d) => { return d.complete ? true : false; }) && this._loadComplete();
+            }
+        });
+    }
+    loading() {
+        this.promiseLoadingPage = this.options.contents.map((content) => {
+            return new Promise((resolve, reject) => {
+                resolve(content);
             });
         });
     }
+    load() {
+        this.promiseLoadingPage.forEach(promise => {
+            promise.then(page => {
+                this.loadPage(page);
+            });
+        })
+    }
     _loadComplete() {
-        let _this = this;
         !(this.options.contents.length > 0) || (i => {
-            this.app.section.select(dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
+            this.app.section.select(dom.$(this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0], this.options.contents[i].name);
 
-            dom.$(_this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
-            dom.$(_this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
+            dom.$(this.path.sidebar + ">a").forEach(d => { d.classList.remove("active"); });
+            dom.$(this.path.sidebar + ">a:nth-child(" + (i + 1) + ")")[0].classList.add("active");
         })(0);
         this.oncomplete && this.oncomplete.call(this.app);
     }
     select(tag, name) {
-        let _this = this;
-        let c = this.options.contents.find(function(c) { return name == c.name ? true : false; });
-        !c || (function() {
-            dom.$(_this.path.sidebar + " a.item").forEach(function(d) { d.classList.remove("active"); });
+        let c = this.options.contents.find((c) => { return name == c.name ? true : false; });
+        !c || (() => {
+            dom.$(this.path.sidebar + " a.item").forEach(function(d) { d.classList.remove("active"); });
             tag.classList.add("active");
-            dom.$(_this.path.view + ">.tab").forEach(function(d) { d.classList.remove("active"); });
-            dom.$(_this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
-            _this.showView(true);
-
-            /*
-            let attrs = {
-                "tag": [{ tag: name }]
-            };
-
-            app.aside.setAttributes(attrs);
-            */
+            dom.$(this.path.view + ">.tab").forEach(function(d) { d.classList.remove("active"); });
+            dom.$(this.path.view + ">.tab[data-content='" + name + "']")[0].classList.add("active");
+            this.showView(true);
         })();
     }
     toggleView() {

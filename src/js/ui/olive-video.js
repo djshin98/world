@@ -1,21 +1,21 @@
 var olivevideoInstance = 1;
-class OliveVideo{
-    constructor(map,options){
+class OliveVideo {
+    constructor(map, options) {
         this.viewer = map.viewer3d;
         this.id = "olive-video" + (olivevideoInstance++);
         this.url = (options && options.url) ? options.url : "img/file_example_MOV_640_800kB.mov";
-        let html = "<video id='"+this.id+"' width='420' muted='' autoplay='' loop='' crossorigin='' controls='' style='display:none;position:absolute;left:10px;top:10px;'>"
-            +"<source src='"+this.url+"' type='video/quicktime'>"
-            +"Your browser does not support the <code>video</code> element."
-            +"</video>";
+        let html = "<video id='" + this.id + "' width='420' muted='' autoplay='' loop='' crossorigin='' controls='' style='display:none;position:absolute;left:10px;top:10px;'>" +
+            "<source src='" + this.url + "' type='video/quicktime'>" +
+            "Your browser does not support the <code>video</code> element." +
+            "</video>";
 
-        $("#" + map.options.map3.id ).append($(html));
+        $("#" + map.options.map3.id).append($(html));
         this.element = document.getElementById(this.id);
         this.element.playbackRate = 1.0;
     }
-    play(){
+    play() {
         /*
-        if (Cesium.defined(this.synchronizer)) {
+        if (Q.isValid(this.synchronizer)) {
             this.synchronizer = this.synchronizer.destroy();
             this.element.playbackRate = 1.0;
             return;
@@ -27,13 +27,13 @@ class OliveVideo{
         });
         */
         this.element.style.display = '';
-        this.element.play(); 
+        this.element.play();
     }
-    pause(){
-        this.element.pause(); 
+    pause() {
+        this.element.pause();
     }
-    destory(){
-        $("#"+this.id).remove();
+    destory() {
+        $("#" + this.id).remove();
     }
 }
 /*
@@ -53,4 +53,4 @@ class OliveVideo{
     }
   },
   */
-module.exports = { OliveVideo : OliveVideo };
+module.exports = { OliveVideo: OliveVideo };

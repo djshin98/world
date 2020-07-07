@@ -1,6 +1,6 @@
 const rectangle = require("./rectangle");
 const circle = require("./circle");
-const pointBetween = require("./pointBetween");
+const pointBetween = require("./pointbetween");
 
 module.exports = function(feature) {
     var annotation = {};

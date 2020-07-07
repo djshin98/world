@@ -11,7 +11,7 @@ function urlCallback(time, result) {
 var kmilsymbolDescription;
 
 function oliveDescription() {
-    if (!Cesium.defined(kmilsymbolDescription)) {
+    if (!Q.isValid(kmilsymbolDescription)) {
         kmilsymbolDescription = new OliveKMilSymbolDescription();
     }
     return kmilsymbolDescription;
@@ -48,7 +48,7 @@ class OliveKMilSymbolDescription extends Cesium.CallbackProperty {
         $(body).find("[data-key=" + key + "]").attr(name, value);
     }
     getResource(url) {
-        if (!Cesium.defined(descriptionHtmls[url])) {
+        if (!Q.isValid(descriptionHtmls[url])) {
             descriptionHtmls[url] = "";
             get({
                 url: url,

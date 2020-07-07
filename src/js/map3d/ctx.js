@@ -1,4 +1,4 @@
-const { ArcUtil } = require('../draw/util');
+const { ArcUtil } = require('./draw/util');
 const CTX = {
     viewer: null,
     debug: false,

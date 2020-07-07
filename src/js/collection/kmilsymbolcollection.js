@@ -29,7 +29,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
     terrianFromDegrees(objs, callback) {
         let _this = this;
-        let selObj = objs.filter(d => { return Cesium.defined(d.degree) ? true : false; });
+        let selObj = objs.filter(d => { return Q.isValid(d.degree) ? true : false; });
         if (selObj.length > 0) {
             var positions = selObj.map(d => {
                 let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);

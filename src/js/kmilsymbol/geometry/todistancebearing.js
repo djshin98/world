@@ -1,5 +1,5 @@
 // Calculates the bearing between two points in meter
-function toDistanceBearing(point, dist, bearing) {
+module.exports = function(point, dist, bearing) {
     var angularDist = dist / 6371e3;
     bearing = bearing * (Math.PI / 180);
     var lng = point[0] * (Math.PI / 180);
@@ -18,5 +18,3 @@ function toDistanceBearing(point, dist, bearing) {
     lng2 = (lng2 / (Math.PI / 180) + 540) % 360 - 180;
     return [lng2, lat2];
 }
-
-module.exports = toDistanceBearing;

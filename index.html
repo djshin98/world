@@ -3,7 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>합동참모본부</title>
     <link rel="icon" href="img/logo.jpg">
 
@@ -11,6 +19,8 @@
     <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="libs/lobipanel/css/lobipanel.min.css" />
+
+    <link rel="stylesheet" href="libs/leaflet.1.6.0/leaflet.css" />
 
     <script src="libs/jquery/jquery.min.js"></script>
     <script src="libs/jquery-ui/jquery-ui.min.js"></script>
@@ -27,24 +37,49 @@
     <!--
     <script src="libs/milsymbol/kmilsymbol.development.js"></script>
 -->
+    <style>
+        .leaflet-tile {
+            border: solid black 1px;
+        }
+    </style>
     <script>
         var modelUrl = "";
         $(function() {
             window.app = new Application({
+                websocket: {
+                    reconnectable: true
+                },
                 header: {
                     height: 0
                 },
-                map3: {
-                    id: "map3d",
-                    websocket: {
-                        reconnectable: true
-                    },
-                    dashboard: {
-                        id: "dashboard",
-                        center: {
-                            type: "cross",
-                            color: "red"
+                article: {
+                    map3: {
+                        id: "map3d",
+                        show: false,
+                        dashboard: {
+                            id: "dashboard",
+                            center: {
+                                type: "cross",
+                                color: "red"
+                            }
                         }
+                    },
+                    map2: {
+                        id: "map2d",
+                        show: true,
+                        index: 0,
+                        zoomToolbox: true,
+                        drawingToolbox: true,
+                        utilToolbox: true,
+                        scale: true,
+                        openDoor: true,
+                        createBaseLayer: true,
+                        baselayerSelectId: "baseLayers"
+                    },
+                    setting: {
+                        id: "setting",
+                        page: "article/setting.html",
+                        show: false
                     }
                 },
                 section: {
@@ -114,32 +149,10 @@
                         id: "aside-handle",
                         height: 15
                     }
-                },
-                success: function(map) {
-                    //map.contour(true);
-                    //viewer.scene.globe.enableLighting = true;
-                    //updateMaterial(viewer);
-                    /*
-                    map.gridGARS(true,{
-                            tile:true,
-                            cells: 1,
-                            glowWidth: 1,
-                            glowColor: 1,
-                            backgroundColor: new Cesium.Color( 1,1,1,1 ),
-                            color: new Cesium.Color( 1,1,1,0 ) });
-                    */
-                    //
-                    if (map.viewOption.infoBox == true) {
-                        map.viewer3d.infoBox.frame.removeAttribute('sandbox');
-                        var cssLink = document.createElement("link");
-                        cssLink.href = Cesium.buildModuleUrl('css/infobox.css');
-                        cssLink.rel = "stylesheet";
-                        cssLink.type = "text/css";
-                        map.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
-                    }
-                    console.log("success end");
                 }
             });
+
+            app.load();
 
         });
     </script>
@@ -173,8 +186,9 @@
     <article>
         <div id="door-handle" style="display:none;"><i class="angle left icon"></i></div>
         <div id="aside-handle" style="display:none;"><i class="angle right icon"></i></div>
-        <div class="map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
-        <div id="map2d"></div>
+        <div class="article-content map-cesium" id="map3d" ondragenter="return app.dragger().enter(event)" ondrop="return app.dragger().drop(event)" ondragover="return app.dragger().over(event)"></div>
+        <div class="article-content" id="map2d"></div>
+        <div class="article-content" id="setting"></div>
         <svg id="dashboard" class="olive-dashboard">
         </svg>
     </article>

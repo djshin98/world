@@ -264,10 +264,9 @@
 
     function toshowView() {
         serverAdapter.get('Entities', {}, function(data) {
+            let omap = app.articles.getOpenedMap();
             toShowNode.forEach((g) => {
-                if (!map.collection(g.group)) {
-                    map.createCollection(g.group, g.collection);
-                }
+
                 if (data[g.group] && g.parse) {
                     g.parse(g, data[g.group]);
                 }
@@ -285,10 +284,6 @@
                 },
                 onSelect: function(type, tag, obj) {
                     if (type == "file") {
-
-                        //  Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))//tangent 값
-                        // map.oliveCamera.distance / Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180))
-                        //   위도거리는 어디서나 1도=111Km
 
                         let test = {
                             General: [{
@@ -310,26 +305,26 @@
                         let id = $(tag).data("id");
                         let group = $(tag).data('group');
 
-                        map.oliveCamera.flyOverEntity(map.collection(group), id);
+                        omap.oliveCamera.flyOverEntity(omap.getApplicationLayer(group), id);
 
 
                     } else if (type == "folder") {
 
                     }
                 },
-                onChecked: function(checked, type, tag, obj) {
+                onChecked: function(inputtype, checked, type, tag, obj) {
                     let group = $(tag).data('group');
                     if (group === "bmoa") {
-                        let addCollection = map.collection(group);
-                        if (Cesium.defined(addCollection)) {
-                            addCollection.removeAll();
+                        let appLayer = omap.getApplicationLayer(group);
+                        if (Q.isValid(appLayer)) {
+                            appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
                                 });
                                 if (viewdata && viewdata.children) {
                                     viewdata.children.forEach(row => {
-                                        app.drawObject("bmoa").type1(addCollection, row.name, row.degree, row.rad * 1000, {
+                                        app.drawObject("bmoa").type1(appLayer, row.name, row.degree, row.rad * 1000, {
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#ff0000",
@@ -341,16 +336,16 @@
 
                         }
                     } else if (group === "eo_line") {
-                        let addCollection = map.collection(group);
-                        if (Cesium.defined(addCollection)) {
-                            addCollection.removeAll();
+                        let appLayer = omap.getApplicationLayer(group);
+                        if (Q.isValid(appLayer)) {
+                            appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
                                 });
                                 if (viewdata && viewdata.children) {
                                     viewdata.children.forEach(row => {
-                                        app.drawObject("eoline").type1(addCollection, row.name, row.degrees, {
+                                        app.drawObject("eoline").type1(appLayer, row.name, row.degrees, {
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#ff0000",
@@ -363,10 +358,10 @@
 
                         }
                     } else if (group === "air_area") {
-                        let addCollection = map.collection(group);
+                        let appLayer = omap.getApplicationLayer(group);
 
-                        if (Cesium.defined(addCollection)) {
-                            addCollection.removeAll();
+                        if (Q.isValid(appLayer)) {
+                            appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
@@ -374,7 +369,7 @@
                                 if (viewdata && viewdata.children) {
                                     viewdata.children.forEach(row => {
                                         radius: row.air_area_rads,
-                                        app.drawObject("aa_circle").type1(addCollection, row.name, row.degree, row.radius * 1000, row.altitude, row.height, {
+                                        app.drawObject("aa_circle").type1(appLayer, row.name, row.degree, row.radius * 1000, row.altitude, row.height, {
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#954045",
@@ -385,9 +380,9 @@
                             }
                         }
                     } else if (group === "air_control") {
-                        let addCollection = map.collection(group);
-                        if (Cesium.defined(addCollection)) {
-                            addCollection.removeAll();
+                        let appLayer = omap.getApplicationLayer(group);
+                        if (Q.isValid(appLayer)) {
+                            appLayer.removeAll();
                             if (checked) {
                                 var viewdata = toShowNode.find(function(d) {
                                     return (d.group === group) ? true : false;
@@ -395,7 +390,7 @@
                                 if (viewdata && viewdata.children) {
                                     viewdata.children.forEach(row => {
                                         radius: row.air_area_rads,
-                                        app.drawObject("aa_box").type1(addCollection, row.name, row.degree, row.altitude, row.height, {
+                                        app.drawObject("aa_box").type1(appLayer, row.name, row.degree, row.altitude, row.height, {
                                             faceColor: "#ffffff",
                                             faceTransparent: 0.5,
                                             lineColor: "#954045",
@@ -407,7 +402,7 @@
                         }
                     } else {
                         let groups = group.split('-');
-                        let addCollection = map.collection(group);
+                        let appLayer = omap.getApplicationLayer(group);
                         var viewdata;
                         if (groups.length > 1) {
                             viewdata = groups.reduce((prev, curr) => {
@@ -426,17 +421,13 @@
                             });
                         }
 
-                        if (!Cesium.defined(addCollection) && viewdata) {
-                            addCollection = map.createCollection(group, viewdata.collection);
-                        }
-
-                        if (Cesium.defined(addCollection)) {
-                            addCollection.removeAll();
+                        if (Q.isValid(appLayer)) {
+                            appLayer.removeAll();
                             if (checked) {
 
-                                addCollection.terrianFromDegrees(viewdata.children, function(d) {
+                                appLayer.terrianFromDegrees(viewdata.children, function(d) {
                                     d.size = 30;
-                                    let entity = addCollection.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);
+                                    let entity = appLayer.add(CTX.degree(d.degree.longitude, d.degree.latitude, d.degree.height), d);
                                     //console.dir(entity);
                                     let ele = $("#toshow-view [data-id=" + d.id + "]");
                                     ele.data("id", entity.id);
@@ -444,7 +435,7 @@
                                 /*
                                 viewdata.children.forEach(function(d) {
                                     d.size = 30;
-                                    let entity = addCollection.add(CTX.degree(d.degree.longitude,d.degree.latitude,0), d);
+                                    let entity = appLayer.add(CTX.degree(d.degree.longitude,d.degree.latitude,0), d);
                                     console.dir(entity);
                                     let ele = $("#toshow-view [data-id="+d.id+"]");
                                     ele.data("id", entity.id);

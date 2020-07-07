@@ -1,14 +1,16 @@
 'use strict';
 const { IxDatabase } = require('./db');
+const { LayerDirector, } = require('../layer/layerdirector');
 const ITEM_CATEGORY = "item";
 const LIST_URL = "list";
 
 class JsonByFolder {
-    constructor(category, fileCollection) {
+    constructor(app, category) {
+        this.application = app;
         this.db = new IxDatabase(2, category);
+
         this.category = category;
         this.folders = [];
-        this.collection = fileCollection;
     }
     folder(callback) {
         let _this = this;
@@ -29,7 +31,10 @@ class JsonByFolder {
     save(path, callback) {
         let obj = this.new(path);
         if (obj) {
-            !this.collection || this.db.set(ITEM_CATEGORY, obj.id, this.collection.entities());
+            let _map_ = this.application.articles.getOpenedMap();
+            if (Q.isValid(_map_)) {
+                let data = _map_.getLayerGroup();
+            }!this.collection || this.db.set(ITEM_CATEGORY, obj.id, this.collection.entities());
             this.db.set(this.category, LIST_URL, this.folders);
         }
         this.folder(callback);
