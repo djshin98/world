@@ -48,7 +48,7 @@ const { Delay } = require('../../mildraw/delay');
 
 const { Arrow } = require('../../mildraw/arrow');
 
-const { Secure } = require('../mildraw/secure');
+const { Secure } = require('../../mildraw/secure');
 
 const drawLinker = {
 

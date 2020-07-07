@@ -18,7 +18,8 @@ class ArticleDirector {
         this.articles = {};
         this.eventList = {
             opened: [],
-            closed: []
+            closed: [],
+            updated: []
         };
         if (Q.isValid(options.map3)) { this.createArticle(new m3("m3", options.map3)); }
         if (Q.isValid(options.map2)) { this.createArticle(new m2("m2", options.map2)); }
