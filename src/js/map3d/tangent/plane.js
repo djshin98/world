@@ -173,12 +173,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
         let θ = Math.atan2(pts[1].x, pts[1].y);
         let matrix = Cesium.Matrix2.fromRotation(θ);
-        pts[1] = this.rotate(matrix, pts[1]);
-        pts[2] = this.rotate(matrix, pts[2]);
-        if (pts[3])
-            pts[3] = this.rotate(matrix, pts[3]);
-
-
+        pts = pts.map(p => { return this.rotate(matrix, p); });
         //----------------------------------------------------------
 
         let p = pts;
@@ -197,19 +192,15 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
         let res = [];
 
-        let mid = pts[pts.length - 1];
-        let targetPoint = CTX.c2(pts[2].x - mid.x, pts[2].y - mid.y);
-        for (let i = 180; i < 360; i = i + 2) {
-            let p = targetPoint;
-            let m = Cesium.Matrix2.fromRotation(Cesium.Math.toRadians(i));
-            let rotated = Cesium.Matrix2.multiplyByVector(m, p, new Cesium.Cartesian2());
+        pts[2].y = pts[1].y;
+
+        for (let i = 0; i < 360; i = i + 2) {
+            let r = Cesium.Math.toRadians(pts[2].x > 0 ? i : i + 180);
+            let rotated = CTX.c2(pts[2].x * Math.cos(r), pts[2].x * Math.sin(r));
+            rotated.x += pts[2].x;
+            rotated.y += pts[1].y;
             res.push(rotated);
         }
-
-        for (let i = 0; i < res.length; i++) {
-            res[i] = CTX.c2(res[i].x + mid.x, res[i].y + mid.y);
-        }
-
         //res.push(pts[2])
         //res.reverse();
         tp[tp.length - 1] = res[0];

@@ -13,8 +13,8 @@ class Delay extends DrawObject {
             let result = [];
 
             var plane = new Plane(p[0]);
-            let mp = CTX.math.mid(p[1], p[2]);
-            p.push(mp);
+            //let mp = CTX.math.mid(p[1], p[2]);
+            //p.push(mp);
 
             let pts = plane.input(p);
             let width = plane.distance(pts[0], pts[1]);
@@ -24,7 +24,7 @@ class Delay extends DrawObject {
                 height = plane.distance(pts[0], pts[2]);*/
             result = plane.delay(width, pts);
             result = plane.output(result);
-            
+
             result = CTX.split.polyline(result, 10);
             //result.reverse();
             this.sketch(collection, result);

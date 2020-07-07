@@ -395,6 +395,10 @@ function elements(heles) {
                         x.textContent = x.textContent.replace(/["]/g, "\"");
                         window.eval(x.textContent.trim());
                     }
+                    /*else if (x.tagName.toUpperCase() === "STYLE") {
+                                           x.textContent = x.textContent.replace(/["]/g, "\"");
+                                           window.eval(x.textContent.trim());
+                                       }*/
                 });
             }
         }

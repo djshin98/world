@@ -6,6 +6,7 @@ class BaseImageryLayer extends Layer {
     }
     create(layerGroup, layerJson) {
 
+        layerGroup.removeAll();
         if (Q.isValid(this.layerOnMap)) {
             // this.baseLayer.removeTo(this.viewer2d);
             layerGroup.getMap().viewer2d.removeLayer(this.layerOnMap);
@@ -18,11 +19,17 @@ class BaseImageryLayer extends Layer {
                 this.layerOnMap.addTo(layerGroup.getMap().viewer2d);
             }
         } else {
-            console.error("invalid provider : " + layerJson.provider);
+            //console.error("invalid provider : " + layerJson.provider);
         }
     }
     update(options) {
         super.update(options);
+    }
+    remove() {
+        if (Q.isValid(this.layerOnMap)) {
+            this.layerGroup.getMap().viewer2d.removeLayer(this.layerOnMap);
+            this.layerOnMap = null;
+        }
     }
 }
 module.exports = { BaseImageryLayer: BaseImageryLayer };

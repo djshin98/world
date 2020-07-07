@@ -80,7 +80,6 @@ class Setting extends ArticleContent {
                 url: this.options.page,
                 success: (status, statusText, data) => {
                     $$("#" + this.getId()).append(data);
-
                     console.log("sss");
                 }
             });
