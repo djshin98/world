@@ -18,7 +18,7 @@ class m2 extends MapContent {
             openDoor: true
         }, options);
         */
-        this.map = L.map(this.getId(), {
+        this.viewer2d = L.map(this.getId(), {
             /* crs: L.CRS.EPSG4326, */
             crs: L.Proj.CRS.VWorld,
             /* crs: L.Proj.CRS.TMS.NgiiMap, */
@@ -46,8 +46,8 @@ class m2 extends MapContent {
             div.innerHTML = "<span class='hidden-xs'>농업공간정보서비스<a href='http://https://njy.mafra.go.kr/'> | njy.mafra.go.kr</a></span>";
             return div;
         };
-        this.map.addControl(this.attributionControl);
-        // this.map.addControl(new L.Control.Fullscreen());
+        this.viewer2d.addControl(this.attributionControl);
+        // this.viewer2d.addControl(new L.Control.Fullscreen());
         this.setAttribution = (str) => {
             if (!qU(str)) {
                 $("." + this.getId() + "-attribution").html("<span class='hidden-xs'>" + str + "</span>");
@@ -57,7 +57,7 @@ class m2 extends MapContent {
 
         }
 
-        this.map.setView({ lng: 128.0785804, lat: 36.1358642 }, this.map.getZoom());
+        this.viewer2d.setView({ lng: 128.0785804, lat: 36.1358642 }, this.viewer2d.getZoom());
 
         this.baseLayers = {
             '브이월드': L.tileLayer.koreaProvider('VWorld.Street'),
@@ -74,11 +74,11 @@ class m2 extends MapContent {
 
         this.zoomControl = L.control.zoom({
             position: "topright",
-        }).addTo(this.map);
+        }).addTo(this.viewer2d);
 
-        L.control.scale({ imperial: false, position: 'bottomright' }).addTo(this.map);
+        L.control.scale({ imperial: false, position: 'bottomright' }).addTo(this.viewer2d);
 
-        //new L.Proj.TileLayer.TMS.Provider('NaverMap.Street').addTo(this.map);
+        //new L.Proj.TileLayer.TMS.Provider('NaverMap.Street').addTo(this.viewer2d);
 
         this.layerDirector = new LayerDirector2(this, configLayers);
     }
@@ -87,14 +87,14 @@ class m2 extends MapContent {
     }
     setBaseLayer(layer) {
         if (Q.isValid(this.baseLayer)) {
-            // this.baseLayer.removeTo(this.map);
-            this.map.removeLayer(this.baseLayer);
+            // this.baseLayer.removeTo(this.viewer2d);
+            this.viewer2d.removeLayer(this.baseLayer);
             this.baseLayer = null;
         }
         this.baseLayer = layer;
 
         if (Q.isValid(this.baseLayer)) {
-            this.baseLayer.addTo(this.map);
+            this.baseLayer.addTo(this.viewer2d);
         }
         this.refreshLayer();
     }
@@ -108,7 +108,7 @@ class m2 extends MapContent {
 			if( Q.isValid(this.applicationLayer.showLabelLayer) ){
 				this.applicationLayer.showLabelLayer(this.isLabelVisibility);	
 			}
-			this.applicationLayer.refresh(this.map);
+			this.applicationLayer.refresh(this.viewer2d);
 		}
 		if( Q.isValid(this.extraBaseLayer) ){
 			this.extraBaseLayer.bringToFront();
@@ -116,7 +116,7 @@ class m2 extends MapContent {
     }
     resize(x, y, width, height) {
         super.resize(x, y, width, height);
-        this.map.invalidateSize();
+        this.viewer2d.invalidateSize();
     }
     json() {
         return this.getLayerDirector().json();
