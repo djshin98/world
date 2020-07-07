@@ -48,10 +48,9 @@ const { Delay } = require('../../mildraw/delay');
 
 const { Arrow } = require('../../mildraw/arrow');
 
-const { Arrow } = require('../mildraw/arrow');
-const { Debacle } = require('../mildraw/debacle');
-
-const { Secure } = require('../mildraw/secure');
+const { Arrow } = require('../../mildraw/arrow');
+const { Debacle } = require('../../mildraw/debacle');
+const { Secure } = require('../../mildraw/secure');
 
 const drawLinker = {
 

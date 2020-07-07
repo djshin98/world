@@ -209,5 +209,11 @@
         "show": true,
         "focus": true,
         "group": "application"
+    }, {
+        "name": "군대부호 테스트 레이어",
+        "type": "radio|check",
+        "show": true,
+        "focus": true,
+        "group": "application"
     }]
 }]

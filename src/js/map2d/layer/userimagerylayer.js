@@ -1,14 +1,13 @@
 "use strict";
 const { Layer } = require("../../layer/layer");
 class UserImageryLayer extends Layer {
-    constructor(viewer, layerGroup, layerJson) {
+    constructor(layerGroup, layerJson) {
         super(layerGroup, layerJson);
     }
     create(layerGroup, layerJson) {
         let imageryLayers = layerGroup.getImageryLayers();
         if (layerJson.show === true) {
             if (Q.isValid(Cesium[layerJson.provider])) {
-
                 if (Q.isValid(this.layerOnMap)) {
                     imageryLayers.remove(this.layerOnMap, true);
                     this.layerOnMap = null;

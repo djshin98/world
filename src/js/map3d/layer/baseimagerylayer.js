@@ -1,16 +1,19 @@
+"use strict";
+
 const { Layer } = require("../../layer/layer");
 class BaseImageryLayer extends Layer {
     constructor(layerGroup, options) {
         super(layerGroup, options);
     }
     create(layerGroup, layerJson) {
+        let imageryLayers = layerGroup.getImageryLayers();
         if (Q.isValid(this.layerOnMap)) {
             imageryLayers.remove(this.layerOnMap, true);
             this.layerOnMap = null;
         }
         if (layerJson.show === true) {
             layerGroup.removeAll();
-            let imageryLayers = layerGroup.getImageryLayers();
+            //let imageryLayers = layerGroup.getImageryLayers();
             if (Q.isValid(Cesium[layerJson.provider])) {
                 let imageryProvider = new Cesium[layerJson.provider](layerJson.options);
                 if (typeof imageryProvider === "undefined") {

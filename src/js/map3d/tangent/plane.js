@@ -13,6 +13,10 @@ class Plane extends Cesium.EllipsoidTangentPlane {
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0301632d497a5dc0dabe69b90e71253293bfe4f1
     turnStack(points, originIndex, verticalizeIndex, turningWork) {
         let rTranslate = this.origin(pts, originIndex);
 
