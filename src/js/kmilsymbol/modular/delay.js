@@ -69,7 +69,7 @@ function delay(feature) {
 
 module.exports = delay;
 */
-function block(turnPlane, properties, bcompleted) {
+function delay(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {
         if (index == 1) {
             return {
@@ -82,4 +82,4 @@ function block(turnPlane, properties, bcompleted) {
     }).end();
 }
 
-module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };
+module.exports = { modular: delay, minPointCount: 2, maxPointCount: 3 };

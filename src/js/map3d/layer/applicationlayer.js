@@ -10,8 +10,8 @@ class ApplicationLayer extends Layer {
         this.collection = new OliveCollection(layerGroup.getMap(), { name: "app" });
     }
     create(layerGroup, options) {}
-    remove() {
-
+    remove(entity) {
+        this.collection.remove(entity.id);
     }
 
     terrianFromDegrees(objs, callback) {
