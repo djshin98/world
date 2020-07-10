@@ -49,6 +49,7 @@ const { Delay } = require('../../mildraw/delay');
 const { Arrow } = require('../../mildraw/arrow');
 const { Debacle } = require('../../mildraw/debacle');
 const { Secure } = require('../../mildraw/secure');
+const { Fixation } = require('../../mildraw/fixation');
 
 const drawLinker = {
 
@@ -95,6 +96,7 @@ const drawLinker = {
     arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
     debacle: { name: "와해", createFunc: function() { return new Debacle(); } },
     secure: { name: "secure", createFunc: function() { return new Secure(); } },
+    fixation: { name: "fixation", createFunc: function() { return new Fixation(); } },
 }
 
 function registryHandler(key, name, createfunc) {

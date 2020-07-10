@@ -1,3 +1,5 @@
+const { CTX } = require("../ctx");
+
 class Plane extends Cesium.EllipsoidTangentPlane {
     constructor(origin) {
         super(origin);
@@ -206,12 +208,12 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         tp.push(p[0]);
         tp.push(p[1]);
         tp.push(p[2]);
-
+ 
         let res = [];
 
         pts[2].y = pts[1].y;
 
-        for (let i = 0; i < 360; i = i + 2) {
+        for (let i = 0; i < 180; i = i + 2) {
             let r = Cesium.Math.toRadians(pts[2].x > 0 ? i : i + 180);
             let rotated = CTX.c2(pts[2].x * Math.cos(r), pts[2].x * Math.sin(r));
             rotated.x += pts[2].x;
@@ -358,6 +360,70 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
 
 
+        fixation(width, points) {
+
+        let pts = [];
+        for (let i = 0; i < points.length; i++) {
+            pts.push(points[i].clone());
+        }
+        let rTranslate = this.origin(pts);
+
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        pts[0] = this.rotate(matrix, pts[0]);
+        pts[1] = this.rotate(matrix, pts[1]);
+
+        
+
+
+        //--------------------------------------------
+        let p = points;
+        let result = [];
+        //let result2 = [];
+
+        p = [
+            p[0],
+            CTX.c2(0, (width/16) + 2)
+        ]
+
+      
+
+        for(let i = 0; i<16; i++) {
+            if(i % 2 ==0) {
+                result.push(CTX.c2(2, (width/16) + i));
+            }else {
+                result.push(CTX.c2(-2, (width/16) + i));
+            }
+
+        }
+
+        p = [
+            CTX.c2(0, (width/16) + 14),
+            p[1]
+        ]
+
+        p.concat(result);
+        //p.push(p[0]);
+        //p.push(p[1]);
+
+
+        pts = p;
+
+
+        //---------------------------------------------
+
+
+        let inv = Cesium.Matrix2.fromRotation(-θ);
+        pts = pts.map(p => {
+            return this.rotate(inv, p);
+        });
+
+        pts.forEach(p => {
+            p.x += rTranslate.x;
+            p.y += rTranslate.y;
+        });
+        return pts;
+        }
 
 
 
