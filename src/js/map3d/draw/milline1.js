@@ -3,7 +3,7 @@ class MilLine1 extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             this.templateEntity.polyline.positions = points;
         } else {
@@ -18,18 +18,18 @@ class MilLine1 extends DrawObject {
 
                 option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
 
-                collection.add(this.index, {
+                layer.add({
                     polyline: option
                 });
 
                 option.width = viewModel.lineWidth * 2;
                 option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
-                collection.add(this.index, {
+                layer.add({
                     polyline: option
                 });
             }
 
-            return collection.add(this.index, {
+            return layer.add({
                 polyline: {
                     positions: this.callbackValue(points),
                     clampToGround: true,
@@ -40,7 +40,7 @@ class MilLine1 extends DrawObject {
         }
         /*
         if (this.isValidPoints(points)) {
-            collection.add(this.index, {
+            layer.add( {
                 polyline: {
                     positions: points,
                     clampToGround: true,
@@ -59,13 +59,13 @@ class MilLine1 extends DrawObject {
 
             option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
 
-            collection.add(this.index, {
+            layer.add( {
                 polyline: option
             });
 
             option.width = viewModel.lineWidth * 2;
             option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
-            return collection.add(this.index, {
+            return layer.add( {
                 polyline: option
             });
 

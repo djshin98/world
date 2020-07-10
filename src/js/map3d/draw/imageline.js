@@ -6,7 +6,7 @@ class ImageLine extends DrawObject {
     pin(drawLength) {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             this.templateEntity.polyline.positions = points;
         } else {
@@ -22,7 +22,7 @@ class ImageLine extends DrawObject {
                     repeat: new Cesium.Cartesian2(10.0, 1.0)
                 })
             };
-            return collection.add(this.index, {
+            return layer.add({
                 polyline: option
             });
         }
@@ -40,7 +40,7 @@ class ImageLine extends DrawObject {
                     repeat: new Cesium.Cartesian2(10.0, 1.0)
                 })
             };
-            return collection.add(this.index, {
+            return layer.add( {
                 polyline: option
             });
         }

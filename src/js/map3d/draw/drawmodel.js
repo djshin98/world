@@ -6,9 +6,9 @@ class DrawModel extends DrawObject {
     constructor() {
         super(1);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
-            return collection.add(this.index, {
+            return layer.add({
                 position: points[0],
                 model: {
                     uri: viewModel.uri,

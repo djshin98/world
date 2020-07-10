@@ -2,6 +2,7 @@
 
 class DrawController {
     constructor(map) {
+        this.map = map;
         this.viewer = map.getView();
         this.viewModel = {
             mode: 'view',

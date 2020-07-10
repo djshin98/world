@@ -13,7 +13,7 @@ class Radar2 extends DrawObject {
         r.height = height;
         return CTX.r2c(r);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let center = points[0];
             let p1 = points[1];
@@ -86,7 +86,7 @@ class Radar2 extends DrawObject {
 
             let distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
-                return collection.add(this.index, {
+                return layer.add({
                     position: points[0],
                     orientation: this.callbackValue(orientation),
                     ellipsoid: {
@@ -140,7 +140,7 @@ class Radar2 extends DrawObject {
 
             var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
             if (distance > 0) {
-                return collection.add(this.index, {
+                return layer.add( {
                     position: points[0],
                     orientation: orientation,
                     ellipsoid: {

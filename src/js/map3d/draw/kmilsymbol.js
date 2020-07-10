@@ -19,28 +19,27 @@ class KMilSymbol extends DrawObject {
             distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 100000)
         };
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isComplete()) {
             points.forEach(point => {
-                this.add(collection, CTX.c2d(point), { name: "테스트", SIDC: "SFGAEWMASR-----", size: 30 });
+                this.add(layer, CTX.c2d(point), { name: "테스트", SIDC: "SFGAEWMASR-----", size: 30 });
             });
         }
     }
-    add(collection, degree, options) {
+    add(layer, degree, options) {
         let m = app.articles.getOpenedMap();
         if (Q.isValid(m)) {
             let graphic = kms.Graphics(options);
             if (!graphic.isIcon()) {
-                m.add(graphic);
+                m.add(graphic.modular);
             } else {
                 let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
                 m.add(degree, { type: "milsymbol", symbol: graphic, desc: desc, options: options });
 
-                //return this._add(collection, degree, options, desc, graphic);
             }
         }
     }
-    _add(collection, degree, options, desc, img) {
+    _add(layer, degree, options, desc, img) {
 
         let billboard = {
             image: img.toDataURL(),
@@ -96,7 +95,7 @@ class KMilSymbol extends DrawObject {
         entityOption.polyline = polyline;
         entityOption.ellipse = ellipse;
 
-        return collection.add(this.index, entityOption);
+        return layer.add(entityOption);
 
         //return this.addCompositedEntity(entityOption, { billboard: billboard, }, [{ polyline: polyline , ellipse : ellipse }]);
         //return this.addEntity(entityOption);

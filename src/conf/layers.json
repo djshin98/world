@@ -152,7 +152,7 @@
         "name": "Grid",
         "type": "check",
         "group": "userImagery",
-        "show": true,
+        "show": false,
         "provider": "GridImageryProvider",
         "options": {
 

@@ -201,8 +201,8 @@ class m3 extends MapContent {
     json() {
         return this.getLayerDirector().json();
     }
-    setDrawMode(mode) {
-        this.drawModel.update(mode);
+    setDrawMode(mode, modular) {
+        this.drawModel.setDrawMode(mode, modular);
     }
     getDrawList() {
         return this.drawModel.getHandlerList();
@@ -216,12 +216,14 @@ class m3 extends MapContent {
     add(windowX, windowY, options) {
         let pos = CTX.w2d(windowX, windowY);
 
-        let layer = getLayerDirector().getActiveLayer();
+        let layer = this.getLayerDirector().getActiveLayer();
         if (Q.isValid(layer)) {
             layer.add(pos, options);
         }
     }
-
+    addGraphics(options) {
+        this.drawModel.setDrawMode("milgraphics", options);
+    }
     resize(x, y, width, height) {
         super.resize(x, y, width, height);
         if (this.dashboard) {

@@ -149,11 +149,7 @@ class LayerDirector {
     getActiveLayer(group, bcreate) {
         let appLayers = this.getLayers(APPLICATION_LAYER);
         if (Q.isValid(appLayers)) {
-            if (Q.isValid(appLayers.children)) {
-                return appLayers.children.find((layer) => {
-                    return layer.focus === true ? true : false;
-                });
-            }
+            return appLayers.focus();
         }
     }
     setLayer(obj, callbackable) {

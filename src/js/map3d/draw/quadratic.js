@@ -6,7 +6,7 @@ class Quadratic extends DrawObject {
     constructor() {
         super(2, 2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
 
         let degrees = {
             start: CTX.c2d(points[0]),
@@ -31,11 +31,11 @@ class Quadratic extends DrawObject {
             if (this.isComplete()) {
                 let _this = this;
                 var positions = [CTX.c2r(polylinePoints.center[0])];
-                var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+                var promise = Cesium.sampleTerrain(layer.map.viewer3d.terrainProvider, 13, positions);
                 Cesium.when(promise, function(updatedPositions) {
                     let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
                     let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
-                    collection.add(_this.index, {
+                    layer.add({
                         polyline: {
                             positions: cpts,
                             color: viewModel.shapeColor,
@@ -44,7 +44,7 @@ class Quadratic extends DrawObject {
                             distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 150000)
                         }
                     });
-                    collection.add(_this.index, {
+                    layer.add({
                         position: cpts[1],
                         label: {
                             text: CTX.distance(cpts[0], cpts[1]).toFixed(1) + " m",
@@ -63,7 +63,7 @@ class Quadratic extends DrawObject {
 
             if (viewModel.frameEnable === true || !this.isComplete()) {
                 return polylinePoints.points.map(p => {
-                    return collection.add(this.index, {
+                    return layer.add({
                         position: this.callbackValue(p),
                         point: {
                             pixelSize: viewModel.shapeSize,
@@ -92,12 +92,12 @@ class Quadratic extends DrawObject {
                         color: this.callbackColor("faceColor", viewModel)
                     });
                 }
-                return collection.add(this.index, { polyline: option });
+                return layer.add({ polyline: option });
             }
         }
     }
 
-    type1(collection, name, degrees, height, viewModel) {
+    type1(layer, name, degrees, height, viewModel) {
         viewModel = Object.assign({
             size: 100,
             lineStyle: "dot",
@@ -105,7 +105,7 @@ class Quadratic extends DrawObject {
             lineWidth: 5,
             frameEnable: false
         }, viewModel);
-        if (collection && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
+        if (layer && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
             let distance = CTX.distanceD(degrees.start, degrees.end);
 
@@ -114,7 +114,7 @@ class Quadratic extends DrawObject {
 
             let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.frameColor, viewModel.lineWidth);
 
-            collection.add(this.index, {
+            layer.add({
                 polyline: {
                     positions: polylinePoints.center,
                     color: viewModel.frameColor,
@@ -125,7 +125,7 @@ class Quadratic extends DrawObject {
             });
             if (viewModel.frameEnable === true) {
                 polylinePoints.points.forEach(p => {
-                    collection.add(this.index, {
+                    layer.add({
                         position: p,
                         point: {
                             pixelSize: viewModel.shapeSize,
@@ -151,7 +151,7 @@ class Quadratic extends DrawObject {
                     }),
                     distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
-                return collection.add(this.index, { name: name, polyline: option });
+                return layer.add({ name: name, polyline: option });
             }
         }
     }

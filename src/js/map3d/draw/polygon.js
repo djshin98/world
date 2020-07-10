@@ -6,14 +6,14 @@ class Polygon extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let result = CTX.split.polyline(points, 10);
-            this.sketch(collection, result);
+            this.sketch(layer, result);
             //this.templateEntity.polygon.hierarchy = points;
         } else {
             if (this.isComplete()) {
-                return collection.add(this.index, {
+                return layer.add({
                     polygon: {
                         hierarchy: this.callbackValue(points),
                         material: this.callbackColor("faceColor", viewModel)

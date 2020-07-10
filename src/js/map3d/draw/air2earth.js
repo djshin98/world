@@ -5,7 +5,7 @@ class Air2Earth extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let degrees = {
                 start: CTX.c2d(points[0]),
@@ -24,7 +24,7 @@ class Air2Earth extends DrawObject {
 
             if (viewModel.frameEnable === true) {
                 polylinePoints.forEach(p => {
-                    collection.add(this.index, {
+                    layer.add({
                         position: p,
                         point: {
                             pixelSize: viewModel.shapeSize,
@@ -50,12 +50,12 @@ class Air2Earth extends DrawObject {
                         })
                         //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                 };
-                return collection.add(this.index, { polyline: option });
+                return layer.add({ polyline: option });
             }
         }
     }
 
-    type1(collection, name, degrees, height, viewModel) {
+    type1(layer, name, degrees, height, viewModel) {
         viewModel = Object.assign({
             size: 100,
             lineStyle: "dot",
@@ -63,7 +63,7 @@ class Air2Earth extends DrawObject {
             lineWidth: 5,
             frameEnable: false
         }, viewModel);
-        if (collection && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
+        if (layer && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
             let distance = CTX.distanceD(degrees.start, degrees.end);
 
@@ -72,7 +72,7 @@ class Air2Earth extends DrawObject {
 
             let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
-            collection.add(this.index, {
+            layer.add({
                 polyline: {
                     positions: polylinePoints.center,
                     color: viewModel.lineColor,
@@ -83,7 +83,7 @@ class Air2Earth extends DrawObject {
             });
             if (viewModel.frameEnable === true) {
                 polylinePoints.points.forEach(p => {
-                    collection.add(this.index, {
+                    layer.add({
                         position: p,
                         point: {
                             pixelSize: viewModel.shapeSize,
@@ -110,7 +110,7 @@ class Air2Earth extends DrawObject {
                     }),
                     distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
-                return collection.add(this.index, { name: name, polyline: option });
+                return layer.add({ name: name, polyline: option });
             }
         }
     }

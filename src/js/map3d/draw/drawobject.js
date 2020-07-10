@@ -177,49 +177,39 @@ class DrawObject {
         }
         return this.pinVia();
     }
-    create(collection, points, viewModel, templateEntity) {
+    create(layer, points, viewModel, templateEntity) {
 
     }
-    createShape(collection, points, viewModel, bclicked) {
+    draw(layer, points) {};
+    removeTemplateEntity(layer) {
+        if (Q.isValid(this.templateEntity)) {
+            this.templateEntity.forEach(ent => {
+                layer.remove(ent);
+            });
+            this.templateEntity = null;
+        }
+    }
+    createShape(layer, points, viewModel, bclicked) {
         points = Object.assign([], points);
         if (bclicked && this.isCompletePoints(points)) {
             //console.log("complete");
             this.complete();
-            if (Q.isValid(this.templateEntity)) {
-                if (Q.isArray(this.templateEntity)) {
-                    this.templateEntity.forEach(entity => {
-                        collection.remove(entity);
-                        entity = null;
-                    })
-                } else {
-                    collection.remove(this.templateEntity);
-                }
-                this.templateEntity = null;
-            }
-            return this.create(collection, points, viewModel);
+            this.removeTemplateEntity(layer);
+            return this.create(layer, points, viewModel);
         } else if (this.isValidPoints(points)) {
             if (!Q.isValid(this.templateEntity)) {
                 this.templateEntity = true;
-                this.templateEntity = this.create(collection, points, viewModel);
+                this.templateEntity = this.create(layer, points, viewModel);
                 return this.templateEntity;
             } else {
-                return this.create(collection, points, viewModel);
+                return this.create(layer, points, viewModel);
             }
         }
     }
-    sketch(collection, points) {
-        if (Q.isValid(this.templateEntity)) {
-            if (Q.isArray(this.templateEntity)) {
-                this.templateEntity.forEach((ent, i) => {
-                    collection.remove(ent);
-                });
-            } else {
-                collection.remove(this.templateEntity);
-            }
-        }
-
+    sketch(layer, points) {
+        this.removeTemplateEntity(layer);
         this.templateEntity = points.map(p => { //4
-            return collection.add(this.index, {
+            return layer.add({
                 position: p,
                 point: {
                     pixelSize: 2,

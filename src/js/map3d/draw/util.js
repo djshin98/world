@@ -6,10 +6,10 @@ var SurfaceUtil = {
         let degree = CTX.c2d(result);
         return degree.height;
     },
-    polyline: function(collection, points, callback) {
+    polyline: function(layer, points, callback) {
         if (Q.isValid(points) && points.length > 0 && callback) {
             var positions = CTX.c2rA(points);
-            var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+            var promise = Cesium.sampleTerrain(layer.map.viewer3d.terrainProvider, 13, positions);
             Cesium.when(promise, function(updatedPositions) { callback(CTX.r2cA(updatedPositions)); });
             return true;
         }

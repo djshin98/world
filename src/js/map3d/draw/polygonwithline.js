@@ -9,10 +9,10 @@ class PolygonWithLine extends DrawObject {
         return "PolygonWithLine";
     }
 
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let result = CTX.split.polyline(points, 10);
-            this.sketch(collection, result);
+            this.sketch(layer, result);
 
             //this.templateEntity.polygon.hierarchy = points;
             //this.templateEntity.polyline.positions = points;
@@ -28,7 +28,7 @@ class PolygonWithLine extends DrawObject {
                 //distanceDisplayCondition: displayCondition,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            return collection.add(this.index, {
+            return layer.add({
                 polygon: {
                     hierarchy: this.callbackValue(points),
                     //distanceDisplayCondition: displayCondition,

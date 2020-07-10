@@ -5,7 +5,7 @@ class LineEO extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             this.templateEntity.polyline.positions = points;
         } else {
@@ -16,7 +16,7 @@ class LineEO extends DrawObject {
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            return collection.add(this.index, {
+            return layer.add({
                 polyline: option
             });
         }
@@ -29,13 +29,13 @@ class LineEO extends DrawObject {
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            return collection.add(this.index, {
+            return layer.add( {
                 polyline: option
             });
         }
         */
     }
-    type1(collection, name, points, viewModel) {
+    type1(layer, name, points, viewModel) {
         if (points && points.length >= this.minPointCount) {
 
             viewModel = this.setViewModel({
@@ -52,7 +52,7 @@ class LineEO extends DrawObject {
                 width: viewModel.lineWidth,
                 material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            return collection.add(this.index, {
+            return layer.add({
                 name: name,
                 polyline: option
             });
