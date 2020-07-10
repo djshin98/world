@@ -141,15 +141,15 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         //----------------------------------------------------------
         pts = [
             /*
-            CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x - (width / 2), pts[1].y),
-            CTX.c2(pts[0].x + (width / 2), pts[1].y), CTX.c2(pts[0].x + (width / 2), 0),
-            CTX.c2(pts[0].x - (width / 2), 0)
+                CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x - (width / 2), pts[1].y),
+                CTX.c2(pts[0].x + (width / 2), pts[1].y), CTX.c2(pts[0].x + (width / 2), 0),
+                CTX.c2(pts[0].x - (width / 2), 0)
             
-            pts[0],
-            CTX.c2(pts[0].x - (width / 2), (width / 2)),
-            CTX.c2(pts[0].x + (width / 2), (width / 2)),
-            pts[0], pts[1]
-            */
+                pts[0],
+                CTX.c2(pts[0].x - (width / 2), (width / 2)),
+                CTX.c2(pts[0].x + (width / 2), (width / 2)),
+                pts[0], pts[1]
+                */
             CTX.c2(pts[0].x - (width / 2), 0), CTX.c2(pts[0].x + (width / 2), 0), pts[0], pts[1]
         ];
         //circle, arrow , 
@@ -259,19 +259,19 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
 
         /*
-        let pts2 = [];
-        pts2 = [
-            CTX.c2(tmpPts[2].x - (width / 2), tmpPts[2].y - (width / 2)),
-            tmpPts[2],
-            CTX.c2(tmpPts[2].x + (width / 2), tmpPts[2].y - (width / 2)),
-        ]
+            let pts2 = [];
+            pts2 = [
+                CTX.c2(tmpPts[2].x - (width / 2), tmpPts[2].y - (width / 2)),
+                tmpPts[2],
+                CTX.c2(tmpPts[2].x + (width / 2), tmpPts[2].y - (width / 2)),
+            ]
         
         
-        res.push(pts2[0]); 
-        res.push(pts2[1]); 
-        res.push(pts2[2]);
-        pts = res;
-        */
+            res.push(pts2[0]); 
+            res.push(pts2[1]); 
+            res.push(pts2[2]);
+            pts = res;
+            */
 
         //circle, arrow , 
         //----------------------------------------------------------   
@@ -288,7 +288,70 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         return pts;
     }
 
+    diversion(points) {
+        let pts = [];
+        for (let i = 0; i < points.length; i++) {
+            pts.push(points[i].clone());
+        }
+        let rTranslate = this.origin(pts);
 
+        let θ = Math.atan2(pts[1].x, pts[1].y);
+        let matrix = Cesium.Matrix2.fromRotation(θ);
+        pts = pts.map(p => { return this.rotate(matrix, p); });
+        //----------------------------------------------------------
+
+        let mid = pts[pts.length - 1].clone();
+        let arcPoints = [];
+        arcPoints.push(mid);
+        arcPoints.push(pts[1].clone());
+        let arcOrigin = this.origin(arcPoints);
+        let res = [];
+
+        for (let i = 0; i < 180; i = i + 2) {
+            let matrix = Cesium.Matrix2.fromRotation(i * Math.PI / 180);
+            let rotated = this.rotate(matrix, arcPoints[1]);
+            res.push(rotated);
+        }
+
+        let innerPoint = arcPoints[1].clone();
+        innerPoint.y -= this.distance(pts[0], pts[1]) / 6;
+        for (let i = 180; i > 0; i = i - 2) {
+            let matrix = Cesium.Matrix2.fromRotation(i * Math.PI / 180);
+            let rotated = this.rotate(matrix, innerPoint);
+            res.push(rotated);
+        }
+
+        res = res.map((p) => {
+            p.x += arcOrigin.x;
+            p.y += arcOrigin.y;
+            return p;
+        });
+
+        if (pts[3]) {
+            let distance = this.distance(pts[3], pts[2]);
+            res.push(CTX.c2(0, pts[1].y / 2));
+            res.push(CTX.c2(distance / 9, pts[1].y / 2 + distance / 9));
+            res.push(CTX.c2(0, pts[1].y / 2));
+            res.push(CTX.c2(distance / 9, pts[1].y / 2 - distance / 9));
+            res.push(CTX.c2(0, pts[1].y / 2));
+            res.push(CTX.c2(distance, pts[1].y / 2));
+        }
+
+        pts = res;
+
+        //----------------------------------------------------------   
+
+        let inv = Cesium.Matrix2.fromRotation(-θ);
+        pts = pts.map(p => {
+            return this.rotate(inv, p);
+        });
+
+        pts.forEach(p => {
+            p.x += rTranslate.x;
+            p.y += rTranslate.y;
+        });
+        return pts;
+    }
 
 
 
