@@ -455,6 +455,7 @@ class Q {
 
     static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
 
+    static isObject(a) { return (Q.isValid(a) && typeof(a) == "object") ? true : false; }
     static splits(a, div, callback) {
         a.split(div).map(t => { return t.trim(); }).filter(t => { return t.length > 0 ? true : false; }).forEach((t, i) => { callback(t, i); });
     }
