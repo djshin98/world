@@ -218,7 +218,7 @@ class m3 extends MapContent {
 
         let layer = this.getLayerDirector().getActiveLayer();
         if (Q.isValid(layer)) {
-            layer.add(pos, options);
+            layer.addBy(pos, options);
         }
     }
     addGraphics(options) {

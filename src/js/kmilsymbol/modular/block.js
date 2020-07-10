@@ -19,4 +19,5 @@ function block(turnPlane, properties, bcompleted) {
     }).end();
 }
 
+
 module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };

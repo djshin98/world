@@ -1,4 +1,5 @@
 "use strict";
+const { calc } = require("../../kmilsymbol/graphics/math");
 
 class TurnPlane extends Cesium.EllipsoidTangentPlane {
     constructor(origin, points) {
@@ -29,7 +30,7 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
     append(objs) {
         if (Q.isValid(objs)) {
             if (Q.isArray(objs)) {
-                this.buffer.concat(objs);
+                objs.forEach(o => { this.buffer.push(o); });
             } else {
                 //console.log(objs.geometry[0].x + "," + objs.geometry[0].y);
                 this.buffer.push(objs);
@@ -120,10 +121,25 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
     }
 }
 
-function tw(points, bcompleted, originIndex, modular) {
-    let origin = Q.isValid(originIndex) ? points[originIndex] : points[0];
-    if (!Q.isValid(bcompleted)) { bcompleted = false; }
-    return modular(new TurnPlane(origin, points), {}, bcompleted);
+function tw(points, bcompleted, originIndex, options) {
+    if (Q.isValid(options) && Q.isValid(options.modular)) {
+        let origin = Q.isValid(originIndex) ? points[originIndex] : points[0];
+        if (Q.isValid(options.properties)) {
+            if (points.length > 1) {
+                if (Q.isValid(options.properties.size)) {
+                    options.properties.pixelBySize = {};
+                    let px = CTX.pixels(points[0], points[1]);
+                    let lineLength = calc.distance(points[0], points[1]);
+                    Q.keys(options.properties.size, (key, value) => {
+                        options.properties.pixelBySize[key] = (value * lineLength) / px;
+                    });
+                }
+            }
+        }
+
+        if (!Q.isValid(bcompleted)) { bcompleted = false; }
+        return options.modular(new TurnPlane(origin, points), options.properties, bcompleted);
+    }
 }
 
 module.exports = { tw: tw };

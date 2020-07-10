@@ -1,8 +1,5 @@
 const { Layer } = require("../../layer/layer");
-const { OliveCollection } = require("../../collection/olivecollection")
-const { KMilSymbolCollection } = require("../../collection/kmilsymbolcollection");
-const { MarkerCollection } = require("../../collection/markercollection");
-const { DrawCollection } = require("../../collection/drawcollection");
+const { OliveCollection } = require("../../collection/olivecollection");
 
 class ApplicationLayer extends Layer {
     constructor(layerGroup, json) {

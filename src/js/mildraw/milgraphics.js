@@ -12,15 +12,15 @@ const Template = {
 class MilGraphics extends DrawObject {
     constructor(options) {
         super(options.minPointCount, options.maxPointCount);
-        this.modular = options.modular;
+        this.options = Q.copy(options);
     }
     create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            let objs = tw(points, this.isComplete(), 0, this.modular);
+            let objs = tw(points, this.isComplete(), 0, this.options);
             this.sketch(layer, objs);
         } else {
             if (this.isComplete()) {
-                let objs = tw(points, this.isComplete(), 0, this.modular);
+                let objs = tw(points, this.isComplete(), 0, this.options);
                 let entityOptions = this.completeSketch(layer, objs, viewModel);
                 return layer.add(entityOptions);
             }
@@ -110,8 +110,8 @@ class MilGraphics extends DrawObject {
                                 positions: obj.geometry,
                                 clampToGround: true,
                                 color: viewModel.lineColor,
-                                width: viewModel.lineWidth,
-                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+                                width: 10,
+                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 10)
                             },
                         };
                     }
