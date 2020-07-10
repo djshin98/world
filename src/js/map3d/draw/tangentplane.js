@@ -3,7 +3,7 @@ class TangentPlane extends DrawObject {
     constructor() {
         super(1);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
             //if( distance > 0 ){
@@ -11,7 +11,7 @@ class TangentPlane extends DrawObject {
             var dimensions1 = new Cesium.Cartesian2(60000.0, 60000.0);
 
             // My entities
-            var redPlane = collection.add({
+            var redPlane = layer.add({
                 position: points[0],
                 name: 'Red plane',
                 plane: {

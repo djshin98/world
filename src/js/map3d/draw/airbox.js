@@ -3,9 +3,9 @@ class AirBox extends DrawObject {
     constructor() {
         super(3);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
-            return collection.add(this.index, {
+            return layer.add({
                 position: points[0],
                 polygon: {
                     hierarchy: points,
@@ -23,8 +23,8 @@ class AirBox extends DrawObject {
             });
         }
     }
-    type1(collection, name, degree, minHeight, maxHeight, _viewModel) {
-        if (collection) {
+    type1(layer, name, degree, minHeight, maxHeight, _viewModel) {
+        if (layer) {
             let points = [CTX.d2c(degree.lb), CTX.d2c(degree.lu), CTX.d2c(degree.ru), CTX.d2c(degree.rb)];
             let viewModel = this.setViewModel({
                 faceColor: Cesium.Color.WHITE,
@@ -64,7 +64,7 @@ class AirBox extends DrawObject {
                 }
             }
 
-            return collection.add(this.index, option);
+            return layer.add(option);
         }
     }
 }

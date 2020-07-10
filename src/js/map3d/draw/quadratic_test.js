@@ -5,7 +5,7 @@ class QuadraticTest extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             let degrees = {
                 start: CTX.c2d(points[0]),
@@ -49,7 +49,7 @@ class QuadraticTest extends DrawObject {
 
                 if (viewModel.frameEnable === true) {
                     polylinePoints.points.forEach(p => {
-                        collection.add(this.index, {
+                        layer.add({
                             position: p,
                             point: {
                                 pixelSize: viewModel.shapeSize,
@@ -76,7 +76,7 @@ class QuadraticTest extends DrawObject {
                                                        })*/
                             //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
                     };
-                    collection.add(this.index, { polyline: option });
+                    layer.add({ polyline: option });
                 }
             }, 50);
             //for (let i = 0; i < 10000; i++) {
@@ -85,7 +85,7 @@ class QuadraticTest extends DrawObject {
         }
     }
 
-    type1(collection, name, degrees, height, viewModel) {
+    type1(layer, name, degrees, height, viewModel) {
         viewModel = Object.assign({
             size: 100,
             lineStyle: "dot",
@@ -93,7 +93,7 @@ class QuadraticTest extends DrawObject {
             lineWidth: 5,
             frameEnable: false
         }, viewModel);
-        if (collection && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
+        if (layer && Q.isValid(degrees.start) && Q.isValid(degrees.end)) {
             height = Math.max(degrees.start.height, degrees.end.height) + height;
             let distance = CTX.distanceD(degrees.start, degrees.end);
 
@@ -102,7 +102,7 @@ class QuadraticTest extends DrawObject {
 
             let heightMeterial = this.lineMaterial(viewModel.lineStyle, viewModel.frameColor, viewModel.lineWidth);
 
-            collection.add(this.index, {
+            layer.add({
                 polyline: {
                     positions: polylinePoints.center,
                     color: viewModel.frameColor,
@@ -113,7 +113,7 @@ class QuadraticTest extends DrawObject {
             });
             if (viewModel.frameEnable === true) {
                 polylinePoints.points.forEach(p => {
-                    collection.add(this.index, {
+                    layer.add({
                         position: p,
                         point: {
                             pixelSize: viewModel.shapeSize,
@@ -139,7 +139,7 @@ class QuadraticTest extends DrawObject {
                     }),
                     distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
-                return collection.add(this.index, { name: name, polyline: option });
+                return layer.add({ name: name, polyline: option });
             }
         }
     }

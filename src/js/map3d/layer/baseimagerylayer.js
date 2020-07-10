@@ -7,12 +7,9 @@ class BaseImageryLayer extends Layer {
     }
     create(layerGroup, layerJson) {
         let imageryLayers = layerGroup.getImageryLayers();
-        if (Q.isValid(this.layerOnMap)) {
-            imageryLayers.remove(this.layerOnMap, true);
-            this.layerOnMap = null;
-        }
+
         if (layerJson.show === true) {
-            layerGroup.removeAll();
+            layerGroup.clearAll();
             //let imageryLayers = layerGroup.getImageryLayers();
             if (Q.isValid(Cesium[layerJson.provider])) {
                 let imageryProvider = new Cesium[layerJson.provider](layerJson.options);
@@ -30,6 +27,13 @@ class BaseImageryLayer extends Layer {
     }
     update(options) {
         super.update(options);
+    }
+    clear() {
+        let imageryLayers = layerGroup.getImageryLayers();
+        if (Q.isValid(this.layerOnMap)) {
+            imageryLayers.remove(this.layerOnMap, true);
+            this.layerOnMap = null;
+        }
     }
 }
 module.exports = { BaseImageryLayer: BaseImageryLayer };

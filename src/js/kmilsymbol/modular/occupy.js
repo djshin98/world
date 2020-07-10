@@ -1,4 +1,4 @@
-const bearingBetween = require("../geometry/bearingbetween");
+/*const bearingBetween = require("../geometry/bearingbetween");
 const pointBetween = require("../geometry/pointbetween");
 const toDistanceBearing = require("../geometry/todistancebearing");
 const distanceBetween = require("../geometry/distancebetween");
@@ -43,3 +43,18 @@ function occupy(feature) {
 }
 
 module.exports = occupy;
+*/
+function block(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        if (index == 1) {
+            return {
+                type: "polyline",
+                geometry: [
+                    points[index - 1], points[index]
+                ]
+            };
+        }
+    }).end();
+}
+
+module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };

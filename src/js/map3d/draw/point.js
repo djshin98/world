@@ -4,13 +4,13 @@ class Point extends DrawObject {
     constructor() {
         super(1, 1);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
 
         } else {
             let distance = viewModel.size;
             return points.map(point => {
-                return collection.add(this.index, {
+                return layer.add({
                     position: point,
                     point: {
                         pixelSize: distance,

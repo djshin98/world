@@ -5,7 +5,7 @@ class Corn extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             //vector 1
             let v1 = Object.assign({}, points[1]);
@@ -32,7 +32,7 @@ class Corn extends DrawObject {
             pos.heignt += len / 2;
             pos = CTX.r2c(pos);
 
-            return collection.add(this.index, {
+            return layer.add({
                 //direction
                 position: points[0],
                 //orientation: orientation,

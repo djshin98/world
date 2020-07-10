@@ -6,16 +6,6 @@ class Layer {
         this.layerOnMap = null;
         this.create(this.layerGroup, this.jsonLayer);
     }
-
-    terrianFromDegrees(objs, callback) {
-        let selObj = objs.filter(d => { return Q.isValid(d.degree) ? true : false; });
-        selObj.forEach((d, i) => {
-            selObj[i].degree.height = 0;
-            if (callback) {
-                callback(selObj[i], this);
-            }
-        });
-    }
     json() {
         return this.jsonLayer;
     }
@@ -23,10 +13,13 @@ class Layer {
         console.warn("unsupported layer create : " + this.constructor.name);
     }
     update(options) {
-        this.jsonLayer = Object.assign(options);
+        this.jsonLayer = Object.assign(this.jsonLayer, options);
         this.create(this.layerGroup, this.jsonLayer);
     }
     remove() {
+        this.clear();
+    }
+    clear() {
 
     }
     show() {
@@ -34,6 +27,12 @@ class Layer {
     }
     hide() {
         this.update({ show: false });
+    }
+    isVisible() {
+        if (this.jsonLayer.show === true) {
+            return true;
+        }
+        return false;
     }
     setFocus(bfocus) {
         this.update({ focus: bfocus });

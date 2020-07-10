@@ -1,7 +1,68 @@
+const { Q } = require("../../core/e");
+
 class Graphics {
     constructor(ms) {
         this.graphicCache = {};
         this.graphicModulars = {};
+        this.sidcRoot = {};
+    }
+    ready() {
+        Q.keys(this.graphicCache, (key, value) => {
+            let list = key.split('');
+            let index = list.reverse().findIndex((a) => { return a !== "-" ? true : false });
+            list.reverse();
+            if (index > 0) {
+                list.splice(-index);
+            }
+            let lastNode = list.reduce((children, c, i) => {
+                if (!Q.isValid(children[c])) {
+                    children[c] = { children: {} };
+                }
+                if (i == (list.length - 1)) {
+                    return children[c];
+                }
+                return children[c].children;
+            }, this.sidcRoot);
+            lastNode.modular = value;
+        });
+    }
+    find(sidc) {
+        let list = sidc.split('');
+        let index = list.reverse().findIndex((a) => { return a !== "-" ? true : false });
+        list.reverse();
+        if (index > 0) { list.splice(-index); }
+        let findNode;
+        let node = this.sidcRoot;
+        if (list.some((c, i) => {
+                if (Q.isValid(node)) {
+                    if (Q.isValid(node[c])) {
+                        if (i == (list.length - 1)) {
+                            findNode = node[c];
+                            return true;
+                        } else if (!Q.isValid(node[c].children)) {
+                            findNode = node[c];
+                            return true;
+                        } else {
+                            node = node[c].children;
+                            return false;
+                        }
+                    } else if (Q.isValid(node["-"])) {
+                        if (i == (list.length - 1)) {
+                            return true;
+                        } else if (!Q.isValid(node["-"].children)) {
+                            return true;
+                        } else {
+                            node = node["-"].children;
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+                }
+                return false;
+            })) {
+            return findNode;
+        }
     }
     addGraphics(f) {
         if (Q.isValid(f)) {
@@ -14,10 +75,15 @@ class Graphics {
         }
     }
     get(SIDC) {
-        var genericSIDC = SIDC.substr(0, 1) + "-" + SIDC.substr(2, 1) + "-" + SIDC.substr(4, 6);
-        if (this.graphicCache[genericSIDC]) {
-            return this.graphicCache[genericSIDC];
+        var node = this.find(SIDC);
+        if (Q.isValid(node)) {
+            node.isIcon = fisIcon;
+            return node;
         }
     }
+}
+
+function fisIcon() {
+    return false;
 }
 module.exports = { Graphics: Graphics };

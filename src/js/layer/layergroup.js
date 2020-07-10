@@ -39,13 +39,17 @@ class LayerGroup {
         return index;
     }
     focus(name, callback) {
-        if (this.editable === true) {
-            let layer = (name instanceof Layer) ? name : this.get(name);
-            if (Q.isValid(layer)) {
-                this.list.forEach((l) => { l.setFocus(false); });
-                layer.setFocus(true);
-                if (Q.isValid(callback)) { callback(layer.json()); }
+        if (Q.isValid(name)) {
+            if (this.editable === true) {
+                let layer = (name instanceof Layer) ? name : this.get(name);
+                if (Q.isValid(layer)) {
+                    this.list.forEach((l) => { l.setFocus(false); });
+                    layer.setFocus(true);
+                    if (Q.isValid(callback)) { callback(layer.json()); }
+                }
             }
+        } else {
+            return this.list.find((layer) => { return layer.isFocus(); });
         }
     }
     _exclusiveShow(layer) {
@@ -110,6 +114,11 @@ class LayerGroup {
             layer.clear();
             if (Q.isValid(callback)) { callback(layer.json()); }
         }
+    }
+    clearAll() {
+        this.list.forEach(layer => {
+            layer.clear();
+        });
     }
     _url(name) {
         return this.director.getName() + "." + this.group + "." + name;

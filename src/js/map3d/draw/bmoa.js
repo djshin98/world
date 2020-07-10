@@ -3,14 +3,14 @@ class Bmoa extends DrawObject {
     constructor() {
         super(2, 2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         var distance = Cesium.Cartesian3.distance(points[0], points[points.length - 1]);
         if (distance > 0) {
             if (this.isReadyToCallbackVariable()) {
                 this.templateEntity.ellipse.semiMinorAxis = distance;
                 this.templateEntity.ellipse.semiMajorAxis = distance;
             } else {
-                return collection.add(this.index, {
+                return layer.add({
                     position: points[0],
                     ellipse: {
                         semiMinorAxis: this.callbackValue(distance),
@@ -36,7 +36,7 @@ class Bmoa extends DrawObject {
 
 
     }
-    type1(collection, name, lnglat, distance, _viewModel) {
+    type1(layer, name, lnglat, distance, _viewModel) {
         lnglat.height = 0;
         let point = CTX.d2c(lnglat);
         let viewModel = this.setViewModel({
@@ -68,7 +68,7 @@ class Bmoa extends DrawObject {
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
             }
         }
-        return collection.add(this.index, option);
+        return layer.add(option);
     }
 }
 module.exports = { Bmoa: Bmoa };

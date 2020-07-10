@@ -4,11 +4,11 @@ class Spline extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let result = LineUtil.spline(points, 100);
             let splitResult = CTX.split.polyline(points, 10);
-            this.sketch(collection, splitResult);
+            this.sketch(layer, splitResult);
             //this.templateEntity.polyline.positions = LineUtil.spline(points, 100);
         } else {
             if (this.isComplete()) {
@@ -25,7 +25,7 @@ class Spline extends DrawObject {
                         //material: new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor)
                         //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
                 };
-                return collection.add(this.index, {
+                return layer.add({
                     polyline: option
                 });
             }
@@ -47,7 +47,7 @@ class Spline extends DrawObject {
                     //material: new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor)
                     //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
             };
-            return collection.add(this.index, {
+            return layer.add( {
                 polyline: option
             });
         }

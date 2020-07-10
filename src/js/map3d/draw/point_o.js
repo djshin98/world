@@ -3,12 +3,12 @@ class PointO extends DrawObject {
     constructor() {
         super(1, 1);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
 
         } else {
             let distance = viewModel.size;
-            return collection.add(this.index, {
+            return layer.add({
                 position: points[0],
                 ellipse: {
                     semiMinorAxis: distance,

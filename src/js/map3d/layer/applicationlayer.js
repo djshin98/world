@@ -56,8 +56,9 @@ class ApplicationLayer extends Layer {
     }
     collection(name) { return this.collections[name]; }
 
-    add(pos, options) {
-        switch (options.category) {
+    add(options) {
+        return this.collection.add(undefined, options, false);
+        /* switch (options.category) {
             case "KMILSYMBOL":
                 {
                     let kMilSymbolCollection = map.collection("KMILSYMBOL");
@@ -71,9 +72,8 @@ class ApplicationLayer extends Layer {
                 }
                 break;
         }
+        */
     }
-
-
     draw3DModel(position, modeluri) {
         if (this.bLocateModel) {
             CTX.viewer.entities.add({

@@ -1,32 +1,42 @@
-const pointBetween = require("../geometry/pointbetween");
-
-function block(feature) {
-  //var direction, width;
-  var annotations = [{}];
-  var points = feature.geometry.coordinates;
-
-  var geometry = { type: "MultiLineString" };
-  geometry.coordinates = [];
-
-  var geometry1 = [];
-  geometry1.push(points[0], points[1]);
-
-  var geometry2 = [];
-  var midpoint = pointBetween(points[0], points[1], 0.5);
-  geometry2.push(points[2], midpoint);
-
-  geometry.coordinates = [geometry1, geometry2];
-
-  annotations[0].geometry = { type: "Point" };
-  annotations[0].properties = {};
-  annotations[0].properties.text = "B";
-  annotations[0].geometry.coordinates = pointBetween(
-    midpoint,
-    points[2],
-    0.5
-  );
-
-  return { geometry: geometry, annotations: annotations };
+function mid(a, b) {
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
 }
 
-module.exports = block;
+function moveX(p, x) {
+    return { x: p.x + x, y: p.y };
+}
+
+function block(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        if (index == 0) {
+            return {
+                type: "polyline",
+                geometry: [
+                    moveX(points[index], -10), moveX(points[index + 1], -10),
+                    moveX(points[index + 1], 10), moveX(points[index], 10)
+                ]
+            };
+        } else if (index == 1) {
+
+            let pp = Q.copy(prev.geometry);
+            pp.push(points[index + 1]);
+            let pts = turnPlane.turnStack(pp, 0, 1, (pt) => {
+                let midpt = mid(pt[0], pt[1]);
+                return {
+                    type: "polyline",
+                    geometry: [
+                        midpt, { x: pt[2].x, y: midpt.y }
+                    ]
+                };
+            });
+            return {
+                type: "polyline",
+                geometry: pts.geometry
+            };
+        }
+
+
+    }).end();
+}
+
+module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };

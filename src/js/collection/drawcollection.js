@@ -25,18 +25,23 @@ class DrawCollection {
     close() {
         this.viewer.entities.removeAll();
     }
-    add(id, option) {
-        var ent = this.viewer.entities.add(option
-            /*
-            {
-                color : _this.viewModel.shapeColor,
-                pixelSize : _this.viewModel.shapeSize,
-                heightReference: Cesium.HeightReference.NONE
-            }*/
-        );
-        ent.category = this.name;
-        ent.drawId = id;
-        return ent;
+    add(id, options) {
+        let layer = this.map.getLayerDirector().getActiveLayer();
+        if (Q.isValid(layer)) {
+            return layer.add(options);
+        } else {
+            var ent = this.viewer.entities.add(options
+                /*
+                {
+                    color : _this.viewModel.shapeColor,
+                    pixelSize : _this.viewModel.shapeSize,
+                    heightReference: Cesium.HeightReference.NONE
+                }*/
+            );
+            ent.category = this.name;
+            ent.drawId = id;
+            return ent;
+        }
     }
     get(id) {
         return this.viewer.entities.values.filter((entity) => { return (entity.category == this.name && entity.drawId == id) ? true : false; });

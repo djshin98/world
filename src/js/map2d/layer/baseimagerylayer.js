@@ -5,27 +5,23 @@ class BaseImageryLayer extends Layer {
         super(layerGroup, options);
     }
     create(layerGroup, layerJson) {
+        if (this.isVisible()) {
+            layerGroup.clearAll();
+            if (Q.isValid(L[layerJson.layer]) && Q.isValid(L[layerJson.layer][layerJson.provider])) {
+                this.layerOnMap = L[layerJson.layer][layerJson.provider](layerJson.src);
 
-        layerGroup.removeAll();
-        if (Q.isValid(this.layerOnMap)) {
-            // this.baseLayer.removeTo(this.viewer2d);
-            layerGroup.getMap().viewer2d.removeLayer(this.layerOnMap);
-            this.layerOnMap = null;
-        }
-        if (Q.isValid(L[layerJson.layer]) && Q.isValid(L[layerJson.layer][layerJson.provider])) {
-            this.layerOnMap = L[layerJson.layer][layerJson.provider](layerJson.src);
-
-            if (Q.isValid(this.layerOnMap)) {
-                this.layerOnMap.addTo(layerGroup.getMap().viewer2d);
+                if (Q.isValid(this.layerOnMap)) {
+                    this.layerOnMap.addTo(layerGroup.getMap().viewer2d);
+                }
+            } else {
+                //console.error("invalid provider : " + layerJson.provider);
             }
-        } else {
-            //console.error("invalid provider : " + layerJson.provider);
         }
     }
     update(options) {
         super.update(options);
     }
-    remove() {
+    clear() {
         if (Q.isValid(this.layerOnMap)) {
             this.layerGroup.getMap().viewer2d.removeLayer(this.layerOnMap);
             this.layerOnMap = null;

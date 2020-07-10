@@ -3,7 +3,7 @@ class MilLine1 extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
@@ -20,7 +20,7 @@ class MilLine1 extends DrawObject {
 
             option.material = new Cesium.ColorMaterialProperty(viewModel.faceColor);
 
-            return collection.add(this.index, {
+            return layer.add({
                 corridor: option
             });
         }
