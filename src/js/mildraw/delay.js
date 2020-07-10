@@ -5,7 +5,7 @@ const { Plane } = require('../map3d/tangent/plane');
 
 class Delay extends DrawObject {
     constructor() {
-        super(3, 3);
+        super(2, 3);
     }
     create(collection, points, viewModel) {
         let p = points;

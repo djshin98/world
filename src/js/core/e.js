@@ -485,6 +485,17 @@ class Q {
             }
         }
     }
+    static copy(inObject) {
+        if (typeof inObject !== "object" || inObject === null) {
+            return inObject;
+        }
+        let outObject = Array.isArray(inObject) ? [] : {}
+
+        for (let key in inObject) {
+            outObject[key] = Q.copy(inObject[key]);
+        }
+        return outObject;
+    }
 }
 global.$$ = $$;
 global.Q = Q;

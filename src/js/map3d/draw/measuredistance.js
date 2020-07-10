@@ -10,7 +10,7 @@ class MeasureDistance extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             this.templateEntity.polyline.positions = points;
         } else {
@@ -42,7 +42,7 @@ class MeasureDistance extends DrawObject {
                         //var testd3 = stoi.svgtoimage(CTX.displayMeter(d));
                         let textimage = Tooltip.base64image({ text: d.toFixed(3) + "" });
 
-                        collection.add(this.index, {
+                        layer.add({
                             position: a,
                             billboard: {
                                 width: 100,
@@ -60,7 +60,7 @@ class MeasureDistance extends DrawObject {
 
                 var testtotal = Tooltip.base64image({ text: "total:" + CTX.displayMeter(total) });
 
-                collection.add(this.index, {
+                layer.add({
                     position: points[points.length - 1],
                     billboard: {
                         width: 100,
@@ -74,7 +74,7 @@ class MeasureDistance extends DrawObject {
             }
 
 
-            return collection.add(this.index, {
+            return layer.add({
                 position: a,
                 polyline: option,
             });

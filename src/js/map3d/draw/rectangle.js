@@ -3,7 +3,7 @@ class Rectangle extends DrawObject {
     constructor() {
         super(3, 4);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let v = Cesium.Rectangle.fromCartesianArray(points);
             this.templateEntity.rectangle.coordinates = v;
@@ -13,7 +13,7 @@ class Rectangle extends DrawObject {
             if (distance > 0) {
                 let secLatitude = 0.03054402;
                 let secLongitude = 0.02465;
-                return collection.add(this.index, {
+                return layer.add({
                     position: points[0],
                     rectangle: {
                         coordinates: this.callbackValue(v),

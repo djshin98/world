@@ -70,6 +70,9 @@ class MapContent extends ArticleContent {
     add(position, options) {
         console.warn("unsupported add() : " + this.constructor.name);
     }
+    addGraphics(options) {
+        console.warn("unsupported addGraphics() : " + this.constructor.name);
+    }
 };
 
 class Setting extends ArticleContent {
@@ -80,7 +83,6 @@ class Setting extends ArticleContent {
                 url: this.options.page,
                 success: (status, statusText, data) => {
                     $$("#" + this.getId()).append(data);
-                    console.log("sss");
                 }
             });
         }

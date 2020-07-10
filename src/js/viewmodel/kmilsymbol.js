@@ -522,14 +522,12 @@ class SymbolTest {
         var option = sel.reduce((prev, curr) => { prev[curr.dataKey()] = curr.val(); return prev }, {});
         if (option.SIDC && option.SIDC.length > 0) {
             option.SIDC = option.SIDC.trim();
-            if (option.SIDC == "G*G*GPPA--****X") {
-                option.icon = false;
-            }
+
             let m = app.articles.getOpenedMap();
             if (Q.isValid(m)) {
                 var graphic = kms.Graphics(option);
                 if (!graphic.isIcon()) {
-                    m.add(graphic);
+                    m.addGraphics(graphic.modular);
                 } else {
                     option.code = graphic.toDataURL();
                     return this.template(option);

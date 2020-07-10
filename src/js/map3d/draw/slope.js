@@ -5,7 +5,7 @@ class Slope extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             let option = {
                 positions: points,
@@ -17,13 +17,13 @@ class Slope extends DrawObject {
             let divMeter = 10;
             let divPoints = LineUtil.divides(points, divMeter);
 
-            SurfaceUtil.polyline(collection, divPoints, function(heightedPoints) {
+            SurfaceUtil.polyline(layer, divPoints, function(heightedPoints) {
                 let degrees = CTX.c2dA(heightedPoints);
                 let v = degrees.map((d, i) => { return { x: i * divMeter, y: d.height }; });
-                collection.getMap().fireEvent("slope", v);
+                layer.getMap().fireEvent("slope", v);
             });
 
-            return collection.add(this.index, {
+            return layer.add({
                 polyline: option
             });
         }

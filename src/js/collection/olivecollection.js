@@ -25,7 +25,7 @@ class OliveCollection {
                 opt.position = new Cesium.CallbackProperty(obj.positionCallbackProperty, false);
             }
             obj.entity = this.viewer.entities.add(new Cesium.Entity(opt));
-            if (i == 0) { parent = entity; }
+            if (i == 0) { parent = obj.entity; }
             return obj;
         });
         this.objects.push(entities);

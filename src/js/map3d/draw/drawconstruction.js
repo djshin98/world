@@ -5,7 +5,7 @@ class DrawConstruction extends DrawObject {
     constructor() {
         super(4);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             let topPoints = [];
             points.forEach((point) => {
@@ -25,7 +25,7 @@ class DrawConstruction extends DrawObject {
                     polygonPoints = [points[i], topPoints[i], topPoints[i + 1], points[i + 1]];
                 }
 
-                let entity_tmp = collection.add(this.index, {
+                let entity_tmp = layer.add({
                     polygon: {
                         hierarchy: polygonPoints,
                         material: material,
@@ -37,7 +37,7 @@ class DrawConstruction extends DrawObject {
                 if (entity) {
                     entity.merge(entity_tmp);
                     //entity_tmp remove
-                    //collection.getMap().getView().entities.remove(entity_tmp);
+                    //layer.getMap().getView().entities.remove(entity_tmp);
                 } else
                     entity = entity_tmp;
                 */
@@ -46,17 +46,13 @@ class DrawConstruction extends DrawObject {
             for (let i = 0; i < points.length; i++) {
                 polygonPoints.push(topPoints[i]);
             }
-            let entity_tmp = collection.add(this.index, {
+            let entity_tmp = layer.add({
                 polygon: {
                     hierarchy: polygonPoints,
                     material: material,
                     perPositionHeight: true,
                 }
             });
-            //entity.merge(entity_tmp);
-            //entity_tmp remove
-            //collection.getMap().getView().entities.remove(entity_tmp);
-            //return entity;
         }
     }
 }

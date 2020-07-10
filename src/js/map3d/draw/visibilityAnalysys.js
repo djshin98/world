@@ -4,10 +4,10 @@ class VisibilityAnalysys extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
-        this.type1(collection, points, viewModel);
+    create(layer, points, viewModel) {
+        this.type1(layer, points, viewModel);
     }
-    type0(collection, points, viewModel) {
+    type0(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
             var _this = this;
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
@@ -25,12 +25,12 @@ class VisibilityAnalysys extends DrawObject {
                         let c = CTX.radian(d.longitude, d.latitude, 0);
                         return c;
                     });
-                    var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 11, positions);
+                    var promise = Cesium.sampleTerrain(layer.map.viewer3d.terrainProvider, 11, positions);
                     Cesium.when(promise, function(updatedPositions) {
                         updatedPositions[0].height = centerHeight;
                         let polyline = VisibilityUtil.terrianEI(updatedPositions, { margin: 10 });
                         //let polyline = CTX.r2cA(updatedPositions);
-                        collection.add(_this.index, {
+                        layer.add({
                             polyline: {
                                 positions: polyline,
                                 color: viewModel.lineColor,
@@ -43,7 +43,7 @@ class VisibilityAnalysys extends DrawObject {
             }
         }
     }
-    type1(collection, points, viewModel) {
+    type1(layer, points, viewModel) {
         if (points && points.length >= this.minPointCount) {
             var _this = this;
             var distance = Cesium.Cartesian3.distance(points[0], points[1]);
@@ -63,11 +63,11 @@ class VisibilityAnalysys extends DrawObject {
                     let c = CTX.radian(d.longitude, d.latitude, 0);
                     return c;
                 });
-                var promise = Cesium.sampleTerrain(collection.map.viewer3d.terrainProvider, 13, positions);
+                var promise = Cesium.sampleTerrain(layer.map.viewer3d.terrainProvider, 13, positions);
                 Cesium.when(promise, function(updatedPositions) {
                     VisibilityUtil.callbackTerrianEI(center, updatedPositions, radiationOptions.divide - 1, { margin: 1 }, function(polyline) {
                         //polyline = CTX.r2cA(polyline);
-                        collection.add(_this.index, {
+                        layer.add({
                             polyline: {
                                 positions: polyline,
                                 color: viewModel.lineColor,

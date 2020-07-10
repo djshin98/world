@@ -3,10 +3,10 @@ class Line extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             let result = CTX.split.polyline(points, 10);
-            this.sketch(collection, result);
+            this.sketch(layer, result);
         } else {
             let option = {
                 positions: this.callbackValue(points),
@@ -24,7 +24,7 @@ class Line extends DrawObject {
                         var dv = Cesium.Cartesian3.divideByScalar(s, 2, {});
                         var a = Cesium.Cartesian3.add(dv, points[i], {});
 
-                        collection.add(this.index, {
+                        layer.add({
                             position: this.callbackValue(a),
                             label: {
                                 text: CTX.displayMeter(d, 3),
@@ -39,7 +39,7 @@ class Line extends DrawObject {
                     }
                 }
 
-                return collection.add(this.index, {
+                return layer.add({
                     position: points[0],
                     polyline: {
                         positions: this.callbackValue(points),

@@ -5,7 +5,7 @@ class Parabola extends DrawObject {
     constructor() {
         super(2);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
             if (Q.isArray(this.templateEntity)) {
                 this.templateEntity.forEach((ent, i) => {
@@ -38,7 +38,7 @@ class Parabola extends DrawObject {
 
             option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
-            return collection.add(this.index, { polyline: option });
+            return layer.add({ polyline: option });
         }
         /*
                 if (this.isValidPoints(points)) {
@@ -52,7 +52,7 @@ class Parabola extends DrawObject {
                     */
         /*
         polylinePoints.forEach(p => {
-            collection.add(this.index, {
+            layer.add( {
                 position: p,
                 point: {
                     pixelSize: viewModel.shapeSize,
@@ -77,14 +77,14 @@ class Parabola extends DrawObject {
 
                     option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
 
-                    return collection.add(this.index, { polyline: option });
+                    return layer.add( { polyline: option });
                     
 
                 }
                 */
     }
 
-    _create(collection, points, viewModel) {
+    _create(layer, points, viewModel) {
         if (points && points.length && points.length >= this.minPointCount) {
 
             var earth = Cesium.Ellipsoid.WGS84;
@@ -112,7 +112,7 @@ class Parabola extends DrawObject {
                 
             for (var i = 0; i < 20; ++i) {       polylinePoints.push(hermiteSpline.evaluate(i / 20));     }
 
-            return collection.add(this.index, {
+            return layer.add({
                 polyline: {
                     positions: polylinePoints,
                     color: viewModel.lineColor,
@@ -135,8 +135,8 @@ class Parabola extends DrawObject {
             });
         }
     }
-    type1(collection, name, degree, minHeight, maxHeight, _viewModel) {
-        if (collection) {
+    type1(layer, name, degree, minHeight, maxHeight, _viewModel) {
+        if (layer) {
             let points = [CTX.d2c(degree.lb), CTX.d2c(degree.lu), CTX.d2c(degree.ru), CTX.d2c(degree.rb)];
             let viewModel = this.setViewModel({
                 faceColor: Cesium.Color.WHITE,
@@ -175,7 +175,7 @@ class Parabola extends DrawObject {
                 }
             }
 
-            return collection.add(this.index, option);
+            return layer.add(option);
         }
     }
 }

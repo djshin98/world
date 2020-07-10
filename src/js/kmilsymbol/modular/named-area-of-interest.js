@@ -1,4 +1,4 @@
-const circleCorridorPolygon = require("../geometry/circlecorridorpolygon");
+/*const circleCorridorPolygon = require("../geometry/circlecorridorpolygon");
 
 // Draws a NAI
 module.exports = function(feature) {
@@ -20,3 +20,18 @@ module.exports = function(feature) {
 
   return { geometry: geometry, annotations: annotations };
 };
+*/
+function block(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        if (index == 1) {
+            return {
+                type: "polyline",
+                geometry: [
+                    points[index - 1], points[index]
+                ]
+            };
+        }
+    }).end();
+}
+
+module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };

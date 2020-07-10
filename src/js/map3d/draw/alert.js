@@ -106,13 +106,13 @@ class Alert extends DrawObject {
     constructor() {
         super(1, 1);
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
 
         } else {
             let createTime = new Date().getTime();
 
-            return collection.add(this.index, {
+            return layer.add({
                 position: points[0],
                 billboard: {
                     height: alertImages[0].height,

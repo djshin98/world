@@ -46,7 +46,7 @@ const { Radar2 } = require('./radar2');
 const { MissionObstruction } = require('../../mildraw/missionobstruction');
 const { Delay } = require('../../mildraw/delay');
 
-const { Arrow } = require('../../mildraw/arrow');
+const { MilGraphics } = require('../../mildraw/milgraphics');
 const { Debacle } = require('../../mildraw/debacle');
 const { Secure } = require('../../mildraw/secure');
 const { Diversion } = require('../../mildraw/diversion');
@@ -82,7 +82,7 @@ const drawLinker = {
     air2earth: { name: "공대지(quadratic)", createFunc: function() { return new Air2Earth(); } },
     wall: { name: "장벽", createFunc: function() { return new Wall(); } },
     spline: { name: "스플라인", createFunc: function() { return new Spline(); } },
-    kmilsymbol: { name: "군대부호", createFunc: function() { return new KMilSymbol(); } },
+    kmilsymbol: { name: "군대부호2", createFunc: function() { return new KMilSymbol(); } },
     tangentPlane: { name: "Tangent Plane", createFunc: function() { return new TangentPlane(); } },
     quadraticTest: { name: "포곡선(Test)", createFunc: function() { return new QuadraticTest(); } },
     drawModel: { name: "3D모델", createFunc: function() { return new DrawModel(); } },
@@ -93,7 +93,7 @@ const drawLinker = {
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
     MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } },
     delay: { name: "delay", createFunc: function() { return new Delay(); } },
-    arrow: { name: "G*T*K-----****X", createFunc: function() { return new Arrow(); } },
+    milgraphics: { name: "군대부호", createFunc: function(modular) { return new MilGraphics(modular); } },
     debacle: { name: "와해", createFunc: function() { return new Debacle(); } },
     secure: { name: "secure", createFunc: function() { return new Secure(); } },
     diversion: { name: "견제", createFunc: function() { return new Diversion(); } },
@@ -114,7 +114,7 @@ class DrawController3 extends DrawController {
         super(map);
         this.baseLayerPicker = baseLayerPicker;
         this.markerCollection = new MarkerCollection(map, { name: "DRAW" });
-        this.drawCollection = new DrawCollection(map, { name: "DRAW" });
+        //this.drawCollection = new DrawCollection(map, { name: "DRAW" });
         this.viewModel = {
             mode: 'view',
             enableStyle: false,
@@ -211,9 +211,19 @@ class DrawController3 extends DrawController {
             }
         }
     }
-    getHandler(key) {
+    setDrawMode(mode, modular) {
+        this.viewModel.mode = mode;
+        this.init();
+        this.terminateShape();
+
+        this.activeDrawHandler = this.getHandler(this.viewModel.mode, modular);
+        if (Q.isValid(this.activeDrawHandler)) {
+            this.activeDrawHandler.ready();
+        }
+    }
+    getHandler(key, modular) {
         if (Q.isValid(drawLinker[key])) {
-            return drawLinker[key].createFunc();
+            return drawLinker[key].createFunc(modular);
         }
     }
     getHandlerList() {
@@ -236,13 +246,13 @@ class DrawController3 extends DrawController {
                 this.terminateShape();
                 return;
             }
-            return this.activeDrawHandler.createShape(this.drawCollection, positionData, this.viewModel, bappend);
+            return this.activeDrawHandler.createShape(this.map.getLayerDirector().getActiveLayer(), positionData, this.viewModel, bappend);
         }
     }
     drawModel(positionData) {
         this.activeDrawHandler = this.getHandler("drawModel");
         if (Q.isValid(this.activeDrawHandler)) {
-            return this.activeDrawHandler.create(this.drawCollection, positionData, this.viewModel);
+            return this.activeDrawHandler.create(this.layer(), positionData, this.viewModel);
         }
     }
 
@@ -250,19 +260,19 @@ class DrawController3 extends DrawController {
         if (Q.isValid(this.activeDrawHandler)) { this.activeDrawHandler.complete(); }
 
         if (Q.isValid(this.activeDrawHandler)) {
-            this.activeDrawHandler.createShape(this.drawCollection, this.activeShapePoints, this.viewModel, true);
+            this.activeDrawHandler.createShape(this.layer(), this.activeShapePoints, this.viewModel, true);
         }
 
         if (Q.isValid(this.activeDrawHandler)) {
             this.activeDrawHandler.ready();
         }
 
-        this.drawCollection.remove(this.floatingPoint);
+        this.layer().remove(this.floatingPoint);
         this.floatingPoint = undefined;
         this.activeShapePoints = [];
         this.index++;
         this.markerCollection.removeAll();
     }
-
+    layer() { return this.map.getLayerDirector().getActiveLayer(); }
 }
 module.exports = { DrawController3: DrawController3, registryHandler: registryHandler };

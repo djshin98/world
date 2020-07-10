@@ -1,3 +1,5 @@
+"use strict";
+
 class Plane extends Cesium.EllipsoidTangentPlane {
     constructor(origin) {
         super(origin);
@@ -194,13 +196,11 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         //----------------------------------------------------------
 
         let p = pts;
-        let tp = [];
-
-        tp = [
-            CTX.c2(p[0].x - (width / 3), (width / 3)),
-            p[0],
-            CTX.c2(p[0].x + (width / 3), (width / 3)),
-            p[0]
+        let tp = [
+            CTX.c2(pts[0].x - (width / 3), (width / 3)),
+            pts[0],
+            CTX.c2(pts[0].x + (width / 3), (width / 3)),
+            pts[0]
         ];
 
         tp.push(p[0]);

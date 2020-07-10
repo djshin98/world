@@ -7,7 +7,7 @@ class Image extends DrawObject {
     pin(drawLength) {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
     }
-    create(collection, points, viewModel) {
+    create(layer, points, viewModel) {
         if (this.isValidPoints(points)) {
 
             //let distance = viewModel.size;
@@ -55,7 +55,7 @@ class Image extends DrawObject {
             points_result.push(center_p1);
             points_result.push(center_p2);
 
-            collection.add(this.index, {
+            layer.add({
                 //position: points[0],
                 //plane: planetmp,
 
