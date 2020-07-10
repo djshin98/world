@@ -49,6 +49,7 @@ const { Delay } = require('../../mildraw/delay');
 const { MilGraphics } = require('../../mildraw/milgraphics');
 const { Debacle } = require('../../mildraw/debacle');
 const { Secure } = require('../../mildraw/secure');
+const { Diversion } = require('../../mildraw/diversion');
 const { Fixation } = require('../../mildraw/fixation');
 
 const drawLinker = {
@@ -96,6 +97,7 @@ const drawLinker = {
     milgraphics: { name: "군대부호", createFunc: function(modular) { return new MilGraphics(modular); } },
     debacle: { name: "와해", createFunc: function() { return new Debacle(); } },
     secure: { name: "secure", createFunc: function() { return new Secure(); } },
+    diversion: { name: "견제", createFunc: function() { return new Diversion(); } },
     fixation: { name: "fixation", createFunc: function() { return new Fixation(); } },
 }
 
