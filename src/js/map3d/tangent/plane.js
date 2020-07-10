@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const { CTX } = require("../ctx");
-=======
 "use strict";
->>>>>>> 5c92cf761070915c9698f19687660aa19a2375d9
 
 class Plane extends Cesium.EllipsoidTangentPlane {
     constructor(origin) {
