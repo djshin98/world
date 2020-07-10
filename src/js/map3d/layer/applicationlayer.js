@@ -10,10 +10,12 @@ class ApplicationLayer extends Layer {
         this.collection = new OliveCollection(layerGroup.getMap(), { name: "app" });
     }
     create(layerGroup, options) {}
-    remove(entity) {
-        this.collection.remove(entity.id);
+    add(options) {
+        return this.collection.add(undefined, options, false);
     }
-
+    remove(entity) {
+        this.collection.remove(entity);
+    }
     terrianFromDegrees(objs, callback) {
         let _this = this;
         let selObj = objs.filter(d => { return Q.isValid(d.degree) ? true : false; });
@@ -56,24 +58,7 @@ class ApplicationLayer extends Layer {
     }
     collection(name) { return this.collections[name]; }
 
-    add(options) {
-        return this.collection.add(undefined, options, false);
-        /* switch (options.category) {
-            case "KMILSYMBOL":
-                {
-                    let kMilSymbolCollection = map.collection("KMILSYMBOL");
-                    kMilSymbolCollection.add(CTX.w2d(pos.x, pos.y), options);
-                }
-                break;
-            case "MARKER":
-                {
-                    let markerCollection = map.collection("MARKER");
-                    markerCollection.add(CTX.w2d(pos.x, pos.y), options);
-                }
-                break;
-        }
-        */
-    }
+
     draw3DModel(position, modeluri) {
         if (this.bLocateModel) {
             CTX.viewer.entities.add({

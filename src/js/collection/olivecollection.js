@@ -41,32 +41,60 @@ class OliveCollection {
         this.objects = [];
     }
     get(id, callback) {
-        let _entities, _object, index;
-        this.objects.some((entities, i) => {
-            return entities.some(object => {
-                if (object.entity.id == id) {
-                    _entities = entities;
-                    _object = object;
-                    entity = object.entity;
-                    index = i;
-                    return true;
+        if (Q.isValid(id)) {
+            if (Q.isArray(id)) {
+                let _entities;
+                this.objects.some((entities, i) => {
+                    if (entities == id) {
+                        _entities = entities;
+                        return true;
+                    }
+                    return false;
+                });
+                if (Q.isValid(_entities) && Q.isValid(callback)) { callback(_entities); }
+                return _entities;
+            } else {
+                if (Q.isObject(id)) {
+                    id = id.id;
                 }
-                return false;
-            });
-        });
-        if (Q.isValid(_entities) && Q.isValid(callback)) { callback(_entities, _object, index); }
-        return _entities;
+                let _entities, _object, index;
+                this.objects.some((entities, i) => {
+                    return entities.some(object => {
+                        if (object.entity.id == id) {
+                            _entities = entities;
+                            _object = object;
+                            entity = object.entity;
+                            index = i;
+                            return true;
+                        }
+                        return false;
+                    });
+                });
+                if (Q.isValid(_entities) && Q.isValid(callback)) { callback(_entities, _object, index); }
+                return _entities;
+            }
+        }
     }
     remove(id) {
         return this.get(id, (entities, object, index) => {
-            entities.forEach(obj => {
-                this.viewer.entities.remove(obj.entity);
-                this.objects.splice(index, 1);
-            });
+            if (Q.isValid(object)) {
+                this.viewer.entities.remove(object.entity);
+                entities.pop(object);
+                object = null;
+            } else {
+                entities.forEach(obj => {
+                    this.viewer.entities.remove(obj.entity);
+                });
+                this.objects.pop(entities);
+                entities = null;
+            }
         });
     }
     move(id, longitude, latitude, height) {
         this.get(id, (entities, object, index) => {
+            if (!Q.isValid(object)) {
+                object = entities[0];
+            }
             if (Q.isValid(object.position)) {
                 let n = CTX.d2c(CTX.degree(longitude, latitude, height));
                 let origin = CTX.c2d(object.position);
@@ -82,7 +110,13 @@ class OliveCollection {
     }
     show(id, visible) {
         this.get(id, (entities, object, index) => {
-            object.entity.show = visible;
+            if (Q.isValid(object)) {
+                object.entity.show = visible;
+            } else {
+                entities.forEach(obj => {
+                    obj.entity.show = visible;
+                });
+            }
         });
     }
     terrianFromDegrees(degrees, callback) {
