@@ -7,49 +7,16 @@ class Presentation {
         this.WeoponRecomDialog = [];
         this.WeoponAssignDialog = [];
 
-        this.allyPres = map.createCollection("ALLY_PRES", "KMilSymbol");
-        this.enemyPres = map.createCollection("ENEMY_PRES", "KMilSymbol");
     }
     test() {
         alert("test");
     }
     ShowEnemyUnit() {
-        if (this.enemyPres.objects.length === 0) {
-            let collection = this.enemyPres;
-            serverAdapter.get('enemyPre', {}, function(resultdata) {
-                var datas = resultdata.enemy_unit.reduce(function(prev, curr) {
-                    prev.push({ name: curr.unit_name, longitude: curr.geocd_lngt, latitude: curr.geocd_ltd, sic: curr.unit_sbl_cd });
-                    return prev
-                }, []);
 
-
-                collection.terrianFromDegrees(datas, function(d) {
-                    d.size = 30;
-                    collection.add(d.cartesianVal, d);
-                });
-            });
-        } else {
-            this.enemyPres.removeAll();
-        }
 
     }
     ShowUnit() {
-        if (this.allyPres.objects.length === 0) {
-            let collection = this.allyPres;
-            serverAdapter.get('allyPre', {}, function(resultdata) {
-                var datas = resultdata.unit.reduce(function(prev, curr) {
-                    var cartesian = Cesium.Cartesian3.fromDegrees(curr.geocd_lngt, curr.geocd_ltd, 0);
-                    prev.push({ name: curr.unit_name, cartesianVal: cartesian, sic: curr.unit_sbl_cd });
-                    return prev
-                }, []);
-                datas.forEach(function(d) {
-                    d.size = 30;
-                    collection.add(d.cartesianVal, d);
-                });
-            });
-        } else {
-            this.allyPres.removeAll();
-        }
+
     }
     ShowEnemyOperationLine() {
 

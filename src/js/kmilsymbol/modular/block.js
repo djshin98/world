@@ -1,32 +1,23 @@
-const pointBetween = require("../geometry/pointbetween");
+const { calc } = require("../graphics/math");
 
-function block(feature) {
-  //var direction, width;
-  var annotations = [{}];
-  var points = feature.geometry.coordinates;
-
-  var geometry = { type: "MultiLineString" };
-  geometry.coordinates = [];
-
-  var geometry1 = [];
-  geometry1.push(points[0], points[1]);
-
-  var geometry2 = [];
-  var midpoint = pointBetween(points[0], points[1], 0.5);
-  geometry2.push(points[2], midpoint);
-
-  geometry.coordinates = [geometry1, geometry2];
-
-  annotations[0].geometry = { type: "Point" };
-  annotations[0].properties = {};
-  annotations[0].properties.text = "B";
-  annotations[0].geometry.coordinates = pointBetween(
-    midpoint,
-    points[2],
-    0.5
-  );
-
-  return { geometry: geometry, annotations: annotations };
+function block(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        if (index == 0) {
+            return { type: "polyline", geometry: [points[index], points[index + 1]] };
+        } else if (index == 1) {
+            let pp = Q.copy(prev.geometry);
+            pp.push(points[index + 1]);
+            let pts = turnPlane.turnStack(pp, 0, 1, (pt) => {
+                let midpt = calc.mid(pt[0], pt[1]);
+                return {
+                    type: "polyline",
+                    geometry: [midpt, { x: pt[2].x, y: midpt.y }]
+                };
+            });
+            return { type: "polyline", geometry: pts.geometry };
+        }
+    }).end();
 }
 
-module.exports = block;
+
+module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };

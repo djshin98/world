@@ -5,6 +5,7 @@
         "name": "Open Street Map",
         "type": "radio",
         "group": "baseImagery",
+        "show": true,
         "provider": "OpenStreetMapImageryProvider",
         "options": {
             "url": "https://a.tile.openstreetmap.org/"
@@ -81,6 +82,7 @@
         "type": "radio",
         "group": "terrian",
         "provider": "createWorldTerrain",
+        "show": true,
         "options": {
             "requestVertexNormals": true,
             "requestWaterMask": true
@@ -150,6 +152,7 @@
         "name": "Grid",
         "type": "check",
         "group": "userImagery",
+        "show": false,
         "provider": "GridImageryProvider",
         "options": {
 
@@ -200,5 +203,17 @@
 }, {
     "name": "응용 지도",
     "group": "application",
-    "children": []
+    "children": [{
+        "name": "사용자 어플리케이션 레이어",
+        "type": "radio|check",
+        "show": true,
+        "focus": true,
+        "group": "application"
+    }, {
+        "name": "군대부호 테스트 레이어",
+        "type": "radio|check",
+        "show": true,
+        "focus": true,
+        "group": "application"
+    }]
 }]

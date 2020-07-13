@@ -1,10 +1,12 @@
-const { LayerGroup } = require("./layergroup");
+const { LayerGroup } = require("../../../layer/layergroup");
+const { ApplicationLayer } = require("../applicationlayer");
+
 class ApplicationLayers extends LayerGroup {
-    constructor(filename, group) {
-        super(filename, group, true);
+    constructor(viewer, director, g) {
+        super(director, g, true);
     }
-    create(map, filename, group, json) {
-        console.warn("unsupported layergroup : " + this.constructor.name);
+    create(json) {
+        return new ApplicationLayer(this, json);
     }
 }
 module.exports = { ApplicationLayers: ApplicationLayers };

@@ -1,10 +1,11 @@
-const { LayerGroup } = require("./layergroup");
+const { LayerGroup } = require("../../../layer/layergroup");
+const { DataLayer } = require("../datalayer");
 class DataLayers extends LayerGroup {
-    constructor(filename, group) {
-        super(filename, group, false);
+    constructor(viewer, director, g) {
+        super(director, g, true);
     }
-    create(map, filename, group, json) {
-        console.warn("unsupported layergroup : " + this.constructor.name);
+    create(json) {
+        return new DataLayer(this, json);
     }
 }
 module.exports = { DataLayers: DataLayers };

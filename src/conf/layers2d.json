@@ -1,0 +1,158 @@
+[{
+    "name": "배경 지도",
+    "group": "baseImagery",
+    "children": [{
+        "name": "브이월드",
+        "type": "radio",
+        "group": "baseImagery",
+        "show": true,
+        "layer": "tileLayer",
+        "provider": "koreaProvider",
+        "src": "VWorld.Street",
+        "options": {}
+    }, {
+        "name": "브이월드(위성)",
+        "type": "radio",
+        "group": "baseImagery",
+        "layer": "tileLayer",
+        "provider": "koreaProvider",
+        "src": "VWorld.Satellite",
+        "options": {}
+    }, {
+        "name": "브이월드(하이브리드)",
+        "type": "radio",
+        "group": "baseImagery",
+        "layer": "tileLayer",
+        "provider": "koreaProvider",
+        "src": "VWorld.Hybrid",
+        "options": {}
+    }, {
+        "name": "브이월드(Midnight)",
+        "type": "radio",
+        "group": "baseImagery",
+        "layer": "tileLayer",
+        "provider": "koreaProvider",
+        "src": "VWorld.Midnight",
+        "options": {}
+    }, {
+        "name": "배경없음",
+        "type": "radio",
+        "group": "baseImagery",
+        "options": {}
+    }]
+}, {
+    "name": "지형 지도",
+    "group": "terrian",
+    "children": []
+}, {
+    "name": "사용자 이미지 지도",
+    "group": "userImagery",
+    "children": [{
+        "name": "United States GOES Infrared",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "WebMapServiceImageryProvider",
+        "options": {
+            "url": "https://mesonet.agron.iastate.edu/cgi-bin/wms/goes/conus_ir.cgi?",
+            "layers": "goes_conus_ir",
+            "credit": "Infrared data courtesy Iowa Environmental Mesonet",
+            "parameters": {
+                "transparent": "true",
+                "format": "image/png"
+            }
+        },
+        "alpha": 0.5
+    }, {
+        "name": "United States Weather Radar",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "WebMapServiceImageryProvider",
+        "options": {
+            "url": "https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?",
+            "layers": "nexrad-n0r",
+            "credit": "Radar data courtesy Iowa Environmental Mesonet",
+            "parameters": {
+                "transparent": "true",
+                "format": "image/png"
+            }
+        }
+    }, {
+        "name": "TileMapService Image",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "TileMapServiceImageryProvider",
+        "options": {
+            "url": "../images/cesium_maptiler/Cesium_Logo_Color"
+        }
+    }, {
+        "name": "Single Image",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "SingleTileImageryProvider",
+        "options": {
+            "url": "../images/Cesium_Logo_overlay.png",
+            "rectangleDegree": [123.0, 37.0, 130.0, 38.75]
+        }
+    }, {
+        "name": "Grid",
+        "type": "check",
+        "group": "userImagery",
+        "show": true,
+        "provider": "GridImageryProvider",
+        "options": {
+
+        },
+        "alpha": 1.0
+    }, {
+        "name": "Tile Coordinates",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "TileCoordinatesImageryProvider",
+        "options": {
+
+        },
+        "alpha": 1.0
+    }, {
+        "name": "Hwasung_TMS",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "TileMapServiceImageryProvider",
+        "options": {
+            "url": "http://192.168.1.101:8080/Map/Hwasung_TMS/"
+        }
+    }, {
+        "name": "Seoul_TMS",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "TileMapServiceImageryProvider",
+        "options": {
+            "url": "http://192.168.1.101:8080/Map/Seoul_TMS/"
+        }
+    }, {
+        "name": "Daejon_TMS",
+        "type": "check",
+        "group": "userImagery",
+        "provider": "TileMapServiceImageryProvider",
+        "options": {
+            "url": "http://192.168.1.101:8080/Map/Daejon_TMS/"
+        }
+    }]
+}, {
+    "name": "통계 지도",
+    "group": "statistics",
+    "children": []
+}, {
+    "name": "사용자 데이터 지도",
+    "group": "data",
+    "children": []
+}, {
+    "name": "응용 지도",
+    "group": "application",
+    "children": [{
+        "name": "사용자 어플리케이션 레이어",
+        "type": "radio|check",
+        "show": true,
+        "focus": true,
+        "group": "application"
+    }]
+}]

@@ -1,4 +1,4 @@
-const bearingBetween = require("../geometry/bearingbetween");
+/*const bearingBetween = require("../geometry/bearingbetween");
 const pointBetween = require("../geometry/pointbetween");
 const toDistanceBearing = require("../geometry/todistancebearing");
 
@@ -49,3 +49,16 @@ function canalize(feature) {
 }
 
 module.exports = canalize;
+*/
+function breach(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        return {
+            type: "polyline",
+            geometry: [
+                points[index], points[index + 1]
+            ]
+        };
+    }).end();
+}
+
+module.exports = { modular: breach, minPointCount: 2, maxPointCount: 7 };

@@ -40,7 +40,11 @@
     </div>
 </div>
 <script>
-    var scene = map.viewer3d.scene;
+    app.onReady(function(_app, _map_) {
+
+    });
+    let m = app.articles.getOpenedMap();
+    var scene = m.viewer3d.scene;
     scene.debugShowFramesPerSecond = true;
 
     var tileset;
@@ -60,18 +64,21 @@
     var handler;
 
     function resetScene() {
-        map.viewer3d.trackedEntity = undefined;
-        map.viewer3d.dataSources.removeAll();
-        map.viewer3d.entities.removeAll();
-        map.viewer3d.scene.primitives.remove(tileset);
-        map.viewer3d.clock.shouldAnimate = false;
-        handler = handler && handler.destroy();
-        scene.skyBox.show = true;
-        scene.camera.flyHome(0.0);
-        scene.requestRender();
-        viewModel.showTimeOptions = false;
-        viewModel.timeChangeEnabled = false;
-        viewModel.maximumRenderTimeChange = 0;
+        let m = app.articles.getMap(3);
+        if (Q.isValid(m)) {
+            m.viewer3d.trackedEntity = undefined;
+            m.viewer3d.dataSources.removeAll();
+            m.viewer3d.entities.removeAll();
+            m.viewer3d.scene.primitives.remove(tileset);
+            m.viewer3d.clock.shouldAnimate = false;
+            handler = handler && handler.destroy();
+            scene.skyBox.show = true;
+            scene.camera.flyHome(0.0);
+            scene.requestRender();
+            viewModel.showTimeOptions = false;
+            viewModel.timeChangeEnabled = false;
+            viewModel.maximumRenderTimeChange = 0;
+        }
     }
 
     // Load a tileset and set the view.
@@ -147,14 +154,14 @@
         handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
         handler.setInputAction(function(movement) {
             var pickedObject = scene.pick(movement.endPosition);
-            if (Cesium.defined(pickedObject) && (pickedObject.id === entity)) {
-                if (Cesium.defined(lastPicked)) {
+            if (Q.isValid(pickedObject) && (pickedObject.id === entity)) {
+                if (Q.isValid(lastPicked)) {
                     return;
                 }
                 color = Cesium.Color.YELLOW;
                 scene.requestRender();
                 lastPicked = pickedObject;
-            } else if (Cesium.defined(lastPicked)) {
+            } else if (Q.isValid(lastPicked)) {
                 color = Cesium.Color.CORNFLOWERBLUE;
                 scene.requestRender();
                 lastPicked = undefined;

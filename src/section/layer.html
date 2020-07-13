@@ -6,8 +6,26 @@
 
 <script>
     app.onReady(function(_app, _map) {
-        app.getOpenedMap(3).getLayerDirector().addUpdateCallback((layers) => {
+        //getOpenedMap().getLayerDirector().addUpdateCallback
+        //_app.articles.off(handler);
+        _app.articles.on("opened|updated", (layers) => {
             new OliveTree("#layer-view", layers, {
+                onQueryChecked(inputtype, d) {
+                    if (d.group == "baseImagery") {
+                        if (inputtype == "radio") {
+                            return (d.show === true) ? true : false;
+                        }
+                    } else if (d.group == "application") {
+                        if (inputtype == "radio") {
+                            return (d.focus === true) ? true : false;
+                        } else if (inputtype == "checkbox") {
+                            return (d.show === true) ? true : false;
+                        }
+                    } else {
+                        return (d.show === true) ? true : false;
+                    }
+                    return false;
+                },
                 onAttribute: function(d) {
                     return {
                         id: d.id
@@ -47,11 +65,27 @@
                         });
                     });
 
-                    app.setAttributes(test);
+                    _app.setAttributes(test);
                 },
-                onChecked: function(checked, type, tag, obj) {
-                    if (obj.provider && obj.options) {
-                        app.getOpenedMap(3).getLayerDirector().setLayer(obj, checked, false);
+                onChecked: function(inputtype, checked, filetype, tag, obj) {
+                    if (obj.group) { // obj.provider && obj.options) {
+                        if (obj.group == "baseImagery") {
+                            if (inputtype == "radio") {
+                                obj.show = checked;
+                            }
+                        } else {
+                            if (inputtype == "checkbox") {
+                                obj.show = checked;
+                            } else if (inputtype == "radio") {
+                                obj.focus = checked;
+                            }
+                        }
+                        let m = _app.articles.getOpenedMap();
+                        if (Q.isValid(m)) {
+                            m.getLayerDirector().setLayer(obj, (layer) => {
+
+                            });
+                        }
                     }
                 }
             });

@@ -165,22 +165,21 @@ function elements(heles) {
         });
     }
     this.style = function(name, value, callback) {
-        if (value) {
+        if (Q.isValid(value)) {
             this.elements.forEach(ele => {
                 let styles = [];
                 let bfind = false;
                 let str = ele.getAttribute("style");
-                str.split(";").forEach(seg => {
-                    let kv = seg.split(":");
-                    if (kv.length == 2) {
-                        if (name === kv[0]) {
-                            styles.push(kv[0] + ":" + value);
+                if (Q.isValid(str)) {
+                    Q.splitsByPair(str, ";", ":", (key, v) => {
+                        if (key == name) {
+                            styles.push(key + ":" + value);
                             bfind = true;
                         } else {
-                            styles.push(kv[0] + ":" + kv[1]);
+                            styles.push(key + ":" + v);
                         }
-                    }
-                });
+                    });
+                }
                 if (!bfind) {
                     styles.push(name + ":" + value);
                 }
@@ -194,7 +193,20 @@ function elements(heles) {
         } else {
             let list = [];
             this.elements.forEach(ele => {
-                list.push(ele.getAttribute("style"));
+                let style = ele.getAttribute("style");
+                if (Q.isValid(style)) {
+                    if (!style.split(";").map(v => { return v.trim(); }).some(seg => {
+                            let kv = seg.split(":");
+                            if (kv[0].trim() == name && kv.length == 2) {
+                                list.push(kv[1].trim());
+                                return true;
+                            }
+                            return false;
+                        })) { list.push(""); }
+                } else {
+                    list.push("");
+                }
+                //list.push(ele.getAttribute("style"));
             });
             return list;
         }
@@ -248,6 +260,16 @@ function elements(heles) {
 
     this.show = function() {
         return this.style("display", "");
+    };
+
+    this.isVisible = function() {
+        let ret = this.style("display");
+        if (Q.isValid(ret) && ret.length > 0) {
+            return ret.some(d => {
+                return (d === "") ? true : false;
+            });
+        }
+        return false;
     };
 
     this.hasClass = function() {
@@ -359,6 +381,7 @@ function elements(heles) {
     this.add = function(a, callback) {
         if (typeof(a) == "string") {
             this.add(this.h2e(a), callback);
+
         } else if (typeof(a) == "object") {
             if (a instanceof NodeList) {
                 a.forEach(i => {
@@ -369,8 +392,13 @@ function elements(heles) {
                     let x = a.cloneNode(true);
                     !callback || callback(ele, x);
                     if (x.tagName.toUpperCase() === "SCRIPT") {
-                        eval(x.textContent);
+                        x.textContent = x.textContent.replace(/["]/g, "\"");
+                        window.eval(x.textContent.trim());
                     }
+                    /*else if (x.tagName.toUpperCase() === "STYLE") {
+                                           x.textContent = x.textContent.replace(/["]/g, "\"");
+                                           window.eval(x.textContent.trim());
+                                       }*/
                 });
             }
         }
@@ -426,6 +454,49 @@ class Q {
     static isFunction(a) { return (typeof(a) == "function") ? true : false; }
 
     static isArray(a) { return (Q.isValid(a) && a instanceof Array) ? true : false; }
+
+    static isObject(a) { return (Q.isValid(a) && typeof(a) == "object") ? true : false; }
+    static splits(a, div, callback) {
+        a.split(div).map(t => { return t.trim(); }).filter(t => { return t.length > 0 ? true : false; }).forEach((t, i) => { callback(t, i); });
+    }
+    static splitsByPair(a, div, pairDiv, callback) {
+        if (Q.isValid(callback)) {
+            Q.splits(a, div, (seg, i) => {
+                let kv = seg.split(pairDiv).map(t => { return t.trim(); });
+                if (kv.length == 2) {
+                    callback(kv[0], kv[1]);
+                }
+            });
+        }
+    }
+    static keys(a, callback) {
+        if (Q.isValid(a) && Q.isValid(callback)) {
+            Object.keys(a).forEach(key => {
+                callback(key, a[key]);
+            });
+        }
+    }
+    static findByKey(a, callback) {
+        if (Q.isValid(a) && Q.isValid(callback)) {
+            let key = Object.keys(a).find(key => {
+                return callback(key, a[key]);
+            });
+            if (Q.isValid(key)) {
+                return a[key];
+            }
+        }
+    }
+    static copy(inObject) {
+        if (typeof inObject !== "object" || inObject === null) {
+            return inObject;
+        }
+        let outObject = Array.isArray(inObject) ? [] : {}
+
+        for (let key in inObject) {
+            outObject[key] = Q.copy(inObject[key]);
+        }
+        return outObject;
+    }
 }
 global.$$ = $$;
 global.Q = Q;

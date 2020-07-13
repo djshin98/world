@@ -1,5 +1,3 @@
-var { isValid } = require('../core/block');
-
 const BROKER_INNER_TOPIC = "__websocket_broker__";
 class WebSocketBroker {
     constructor(options) {
@@ -35,7 +33,7 @@ class WebSocketBroker {
             const data = JSON.parse(event.data);
             if (_this.options.onmessage) {
                 _this.options.onmessage(data);
-                if (Cesium.defined(data.topic) && Cesium.defined(_this.topics[data.topic])) {
+                if (Q.isValid(data.topic) && Q.isValid(_this.topics[data.topic])) {
                     _this.topics[data.topic](data.topic, data);
                 }
             } else {

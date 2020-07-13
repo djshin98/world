@@ -2,6 +2,7 @@
 let { OliveEntityCollection } = require('./entity_collection');
 let { SIDC } = require("../viewmodel/kmilsymbol");
 let { OliveDescription } = require("../ui/olive-description");
+let { kms } = require("../kmilsymbol/milsymbol");
 
 class KMilSymbolCollection extends OliveEntityCollection {
     constructor(map, options) {
@@ -28,7 +29,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
 
     terrianFromDegrees(objs, callback) {
         let _this = this;
-        let selObj = objs.filter(d => { return Cesium.defined(d.degree) ? true : false; });
+        let selObj = objs.filter(d => { return Q.isValid(d.degree) ? true : false; });
         if (selObj.length > 0) {
             var positions = selObj.map(d => {
                 let c = CTX.radian(d.degree.longitude, d.degree.latitude, 0);
@@ -57,7 +58,7 @@ class KMilSymbolCollection extends OliveEntityCollection {
     }
 
     add(degree, options) {
-        let image = new ms.Symbol(options.SIDC, options);
+        let image = new kms.Symbol(options.SIDC, options);
         let desc = (new SIDC(options.SIDC[0], options.SIDC)).toDescription();
         return this._add(degree, options, desc, image);
     }

@@ -1,119 +1,55 @@
-const bearingBetween = require("../geometry/bearingbetween");
-const pointBetween = require("../geometry/pointbetween");
-const toDistanceBearing = require("../geometry/todistancebearing");
-const distanceBetween = require("../geometry/distancebetween");
+const { calc } = require("../graphics/math");
 
-function fix(feature) {
-  //var direction, width;
-  var points = feature.geometry.coordinates;
-
-  var length = distanceBetween(points[0], points[1]);
-  var bearing = bearingBetween(points[0], points[1]);
-  var widht = length * 0.10;
-
-  var geometry = { type: "MultiLineString" };
-
-  geometry.coordinates = [];
-
-  var geometry1 = [];
-
-  geometry1.push(points[0]);
-
-  geometry1.push(pointBetween(points[0], points[1], 0.2));
-
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.25),
-      widht,
-      bearing + 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.3),
-      widht,
-      bearing - 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.35),
-      widht,
-      bearing + 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.4),
-      widht,
-      bearing - 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.45),
-      widht,
-      bearing + 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.5),
-      widht,
-      bearing - 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.55),
-      widht,
-      bearing + 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.6),
-      widht,
-      bearing - 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.65),
-      widht,
-      bearing + 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.7),
-      widht,
-      bearing - 90
-    )
-  );
-  geometry1.push(
-    toDistanceBearing(
-      pointBetween(points[0], points[1], 0.75),
-      widht,
-      bearing + 90
-    )
-  );
-
-  geometry1.push(pointBetween(points[0], points[1], 0.8));
-
-  geometry1.push(points[1]);
-
-  var geometry2 = [];
-  geometry2.push(
-    toDistanceBearing(points[0], widht * 1.5, bearing + 45)
-  );
-  geometry2.push(points[0]);
-  geometry2.push(
-    toDistanceBearing(points[0], widht * 1.5, bearing - 45)
-  );
-
-  geometry.coordinates = [geometry1, geometry2];
-  return { geometry: geometry };
+function fix(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, points, index, buffer) => {
+        if (index == 0) {
+            let s = properties.pixelBySize;
+            let reqMinLength = s.zigzag + s.sm + s.em;
+            let lineLength = calc.distance(points[0], points[1]);
+            let zl, ms, me;
+            if (lineLength >= reqMinLength) {
+                zl = s.zigzag;
+                ms = (lineLength - zl) / 2;
+                me = (lineLength - zl) / 2;
+            } else {
+                zl = (lineLength * s.zigzag) / reqMinLength;
+                ms = (lineLength * s.sm) / reqMinLength;
+                me = (lineLength * s.em) / reqMinLength;
+            }
+            let divs = [points[index]];
+            let div = zl / 11;
+            for (let i = 0; i < 11; i++) {
+                divs.push({ x: 0, y: ms + (div * i) });
+                divs.push({ x: ((i % 2 == 0) ? 1 : -1) * s.width / 2, y: ms + div * i + div / 2 });
+            }
+            divs.push({ x: 0, y: ms + zl });
+            divs.push(points[index + 1]);
+            return [{
+                type: "polyline",
+                geometry: [
+                    calc.move(points[index], -s.arrow, s.arrow), points[index], calc.move(points[index], s.arrow, s.arrow)
+                ]
+            }, {
+                type: "polyline",
+                geometry: divs
+            }];
+        }
+    }).end();
 }
 
-module.exports = fix;
+module.exports = {
+    modular: fix,
+    minPointCount: 2,
+    maxPointCount: 2,
+    properties: {
+        size: {
+            arrow: 10, //화살표 한쪽 선의 길이
+            zigzag: 100, //zigzag 
+            sm: 20, // 화살표가 있는 시작점과 zigzag 시작점의 최소 길이
+            em: 20,
+            width: 40
+        },
+        pixelBySize: {}
+    }
+
+};

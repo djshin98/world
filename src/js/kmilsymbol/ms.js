@@ -246,6 +246,7 @@ ms.graphics.addModular(require("./graphics/modulars"));
 ms.graphics.addGraphics(require("./graphics/tactical-2525"));
 ms.graphics.addGraphics(require("./graphics/tactical-app6"));
 
+ms.graphics.ready();
 ms.Graphics = function(option) {
     let module = this.graphics.get(option.SIDC);
     if (Q.isValid(module)) {

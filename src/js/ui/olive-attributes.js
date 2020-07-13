@@ -21,13 +21,13 @@ function _toggleAttributeDisplay(tag) {
 
 global.toggleAttributeDisplay = _toggleAttributeDisplay;
 class OliveAttributes {
-    constructor(map, options) {
-        this.map = map;
+    constructor(options) {
+        //this.map = map;
         this.options = Object.assign({}, options);
-        let _this = this;
-        this.selectedEvent = this.map.oliveCursor.listenEvent("selected", (v) => {
-            _this.set(v);
-        });
+        //let _this = this;
+        //this.selectedEvent = this.map.oliveCursor.listenEvent("selected", (v) => {
+        //    _this.set(v);
+        //});
     }
     set(attrs) {
         let str = "<div><p>" + this.options.caption + "</p>";

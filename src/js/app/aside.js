@@ -6,12 +6,11 @@ class Aside {
         this.app = app;
         this.options = Object.assign({}, options);
 
-        let _this = this;
-        document.getElementById(this.options.handle.id).addEventListener("click", function() {
-            _this.toggleView();
+        document.getElementById(this.options.handle.id).addEventListener("click", () => {
+            this.toggleView();
         });
 
-        this.attributes = new OliveAttributes(this.app.map, { id: this.options.id, caption: "제목" });
+        this.attributes = new OliveAttributes({ id: this.options.id, caption: "제목" });
         /*
                 let test = {
                     General: [
@@ -26,9 +25,9 @@ class Aside {
         */
         this.attributeEvent = Eventable.listenEventAnywhere("attributes", (v) => {
             if (v) {
-                _this.setAttributes(v);
+                this.setAttributes(v);
             } else {
-                _this.setAttributes({});
+                this.setAttributes({});
             }
         });
 
