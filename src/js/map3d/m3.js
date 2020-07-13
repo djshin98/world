@@ -38,12 +38,8 @@ class m3 extends MapContent {
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
 
-<<<<<<< HEAD
-            shadows: false,
-=======
             shadows: true,
             terrainShadows: Cesium.ShadowMode.ENABLED,
->>>>>>> f61073a1c8e5b25bb5f3df07699c4c8ffdc5dc3b
             baseLayerPicker: true,
             geocoder: false,
             infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
