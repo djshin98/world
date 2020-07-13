@@ -1,6 +1,6 @@
 /* eslint-disable */
-const { Q } = require("../core/e");
-//var { dom } = require("../util/comm");
+
+const { IxDatabase } = require('../indexeddb/db');
 const basic = require("../milsymbol/mil_basic");
 const emergency = require("../milsymbol/mil_emergency");
 const operAct = require("../milsymbol/mil_operAct");
@@ -8,7 +8,6 @@ const safe = require("../milsymbol/mil_safe");
 const signal = require("../milsymbol/mil_signal");
 const weather = require("../milsymbol/mil_weather");
 const { kms } = require("../kmilsymbol/milsymbol");
-const { KMilSymbolCollection } = require("../collection/kmilsymbolcollection");
 
 var codeTypes = [
     { code: "S", desc: "S:기본군대부호", standard: basic },
@@ -66,63 +65,66 @@ class ViewModel_KMilSymbol {
             str += '<option value="' + d.code + '">' + d.desc + '</option>';
         });
         ele.innerHTML = str;
-        var _this = this;
-        ele.onchange = function() {
-            document.getElementById(_this.options.view.SIDC).value = "";
-            _this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
+        ele.onchange = () => {
+            document.getElementById(this.options.view.SIDC).value = "";
+            this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
 
-            if (_this.activeType) {
-                if (_this.activeType.code != "W") {
-                    document.getElementById(_this.options.view.MISSION).hidden = false;
-                    document.getElementById(_this.options.view.UNIT).hidden = false;
+            if (this.activeType) {
+                if (this.activeType.code != "W") {
+                    document.getElementById(this.options.view.MISSION).hidden = false;
+                    document.getElementById(this.options.view.UNIT).hidden = false;
 
-                    _this.makeSIDCSelect(_this.options.view.AFFILIATION, "affiliation", _this.activeType.standard.affiliation);
-                    _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "battlefield", _this.activeType.standard.battlefield);
-                    _this.makeSIDCSelect(_this.options.view.STATUS, "status", _this.activeType.standard.status);
-                    _this.makeSIDCSelect(_this.options.view.MISSION, "mission", _this.activeType.standard.mission);
-                    _this.dataset[_this.options.view.FI] = _this.makeModifierTreeJson(_this.options.view.FI, _this.activeType.standard.identifier);
-                    _this.dataset[_this.options.view.UNIT] = _this.makeUnitTreeJson(_this.options.view.UNIT, _this.activeType.standard.unit);
-                    /*
-                    dom.$( ".functionIndentfierClickable").forEach(d=>{
-                        d.addEventListener("click",()=>{
-                            let id = d.getAttribute("data-id");
-                            let idf = _this.findFunctionIdentifier(id);
-                            if( idf ){
-                                _this.changeModifier( idf.modifier , idf.type, idf.affiliation , idf.battlefield, idf.status );
+                    this.makeSIDCSelect(this.options.view.AFFILIATION, "affiliation", this.activeType.standard.affiliation);
+                    this.makeSIDCSelect(this.options.view.BATTLEFIELD, "battlefield", this.activeType.standard.battlefield);
+                    this.makeSIDCSelect(this.options.view.STATUS, "status", this.activeType.standard.status);
+                    this.makeSIDCSelect(this.options.view.MISSION, "mission", this.activeType.standard.mission);
+                    this.makeSIDCTree(this.options.view.FI, "modifier",
+                        this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier),
+                        (type, tag, obj) => {
+                            if (type == "file") {
+                                let id = tag.getAttribute("data-id");
+                                let idf = this.findFunctionIdentifier(id);
+                                if (idf) {
+                                    this.changeModifier(idf.modifier, idf.type, idf.affiliation, idf.battlefield, idf.status);
+                                }
                             }
                         });
-                    });
-    
-                    dom.$( ".unitClickable").forEach(d=>{
-                        d.addEventListener("click",()=>{
-                            let id = d.getAttribute("data-id");
-                            let idf = _this.findUnit(id);
-                            if( idf ){
-                                _this.changeMobility( idf.code);
+                    this.makeSIDCTree(this.options.view.UNIT, "echelon",
+                        this.makeUnitTreeJson(this.options.view.UNIT, this.activeType.standard.unit),
+                        (type, tag, obj) => {
+                            if (type == "file") {
+                                let id = tag.getAttribute("data-id");
+                                let idf = this.findUnit(id);
+                                if (idf) {
+                                    this.changeMobility(idf.code);
+                                }
                             }
                         });
-                    });*/
+                    //this.dataset[this.options.view.FI] = this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier);
+                    //this.dataset[this.options.view.UNIT] = this.makeUnitTreeJson(this.options.view.UNIT, this.activeType.standard.unit);
+
                 } else {
-                    _this.makeSIDCSelect(_this.options.view.AFFILIATION, "pos", _this.activeType.standard.pos);
-                    _this.makeSIDCSelect(_this.options.view.BATTLEFIELD, "fix", _this.activeType.standard.fix);
-                    _this.makeSIDCSelect(_this.options.view.STATUS, "graphic", _this.activeType.standard.graphic);
-                    _this.dataset[_this.options.view.FI] = _this.makeModifierTreeJson(_this.options.view.FI, _this.activeType.standard.identifier);
-
-                    document.getElementById(_this.options.view.MISSION).hidden = true;
-                    document.getElementById(_this.options.view.UNIT).hidden = true;
-                    /*
-                    dom.$( ".functionIndentfierClickable").forEach(d=>{
-                        d.addEventListener("click",()=>{
-                            let id = d.getAttribute("data-id");
-                            let idf = _this.findFunctionIdentifier(id);
-                            if( idf ){
-                                _this.changeModifier( idf.modifier , idf.type, idf.pos , idf.fix, idf.graphic );
+                    this.makeSIDCSelect(this.options.view.AFFILIATION, "pos", this.activeType.standard.pos);
+                    this.makeSIDCSelect(this.options.view.BATTLEFIELD, "fix", this.activeType.standard.fix);
+                    this.makeSIDCSelect(this.options.view.STATUS, "graphic", this.activeType.standard.graphic);
+                    //this.dataset[this.options.view.FI] = this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier);
+                    this.makeSIDCTree(this.options.view.FI, "modifier",
+                        this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier),
+                        (type, tag, obj) => {
+                            if (type == "file") {
+                                let id = tag.getAttribute("data-id");
+                                let idf = this.findFunctionIdentifier(id);
+                                if (idf) {
+                                    this.changeModifier(idf.modifier, idf.type, idf.pos, idf.fix, idf.graphic);
+                                }
                             }
                         });
-                    });*/
+                    document.getElementById(this.options.view.MISSION).hidden = true;
+                    document.getElementById(this.options.view.UNIT).hidden = true;
+
                 }
-                if (_this.onchange) {
-                    _this.onchange(_this);
+                if (this.onchange) {
+                    this.onchange(this);
                 }
 
             }
@@ -240,16 +242,20 @@ class ViewModel_KMilSymbol {
             txt += '<option value="' + d.code + '">' + d.desc + '</option>';
         });
         a.innerHTML = txt;
-        var _this = this;
         document.getElementById(id).onchange = (e) => {
             let val = document.getElementById(id).value;
-            let ele = document.getElementById(_this.options.view.SIDC);
-            let sidc = new SIDC(_this.activeType.code, ele.value);
-            sidc.codeType = _this.activeType.code;
+            let ele = document.getElementById(this.options.view.SIDC);
+            let sidc = new SIDC(this.activeType.code, ele.value);
+            sidc.codeType = this.activeType.code;
             sidc[field] = val;
             ele.value = sidc.toCode();
             this.symbolTest.try();
         }
+    }
+    makeSIDCTree(id, field, dataset, selectCallback) {
+        new OliveTree("#" + this.options.id + " #" + id, dataset, {
+            onSelect: selectCallback
+        });
     }
     tooltipModifier(d) {
         if (this.activeType.code != "W") {
@@ -258,52 +264,22 @@ class ViewModel_KMilSymbol {
             return d.type + d.pos + d.fix + d.graphic;
         }
     }
-
-    _makeModifierTree(id, arr) {
-        let str = '';
-        var _this = this;
-        arr.forEach(d => {
-            if (d.children && d.children.length > 0) {
-                str += '<li><div class="folder functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div>';
-                str += '<ul>';
-                str += _this._makeModifierTree(id, d.children);
-                str += '</ul>';
-                str += '</li>';
-            } else {
-                str += '<li><div class="file functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div></li>';
-            }
-        });
-        return str;
-    }
-
-    makeModifierTree(id, arr) {
-        document.getElementById(id).innerHTML = this._makeModifierTree(id, arr);
-    }
-
     _makeModifierTreeJson(id, arr) {
         let json = [];
-        var _this = this;
         arr.forEach(d => {
             if (d.children && d.children.length > 0) {
                 json.push({
                     name: d.desc_kor,
                     id: d.id,
                     class: "functionIndentfierClickable",
-                    children: _this._makeModifierTreeJson(id, d.children)
+                    children: this._makeModifierTreeJson(id, d.children)
                 });
-                /*
-                str += '<li><div class="folder functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div>';
-                str += '<ul>';
-                str += _this._makeModifierTreeJson(id, d.children);
-                str += '</ul>';
-                str += '</li>';*/
             } else {
                 json.push({
                     name: d.desc_kor,
                     id: d.id,
                     class: "functionIndentfierClickable"
                 });
-                //str += '<li><div class="file functionIndentfierClickable" data-id="' + d.id + '">' + d.desc_kor + '</div></li>';
             }
         });
         return json;
@@ -313,45 +289,18 @@ class ViewModel_KMilSymbol {
         return this._makeModifierTreeJson(id, arr);
     }
 
-    makeUnitTree(id, arr) {
-
-        let str = '';
-        Object.keys(arr).forEach(d => {
-            str += '<li><div class="folder">' + d + '</div>';
-            str += '<ul>';
-            arr[d].forEach(item => {
-                str += '<li><div class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</div></li>';
-            });
-            str += '</ul>';
-            str += '</li>';
-        });
-
-        document.getElementById(id).innerHTML = str;
-    }
-
     makeUnitTreeJson(id, arr) {
 
         let json = [];
         Object.keys(arr).forEach(d => {
             let obj = { name: d };
             json.push(obj);
-            //str += '<li><div class="folder">' + d + '</div>';
-            //str += '<ul>';
             if (Q.isValid(arr[d]) && arr[d].length > 0) {
                 obj.children = arr[d].map(item => {
                     return { name: item.desc, id: item.code };
                 });
             }
-            /*
-            arr[d].forEach(item => {
-
-                str += '<li><div class="file unitClickable" data-id="' + item.code + '" >' + item.desc + '</div></li>';
-            });
-            str += '</ul>';
-            str += '</li>';*/
         });
-
-        //document.getElementById(id).innerHTML = str;
         return json;
     }
 
@@ -418,10 +367,9 @@ class SIDC {
     }
     _getNodeOnTree(code, tree) {
         let obj;
-        let _this = this;
         tree.some(d => {
             if (d.modifier == code) { obj = d; return true; } else if (d.children) {
-                obj = _this._getNodeOnTree(code, d.children);
+                obj = this._getNodeOnTree(code, d.children);
                 if (obj) {
                     return true;
                 }
@@ -440,8 +388,7 @@ class SIDC {
     toDescription() {
         let desc = [];
         let item = {};
-        let _this = this;
-        let activeType = codeTypes.find(d => { return d.code == _this.codeType ? true : false; });
+        let activeType = codeTypes.find(d => { return d.code == this.codeType ? true : false; });
         if (activeType.code != "W") {
             desc.push({ name: "파아구분", key: "affiliation", value: this._getDesc(this.affiliation, activeType.standard.affiliation) });
             desc.push({ name: "전장", key: "battlefield", value: this._getDesc(this.battlefield, activeType.standard.battlefield) });
@@ -465,12 +412,14 @@ class ViewModelElement {
         this.options = Object.assign({}, options);
         let ele = document.querySelector("#" + this.options.id);
 
-        container.call
-        ele.addEventListener('change', function() {
-            container.symbolTest.try();
-        });
+        //container.call
+
         if (this.options.type == "input") {
             ele.addEventListener('keyup', function() {
+                container.symbolTest.try();
+            });
+        } else {
+            ele.addEventListener('change', function() {
                 container.symbolTest.try();
             });
         }
@@ -516,6 +465,7 @@ class SymbolTest {
         this.container = container;
         this.resultId = resId;
         this.viewModels = [];
+        this.db = new IxDatabase(1);
     }
     create() {
         var sel = this.viewModels.filter(d => { let v = d.val(); return (v != undefined && v != "") ? true : false; });

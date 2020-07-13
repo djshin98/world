@@ -5,8 +5,8 @@ const { tw } = require('../map3d/tangent/turnplane');
 const { CTX } = require('../map3d/ctx');
 
 const Template = {
-    faceColor: new Cesium.Color(192, 192, 192, 0.5),
-    lineColor: new Cesium.Color(90, 90, 90, 0.5)
+    faceColor: new Cesium.Color(192, 0, 0, 1),
+    lineColor: new Cesium.Color(0, 0, 192, 1)
 };
 
 class MilGraphics extends DrawObject {
@@ -30,7 +30,7 @@ class MilGraphics extends DrawObject {
 
     sketch(layer, objs) {
         this.removeTemplateEntity(layer);
-
+        let div = 5;
         let points = [];
         objs.forEach((obj, i) => {
             switch (obj.type) {
@@ -41,17 +41,17 @@ class MilGraphics extends DrawObject {
                     }
                 case "polyline":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "polygon":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "arc":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "spline":
@@ -68,11 +68,12 @@ class MilGraphics extends DrawObject {
             return {
                 position: p,
                 point: {
-                    pixelSize: 2,
-                    material: Template.faceColor,
-                    outline: true,
-                    outlineColor: Template.lineColor,
-                    outlineWidth: 1,
+                    pixelSize: 4,
+                    color: Template.faceColor,
+                    //material: Template.faceColor,
+                    //outline: true,
+                    //outlineColor: Template.lineColor,
+                    //outlineWidth: 4,
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                 }
             };
@@ -110,8 +111,8 @@ class MilGraphics extends DrawObject {
                                 positions: obj.geometry,
                                 clampToGround: true,
                                 color: viewModel.lineColor,
-                                width: 10,
-                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 10)
+                                width: 5,
+                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 5)
                             },
                         };
                     }
@@ -128,11 +129,10 @@ class MilGraphics extends DrawObject {
                     {
                         return {
                             rectangle: {
+                                rotation: obj.rotate,
+                                stRotation: obj.rotate,
                                 coordinates: Cesium.Rectangle.fromCartesianArray(obj.geometry),
                                 fill: true,
-                                outline: true,
-                                outlineColor: viewModel.lineColor,
-                                outlineWidth: viewModel.lineWidth,
                                 material: obj.image,
                                 heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                             }

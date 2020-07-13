@@ -24,6 +24,15 @@ function fix(turnPlane, properties, bcompleted) {
             }
             divs.push({ x: 0, y: ms + zl });
             divs.push(points[index + 1]);
+
+            let fr = s.fontsize / 2;
+            let tc = { x: 0, y: (points[index + 1].y + ms + zl) / 2 };
+            let rect = [
+                calc.move(tc, fr, -fr),
+                calc.move(tc, fr, fr),
+                calc.move(tc, -fr, fr),
+                calc.move(tc, -fr, -fr)
+            ];
             return [{
                 type: "polyline",
                 geometry: [
@@ -32,6 +41,10 @@ function fix(turnPlane, properties, bcompleted) {
             }, {
                 type: "polyline",
                 geometry: divs
+            }, {
+                type: "annotation",
+                geometry: rect,
+                text: "R"
             }];
         }
     }).end();
@@ -43,6 +56,7 @@ module.exports = {
     maxPointCount: 2,
     properties: {
         size: {
+            fontsize: 20,
             arrow: 10, //화살표 한쪽 선의 길이
             zigzag: 100, //zigzag 
             sm: 20, // 화살표가 있는 시작점과 zigzag 시작점의 최소 길이

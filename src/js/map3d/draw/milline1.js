@@ -5,7 +5,8 @@ class MilLine1 extends DrawObject {
     }
     create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polyline.positions = points;
+
+
         } else {
             if (this.isComplete()) {
                 let option = {
@@ -24,14 +25,14 @@ class MilLine1 extends DrawObject {
 
                 option.width = viewModel.lineWidth * 2;
                 option.material = this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth);
-                layer.add({
+                return layer.add({
                     polyline: option
                 });
             }
 
             return layer.add({
                 polyline: {
-                    positions: this.callbackValue(points),
+                    positions: points,
                     clampToGround: true,
                     material: viewModel.frameColor,
                     width: 3,

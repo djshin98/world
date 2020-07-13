@@ -7,10 +7,10 @@ class LineEO extends DrawObject {
     }
     create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polyline.positions = points;
+            //this.templateEntity.polyline.positions = points;
         } else {
             let option = {
-                positions: this.callbackValue(points),
+                positions: points, //this.callbackValue(points),
                 clampToGround: true,
                 color: viewModel.lineColor,
                 width: viewModel.lineWidth,

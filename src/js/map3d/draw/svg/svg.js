@@ -40,6 +40,14 @@ class SvgImage {
         }
         return svgImages[key];
     }
+    textWidth(text, font) {
+        // re-use canvas object for better performance
+        var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas"));
+        var context = canvas.getContext("2d");
+        context.font = font;
+        var metrics = context.measureText(text);
+        return metrics.width;
+    }
 }
 
 module.exports = { SvgImage: SvgImage, images: svgImages };

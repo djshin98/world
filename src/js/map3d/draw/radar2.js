@@ -24,7 +24,7 @@ class Radar2 extends DrawObject {
             p1 = this.setHeightCartensian(p1, centerHeight);
             p2 = this.setHeightCartensian(p2, centerHeight);
 
-            let m = CTX.cmidpoint(p1, p2);
+            let m = CTX.math.mid(p1, p2);
 
             //center부터 동쪽으로 뻗어있는 수평선으로 부터 p1과 p2의 중심점 m의 각도를 구하기 위해 다음과 같이 horizen을 구한다
             let horizenVector = Object.assign({}, center);
@@ -47,10 +47,12 @@ class Radar2 extends DrawObject {
                 hpr
             );
 
+            this.templateEntity.forEach(e => {
+                e.position = points[0];
+                e.ellipsoid.maximumCone = radianCone;
+                e.ellipsoid.orientation = orientation;
+            });
 
-            this.templateEntity.position = points[0];
-            this.templateEntity.ellipsoid.maximumCone = radianCone;
-            this.templateEntity.ellipsoid.orientation = orientation;
         } else {
             let center = points[0];
             let p1 = points[1];
@@ -61,7 +63,7 @@ class Radar2 extends DrawObject {
             p1 = this.setHeightCartensian(p1, centerHeight);
             p2 = this.setHeightCartensian(p2, centerHeight);
 
-            let m = CTX.cmidpoint(p1, p2);
+            let m = CTX.math.mid(p1, p2);
 
             //center부터 동쪽으로 뻗어있는 수평선으로 부터 p1과 p2의 중심점 m의 각도를 구하기 위해 다음과 같이 horizen을 구한다
             let horizenVector = Object.assign({}, center);
@@ -115,7 +117,7 @@ class Radar2 extends DrawObject {
             p1 = this.setHeightCartensian(p1, centerHeight);
             p2 = this.setHeightCartensian(p2, centerHeight);
 
-            let m = CTX.cmidpoint(p1, p2);
+            let m = CTX.math.mid(p1, p2);
 
             //center부터 동쪽으로 뻗어있는 수평선으로 부터 p1과 p2의 중심점 m의 각도를 구하기 위해 다음과 같이 horizen을 구한다
             let horizenVector = Object.assign({}, center);

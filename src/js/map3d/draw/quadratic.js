@@ -18,20 +18,29 @@ class Quadratic extends DrawObject {
         let polylinePoints = ParabolaUtil.quadratic(degrees, 100, height, true);
 
         if (this.isReadyToCallbackVariable()) {
-            if (Q.isArray(this.templateEntity)) {
-                this.templateEntity.forEach((ent, i) => {
-                    ent.position = polylinePoints.points[i];
-                });
-            } else {
-                this.templateEntity.polyline.positions = polylinePoints.points.reverse();
-            }
+            this.removeTemplateEntity(layer);
+            let entities = polylinePoints.points.map(p => {
+                return {
+                    position: p,
+                    point: {
+                        pixelSize: viewModel.shapeSize,
+                        //fill: true,
+                        material: this.callbackColor("faceColor", viewModel),
+                        outline: true,
+                        outlineColor: viewModel.lineColor,
+                        outlineWidth: 1,
+                        heightReference: Cesium.HeightReference.NODE
+                    }
+                };
+            });
+            this.templateEntity = layer.add(entities);
         } else {
 
             //console.log("polylinePoints length : " + polylinePoints.points.length);
             if (this.isComplete()) {
                 let _this = this;
                 var positions = [CTX.c2r(polylinePoints.center[0])];
-                var promise = Cesium.sampleTerrain(layer.map.viewer3d.terrainProvider, 13, positions);
+                var promise = Cesium.sampleTerrain(layer.getTerrianProvider(), 13, positions);
                 Cesium.when(promise, function(updatedPositions) {
                     let heightMeterial = _this.lineMaterial(viewModel.lineStyle, viewModel.shapeColor, viewModel.lineWidth);
                     let cpts = [CTX.r2c(updatedPositions[0]), polylinePoints.center[1]];
@@ -59,41 +68,21 @@ class Quadratic extends DrawObject {
                         }
                     });
                 });
-            }
 
-            if (viewModel.frameEnable === true || !this.isComplete()) {
-                return polylinePoints.points.map(p => {
-                    return layer.add({
-                        position: this.callbackValue(p),
-                        point: {
-                            pixelSize: viewModel.shapeSize,
-                            //fill: true,
-                            material: this.callbackColor("faceColor", viewModel),
-                            outline: true,
-                            outlineColor: viewModel.lineColor,
-                            outlineWidth: viewModel.lineWidth,
-                            heightReference: Cesium.HeightReference.NODE
-                        }
-                    });
-                });
-            } else {
                 let option = {
-                    positions: this.callbackValue(polylinePoints.points.reverse()),
-                    color: viewModel.lineColor,
+                    positions: polylinePoints.points.reverse(),
+                    color: viewModel.shapeColor,
                     width: viewModel.lineWidth,
-
-                    //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000)
+                    material: new Cesium.PolylineGlowMaterialProperty({
+                        glowPower: 0.4,
+                        taperPower: 0.4,
+                        color: viewModel.shapeColor
+                    }),
+                    //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
-
-                if (this.isComplete()) {
-                    option.material = new Cesium.PolylineGlowMaterialProperty({
-                        glowPower: 0.3,
-                        taperPower: 0.3,
-                        color: this.callbackColor("faceColor", viewModel)
-                    });
-                }
-                return layer.add({ polyline: option });
+                return layer.add({ name: name, polyline: option });
             }
+            return [];
         }
     }
 
