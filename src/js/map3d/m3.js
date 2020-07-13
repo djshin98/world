@@ -56,7 +56,7 @@ class m3 extends Eventable {
         this.viewOption = {
             //디폴트 레이어로 World_TMS 설정
 
-            shadows: true,
+            shadows: false,
             baseLayerPicker: true,
             geocoder: false,
             infoBox: false, //객체 선택 시 상세정보 표시 기능 활성화
