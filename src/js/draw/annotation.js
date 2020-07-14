@@ -8,7 +8,7 @@ class Annotation extends SvgImage {
             textLineMargin: 5,
             color: "black"
         }, options));
-
+        this.box = { width: 100, height: 100 };
     }
     create(svg) {
         let border = 0;
@@ -28,7 +28,7 @@ class Annotation extends SvgImage {
             textHeight = this.options.fontSize;
         }
 
-        let box = {
+        this.box = {
             width: border * 2 + padding.left + padding.right + textWidth,
             height: border * 2 + padding.top + padding.bottom + textHeight
         }
@@ -57,6 +57,12 @@ class Annotation extends SvgImage {
                 .attr("font-family", this.options.fontFamily)
                 .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
         }
+    }
+    width() {
+        return this.box.width;
+    }
+    height() {
+        return this.box.height;
     }
 }
 

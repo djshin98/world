@@ -80,7 +80,7 @@ class Quadratic extends DrawObject {
                     }),
                     //distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, distrance * 10)
                 };
-                return layer.add({ name: name, polyline: option });
+                return layer.add({ polyline: option });
             }
             return [];
         }

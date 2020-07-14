@@ -8,14 +8,18 @@ class OliveTree {
         this.data = Object.assign([], arr);
         this.issuance(this.data, "");
         if (this.data) {
+            if (Q.isValid(option.selected)) {
+                this.expands(this.data, option.selected);
+            }
             $(this.selector).html(this._makeTree(this.data, this.options));
         }
         //document.getElementById(id).innerHTML = this._makeTree(id, arr, options);
         //this.arr = arr;
         let _this = this;
-        $(this.selector).treeview({
+        this.treeview = $(this.selector).treeview({
             collapsed: this.options.collapsed
         });
+
         $(this.selector + " li>div.folder").unbind();
         $(this.selector + " li>div.file").unbind();
 
@@ -55,8 +59,43 @@ class OliveTree {
             let filetype = ($(this).hasClass('file')) ? 'file' : 'folder';
             if (_this.options.onChecked) { _this.options.onChecked("radio", $(this).is(":checked"), filetype, $(this).next(), _this.get($this.data('issuance'))); }
         });
-    }
 
+        if (Q.isValid(option.selected)) {
+            this.treeview.find(".lastSelected").trigger('click');
+            let eles = [];
+            let l = $$(this.treeview.find(".lastSelected")[0]).parent((ele) => {
+                if ($$(ele).hasClass("expandable")) {
+                    if ($$(ele).hasClass("treeview")) {
+                        return true;
+                    } else {
+                        ele = ele.querySelector("div.folder");
+                        eles.push(ele);
+                    }
+                }
+                return false;
+            });
+            eles.reverse();
+            eles.forEach((ele, i) => {
+                this.toggleFolder(ele);
+            });
+        }
+    }
+    expands(nodes, id) {
+        if (Q.isValid(nodes)) {
+            return nodes.some(node => {
+                if (node.id == id) {
+                    node.class = "lastSelected";
+                    return true;
+                } else if (Q.isValid(node.children)) {
+                    if (this.expands(node.children, id)) {
+                        node.expanded = true;
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+    }
     _toHtmlAttribute(v) {
         return Object.keys(v).reduce(function(prev, key) { if (v[key]) { return prev + "data-" + key + "='" + v[key] + "' "; } return prev; }, " ");
     }
@@ -126,10 +165,10 @@ class OliveTree {
                 });
                 str += '<li>' + typestr + '<div' + classstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             } else {
-                str += '<li><div' + classstr + idstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
+                str += '<li ><div' + classstr + idstr + issuanceStr + _this._toHtmlAttribute(attr) + '>' + text + '</div>';
             }
             if (d.children && d.children.length > 0) {
-                str += '<ul>';
+                str += '<ul >';
                 str += _this._makeTree(d.children, options);
                 str += '</ul>';
             }

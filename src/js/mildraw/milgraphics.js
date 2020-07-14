@@ -3,6 +3,7 @@
 const { DrawObject } = require('../map3d/draw/drawobject');
 const { tw } = require('../map3d/tangent/turnplane');
 const { CTX } = require('../map3d/ctx');
+const { Annotation } = require('../draw/annotation');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
@@ -13,14 +14,60 @@ class MilGraphics extends DrawObject {
     constructor(options) {
         super(options.minPointCount, options.maxPointCount);
         this.options = Q.copy(options);
+        this.annotations = undefined;
+    }
+    createAnnotation() {
+        if (Q.isValid(this.options.annotations)) {
+            let annotations = [];
+            Q.keys(this.options.annotations, (key, value) => {
+                let a = this.options.annotations[key];
+                a.text = this.createText(a.value, this.options.variables);
+                let text = new Annotation(a, this.options.variables);
+                annotations.push({
+                    name: a.name,
+                    image: text.image(),
+                    anchor: a.anchor,
+                    width: text.width(),
+                    height: text.height()
+                });
+            });
+            return annotations;
+        }
+    }
+    createText(value, variables) {
+        Q.keys(variables, (key, value) => {
+            value = value.trim();
+            if (value.indexOf("{") == 0 && value.indexOf("}") == value.length - 1) {
+                variables[key] = this.getScript(value);
+            }
+        });
+        let str = value;
+        Q.keys(variables, (key, v) => {
+            var re = new RegExp("{" + v + "}", "g");
+            str = str.replace(re, v);
+        });
+        return str;
+    }
+    getScript(value) {
+        if (value == "{DTGSTART}") {
+            return CTX.c2dtg(this.points[0]);
+        } else if (value == "{DTGEND}") {
+            return CTX.c2dtg(this.points[this.points.length - 1]);
+        }
+        return "";
     }
     create(layer, points, viewModel) {
+        this.points = points;
         if (this.isReadyToCallbackVariable()) {
-            let objs = tw(points, this.isComplete(), 0, this.options);
+            if (!Q.isValid(this.annotations)) {
+                this.annotations = this.createAnnotation();
+            }
+            let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
             this.sketch(layer, objs);
         } else {
             if (this.isComplete()) {
-                let objs = tw(points, this.isComplete(), 0, this.options);
+                this.annotations = this.createAnnotation();
+                let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
                 let entityOptions = this.completeSketch(layer, objs, viewModel);
                 return layer.add(entityOptions);
             }
@@ -133,7 +180,7 @@ class MilGraphics extends DrawObject {
                                 stRotation: obj.rotate,
                                 coordinates: Cesium.Rectangle.fromCartesianArray(obj.geometry),
                                 fill: true,
-                                material: obj.image,
+                                material: this.annotations[obj.name].image,
                                 heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                             }
                         };

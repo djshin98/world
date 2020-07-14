@@ -44,6 +44,7 @@ class ViewModel_KMilSymbol {
                 }
             }
         }, opt);
+        this.db = new IxDatabase(1);
         this.dataset = {};
         this.onchange = onchange;
         this.symbolTest = new SymbolTest(this, this.options.view.RESULT);
@@ -65,11 +66,13 @@ class ViewModel_KMilSymbol {
             str += '<option value="' + d.code + '">' + d.desc + '</option>';
         });
         ele.innerHTML = str;
+
         ele.onchange = () => {
             document.getElementById(this.options.view.SIDC).value = "";
             this.activeType = codeTypes.find(d => { return d.code == ele.value ? true : false; });
 
             if (this.activeType) {
+                this.db.set(this.options.id, this.options.view.CODETYPE, this.activeType.code);
                 if (this.activeType.code != "W") {
                     document.getElementById(this.options.view.MISSION).hidden = false;
                     document.getElementById(this.options.view.UNIT).hidden = false;
@@ -86,6 +89,7 @@ class ViewModel_KMilSymbol {
                                 let idf = this.findFunctionIdentifier(id);
                                 if (idf) {
                                     this.changeModifier(idf.modifier, idf.type, idf.affiliation, idf.battlefield, idf.status);
+                                    this.db.set(this.activeType.code + ":" + this.options.view.FI, "modifier", id);
                                 }
                             }
                         });
@@ -97,6 +101,7 @@ class ViewModel_KMilSymbol {
                                 let idf = this.findUnit(id);
                                 if (idf) {
                                     this.changeMobility(idf.code);
+                                    this.db.set(this.activeType.code + ":" + this.options.view.UNIT, "echelon", id);
                                 }
                             }
                         });
@@ -116,6 +121,7 @@ class ViewModel_KMilSymbol {
                                 let idf = this.findFunctionIdentifier(id);
                                 if (idf) {
                                     this.changeModifier(idf.modifier, idf.type, idf.pos, idf.fix, idf.graphic);
+                                    this.db.set(this.activeType.code + ":" + this.options.view.FI, "modifier", id);
                                 }
                             }
                         });
@@ -129,7 +135,13 @@ class ViewModel_KMilSymbol {
 
             }
         };
-        ele.onchange(this);
+        this.db.get(this.options.id, this.options.view.CODETYPE, (result) => {
+            if (result && result.value) {
+                $$("#" + this.options.id + " #" + this.options.view.CODETYPE).value(result.value);
+            }
+            ele.onchange();
+        });
+
     }
     descriptionFromSIDC(sidc) {
         if (!sidc || sidc.length < 1) {
@@ -242,6 +254,11 @@ class ViewModel_KMilSymbol {
             txt += '<option value="' + d.code + '">' + d.desc + '</option>';
         });
         a.innerHTML = txt;
+        this.db.get(this.activeType.code + ":" + id, field, (result) => {
+            if (result && result.value) {
+                $$("#" + this.options.id + " #" + id).value(result.value);
+            }
+        });
         document.getElementById(id).onchange = (e) => {
             let val = document.getElementById(id).value;
             let ele = document.getElementById(this.options.view.SIDC);
@@ -250,12 +267,21 @@ class ViewModel_KMilSymbol {
             sidc[field] = val;
             ele.value = sidc.toCode();
             this.symbolTest.try();
+            this.db.set(this.activeType.code + ":" + id, field, val);
         }
     }
     makeSIDCTree(id, field, dataset, selectCallback) {
-        new OliveTree("#" + this.options.id + " #" + id, dataset, {
-            onSelect: selectCallback
+        this.db.get(this.activeType.code + ":" + id, field, (result) => {
+            let selectedValue;
+            if (Q.isValid(result) && Q.isValid(result.value)) {
+                selectedValue = result.value;
+            }
+            new OliveTree("#" + this.options.id + " #" + id, dataset, {
+                onSelect: selectCallback,
+                selected: selectedValue
+            });
         });
+
     }
     tooltipModifier(d) {
         if (this.activeType.code != "W") {

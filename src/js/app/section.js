@@ -139,7 +139,8 @@ class Section {
     showView(bshow) {
         if (bshow) {
             $(".section-head>a>b").show();
-            $(".section-head>a>img").attr("src", "img/logo.png");
+            //$(".section-head>a>img").attr("src", "img/logo.png");
+            $(".section-head>a").html("<img src='img/logo.png' style='width:50px'/> 올리브 맵(Olive Map) ");
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
             } else {
@@ -148,7 +149,7 @@ class Section {
 
         } else {
             $(".section-head>a>b").hide();
-            $(".section-head>a>img").attr("src", "img/logom.png");
+            $(".section-head>a>img").attr("src", "img/logo.png");
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('fade right');
 
