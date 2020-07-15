@@ -196,19 +196,17 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         //----------------------------------------------------------
 
         let p = pts;
-        let tp = [];
-
-        tp = [
-            CTX.c2(p[0].x - (width / 3), (width / 3)),
-            p[0],
-            CTX.c2(p[0].x + (width / 3), (width / 3)),
-            p[0]
+        let tp = [
+            CTX.c2(pts[0].x - (width / 3), (width / 3)),
+            pts[0],
+            CTX.c2(pts[0].x + (width / 3), (width / 3)),
+            pts[0]
         ];
 
         tp.push(p[0]);
         tp.push(p[1]);
         tp.push(p[2]);
- 
+
         let res = [];
 
         pts[2].y = pts[1].y;
@@ -423,7 +421,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
 
 
-        fixation(width, points) {
+    fixation(width, points) {
 
         let pts = [];
         for (let i = 0; i < points.length; i++) {
@@ -436,7 +434,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
         pts[0] = this.rotate(matrix, pts[0]);
         pts[1] = this.rotate(matrix, pts[1]);
 
-        
+
 
 
         //--------------------------------------------
@@ -446,22 +444,22 @@ class Plane extends Cesium.EllipsoidTangentPlane {
 
         p = [
             p[0],
-            CTX.c2(0, (width/16) + 2)
+            CTX.c2(0, (width / 16) + 2)
         ]
 
-      
 
-        for(let i = 0; i<16; i++) {
-            if(i % 2 ==0) {
-                result.push(CTX.c2(2, (width/16) + i));
-            }else {
-                result.push(CTX.c2(-2, (width/16) + i));
+
+        for (let i = 0; i < 16; i++) {
+            if (i % 2 == 0) {
+                result.push(CTX.c2(2, (width / 16) + i));
+            } else {
+                result.push(CTX.c2(-2, (width / 16) + i));
             }
 
         }
 
         p = [
-            CTX.c2(0, (width/16) + 14),
+            CTX.c2(0, (width / 16) + 14),
             p[1]
         ]
 
@@ -486,7 +484,7 @@ class Plane extends Cesium.EllipsoidTangentPlane {
             p.y += rTranslate.y;
         });
         return pts;
-        }
+    }
 
 
 
