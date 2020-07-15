@@ -1,10 +1,10 @@
 const d3 = require('d3');
-const { Q } = require("../../../core/e");
 const b64start = 'data:image/svg+xml;base64,';
 const svgImages = {};
 
 function svg2Image(svg) {
-    return b64start + btoa(new XMLSerializer().serializeToString(svg));
+    return b64start + new Buffer(new XMLSerializer().serializeToString(svg)).toString('base64');
+    //btoa(new XMLSerializer().serializeToString(svg));
 }
 class SvgImage {
     constructor(options) {
@@ -39,6 +39,14 @@ class SvgImage {
             key = this.constructor.name;
         }
         return svgImages[key];
+    }
+    textWidth(text, font) {
+        // re-use canvas object for better performance
+        var canvas = this.textWidth.canvas || (this.textWidth.canvas = document.createElement("canvas"));
+        var context = canvas.getContext("2d");
+        context.font = font;
+        var metrics = context.measureText(text);
+        return metrics.width;
     }
 }
 

@@ -212,8 +212,9 @@ class DrawObject {
     }
     sketch(layer, points) {
         this.removeTemplateEntity(layer);
-        this.templateEntity = points.map(p => { //4
-            return layer.add({
+
+        let options = points.map(p => { //4
+            return {
                 position: p,
                 point: {
                     pixelSize: 2,
@@ -223,9 +224,9 @@ class DrawObject {
                     outlineWidth: 1,
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                 }
-            });
+            }
         });
-
+        this.templateEntity = layer.add(options);
     }
     isReadyToCallbackVariable() {
         if (Q.isValid(this.templateEntity)) {

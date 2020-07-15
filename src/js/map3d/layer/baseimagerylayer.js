@@ -29,7 +29,7 @@ class BaseImageryLayer extends Layer {
         super.update(options);
     }
     clear() {
-        let imageryLayers = layerGroup.getImageryLayers();
+        let imageryLayers = this.layerGroup.getImageryLayers();
         if (Q.isValid(this.layerOnMap)) {
             imageryLayers.remove(this.layerOnMap, true);
             this.layerOnMap = null;

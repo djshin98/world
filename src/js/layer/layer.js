@@ -9,6 +9,9 @@ class Layer {
     json() {
         return this.jsonLayer;
     }
+    getTerrianProvider() {
+        return this.layerGroup.getMap().viewer3d.terrainProvider;
+    }
     create(layerGroup, jsonLayer) {
         console.warn("unsupported layer create : " + this.constructor.name);
     }

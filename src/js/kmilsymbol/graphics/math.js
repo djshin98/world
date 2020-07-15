@@ -15,6 +15,29 @@ class calc {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
     }
 }
+class Rectangle {
+    constructor(x, y, width, height) {
+        this.geo = [
+            { x: x - height / 2, y: y - width / 2 },
+            { x: x - height / 2, y: y + width / 2 },
+            { x: x + height / 2, y: y + width / 2 },
+            { x: x + height / 2, y: y - width / 2 }
+        ];
+    }
+    move(x, y) {
+        this.geo.forEach(p => {
+            p.x += x;
+            p.y += y;
+        });
+        return this;
+    }
+    geometry() {
+        return this.geo;
+    }
+}
 
+function rect(x, y, width, height) {
+    return new Rectangle(x, y, width, height);
+}
 
-module.exports = { calc: calc };
+module.exports = { calc: calc, rect: rect };
