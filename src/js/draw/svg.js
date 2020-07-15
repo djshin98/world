@@ -12,6 +12,7 @@ class SvgImage {
             width: 100,
             height: 100
         }, options);
+        this.box = { width: 100, height: 100 };
         this._create();
     }
     _create() {

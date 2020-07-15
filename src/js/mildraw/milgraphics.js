@@ -185,15 +185,28 @@ class MilGraphics extends DrawObject {
                     {
                         let svg = this.getAnnotation(obj.name).svg;
                         return {
-                            rectangle: {
-                                rotation: obj.rotate + Math.PI / 2,
-                                stRotation: obj.rotate + Math.PI / 2,
-                                coordinates: Cesium.Rectangle.fromCartesianArray(obj.geometry),
-                                fill: true,
-                                material: svg.img,
-                                heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+                            polygon: {
+                                hierarchy: obj.geometry,
+                                material: viewModel.faceColor
                             }
                         };
+                        /*
+                        return {
+                            position: obj.geometry[0],
+                            polygon: {
+                                hierarchy: obj.geometry,
+                                fill: true,
+                                material: new Cesium.Material({
+                                    fabric: {
+                                        type: 'Image',
+                                        uniforms: {
+                                            image: svg.img
+                                        }
+                                    }
+                                }),
+                                heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+                            }
+                        };*/
                     }
             }
         });

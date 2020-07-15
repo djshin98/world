@@ -16,7 +16,8 @@ function registryModular(graphicModulars) {
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
     graphicModulars["DELAY"] = require("../modular/delay.js");
-    graphicModulars["기만 모조"] = require("../modular/fake.js");
+    graphicModulars["기만모조"] = require("../modular/fake.js");
+    graphicModulars["DIVERSION"] = require("../modular/diversion.js");
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/fix.js");
     graphicModulars["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
@@ -37,5 +38,6 @@ function registryModular(graphicModulars) {
     graphicModulars["TRACK TYPE"] = require("../modular/tracktype.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+    graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
 }
 module.exports = registryModular;

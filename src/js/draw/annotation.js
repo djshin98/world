@@ -8,7 +8,7 @@ class Annotation extends SvgImage {
             textLineMargin: 5,
             color: "black"
         }, options));
-        this.box = { width: 100, height: 100 };
+
     }
     create(svg) {
         let border = 0;

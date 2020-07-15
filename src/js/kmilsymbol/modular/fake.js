@@ -5,10 +5,8 @@ const { calc } = require("../graphics/math");
 function fake(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, p, i, buffer) => {
         let s = properties.pixelBySize;
-    
-        if(i % 2 == 0) {
+        /*if(i % 2 == 0) {
             //p[i] -> p[i+1]
-            
             return {
                 type: "polyline", 
                 geometry:  [
@@ -16,18 +14,25 @@ function fake(turnPlane, properties, bcompleted) {
                 ]  
         }
 }
-        else if(i % 2 == 1) {
-            for(let i = 0; i < calc.distance(p[i], p[i+1])/s.div; i++) {
-                let pa = [];
-                return [{
-                    type: "polyline", 
-                    geometry: [
-                       pa.push({type:"polyline", geometry: {x:0, y: p[i].y}})
-                    ]
-                }];
-            
+        else */
+            let pa = [];
+            let count = calc.distance(p[i], p[i+1])/s.div;
+            let pk = [];
+            for(let i = 0; i < count; i++) {
+                if(i % 2 == 0) {
+                pa.push({x:0, y:(s.div+10)*i});
+                pa.push({x:0, y:(s.div+20)*i});
+
+                pk.push({
+                    type:"polyline",
+                    geometry: p, pa        
+                })
+               
+                }
             }
-        }
+            
+            return pk; 
+
        
     }).end();
 }
