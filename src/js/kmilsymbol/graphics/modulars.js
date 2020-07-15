@@ -3,6 +3,7 @@ function registryModular(graphicModulars) {
     graphicModulars["AMBUSH"] = require("../modular/ambush.js");
     graphicModulars["ARTILLERY TARGET INTELLIGENCE ZONE"] = require("../modular/artillery-target-intelligence-zone.js");
     graphicModulars["BLOCK"] = require("../modular/block.js");
+    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough.js");
     graphicModulars["BREACH"] = require("../modular/breach.js");
     graphicModulars["BYPASS"] = require("../modular/bypass.js");
     graphicModulars["CALL FOR FIRE ZONE"] = require("../modular/call-for-fire-zone.js");
@@ -26,11 +27,13 @@ function registryModular(graphicModulars) {
     graphicModulars["RESTRICTIVE FIRE AREA"] = require("../modular/restrictive-fire-area.js");
     graphicModulars.searchArea = require("../modular/search-area.js");
     graphicModulars["SENSOR ZONE"] = require("../modular/sensor-zone.js");
+    graphicModulars["SHOOTING POINT"] = require("../modular/shootingpoint.js");
     graphicModulars["SUPPORTING ATTACK"] = require("../modular/supporting-attack.js");
     graphicModulars["TARGET BUILD-UP AREA"] = require("../modular/target-build-up-area.js");
     graphicModulars["TARGET VALUE AREA"] = require("../modular/target-value-area.js");
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
+    graphicModulars["TRACK TYPE"] = require("../modular/tracktype.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
 }
 module.exports = registryModular;

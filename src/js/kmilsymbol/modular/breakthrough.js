@@ -5,16 +5,36 @@ function breakthrough(turnPlane, properties, bcompleted) {
         if (index == 0) {
             let p = points;
             let height = calc.distance(p[0], p[1]);
-            let center = height/2;
+            let center = CTX.c2(0, height/2);
 
-            p[2] = CTX.c2(0, p[2].y);
+            if(p[2])
+                p[2] = CTX.c2(p[2].x, center.y);
 
-            return [{
-                type: "polyline",
-                geometry: [
-                   p[0], p[1], center, p[2]
-                ]
-            }];
+            if(p[2]){
+                let len = Math.abs(p[2].x);
+                return [
+                    {
+                        type: "polyline",
+                        geometry: [
+                        p[0], p[1], center, CTX.c2(-len, center.y)
+                    ]},{
+                        type: "polyline",
+                        geometry: [
+                            CTX.c2(center.x - height/3, center.y + height/3),
+                            center,
+                            CTX.c2(center.x - height/3, center.y - height/3)
+                    ]}
+                ];
+            }
+            else{
+                return [{
+                    type: "polyline",
+                    geometry: [
+                        p[0], p[1]
+                    ]
+                }];
+            }
+
         }
     }).end();
 }
@@ -23,8 +43,5 @@ module.exports = {
     modular: breakthrough,
     minPointCount: 2,
     maxPointCount: 3,
-    properties: {
-       
-    }
 
 };
