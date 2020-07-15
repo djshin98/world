@@ -18,7 +18,7 @@ class MilGraphics extends DrawObject {
     }
     createAnnotation() {
         let prop = this.options.properties;
-        if (Q.isValid(prop.annotations)) {
+        if (Q.isValid(prop) && Q.isValid(prop.annotations)) {
             let annotations = [];
             Q.keys(prop.annotations, (key, value) => {
                 let a = prop.annotations[key];

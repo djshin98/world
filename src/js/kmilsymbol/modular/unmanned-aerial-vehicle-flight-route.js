@@ -5,24 +5,25 @@ function route(turnPlane, properties, bcompleted) {
         if (i == 0) {
             let s = properties.pixelBySize;
             let a = properties.annotations;
-            let cc = calc.mid(calc.move(p[i], -s.width / 2, 0), calc.move(p[i + 1], -s.width / 2, 0));
+            let width = properties.variables.width;
+            let cc = calc.mid(calc.move(p[i], -width / 2, 0), calc.move(p[i + 1], -width / 2, 0));
             return [{
                 type: "polyline",
                 geometry: [
-                    calc.move(p[i], -s.width / 2, 0), calc.move(p[i + 1], -s.width / 2, 0)
+                    calc.move(p[i], -width / 2, 0), calc.move(p[i + 1], -width / 2, 0)
                 ]
             }, {
                 type: "polyline",
                 geometry: [
-                    calc.move(p[i], s.width / 2, 0), calc.move(p[i + 1], s.width / 2, 0)
+                    calc.move(p[i], width / 2, 0), calc.move(p[i + 1], width / 2, 0)
                 ]
             }, {
-                type: "annotation",
+                type: "polyline", //"annotation",
                 geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.a.width, a.a.height)
-                    .move(-s.width / 2, 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
+                    .move(-width / 2, 0).move(-a.a.width / 2, 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
                 name: "a"
             }, {
-                type: "annotation",
+                type: "polyline", //"annotation",
                 geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.c.width, a.c.height).geometry(),
                 name: "c"
             }];
@@ -50,7 +51,7 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             }
         },
-        variables: {
+        variables: { // 사용자가 변경할 수 있다.
             name: "무인항공기비행경로",
             width: 500,
             minAlt: 1000,

@@ -41,10 +41,6 @@ function fix(turnPlane, properties, bcompleted) {
             }, {
                 type: "polyline",
                 geometry: divs
-            }, {
-                type: "annotation",
-                geometry: rect,
-                text: "R"
             }];
         }
     }).end();

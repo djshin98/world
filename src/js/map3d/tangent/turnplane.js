@@ -38,11 +38,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }
     }
     reduce(callback) {
-        this.buffer = this.points.reduce((prev, curr, i) => {
+        this.append(this.points.reduce((prev, curr, i) => {
             if (Q.isValid(prev) && Q.isValid(prev.geometry)) { prev = Object.assign(prev); } else { prev = undefined; }
             let v = this.verticalize(this.points, i - 1, i, prev);
             return this.unverticalize(v, callback(v.prev, v.curr, i - 1, this.buffer));
-        });
+        }));
         return this;
     }
     map(callback) {

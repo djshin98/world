@@ -1,47 +1,59 @@
 const { calc } = require("../graphics/math");
 
 function shootingpoint(turnPlane, properties, bcompleted) {
-    return turnPlane.map((prev, points, index, buffer) => {
-        if (index == 0) {
+    return turnPlane.reduce((prev, p, i, buffer) => {
+        let s = properties.pixelBySize;
+        if (i == 0) {
+            return {
+                type: "polyline",
+                geometry: [p[i], p[i + 1]]
+            }
+        } else if (i == 1) {
+            let pp = Q.copy(prev.geometry);
+            pp.push(p[i + 1]);
+            let pts = turnPlane.turnStack(pp, 0, 1, (pt) => {
+                let midpt = calc.mid(pt[0], pt[1]);
+                let p3 = { x: pt[2].x, y: midpt.y };
+                if (pt[2].x > 0) {
+                    return [{
+                        type: "polyline",
+                        geometry: [midpt, p3]
+                    }, {
+                        type: "polyline",
+                        geometry: [calc.move(p3, -s.arrow, s.arrow), p3, calc.move(p3, -s.arrow, -s.arrow)]
+                    }, {
+                        type: "polyline",
+                        geometry: [calc.move(pt[0], -s.tail, -s.tail), pt[0], pt[1], calc.move(pt[1], -s.tail, s.tail)]
+                    }];
+                } else {
+                    return [{
+                        type: "polyline",
+                        geometry: [midpt, p3]
+                    }, {
+                        type: "polyline",
+                        geometry: [calc.move(p3, s.arrow, s.arrow), p3, calc.move(p3, s.arrow, -s.arrow)]
+                    }, {
+                        type: "polyline",
+                        geometry: [calc.move(pt[0], s.tail, -s.tail), pt[0], pt[1], calc.move(pt[1], s.tail, s.tail)]
+                    }];
+                }
 
-            let pp = points;
-            //pp.push(points[index + 1]);
-            let midpt = calc.mid(pp[1], pp[2]);
-            pp.push(midpt);
-
-            //let d2 = calc.distance(pp[0], pp[2])
-            let pts = turnPlane.turnStack(pp, 0, pp.length-1, (pt) => {
-                let d1 = calc.distance(pt[0], pt[1]);
-                return {
-                    type: "polyline",
-                    geometry: [
-                        pt[0], 
-                        CTX.c2(pt[0].x - (d1/6)*2, pt[0].y + (d1/6)*2), 
-                        pt[0],
-                        CTX.c2(pt[0].x + (d1/6)*2, pt[0].y + (d1/6)*2),
-                        pt[0],
-                        pt[0], pt[pt.length-1], pt[1], 
-                        CTX.c2(pt[1].x+200, pt[1].y+200),
-                        pt[1],
-                        pt[2],
-                        CTX.c2(pt[2].x-200, pt[2].y+200)
-                    ]
-                };
             });
-            return { 
-                type: "polyline", 
-                geometry: pts.geometry 
-            };
+
+            return pts;
         }
     }).end();
 }
 
 
-module.exports = { modular: shootingpoint, minPointCount: 3, maxPointCount: 3,
+module.exports = {
+    modular: shootingpoint,
+    minPointCount: 2,
+    maxPointCount: 3,
     properties: {
         size: {
             arrow: 30,
-            tail: 30, 
+            tail: 30,
         },
         pixelBySize: {}
     }
