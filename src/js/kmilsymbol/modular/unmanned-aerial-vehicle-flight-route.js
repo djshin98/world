@@ -18,12 +18,12 @@ function route(turnPlane, properties, bcompleted) {
                 ]
             }, {
                 type: "annotation",
-                geometry: rect(0, p[i + 1].y - p[i].y, a.a.width, a.a.height)
-                    .move(-s.width / 2, 0).move(a.a.anchor.x, a.a.anchor.y).geometry(),
+                geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.a.width, a.a.height)
+                    .move(-s.width / 2, 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
                 name: "a"
             }, {
                 type: "annotation",
-                geometry: rect(0, p[i + 1].y - p[i].y, a.c.width, a.c.height).geometry(),
+                geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.c.width, a.c.height).geometry(),
                 name: "c"
             }];
         }

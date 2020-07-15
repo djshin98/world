@@ -29,6 +29,7 @@ class Rectangle {
             p.x += x;
             p.y += y;
         });
+        return this;
     }
     geometry() {
         return this.geo;
