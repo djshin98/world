@@ -17,15 +17,16 @@ class MilGraphics extends DrawObject {
         this.annotations = undefined;
     }
     createAnnotation() {
-        if (Q.isValid(this.options.annotations)) {
+        let prop = this.options.properties;
+        if (Q.isValid(prop.annotations)) {
             let annotations = [];
-            Q.keys(this.options.annotations, (key, value) => {
-                let a = this.options.annotations[key];
-                a.text = this.createText(a.value, this.options.variables);
-                let text = new Annotation(a, this.options.variables);
+            Q.keys(prop.annotations, (key, value) => {
+                let a = prop.annotations[key];
+                a.text = this.createText(a.value, prop.variables);
+                let text = new Annotation(a);
                 annotations.push({
-                    name: a.name,
-                    image: text.image(),
+                    name: key,
+                    svg: text.image(),
                     anchor: a.anchor,
                     width: text.width(),
                     height: text.height()
@@ -35,18 +36,23 @@ class MilGraphics extends DrawObject {
         }
     }
     createText(value, variables) {
-        Q.keys(variables, (key, value) => {
-            value = value.trim();
-            if (value.indexOf("{") == 0 && value.indexOf("}") == value.length - 1) {
-                variables[key] = this.getScript(value);
-            }
-        });
-        let str = value;
-        Q.keys(variables, (key, v) => {
-            var re = new RegExp("{" + v + "}", "g");
-            str = str.replace(re, v);
-        });
-        return str;
+        if (Q.isValid(variables)) {
+            Q.keys(variables, (key, value) => {
+                if (typeof(value) == "string") {
+                    value = value.trim();
+                    if (value.indexOf("{") == 0 && value.indexOf("}") == value.length - 1) {
+                        variables[key] = this.getScript(value);
+                    }
+                }
+            });
+            let str = value;
+            Q.keys(variables, (key, v) => {
+                var re = new RegExp("{" + key + "}", "g");
+                str = str.replace(re, v);
+            });
+            return str;
+        }
+        return value;
     }
     getScript(value) {
         if (value == "{DTGSTART}") {
@@ -55,6 +61,9 @@ class MilGraphics extends DrawObject {
             return CTX.c2dtg(this.points[this.points.length - 1]);
         }
         return "";
+    }
+    getAnnotation(name) {
+        return this.annotations.find(a => { return a.name == name ? true : false; });
     }
     create(layer, points, viewModel) {
         this.points = points;
@@ -174,13 +183,14 @@ class MilGraphics extends DrawObject {
                     }
                 case "annotation":
                     {
+                        let svg = this.getAnnotation(obj.name).svg;
                         return {
                             rectangle: {
-                                rotation: obj.rotate,
-                                stRotation: obj.rotate,
+                                rotation: obj.rotate + Math.PI / 2,
+                                stRotation: obj.rotate + Math.PI / 2,
                                 coordinates: Cesium.Rectangle.fromCartesianArray(obj.geometry),
                                 fill: true,
-                                material: this.annotations[obj.name].image,
+                                material: svg.img,
                                 heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                             }
                         };

@@ -16,6 +16,7 @@ class Annotation extends SvgImage {
         let textWidth = 0;
         let textHeight = 0;
         let multipleLine = false;
+        let textFont = this.options.fontSize + "px " + this.options.fontFamily;
         if (this.options.text.indexOf("\n") > 0) {
             multipleLine = true;
             let texts = this.options.text.split("\n");
@@ -31,28 +32,28 @@ class Annotation extends SvgImage {
         this.box = {
             width: border * 2 + padding.left + padding.right + textWidth,
             height: border * 2 + padding.top + padding.bottom + textHeight
-        }
+        };
+        /*
+                if (this.options.taildirection == "bottom" || this.options.taildirection == "top") {
+                    box.width = border * 2 + padding.left + padding.right + textWidth
+                    box.height = border * 2 + padding.top + padding.bottom + textHeight;
 
-        if (this.options.taildirection == "bottom" || this.options.taildirection == "top") {
-            box.width = border * 2 + padding.left + padding.right + textWidth
-            box.height = border * 2 + padding.top + padding.bottom + textHeight;
-
-        } else if (this.option.taildirection == "left" || this.options.taildirection == "right") {
-            box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2 + this.options.tailHeight
-            box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.outlineWidth * 2
-        }
-
+                } else if (this.option.taildirection == "left" || this.options.taildirection == "right") {
+                    box.width = border * 2 + padding.left + padding.right + textWidth + this.options.outlineWidth * 2 + this.options.tailHeight
+                    box.height = border * 2 + padding.top + padding.bottom + textHeight + this.options.outlineWidth * 2
+                }
+        */
         if (multipleLine) {
             var texts = this.options.text.split("\n");
             texts.forEach((text, i) => {
-                html.append('text').text(text).attr("x", box.width / 2)
+                svg.append('text').text(text).attr("x", this.box.width / 2)
                     .attr("y", this.options.outlineWidth + padding.top + (i + 1) * (this.options.fontSize) + i * this.options.textLineMargin)
                     .attr("text-anchor", "middle").attr("alignment-baseline", "bottom")
                     .attr("font-family", this.options.fontFamily)
                     .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
             });
         } else {
-            html.append('text').text(this.options.text).attr("x", box.width / 2).attr("y", (box.height - padding.bottom / 2))
+            svg.append('text').text(this.options.text).attr("x", this.box.width / 2).attr("y", (this.box.height - padding.bottom / 2))
                 .attr("text-anchor", "middle").attr("alignment-baseline", "bottom")
                 .attr("font-family", this.options.fontFamily)
                 .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
