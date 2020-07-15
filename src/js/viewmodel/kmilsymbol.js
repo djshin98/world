@@ -431,6 +431,9 @@ class SIDC {
         }
         return desc;
     }
+    equal(sidc) {
+        return true;
+    }
 }
 
 class ViewModelElement {
@@ -503,7 +506,16 @@ class SymbolTest {
             if (Q.isValid(m)) {
                 var graphic = kms.Graphics(option);
                 if (!graphic.isIcon()) {
-                    m.addGraphics(graphic.modular);
+                    if (!Q.isValid(graphic.modular)) {
+                        alert(option.SIDC + " 에 해당하는 작전부호 모듈이 존재하지 않습니다.");
+                    } else {
+                        if (!Q.isValid(graphic.modular.properties)) {
+                            graphic.modular.properties = {};
+                        }
+                        graphic.modular.properties.sidc = new SIDC(option.SIDC[0], option.SIDC);
+                        m.addGraphics(graphic.modular);
+                    }
+
                 } else {
                     option.code = graphic.toDataURL();
                     return this.template(option);

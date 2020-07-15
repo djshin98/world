@@ -187,7 +187,13 @@ class MilGraphics extends DrawObject {
                         return {
                             polygon: {
                                 hierarchy: obj.geometry,
-                                material: viewModel.faceColor
+                                material: new Cesium.Material({
+                                    fabric: {
+                                        uniforms: {
+                                            image: svg.img
+                                        },
+                                    }
+                                })
                             }
                         };
                         /*
