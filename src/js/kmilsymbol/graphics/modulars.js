@@ -15,6 +15,7 @@ function registryModular(graphicModulars) {
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
     graphicModulars["DELAY"] = require("../modular/delay.js");
+    graphicModulars["DIVERSION"] = require("../modular/diversion.js");
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/fix.js");
     graphicModulars["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
