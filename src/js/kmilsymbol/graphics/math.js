@@ -14,19 +14,21 @@ class calc {
     static distance(p1, p2) {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
     }
-    static arrow(tp, pt1, p2, arrowSize) {
+    static arrow(tp, pt1, p2, arrowSize, angle) {
         let arr = [p2, pt1];
         return tp.turnStack(arr, 0, 1, (pt) => {
             let temp = { x: 0, y: arrowSize };
-            let radian = 40 * Math.PI / 180;
-            let p1 = {};
-            p1.x = (temp.x * Math.cos(radian)) - (temp.y * Math.sin(radian));
-            p1.y = (temp.x * Math.sin(radian)) + (temp.y * Math.cos(radian));
-            let p2 = {};
-            p2.x = (temp.x * Math.cos(-radian)) - (temp.y * Math.sin(-radian));
-            p2.y = (temp.x * Math.sin(-radian)) + (temp.y * Math.cos(-radian));
-
-            return { type: "polyline", geometry: [p1, pt[0], p2] };
+            let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
+            return {
+                type: "polyline",
+                geometry: [{
+                    x: (temp.x * Math.cos(radian)) - (temp.y * Math.sin(radian)),
+                    y: (temp.x * Math.sin(radian)) + (temp.y * Math.cos(radian))
+                }, pt[0], {
+                    x: (temp.x * Math.cos(-radian)) - (temp.y * Math.sin(-radian)),
+                    y: (temp.x * Math.sin(-radian)) + (temp.y * Math.cos(-radian))
+                }]
+            };
         });
     }
 }
@@ -47,7 +49,7 @@ class Rectangle {
         return this;
     }
     geometry() {
-        return this.geo;
+        return this.geo.concat(this.geo[0]);
     }
 }
 
