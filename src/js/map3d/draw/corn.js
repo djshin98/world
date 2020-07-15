@@ -3,10 +3,12 @@ const { CTX } = require('../ctx');
 
 class Corn extends DrawObject {
     constructor() {
-        super(2);
+        super(2, 3);
     }
     create(layer, points, viewModel) {
-        if (this.isValidPoints(points)) {
+        if (this.isReadyToCallbackVariable()) {
+
+        } else if (this.isComplete()) {
             //vector 1
             let v1 = Object.assign({}, points[1]);
             v1 = Cesium.Cartesian3.subtract(v1, points[0], {});

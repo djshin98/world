@@ -1,5 +1,4 @@
 const d3 = require('d3');
-const { Q } = require("../../../core/e");
 const b64start = 'data:image/svg+xml;base64,';
 const svgImages = {};
 
@@ -39,6 +38,14 @@ class SvgImage {
             key = this.constructor.name;
         }
         return svgImages[key];
+    }
+    textWidth(text, font) {
+        // re-use canvas object for better performance
+        var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas"));
+        var context = canvas.getContext("2d");
+        context.font = font;
+        var metrics = context.measureText(text);
+        return metrics.width;
     }
 }
 

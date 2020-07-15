@@ -214,13 +214,17 @@ class DrawController3 extends DrawController {
         }
     }
     setDrawMode(mode, modular) {
-        this.viewModel.mode = mode;
-        this.init();
-        this.terminateShape();
+        if (Q.isObject(mode)) {
+            this.update(mode);
+        } else {
+            this.viewModel.mode = mode;
+            this.init();
+            this.terminateShape();
 
-        this.activeDrawHandler = this.getHandler(this.viewModel.mode, modular);
-        if (Q.isValid(this.activeDrawHandler)) {
-            this.activeDrawHandler.ready();
+            this.activeDrawHandler = this.getHandler(this.viewModel.mode, modular);
+            if (Q.isValid(this.activeDrawHandler)) {
+                this.activeDrawHandler.ready();
+            }
         }
     }
     getHandler(key, modular) {

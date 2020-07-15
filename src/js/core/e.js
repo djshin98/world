@@ -19,6 +19,15 @@ function elements(heles) {
     this.length = function() {
         return this.elements.length;
     }
+    this.forEach = function(callback) {
+        this.elements.forEach((ele, i) => {
+            callback(ele, i, this.elements);
+        });
+    }
+    this.reverse = function() {
+        this.elements.reverse();
+        return this;
+    }
     this.on = function(event, callback, savedCallback) {
         this.elements.forEach(ele => {
             !callback || ele.addEventListener(event, callback);
@@ -107,19 +116,18 @@ function elements(heles) {
         })
         return new elements(l);
     }
-    this.parent = function() {
-        let l = [];
-        this.elements.map(ele => {
+    this.parent = function(callback) {
+        this.elements.some(ele => {
             let parent = ele.parentElement;
-            if (parent) {
-                if (l.every((e) => {
-                        return (e != parent) ? true : false;
-                    })) {
-                    l.push(parent);
+            while (parent) {
+                if (callback(parent)) {
+                    return true;
                 }
+                parent = parent.parentElement;
             }
-        })
-        return new elements(l);
+            return false;
+        });
+        return this;
     }
     this.children = function() {
         let l = [];
@@ -272,20 +280,33 @@ function elements(heles) {
         return false;
     };
 
-    this.hasClass = function() {
-        let l = [];
-        this.elements.forEach(ele => {
+    this.hasClass = function(cls) {
+        return this.elements.some(ele => {
             let has = false;
             ele.classList.forEach(c => {
                 if (c == cls) {
                     has = true;
                 }
             });
-            if (has) {
-                l.push(ele);
-            }
+            return has;
         });
-        return new elements(l);
+    }
+    this.swapClass = function(oldClass, newClass) {
+        this.elements.forEach(ele => {
+            let newClassList = [];
+            ele.classList.forEach(c => {
+                if (c != oldClass) {
+                    newClassList.push(c);
+                } else {
+                    newClassList.push(newClass);
+                }
+            });
+            newClassList.push(cls);
+            ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                return prev + " " + curr;
+            }, "").trim());
+        });
+        return this;
     }
     this.addClass = function(cls) {
         this.elements.forEach(ele => {
@@ -310,9 +331,13 @@ function elements(heles) {
                     newClassList.push(c);
                 }
             });
-            ele.setAttribute("class", newClassList.reduce((prev, curr) => {
-                return prev + " " + curr;
-            }, "").trim());
+            if (newClassList.length == 0) {
+                ele.setAttribute("class", "");
+            } else {
+                ele.setAttribute("class", newClassList.reduce((prev, curr) => {
+                    return prev + " " + curr;
+                }, "").trim());
+            }
         });
         return this;
     };

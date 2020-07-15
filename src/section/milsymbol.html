@@ -21,62 +21,12 @@
     </div>
     <div class="ui sub header" id="function-indentifier-text">기능 조정자</div>
     <ul id="function-indentifier" class="filetree" style="height:180px;">
-        <li><span class="folder">Folder 1</span>
-            <ul>
-                <li><span class="file">Item 1.1</span></li>
-                <li><span class="file">File 2.1.1</span></li>
-                <li><span class="file">File 2.1.2</span></li>
-                <li><span class="file">File 2.1.1</span></li>
-                <li><span class="file">File 2.1.2</span></li>
-            </ul>
-        </li>
-        <li><span class="folder">Folder 2</span>
-            <ul>
-                <li><span class="folder">Subfolder 2.1</span>
-                    <ul id="folder21">
-                        <li><span class="file">File 2.1.1</span></li>
-                        <li><span class="file">File 2.1.2</span></li>
-                    </ul>
-                </li>
-                <li><span class="file">File 2.2</span></li>
-            </ul>
-        </li>
-        <li class="closed"><span class="folder">Folder 3 (closed at start)</span>
-            <ul>
-                <li><span class="file">File 3.1</span></li>
-            </ul>
-        </li>
-        <li><span class="file">File 4</span></li>
+
     </ul>
 
     <div class="ui sub header">부대단위 및 이동수단</div>
     <ul id="unit" class="filetree" style="height:100px;">
-        <li><span class="folder">Folder 1</span>
-            <ul>
-                <li><span class="file">Item 1.1</span></li>
-                <li><span class="file">File 2.1.1</span></li>
-                <li><span class="file">File 2.1.2</span></li>
-                <li><span class="file">File 2.1.1</span></li>
-                <li><span class="file">File 2.1.2</span></li>
-            </ul>
-        </li>
-        <li><span class="folder">Folder 2</span>
-            <ul>
-                <li><span class="folder">Subfolder 2.1</span>
-                    <ul id="folder21">
-                        <li><span class="file">File 2.1.1</span></li>
-                        <li><span class="file">File 2.1.2</span></li>
-                    </ul>
-                </li>
-                <li><span class="file">File 2.2</span></li>
-            </ul>
-        </li>
-        <li class="closed"><span class="folder">Folder 3 (closed at start)</span>
-            <ul>
-                <li><span class="file">File 3.1</span></li>
-            </ul>
-        </li>
-        <li><span class="file">File 4</span></li>
+
     </ul>
     <div class="ui divider"></div>
     <div class="ui sub header">코드</div>
@@ -125,7 +75,28 @@
 </div>
 
 <script>
+    /*
+                app.onReady(function(_app, _map_) {
+                    let m = _app.articles.getMap(3);
+                    if (Q.isValid(m)) {
+                        var ctrl = new ViewModel_KMilSymbol({
+                            selector: "#viewmodel-milsymbol"
+                        });
+                        m.connectViewModel('viewmodel-milsymbol', {
+                            type: 'color',
+                            text: 'A',
+                            size: 48,
+                            height: 0,
+                            color: "#da2970",
+                            icon: 'hospital',
+                            url: "img/flag/KR.png",
+                        }, function(viewer, viewModel) {
+                            ctrl.update(viewModel);
+                        });
+                    }
+                });*/
     var selectedCodeTypeObj = new ViewModel_KMilSymbol({
+        id: "viewmodel-milsymbol",
         view: {
             CODETYPE: "codetype",
             AFFILIATION: "affiliation",
@@ -146,6 +117,7 @@
             }
         }
     }, function(viewmodel) {
+        /*
         new OliveTree("#viewmodel-milsymbol #function-indentifier", viewmodel.dataset[viewmodel.options.view.FI], {
             onSelect: function(type, tag, obj) {
                 if (type == "file") {
@@ -159,7 +131,7 @@
                         let id = tag.getAttribute("data-id");
                         let idf = selectedCodeTypeObj.findFunctionIdentifier(id);
                         if (idf) {
-                            _this.changeModifier(idf.modifier, idf.type, idf.pos, idf.fix, idf.graphic);
+                            selectedCodeTypeObj.changeModifier(idf.modifier, idf.type, idf.pos, idf.fix, idf.graphic);
                         }
                     }
                 }
@@ -175,31 +147,7 @@
                     }
                 }
             }
-        });
-        /*
-                $("#function-indentifier").treeview({
-        		    collapsed: true
-                });
-
-                $("#unit").treeview({
-                    collapsed: true
-                });
-
-                $("#function-indentifier li>div.folder").bind('click', function(){
-                    toggleFolder(this);
-                });
-                $("#function-indentifier li>div.file").bind('click', function(){
-                    $('.clicked').removeClass('clicked');
-                    $(this).addClass('clicked');
-                });
-
-                $("#unit li>div.folder").bind('click', function(){
-                    toggleFolder(this);
-                });
-                $("#unit li>div.file").bind('click', function(){
-                    $('.clicked').removeClass('clicked');
-                    $(this).addClass('clicked');
-                });*/
+        });*/
 
     });
 </script>

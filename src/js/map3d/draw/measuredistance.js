@@ -12,8 +12,8 @@ class MeasureDistance extends DrawObject {
     }
     create(layer, points, viewModel) {
         if (this.isReadyToCallbackVariable()) {
-            this.templateEntity.polyline.positions = points;
-        } else {
+            //this.templateEntity.polyline.positions = points;
+        } else if (this.isComplete()) {
             let option = {
                 positions: this.callbackValue(points),
                 clampToGround: true,

@@ -13,17 +13,18 @@ class Spline extends DrawObject {
         } else {
             if (this.isComplete()) {
                 let option = {
-                    positions: this.callbackValue(LineUtil.spline(points, 100)),
+                    positions: CTX.split.polyline(points, 10), //LineUtil.spline(points, 100),
                     clampToGround: true,
                     //color: viewModel.lineColor,
                     width: viewModel.lineWidth,
+                    /*
                     meterial: new Cesium.PolylineOutlineMaterialProperty({
                             color: Cesium.Color.BLACK, //viewModel.lineColor,
                             outlineColor: Cesium.Color.BLACK,
                             outlineWidth: 2
                         })
-                        //material: new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor)
-                        //material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
+                    */ //material: new Cesium.PolylineArrowMaterialProperty(viewModel.lineColor)
+                    material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, viewModel.lineWidth)
                 };
                 return layer.add({
                     polyline: option

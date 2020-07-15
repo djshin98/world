@@ -15,6 +15,7 @@ class OliveCollection {
         this.removeAll();
     }
     add(parent, options, movable) {
+        if (!Q.isArray(options)) { options = [options]; }
         let entities = options.map((opt, i) => {
             let obj = {};
             opt.parent = parent;

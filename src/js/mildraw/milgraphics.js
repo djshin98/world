@@ -3,24 +3,71 @@
 const { DrawObject } = require('../map3d/draw/drawobject');
 const { tw } = require('../map3d/tangent/turnplane');
 const { CTX } = require('../map3d/ctx');
+const { Annotation } = require('../draw/annotation');
 
 const Template = {
-    faceColor: new Cesium.Color(192, 192, 192, 0.5),
-    lineColor: new Cesium.Color(90, 90, 90, 0.5)
+    faceColor: new Cesium.Color(192, 0, 0, 1),
+    lineColor: new Cesium.Color(0, 0, 192, 1)
 };
 
 class MilGraphics extends DrawObject {
     constructor(options) {
         super(options.minPointCount, options.maxPointCount);
         this.options = Q.copy(options);
+        this.annotations = undefined;
+    }
+    createAnnotation() {
+        if (Q.isValid(this.options.annotations)) {
+            let annotations = [];
+            Q.keys(this.options.annotations, (key, value) => {
+                let a = this.options.annotations[key];
+                a.text = this.createText(a.value, this.options.variables);
+                let text = new Annotation(a, this.options.variables);
+                annotations.push({
+                    name: a.name,
+                    image: text.image(),
+                    anchor: a.anchor,
+                    width: text.width(),
+                    height: text.height()
+                });
+            });
+            return annotations;
+        }
+    }
+    createText(value, variables) {
+        Q.keys(variables, (key, value) => {
+            value = value.trim();
+            if (value.indexOf("{") == 0 && value.indexOf("}") == value.length - 1) {
+                variables[key] = this.getScript(value);
+            }
+        });
+        let str = value;
+        Q.keys(variables, (key, v) => {
+            var re = new RegExp("{" + v + "}", "g");
+            str = str.replace(re, v);
+        });
+        return str;
+    }
+    getScript(value) {
+        if (value == "{DTGSTART}") {
+            return CTX.c2dtg(this.points[0]);
+        } else if (value == "{DTGEND}") {
+            return CTX.c2dtg(this.points[this.points.length - 1]);
+        }
+        return "";
     }
     create(layer, points, viewModel) {
+        this.points = points;
         if (this.isReadyToCallbackVariable()) {
-            let objs = tw(points, this.isComplete(), 0, this.options);
+            if (!Q.isValid(this.annotations)) {
+                this.annotations = this.createAnnotation();
+            }
+            let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
             this.sketch(layer, objs);
         } else {
             if (this.isComplete()) {
-                let objs = tw(points, this.isComplete(), 0, this.options);
+                this.annotations = this.createAnnotation();
+                let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
                 let entityOptions = this.completeSketch(layer, objs, viewModel);
                 return layer.add(entityOptions);
             }
@@ -30,7 +77,7 @@ class MilGraphics extends DrawObject {
 
     sketch(layer, objs) {
         this.removeTemplateEntity(layer);
-
+        let div = 5;
         let points = [];
         objs.forEach((obj, i) => {
             switch (obj.type) {
@@ -41,17 +88,17 @@ class MilGraphics extends DrawObject {
                     }
                 case "polyline":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "polygon":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "arc":
                     {
-                        points = points.concat(CTX.split.polyline(obj.geometry, 10));
+                        points = points.concat(CTX.split.polyline(obj.geometry, div));
                         return;
                     }
                 case "spline":
@@ -68,11 +115,12 @@ class MilGraphics extends DrawObject {
             return {
                 position: p,
                 point: {
-                    pixelSize: 2,
-                    material: Template.faceColor,
-                    outline: true,
-                    outlineColor: Template.lineColor,
-                    outlineWidth: 1,
+                    pixelSize: 4,
+                    color: Template.faceColor,
+                    //material: Template.faceColor,
+                    //outline: true,
+                    //outlineColor: Template.lineColor,
+                    //outlineWidth: 4,
                     heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                 }
             };
@@ -110,8 +158,8 @@ class MilGraphics extends DrawObject {
                                 positions: obj.geometry,
                                 clampToGround: true,
                                 color: viewModel.lineColor,
-                                width: 10,
-                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 10)
+                                width: 5,
+                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 5)
                             },
                         };
                     }
@@ -128,12 +176,11 @@ class MilGraphics extends DrawObject {
                     {
                         return {
                             rectangle: {
+                                rotation: obj.rotate,
+                                stRotation: obj.rotate,
                                 coordinates: Cesium.Rectangle.fromCartesianArray(obj.geometry),
                                 fill: true,
-                                outline: true,
-                                outlineColor: viewModel.lineColor,
-                                outlineWidth: viewModel.lineWidth,
-                                material: obj.image,
+                                material: this.annotations[obj.name].image,
                                 heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                             }
                         };

@@ -1,8 +1,9 @@
 var { DrawObject } = require('./drawobject');
 var { CTX } = require('../ctx');
+let r = 0;
 class Image extends DrawObject {
     constructor() {
-        super(1);
+        super(1, 1);
     }
     pin(drawLength) {
         return { name: 'image', type: 'image', url: "img/maki/marker.png", color: Cesium.Color.NAVY, size: 48 };
@@ -54,19 +55,18 @@ class Image extends DrawObject {
             var points_result = [];
             points_result.push(center_p1);
             points_result.push(center_p2);
-
+            var rotate = ((2 * Math.PI) / 10) * (r++);
             layer.add({
                 //position: points[0],
                 //plane: planetmp,
 
                 rectangle: {
+                    rotation: rotate,
+                    stRotation: rotate,
                     coordinates: Cesium.Rectangle.fromCartesianArray(points_result),
                     //height: 500,
                     //extrudedHeight: 1000,
                     fill: true,
-                    outline: true,
-                    outlineColor: viewModel.lineColor,
-                    outlineWidth: viewModel.lineWidth,
                     material: viewModel.image,
                     heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
                 }

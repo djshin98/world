@@ -6,7 +6,8 @@ section {
     background-color: $sectionBackgroundColor;
     .section-head {
         text-align: center;
-        background-color: #16191c;
+        //background-color: #16191c;
+        background-color: #3a4147;
         border-right: 1px solid $handleColor;
         height: $sectionHeadHeight;
         padding: 1.1em;
@@ -16,7 +17,8 @@ section {
             }
         }
         a {
-            color: #fff;
+            color: #bfbcbc;
+            font-weight: bold;
             font-size: 1.6em;
             vertical-align: middle;
             b {
