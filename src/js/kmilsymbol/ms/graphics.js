@@ -26,7 +26,7 @@ class Graphics {
             lastNode.modular = value;
         });
     }
-    find(sidc) {
+    find(sidc, log) {
         let list = sidc.split('');
         let index = list.reverse().findIndex((a) => { return a !== "-" ? true : false });
         list.reverse();
@@ -36,6 +36,7 @@ class Graphics {
         if (list.some((c, i) => {
                 if (Q.isValid(node)) {
                     if (Q.isValid(node[c])) {
+                        log.push(c);
                         if (i == (list.length - 1)) {
                             findNode = node[c];
                             return true;
@@ -44,9 +45,11 @@ class Graphics {
                             return true;
                         } else {
                             node = node[c].children;
+
                             return false;
                         }
                     } else if (Q.isValid(node["-"])) {
+                        log.push("-");
                         if (i == (list.length - 1)) {
                             return true;
                         } else if (!Q.isValid(node["-"].children)) {
@@ -75,9 +78,17 @@ class Graphics {
         }
     }
     get(SIDC) {
-        var node = this.find(SIDC);
+        let log = [];
+        let node = this.find(SIDC, log);
         if (Q.isValid(node)) {
             node.isIcon = fisIcon;
+            if (Q.isValid(node.modular)) {
+                if (!Q.isValid(node.modular.properties)) {
+                    node.modular.properties = {};
+                }
+                node.modular.properties.log = log.join('');
+
+            }
             return node;
         }
     }

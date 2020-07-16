@@ -10,6 +10,7 @@ const Template = {
     lineColor: new Cesium.Color(0, 0, 192, 1)
 };
 
+const debugColor = Cesium.Color.RED;
 class MilGraphics extends DrawObject {
     constructor(options) {
         super(options.minPointCount, options.maxPointCount);
@@ -139,6 +140,15 @@ class MilGraphics extends DrawObject {
 
     completeSketch(layer, objs, viewModel) {
         this.removeTemplateEntity(layer);
+        objs.forEach((obj, i, arr) => {
+            if (obj.type == "annotation" && obj.debug === true) {
+                arr.push({
+                    type: "polyline",
+                    mode: "debug",
+                    geometry: obj.geometry
+                });
+            }
+        })
         return objs.map((obj, i) => {
             switch (obj.type) {
                 case "point":
@@ -161,14 +171,15 @@ class MilGraphics extends DrawObject {
                 case "arc":
                 case "polyline":
                     {
+                        let color = (obj.mode === "debug") ? debugColor : viewModel.lineColor;
+                        let lineWidth = (obj.mode === "debug") ? 1 : 10;
                         return {
                             position: obj.geometry[0],
                             polyline: {
                                 positions: obj.geometry,
                                 clampToGround: true,
-                                color: viewModel.lineColor,
-                                width: 5,
-                                material: this.lineMaterial(viewModel.lineStyle, viewModel.lineColor, 5)
+                                width: lineWidth,
+                                material: color
                             },
                         };
                     }
@@ -187,32 +198,13 @@ class MilGraphics extends DrawObject {
                         return {
                             polygon: {
                                 hierarchy: obj.geometry,
-                                material: new Cesium.Material({
-                                    fabric: {
-                                        uniforms: {
-                                            image: svg.img
-                                        },
-                                    }
+                                stRotation: -obj.rotate - Math.PI / 2,
+
+                                material: new Cesium.ImageMaterialProperty({
+                                    image: svg.img
                                 })
                             }
                         };
-                        /*
-                        return {
-                            position: obj.geometry[0],
-                            polygon: {
-                                hierarchy: obj.geometry,
-                                fill: true,
-                                material: new Cesium.Material({
-                                    fabric: {
-                                        type: 'Image',
-                                        uniforms: {
-                                            image: svg.img
-                                        }
-                                    }
-                                }),
-                                heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
-                            }
-                        };*/
                     }
             }
         });

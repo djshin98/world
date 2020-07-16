@@ -12,13 +12,13 @@ class SvgImage {
             width: 100,
             height: 100
         }, options);
-        this.box = { width: 100, height: 100 };
         this._create();
     }
     _create() {
         let template = d3.selectAll("body").append("template");
         let svg = template.append("svg").attr('width', this.options.width).attr('height', this.options.height);
         this.create(svg);
+        svg.attr('width', this.options.width).attr('height', this.options.height);
         let key;
         if (Q.isValid(this.options.index)) {
             key = this.constructor.name + this.options.index;
@@ -48,6 +48,12 @@ class SvgImage {
         context.font = font;
         var metrics = context.measureText(text);
         return metrics.width;
+    }
+    width() {
+        return this.options.width;
+    }
+    height() {
+        return this.options.height;
     }
 }
 

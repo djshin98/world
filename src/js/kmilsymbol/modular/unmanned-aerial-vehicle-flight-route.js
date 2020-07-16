@@ -18,18 +18,9 @@ function route(turnPlane, properties, bcompleted) {
                     calc.move(p[i], width / 2, 0), calc.move(p[i + 1], width / 2, 0)
                 ]
             }, {
-                type: "polyline", //"annotation",
-                geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.a.width, a.a.height)
-                    .move(-width / 2, 0).move(-a.a.width / 2, 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
-                name: "a"
-            }, {
-                type: "polyline", //"annotation",
-                geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.c.width, a.c.height).geometry(),
-                name: "c"
-            }, {
                 type: "annotation", //"annotation",
                 geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.a.width, a.a.height)
-                    .move(-width / 2, 0).move(-a.a.width / 2, 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
+                    .move(-width / 2, 0).move(-a.a.height / 2 - (a.a.height * 0.1), 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
                 name: "a"
             }, {
                 type: "annotation", //"annotation",
