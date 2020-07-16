@@ -15,25 +15,26 @@ function fake(turnPlane, properties, bcompleted) {
         }
 }
         else */
-            let pa = [];
-            let count = calc.distance(p[i], p[i+1])/s.div;
-            let pk = [];
-            for(let i = 0; i < count; i++) {
-                if(i % 2 == 0) {
-                pa.push({x:0, y:(s.div+10)*i});
-                pa.push({x:0, y:(s.div+20)*i});
+        let pa = [];
+        let count = calc.distance(p[i], p[i + 1]) / s.div;
+        let pk = [];
+        for (let i = 0; i < count; i++) {
+            if (i % 2 == 0) {
+                pa.push({ x: 0, y: (s.div + 10) * i });
+                pa.push({ x: 0, y: (s.div + 20) * i });
 
                 pk.push({
-                    type:"polyline",
-                    geometry: p, pa        
+                    type: "polyline",
+                    geometry: p,
+                    pa
                 })
-               
-                }
-            }
-            
-            return pk; 
 
-       
+            }
+        }
+
+        return pk;
+
+
     }).end();
 }
 

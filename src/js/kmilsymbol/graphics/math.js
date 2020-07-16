@@ -14,6 +14,14 @@ class calc {
     static distance(p1, p2) {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
     }
+    static extension(tp, p1, p2, dist) {
+        return tp.turnStack([p1, p2], 0, 1, (p) => {
+            return {
+                type: "polyline",
+                geometry: [p[0], { x: p[0].x, y: dist }]
+            };
+        });
+    }
     static arrow(tp, pt1, p2, arrowSize, angle) {
         let arr = [p2, pt1];
         return tp.turnStack(arr, 0, 1, (pt) => {
