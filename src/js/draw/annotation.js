@@ -3,7 +3,7 @@ class Annotation extends SvgImage {
     constructor(options) {
         super(Object.assign({
             outlineWidth: 0,
-            fontSize: 20,
+            fontSize: 30,
             fontFamily: "Sans-serif",
             textLineMargin: 5,
             color: "black"
@@ -29,10 +29,8 @@ class Annotation extends SvgImage {
             textHeight = this.options.fontSize;
         }
 
-        this.box = {
-            width: border * 2 + padding.left + padding.right + textWidth,
-            height: border * 2 + padding.top + padding.bottom + textHeight
-        };
+        this.options.width = border * 2 + padding.left + padding.right + textWidth;
+        this.options.height = border * 2 + padding.top + padding.bottom + textHeight;
         /*
                 if (this.options.taildirection == "bottom" || this.options.taildirection == "top") {
                     box.width = border * 2 + padding.left + padding.right + textWidth
@@ -46,25 +44,20 @@ class Annotation extends SvgImage {
         if (multipleLine) {
             var texts = this.options.text.split("\n");
             texts.forEach((text, i) => {
-                svg.append('text').text(text).attr("x", this.box.width / 2)
+                svg.append('text').text(text).attr("x", this.options.width / 2)
                     .attr("y", this.options.outlineWidth + padding.top + (i + 1) * (this.options.fontSize) + i * this.options.textLineMargin)
                     .attr("text-anchor", "middle").attr("alignment-baseline", "bottom")
                     .attr("font-family", this.options.fontFamily)
                     .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
             });
         } else {
-            svg.append('text').text(this.options.text).attr("x", this.box.width / 2).attr("y", (this.box.height - padding.bottom / 2))
-                .attr("text-anchor", "middle").attr("alignment-baseline", "bottom")
+            svg.append('text').text(this.options.text).attr("x", this.options.width / 2).attr("y", (this.options.height / 2))
+                .attr("text-anchor", "middle").attr("alignment-baseline", "middle")
                 .attr("font-family", this.options.fontFamily)
                 .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
         }
     }
-    width() {
-        return this.box.width;
-    }
-    height() {
-        return this.box.height;
-    }
+
 }
 
 module.exports = { Annotation: Annotation };

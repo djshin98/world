@@ -1,5 +1,5 @@
 function block(turnPlane, properties, bcompleted) {
-    if (properties.sidc.equal("G-G-OLAV")) {
+    if (properties.log == "G-G-OLAV") {
         return turnPlane.map((prev, points, index, buffer) => {
 
             if (index == 1) {
@@ -11,7 +11,7 @@ function block(turnPlane, properties, bcompleted) {
                 };
             }
         }).end();
-    } else if (properties.sidc.equal("G-G-OLAA")) {
+    } else if (properties.log == "G-G-OLAA") {
         return turnPlane.map((prev, points, index, buffer) => {
 
             if (index == 1) {

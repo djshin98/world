@@ -34,22 +34,55 @@ class calc {
 }
 class Rectangle {
     constructor(x, y, width, height) {
-        this.geo = [
-            { x: x - height / 2, y: y - width / 2 },
-            { x: x - height / 2, y: y + width / 2 },
-            { x: x + height / 2, y: y + width / 2 },
-            { x: x + height / 2, y: y - width / 2 }
-        ];
+        this.center = { x: x, y: y };
+        this.width = width;
+        this.height = height;
     }
     move(x, y) {
-        this.geo.forEach(p => {
-            p.x += x;
-            p.y += y;
-        });
+        this.center.x += x;
+        this.center.y += y;
         return this;
     }
-    geometry() {
-        return this.geo.concat(this.geo[0]);
+    left(bxaxis) {
+        if (bxaxis === true) {
+            return this.center.x - this.width / 2;
+        } else {
+            return this.center.y - this.width / 2;
+        }
+    }
+    right(bxaxis) {
+        if (bxaxis === true) {
+            return this.center.x + this.width / 2;
+        } else {
+            return this.center.y + this.width / 2;
+        }
+    }
+    top(bxaxis) {
+        if (bxaxis === true) {
+            return this.center.y + this.height / 2;
+        } else {
+            return this.center.x - this.height / 2;
+        }
+    }
+    bottom(bxaxis) {
+        if (bxaxis === true) {
+            return this.center.y - this.height / 2;
+        } else {
+            return this.center.x + this.height / 2;
+        }
+    }
+    geometry(bxaxis) {
+        let x = this.center.x;
+        let y = this.center.y;
+        let width = bxaxis === true ? this.width : this.height;
+        let height = bxaxis === true ? this.height : this.width;
+        return [
+            { x: x - width / 2, y: y - height / 2 },
+            { x: x - width / 2, y: y + height / 2 },
+            { x: x + width / 2, y: y + height / 2 },
+            { x: x + width / 2, y: y - height / 2 },
+            { x: x - width / 2, y: y - height / 2 }
+        ];
     }
 }
 
