@@ -110,7 +110,12 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                     }
                     return { x: p.x + v.m.x, y: p.y + v.m.y };
                 });
-                result.rotate = -v.r;
+                if (Q.isValid(result.rotate)) {
+                    result.rotate += -v.r;
+                } else {
+                    result.rotate = -v.r;
+                }
+
                 return result;
             }
         }
@@ -127,30 +132,32 @@ function tw(points, bcompleted, originIndex, options, annotations) {
         let origin = Q.isValid(originIndex) ? points[originIndex] : points[0];
         if (Q.isValid(options.properties)) {
             if (points.length > 1) {
+                let px = CTX.pixels(points[0], points[1]);
+                let lineLength = calc.distance(points[0], points[1]);
+
                 if (Q.isValid(options.properties.size)) {
                     options.properties.pixelBySize = {};
-                    let px = CTX.pixels(points[0], points[1]);
-                    let lineLength = calc.distance(points[0], points[1]);
+
                     Q.keys(options.properties.size, (key, value) => {
                         options.properties.pixelBySize[key] = (value * lineLength) / px;
                     });
-                    if (Q.isValid(annotations) && Q.isValid(options.properties.annotations)) {
-                        annotations.forEach(annotation => {
-                            let ann = options.properties.annotations[annotation.name];
-                            if (Q.isValid(ann)) {
-                                ann.width = (annotation.width * lineLength) / px;
-                                ann.height = (annotation.height * lineLength) / px;
-                                let temp = {
-                                    x: annotation.width * annotation.anchor.x,
-                                    y: annotation.height * annotation.anchor.y
-                                };
-                                ann.offset = {
-                                    x: (temp.x * lineLength) / px,
-                                    y: (temp.y * lineLength) / px
-                                };
-                            }
-                        });
-                    }
+                }
+                if (Q.isValid(annotations) && Q.isValid(options.properties.annotations)) {
+                    annotations.forEach(annotation => {
+                        let ann = options.properties.annotations[annotation.name];
+                        if (Q.isValid(ann)) {
+                            ann.width = (annotation.width * lineLength) / px;
+                            ann.height = (annotation.height * lineLength) / px;
+                            let temp = {
+                                x: annotation.width * annotation.anchor.x,
+                                y: annotation.height * annotation.anchor.y
+                            };
+                            ann.offset = {
+                                x: (temp.x * lineLength) / px,
+                                y: (temp.y * lineLength) / px
+                            };
+                        }
+                    });
                 }
             }
         }

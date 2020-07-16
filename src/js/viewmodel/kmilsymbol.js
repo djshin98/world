@@ -334,6 +334,7 @@ class ViewModel_KMilSymbol {
 class SIDC {
     constructor(codeStyle, sidc) {
         this.codeStyle = codeStyle;
+        this.code = sidc;
         this.extra = "";
         if (!sidc || sidc.length == 0) { sidc = "---------------"; } else if (sidc.length < 15) {
             sidc += "-".repeat(15 - sidc.length);
@@ -430,9 +431,6 @@ class SIDC {
             desc.push({ name: "기능", key: "graphic", value: this._getDescOnTree(this.graphic, activeType.standard.identifier) });
         }
         return desc;
-    }
-    equal(sidc) {
-        return true;
     }
 }
 
