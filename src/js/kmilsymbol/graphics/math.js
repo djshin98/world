@@ -22,6 +22,26 @@ class calc {
             };
         });
     }
+    static arc(sr, er, dist) {
+        let result = [];
+        let deg = 3 * Math.PI / 180;
+        if (sr < er) {
+            for (let r = sr; r < er; r += deg) {
+                result.push({
+                    x: dist * Math.sin(r),
+                    y: dist * Math.cos(r)
+                });
+            }
+        } else {
+            for (let r = sr; r > er; r -= deg) {
+                result.push({
+                    x: dist * Math.sin(r),
+                    y: dist * Math.cos(r)
+                });
+            }
+        }
+        return result;
+    }
     static arrow(tp, pt1, p2, arrowSize, angle) {
         let arr = [p2, pt1];
         return tp.turnStack(arr, 0, 1, (pt) => {

@@ -173,6 +173,7 @@ class MilGraphics extends DrawObject {
                     {
                         let color = (obj.mode === "debug") ? debugColor : viewModel.lineColor;
                         let lineWidth = (obj.mode === "debug") ? 1 : 10;
+                        this.expansion(obj);
                         return {
                             position: obj.geometry[0],
                             polyline: {
@@ -208,6 +209,18 @@ class MilGraphics extends DrawObject {
                     }
             }
         });
+    }
+    expansion(obj) {
+
+        if (Q.isValid(obj.expansion)) {
+            obj.expansion.forEach((ex) => {
+                if (ex.type == "arc") {
+
+                } else if (ex.type == "remove") {
+                    obj.geometry.splice(0, 1);
+                }
+            });
+        }
     }
 }
 module.exports = { MilGraphics: MilGraphics };
