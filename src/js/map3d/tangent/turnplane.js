@@ -37,26 +37,29 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
             }
         }
     }
-    reduce(callback) {
+    reduce(callback, orders) {
         this.append(this.points.reduce((prev, curr, i) => {
             if (Q.isValid(prev) && Q.isValid(prev.geometry)) { prev = Object.assign(prev); } else { prev = undefined; }
-            let v = this.verticalize(this.points, i - 1, i, prev);
+            let or = (Q.isValid(orders) && orders.length > i - 1) ? orders[i - 1] : [i - 1, i];
+            let v = this.verticalize(this.points, or[0], or[1], prev);
             return this.unverticalize(v, callback(v.prev, v.curr, i - 1, this.buffer));
         }));
         return this;
     }
-    map(callback) {
+    map(callback, orders) {
         this.points.reduce((prev, curr, i) => {
-            let v = this.verticalize(this.points, i - 1, i, prev);
+            let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
+            let v = this.verticalize(this.points, or[0], or[1], prev);
             curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, this.buffer));
             this.append(curr);
             return curr;
         });
         return this;
     }
-    forEach(callback) {
+    forEach(callback, orders) {
         this.points.reduce((prev, curr, i) => {
-            let v = this.verticalize(this.points, i - 1, i, prev);
+            let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
+            let v = this.verticalize(this.points, or[0], or[1], prev);
             curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, this.buffer));
             return curr;
         });

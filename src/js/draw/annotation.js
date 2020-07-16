@@ -6,13 +6,13 @@ class Annotation extends SvgImage {
             fontSize: 30,
             fontFamily: "Sans-serif",
             textLineMargin: 5,
-            color: "black"
+            color: "white"
         }, options));
 
     }
     create(svg) {
         let border = 0;
-        let padding = { left: 0, top: 0, right: 0, bottom: 0 }
+        let padding = { left: 2, top: 2, right: 2, bottom: 2 }
         let textWidth = 0;
         let textHeight = 0;
         let multipleLine = false;
@@ -44,14 +44,14 @@ class Annotation extends SvgImage {
         if (multipleLine) {
             var texts = this.options.text.split("\n");
             texts.forEach((text, i) => {
-                svg.append('text').text(text).attr("x", this.options.width / 2)
+                svg.append('text').attr("class", "outline").text(text).attr("x", this.options.width / 2)
                     .attr("y", this.options.outlineWidth + padding.top + (i + 1) * (this.options.fontSize) + i * this.options.textLineMargin)
                     .attr("text-anchor", "middle").attr("alignment-baseline", "bottom")
                     .attr("font-family", this.options.fontFamily)
                     .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);
             });
         } else {
-            svg.append('text').text(this.options.text).attr("x", this.options.width / 2).attr("y", (this.options.height / 2))
+            svg.append('text').attr("class", "outline").text(this.options.text).attr("x", this.options.width / 2).attr("y", (this.options.height / 2))
                 .attr("text-anchor", "middle").attr("alignment-baseline", "middle")
                 .attr("font-family", this.options.fontFamily)
                 .attr("font-size", this.options.fontSize + "px").attr("fill", this.options.color);

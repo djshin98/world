@@ -22,6 +22,27 @@ class calc {
             };
         });
     }
+    static arc(sr, er, dist, mp) {
+        let result = [];
+        let deg = 3 * Math.PI / 180;
+        if (!Q.isValid(mp)) { mp = { x: 0, y: 0 }; }
+        if (sr < er) {
+            for (let r = sr; r < er; r += deg) {
+                result.push({
+                    x: dist * Math.sin(r) + mp.x,
+                    y: dist * Math.cos(r) + mp.y
+                });
+            }
+        } else {
+            for (let r = sr; r > er; r -= deg) {
+                result.push({
+                    x: dist * Math.sin(r) + mp.x,
+                    y: dist * Math.cos(r) + mp.y
+                });
+            }
+        }
+        return result;
+    }
     static arrow(tp, pt1, p2, arrowSize, angle) {
         let arr = [p2, pt1];
         return tp.turnStack(arr, 0, 1, (pt) => {
@@ -78,6 +99,40 @@ class Rectangle {
         } else {
             return this.center.x + this.height / 2;
         }
+    }
+    linkLine(st, et, bxasix) {
+        if (bxasix === true) {
+            let r1 = this.right(bxasix);
+            let r2 = this.left(bxasix);
+            let sr, er;
+            if (Math.abs(st.x - r1) < Math.abs(st.x - r2)) { sr = r1, er = r2 } else {
+                sr = r2;
+                er = r1;
+            }
+            return [{
+                type: "polyline",
+                geometry: [st, { x: sr, y: st.y }]
+            }, {
+                type: "polyline",
+                geometry: [{ x: er, y: st.y }, et]
+            }];
+        } else {
+            let r1 = this.top(bxasix);
+            let r2 = this.bottom(bxasix);
+            let sr, er;
+            if (Math.abs(st.y - r1) < Math.abs(st.y - r2)) { sr = r1, er = r2 } else {
+                sr = r2;
+                er = r1;
+            }
+            return [{
+                type: "polyline",
+                geometry: [st, { x: st.x, y: sr }]
+            }, {
+                type: "polyline",
+                geometry: [{ x: st.x, y: er }, et]
+            }];
+        }
+
     }
     geometry(bxaxis) {
         let x = this.center.x;

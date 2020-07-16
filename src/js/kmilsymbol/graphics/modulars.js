@@ -17,7 +17,6 @@ function registryModular(graphicModulars) {
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
     graphicModulars["DELAY"] = require("../modular/delay.js");
     graphicModulars["기만모조"] = require("../modular/fake.js");
-    graphicModulars["DIVERSION"] = require("../modular/diversion.js");
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/fix.js");
     graphicModulars["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
@@ -35,9 +34,12 @@ function registryModular(graphicModulars) {
     graphicModulars["TARGET VALUE AREA"] = require("../modular/target-value-area.js");
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
-    graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
-    graphicModulars["항공통제트랙형"] = require("../modular/tracktype.js");
-    graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+    graphicModulars["목책"] = require("../modular/barrier.js");
+    graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
+    graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
+    graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
+    graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
+    graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
 }
 module.exports = registryModular;
