@@ -11,17 +11,19 @@ function bypass(turnPlane, properties, bcompleted) {
             }
         } else if (i == 1) {
             let pts = turnPlane.turnStack(p, 0, 1, (pt) => {
-                let height = calc.distance(pt[0], pt[1]);
-                let midpt = calc.mid(pt[0], pt[1]);
-               
-                if (pt[2].x >0) {
-                    return [{
+                //let height = calc.distance(pt[0], pt[1]);
+                //let midpt = calc.mid(pt[0], pt[1]);
+                
+               // pt[0] = 
+                
+
+                return [{
                         type: "polyline",
                         geometry: [
                             
                         ]
                     }]
-                }
+                
             });
 
             return pts;
