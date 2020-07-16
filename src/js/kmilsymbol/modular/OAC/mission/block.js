@@ -1,4 +1,4 @@
-const { calc, rect } = require("../graphics/math");
+const { calc, rect } = require("../../../graphics/math");
 
 function block(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, p, i, buffer) => {

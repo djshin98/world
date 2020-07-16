@@ -178,9 +178,8 @@ class MilGraphics extends DrawObject {
                             polyline: {
                                 positions: obj.geometry,
                                 clampToGround: true,
-                                color: color,
                                 width: lineWidth,
-                                material: this.lineMaterial(viewModel.lineStyle, color, lineWidth)
+                                material: color
                             },
                         };
                     }
