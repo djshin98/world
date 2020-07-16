@@ -1,30 +1,39 @@
-function block(turnPlane, properties, bcompleted) {
-    if (properties.log == "G-G-OLAV") {
-        return turnPlane.map((prev, points, index, buffer) => {
+const { calc } = require("../graphics/math");
 
-            if (index == 1) {
-                return {
-                    type: "polyline",
-                    geometry: [
-                        points[index - 1], points[index]
-                    ]
-                };
+function bypass(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, p, i, buffer) => {
+           
+            if (i == 0) {
+               
+            return {
+                type: "polyline",
+                geometry: [p[i], p[i + 1]]
             }
-        }).end();
-    } else if (properties.log == "G-G-OLAA") {
-        return turnPlane.map((prev, points, index, buffer) => {
+        } else if (i == 1) {
+            let pts = turnPlane.turnStack(p, 0, 1, (pt) => {
+                let height = calc.distance(pt[0], pt[1]);
+                let midpt = calc.mid(pt[0], pt[1]);
+               
+                if (pt[2].x >0) {
+                    return [{
+                        type: "polyline",
+                        geometry: [
+                            
+                        ]
+                    }]
+                }
+            });
 
-            if (index == 1) {
-                return {
-                    type: "polyline",
-                    geometry: [
-                        points[index - 1], points[index]
-                    ]
-                };
-            }
-        }).end();
-    }
-
+            return pts;
+        }
+    
+    }).end();
 }
 
-module.exports = { modular: block, minPointCount: 2, maxPointCount: 3 };
+
+module.exports = {
+    modular: bypass,
+    minPointCount: 2,
+    maxPointCount: 3,
+
+};
