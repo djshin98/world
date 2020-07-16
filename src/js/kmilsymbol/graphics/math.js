@@ -117,8 +117,8 @@ class Rectangle {
                 geometry: [{ x: er, y: st.y }, et]
             }];
         } else {
-            let r1 = this.top(bxasix);
-            let r2 = this.bottom(bxasix);
+            let r1 = this.right(bxasix);
+            let r2 = this.left(bxasix);
             let sr, er;
             if (Math.abs(st.y - r1) < Math.abs(st.y - r2)) { sr = r1, er = r2 } else {
                 sr = r2;
