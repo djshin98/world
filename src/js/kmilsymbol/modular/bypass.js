@@ -1,41 +1,40 @@
 const { calc } = require("../graphics/math");
 
 function bypass(turnPlane, properties, bcompleted) {
-    return turnPlane.map((prev, p, i, buffer) => {
-           
-            if (i == 0) {
-               
-            return {
+    return turnPlane.map((prev, point, i, buffer) => {
+       // let s = properties.pixelBySize;
+        if(i == 0){
+            if(point[2]){
+            p = [];
+            p[0] = {x: 0, y: 0};
+            p[1] = {x: 0, y: point[1].y};
+            let p1 = {x: -point[2].x, y: point[1].y};
+            let p2 = {x: -point[2].x, y: 0};
+            p.push(p1);
+            p.push(p2);
+            
+            return [{
                 type: "polyline",
-                geometry: [p[i], p[i + 1]]
+                geometry: [
+                    p[0], p2, p1, p[1]
+                ]
+                }];
             }
-        } else if (i == 1) {
-            let pts = turnPlane.turnStack(p, 0, 1, (pt) => {
-                //let height = calc.distance(pt[0], pt[1]);
-                //let midpt = calc.mid(pt[0], pt[1]);
-                
-               // pt[0] = 
-                
-
-                return [{
-                        type: "polyline",
-                        geometry: [
-                            
-                        ]
-                    }]
-                
-            });
-
-            return pts;
+        
         }
-    
-    }).end();
-}
-
+    });
+ }
 
 module.exports = {
     modular: bypass,
     minPointCount: 2,
     maxPointCount: 3,
+    properties: {
+        size: {
+            arrow: 30,
+            tail: 30,
+        },
+        pixelBySize: {}
+    }
 
 };
