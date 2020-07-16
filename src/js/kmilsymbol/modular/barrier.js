@@ -16,6 +16,11 @@ function barrier(turnPlane, properties, bcompleted) {
                 type: "polyline",
                 geometry: result
             };
+        } else {
+            return {
+                type: "polyline",
+                geometry: [points[index], points[index + 1]]
+            }
         }
     }).end();
 }
@@ -23,7 +28,6 @@ function barrier(turnPlane, properties, bcompleted) {
 module.exports = {
     modular: barrier,
     minPointCount: 1,
-    maxPointCount: 4,
     properties: {
         size: {
             arrow: 40, //화살표 한쪽 선의 길이
