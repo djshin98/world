@@ -36,5 +36,7 @@ function registryModular(graphicModulars) {
     graphicModulars["항공통제트랙형"] = require("../modular/tracktype.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+    graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
+    graphicModulars["목책"] = require("../modular/barrier.js");
 }
 module.exports = registryModular;
