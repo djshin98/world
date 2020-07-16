@@ -22,21 +22,22 @@ class calc {
             };
         });
     }
-    static arc(sr, er, dist) {
+    static arc(sr, er, dist, mp) {
         let result = [];
         let deg = 3 * Math.PI / 180;
+        if (!Q.isValid(mp)) { mp = { x: 0, y: 0 }; }
         if (sr < er) {
             for (let r = sr; r < er; r += deg) {
                 result.push({
-                    x: dist * Math.sin(r),
-                    y: dist * Math.cos(r)
+                    x: dist * Math.sin(r) + mp.x,
+                    y: dist * Math.cos(r) + mp.y
                 });
             }
         } else {
             for (let r = sr; r > er; r -= deg) {
                 result.push({
-                    x: dist * Math.sin(r),
-                    y: dist * Math.cos(r)
+                    x: dist * Math.sin(r) + mp.x,
+                    y: dist * Math.cos(r) + mp.y
                 });
             }
         }

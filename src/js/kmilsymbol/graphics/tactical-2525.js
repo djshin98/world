@@ -62,6 +62,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-G-ALL---'] = [];//TACGRP.C2GM.AVN.LNE.LLTR
     //sidc['G-G-AA----'] = [];//TACGRP.C2GM.AVN.ARS
     sidc['G-G-AAA---'] = modular["항공통제방위호형"]; //TACGRP.C2GM.AVN.ARS.MEZ
+    sidc['G-G-AAO---'] = modular["항공통제방위호형"];
     //sidc['G-G-AAR---'] = [];//TACGRP.C2GM.AVN.ARS.ROZ
     //sidc['G-G-AAF---'] = [];//TACGRP.C2GM.AVN.ARS.SHRDEZ
     //sidc['G-G-AAH---'] = [];//TACGRP.C2GM.AVN.ARS.HIDACZ

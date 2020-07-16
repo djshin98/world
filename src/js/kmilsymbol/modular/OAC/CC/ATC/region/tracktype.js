@@ -1,4 +1,4 @@
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../../../graphics/math");
 
 function tracktype(turnPlane, properties, bcompleted) {
     let width;

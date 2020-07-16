@@ -14,20 +14,36 @@ function arctype(turnPlane, properties, bcompleted) {
                 geometry: p
             };
         } else if (i == 1) {
-            let s = orders[i][0];
-            let t = orders[i][1];
-            let dist = p[t].y - p[s].y;
-            let radian = Math.atan2(p[1].x, p[1].y);
-            let geo = [calc.extension(turnPlane, p[s], p[1], dist).geometry[1], p[1]];
-            geo = geo.concat(calc.arc(radian, 0, innerDist));
-            geo.push({ x: 0, y: innerDist });
-            geo.push(p[t]);
-            geo = geo.concat(calc.arc(0, radian, dist));
-            let out = {
-                type: "polygon",
-                geometry: geo
-            };
-            return out;
+            if (properties.log == "G-G-AAA") {
+                let s = orders[i][0];
+                let t = orders[i][1];
+                let dist = p[t].y - p[s].y;
+                let radian = Math.atan2(p[1].x, p[1].y);
+                let geo = [calc.extension(turnPlane, p[s], p[1], dist).geometry[1], p[1]];
+                geo = geo.concat(calc.arc(radian, 0, innerDist));
+                geo.push({ x: 0, y: innerDist });
+                geo.push(p[t]);
+                geo = geo.concat(calc.arc(0, radian, dist));
+                let out = {
+                    type: "polygon",
+                    geometry: geo
+                };
+                return out;
+            } else if (properties.log == "G-G-AAO") {
+                let s = orders[i][0];
+                let t = orders[i][1];
+                let geo = [{ x: -innerDist, y: p[t].y }, { x: -innerDist, y: 0 }];
+                geo = geo.concat(calc.arc(-Math.PI / 2, -(3 * Math.PI) / 2, innerDist));
+                geo.push({ x: innerDist, y: 0 });
+                geo.push({ x: innerDist, y: p[t].y });
+                geo = geo.concat(calc.arc(Math.PI / 2, -Math.PI / 2, innerDist, p[t]));
+                let out = {
+                    type: "polygon",
+                    geometry: geo
+                };
+                return out;
+            }
+
         }
     }, orders).end();
 }
