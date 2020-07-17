@@ -172,7 +172,7 @@ class MilGraphics extends DrawObject {
                 case "polyline":
                     {
                         let color = (obj.mode === "debug") ? debugColor : viewModel.lineColor;
-                        let lineWidth = (obj.mode === "debug") ? 1 : 10;
+                        let lineWidth = (obj.mode === "debug") ? 1 : 5;
                         this.expansion(obj);
                         return {
                             position: obj.geometry[0],

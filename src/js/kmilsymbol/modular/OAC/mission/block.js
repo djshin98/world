@@ -37,20 +37,18 @@ function block(turnPlane, properties, bcompleted) {
                     let c = rect(0, -dist, a.c.width, a.c.height);
                     let ll = r.linkLine(pt[3], pt[2]);
                     let arrow = calc.arrow(turnPlane, pt[3], pt[2], s.arrow, 30);
+                    let arc = calc.arc(-Math.PI / 2, -Math.PI * 3 / 2, dist, { div: 5, hair: { length: -0.1, freq: 10 }, annotation: c });
                     return [{
                         type: "annotation",
                         geometry: r.geometry(),
                         name: "eny",
-                        debug: true
+                        //debug: true
                     }, {
                         type: "annotation",
                         geometry: c.geometry(),
                         name: "c",
-                        debug: true
-                    }, ll[0], ll[1], arrow, {
-                        type: "polyline",
-                        geometry: calc.arc(-Math.PI / 2, -Math.PI * 3 / 2, dist)
-                    }];
+                        //debug: true
+                    }, ll[0], ll[1], arrow].concat(arc);
                 });
             }
         }
