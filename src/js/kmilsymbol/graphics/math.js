@@ -22,26 +22,160 @@ class calc {
             };
         });
     }
-    static arc(sr, er, dist, mp) {
+    static arc(sr, er, dist, options) {
+        options = Object.assign({}, options);
         let result = [];
-        let deg = 3 * Math.PI / 180;
-        if (!Q.isValid(mp)) { mp = { x: 0, y: 0 }; }
+        let resultHair = [];
+        let rad = (Q.isValid(options.div) ? options.div : 3) * Math.PI / 180;
+        let mp = Q.isValid(options.translate) ? options.translate : { x: 0, y: 0 };
+        let mode = 0;
+        let hairLength = 0;
+        let hairFreq = 0;
+        let hasAnnotation = false;
+        let geo = [];
+        if (Q.isValid(options.hair)) {
+            mode = 1;
+            hairFreq = (Q.isValid(options.hair.freq) ? options.hair.freq : 15) * Math.PI / 180;
+            hairLength = (1 + options.hair.length) * dist;
+        }
+        if (Q.isValid(options.annotation)) {
+            hasAnnotation = true;
+        }
         if (sr < er) {
-            for (let r = sr; r < er; r += deg) {
+            if (mode == 1) {
                 result.push({
-                    x: dist * Math.sin(r) + mp.x,
-                    y: dist * Math.cos(r) + mp.y
+                    x: hairLength * Math.sin(sr) + mp.x,
+                    y: hairLength * Math.cos(sr) + mp.y
                 });
+            }
+            if (hasAnnotation) {
+                for (let r = sr; r <= er; r += rad) {
+                    let v = {
+                        x: dist * Math.sin(r) + mp.x,
+                        y: dist * Math.cos(r) + mp.y
+                    };
+                    if (options.annotation.inRegion(v, true)) {
+                        if (result.length > 1) {
+                            geo.push({
+                                type: "polyline",
+                                geometry: result
+                            });
+                            result = [];
+                        }
+                    } else {
+                        result.push(v);
+                    }
+                }
+            } else {
+                for (let r = sr; r <= er; r += rad) {
+                    result.push({
+                        x: dist * Math.sin(r) + mp.x,
+                        y: dist * Math.cos(r) + mp.y
+                    });
+                }
+            }
+
+            if (mode == 1) {
+                result.push({
+                    x: hairLength * Math.sin(er) + mp.x,
+                    y: hairLength * Math.cos(er) + mp.y
+                });
+            }
+            if (mode == 1) {
+                for (let r = sr + hairFreq; r < er; r += hairFreq) {
+                    if (hasAnnotation && Math.abs(r - ((er + sr) / 2)) < 0.0000001) {
+                        let pt = [{
+                            x: dist * Math.sin(r) + mp.x,
+                            y: dist * Math.cos(r) + mp.y
+                        }, {
+                            x: hairLength * Math.sin(r) + mp.x,
+                            y: hairLength * Math.cos(r) + mp.y
+                        }];
+                        options.annotation.linkLine(pt[0], pt[1]).forEach(l => { geo.push(l); });
+                    } else {
+                        resultHair.push([{
+                            x: dist * Math.sin(r) + mp.x,
+                            y: dist * Math.cos(r) + mp.y
+                        }, {
+                            x: hairLength * Math.sin(r) + mp.x,
+                            y: hairLength * Math.cos(r) + mp.y
+                        }]);
+                    }
+                }
             }
         } else {
-            for (let r = sr; r > er; r -= deg) {
+            if (mode == 1) {
                 result.push({
-                    x: dist * Math.sin(r) + mp.x,
-                    y: dist * Math.cos(r) + mp.y
+                    x: hairLength * Math.sin(sr) + mp.x,
+                    y: hairLength * Math.cos(sr) + mp.y
                 });
             }
+            if (hasAnnotation) {
+                for (let r = sr; r >= er; r -= rad) {
+                    let v = {
+                        x: dist * Math.sin(r) + mp.x,
+                        y: dist * Math.cos(r) + mp.y
+                    };
+                    if (options.annotation.inRegion(v, true)) {
+                        if (result.length > 1) {
+                            geo.push({
+                                type: "polyline",
+                                geometry: result
+                            });
+                            result = [];
+                        }
+                    } else {
+                        result.push(v);
+                    }
+                }
+            } else {
+                for (let r = sr; r >= er; r -= rad) {
+                    result.push({
+                        x: dist * Math.sin(r) + mp.x,
+                        y: dist * Math.cos(r) + mp.y
+                    });
+                }
+            }
+            if (mode == 1) {
+                result.push({
+                    x: hairLength * Math.sin(er) + mp.x,
+                    y: hairLength * Math.cos(er) + mp.y
+                });
+            }
+            if (mode == 1) {
+                for (let r = sr - hairFreq; r > er; r -= hairFreq) {
+                    if (hasAnnotation && Math.abs(r - ((er + sr) / 2)) < 0.0000001) {
+                        let pt = [{
+                            x: dist * Math.sin(r) + mp.x,
+                            y: dist * Math.cos(r) + mp.y
+                        }, {
+                            x: hairLength * Math.sin(r) + mp.x,
+                            y: hairLength * Math.cos(r) + mp.y
+                        }];
+                        options.annotation.linkLine(pt[0], pt[1]).forEach(l => { geo.push(l); });
+                    } else {
+                        resultHair.push([{
+                            x: dist * Math.sin(r) + mp.x,
+                            y: dist * Math.cos(r) + mp.y
+                        }, {
+                            x: hairLength * Math.sin(r) + mp.x,
+                            y: hairLength * Math.cos(r) + mp.y
+                        }]);
+                    }
+                }
+            }
         }
-        return result;
+        geo.push({ type: "polyline", geometry: result });
+
+        if (Q.isValid(options.hair)) {
+            resultHair.forEach(h => {
+                geo.push({
+                    type: "polyline",
+                    geometry: h
+                });
+            })
+        }
+        return geo;
     }
     static arrow(tp, pt1, p2, arrowSize, angle) {
         let arr = [p2, pt1];
@@ -100,37 +234,57 @@ class Rectangle {
             return this.center.x + this.height / 2;
         }
     }
+    inRegion(v, bxasix) {
+        let x1 = this.right(bxasix);
+        let x2 = this.left(bxasix)
+        let y1 = this.top(bxasix);
+        let y2 = this.bottom(bxasix);
+
+        if (((v.x <= x1 && v.x >= x2) || (v.x >= x1 && v.x <= x2)) &&
+            ((v.y <= y1 && v.y >= y2) || (v.y >= y1 && v.y <= y2))) {
+            return true;
+        }
+        return false;
+    }
     linkLine(st, et, bxasix) {
+        let ret = [];
         if (bxasix === true) {
             let r1 = this.right(bxasix);
             let r2 = this.left(bxasix);
             let sr, er;
-            if (Math.abs(st.x - r1) < Math.abs(st.x - r2)) { sr = r1, er = r2 } else {
-                sr = r2;
-                er = r1;
+            if (Math.abs(st.x - r1) < Math.abs(st.x - r2)) { //st.x는 r1에 가까이 있다.
+                if (!((st.x <= r1 && st.x >= r2) || (st.x >= r1 && st.x <= r2))) { sr = r1; }
+                if (!((et.x <= r2 && et.x >= r1) || (et.x >= r2 && et.x <= r1))) { er = r2; }
+            } else {
+                if (!((st.x <= r1 && st.x >= r2) || (st.x >= r1 && st.x <= r2))) { sr = r2; }
+                if (!((et.x <= r2 && et.x >= r1) || (et.x >= r2 && et.x <= r1))) { er = r1; }
             }
-            return [{
-                type: "polyline",
-                geometry: [st, { x: sr, y: st.y }]
-            }, {
-                type: "polyline",
-                geometry: [{ x: er, y: st.y }, et]
-            }];
+
+            if (Q.isValid(sr)) { ret.push({ type: "polyline", geometry: [st, { x: sr, y: st.y }] }); }
+            if (Q.isValid(er)) { ret.push({ type: "polyline", geometry: [{ x: er, y: st.y }, et] }); }
+            return ret;
         } else {
-            let r1 = this.top(bxasix);
-            let r2 = this.bottom(bxasix);
+            let r1 = this.right(bxasix);
+            let r2 = this.left(bxasix);
             let sr, er;
-            if (Math.abs(st.y - r1) < Math.abs(st.y - r2)) { sr = r1, er = r2 } else {
-                sr = r2;
-                er = r1;
+            if (!((st.y <= r1 && st.y >= r2) || (st.y >= r1 && st.y <= r2))) {
+                if (Math.abs(st.y - r1) < Math.abs(st.y - r2)) {
+                    sr = r1;
+                    if (!((et.y <= r2 && et.y >= r1) || (et.y >= r2 && et.y <= r1))) { er = r2; }
+                } else {
+                    sr = r2;
+                    if (!((et.y <= r2 && et.y >= r1) || (et.y >= r2 && et.y <= r1))) { er = r1; }
+                }
+            } else if (!((et.y <= r2 && et.y >= r1) || (et.y >= r2 && et.y <= r1))) {
+                if (Math.abs(et.y - r1) < Math.abs(et.y - r2)) {
+                    er = r1;
+                } else {
+                    er = r2;
+                }
             }
-            return [{
-                type: "polyline",
-                geometry: [st, { x: st.x, y: sr }]
-            }, {
-                type: "polyline",
-                geometry: [{ x: st.x, y: er }, et]
-            }];
+            if (Q.isValid(sr)) { ret.push({ type: "polyline", geometry: [st, { x: st.x, y: sr }] }); }
+            if (Q.isValid(er)) { ret.push({ type: "polyline", geometry: [{ x: et.x, y: er }, et] }); }
+            return ret;
         }
 
     }

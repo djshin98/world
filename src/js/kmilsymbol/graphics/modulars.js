@@ -42,5 +42,9 @@ function registryModular(graphicModulars) {
     graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
+    graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
+    graphicModulars["간격"] = require("../modular/gap.js");
+    graphicModulars["폭파예정"] = require("../modular/blasting-schedule.js");
+    graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
 }
 module.exports = registryModular;
