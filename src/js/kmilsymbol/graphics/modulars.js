@@ -35,6 +35,7 @@ function registryModular(graphicModulars) {
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+    graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/barrier.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
