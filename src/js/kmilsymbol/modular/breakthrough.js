@@ -10,9 +10,16 @@ function breakthrough(turnPlane, properties, bcompleted) {
             if(p.length == 3){
                 let a = properties.annotations;
                 let c = rect(p[2].x / 2, center.y, a.c.width, a.c.height);
-                c.linkLine(p[2], center, true).forEach(ll => { ret.push(ll); });
-
-                return [
+                let ll = r.linkLine(center, { x: pt[2].x, y: center.y }, true);
+        
+                
+                /*ret.push({
+                    type: "annotation",
+                    geometry: c.geometry(true),
+                    name: "p",
+                    debug: true
+                });*/
+                 return [
                     {
                         type: "polyline",
                         geometry: [
@@ -22,27 +29,25 @@ function breakthrough(turnPlane, properties, bcompleted) {
                         geometry: [
                            center, {x: p[2].x, y:center.y}, center
                         ]
-                    }, {
+                    }, ll[0], ll[1],{
                         type: "polyline",
                         geometry: calc.arrow(turnPlane, {x: p[2].x, y: center.y}, center, arrowSize).geometry
-                    }, {
+                    },  {
                         type: "annotation",
                         geometry: c.geometry(),
-                        name: "p",
+                        name: "b",
                         debug: true
                     }
                 ];
+                
             }
-            else{
-                return [{
-                    type: "polyline",
-                    geometry: [
-                        p[0], p[1]
-                    ]
-                }];
+        
+            
+           // }else if (index == 1){
+      
             }
 
-        }
+        
     }).end();
 }
 
@@ -55,7 +60,7 @@ module.exports = {
             arrow: 30,
         },
         annotations: {
-            b: {
+            c: {
                 value: "P",
                 anchor: { x: 0, y: 0 }
             }
