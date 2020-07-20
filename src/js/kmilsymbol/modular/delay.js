@@ -73,7 +73,7 @@ function delay(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {
         if (index == 1) {
             return {
-                type: "polyline",
+                type: "arc",
                 geometry: [
                     points[index - 1], points[index]
                 ]

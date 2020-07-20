@@ -1,16 +1,16 @@
 const { calc } = require("../graphics/math");
 
-function polygon(turnPlane, properties, bcompleted) {
-    return turnPlane.map((prev, points, i, buffer) => {
+function bypass(turnPlane, properties, bcompleted) {
+    return turnPlane.map((prev, point, i, buffer) => {
        // let s = properties.pixelBySize;
         if(i == 0){
             
-            points.push(points[0]);
+            point.push(point[0]);
 
             return [{
                 type: "polyline",
                 geometry: 
-                    points
+                    point
                 }
             ];
             }
@@ -20,7 +20,7 @@ function polygon(turnPlane, properties, bcompleted) {
  }
 
 module.exports = {
-    modular: polygon,
+    modular: bypass,
     minPointCount: 3,
     
 };
