@@ -2,9 +2,10 @@ const { calc } = require("../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
-    let center = calc.mid(p[0], p[1]);
+    
 
     return turnPlane.map((prev, p, i, buffer) => {
+        let center = calc.mid(p[0], p[1]);
         if (i == 0) {
             if(p.length == 3){
                 //let len = Math.abs(p[2].x);
