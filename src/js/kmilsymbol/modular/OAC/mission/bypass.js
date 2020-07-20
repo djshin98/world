@@ -10,13 +10,6 @@ function bypass(turnPlane, properties, bcompleted) {
                 let c = rect(p[2].x, p[1].y / 2, a.b.width, a.b.height);
                 let ll = c.linkLine({ x: p[2].x, y: 0 }, { x: p[2].x, y: p[1].y });
 
-                /*{
-                    type: "polyline",
-                    geometry: [
-                        p[0], { x: p[2].x, y: 0 }, { x: p[2].x, y: p[1].y }, { x: 0, y: p[1].y }
-                    ]
-                }*/
-
                 return [{
                     type: "polyline",
                     geometry: [
