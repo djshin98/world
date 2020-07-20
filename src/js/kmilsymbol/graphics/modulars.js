@@ -43,13 +43,10 @@ function registryModular(graphicModulars) {
     graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
-<<<<<<< HEAD
 
-=======
     graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
     graphicModulars["간격"] = require("../modular/gap.js");
     graphicModulars["폭파예정"] = require("../modular/blasting-schedule.js");
     graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
->>>>>>> c4abc68be2de1bbc9d39cfcbaa1a84d87b38ffc0
 }
 module.exports = registryModular;
