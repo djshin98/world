@@ -41,8 +41,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
             }
         }
     }
-    reduce(callback, orders) {
+    reduce(callback, preWork, orders) {
         let buffer = [];
+        if (Q.isValid(preWork)) {
+            this.points = preWork(this, this.points);
+        }
         this.append(this.points.reduce((prev, curr, i) => {
             if (Q.isValid(prev) && Q.isValid(prev.geometry)) { prev = Object.assign(prev); } else { prev = undefined; }
             let or = (Q.isValid(orders) && orders.length > i - 1) ? orders[i - 1] : [i - 1, i];
@@ -51,8 +54,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }));
         return this;
     }
-    map(callback, orders) {
+    map(callback, preWork, orders) {
         let buffer = [];
+        if (Q.isValid(preWork)) {
+            this.points = preWork(this, this.points);
+        }
         this.points.reduce((prev, curr, i) => {
             let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
             let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
@@ -62,8 +68,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         });
         return this;
     }
-    forEach(callback, orders) {
+    forEach(callback, preWork, orders) {
         let buffer = [];
+        if (Q.isValid(preWork)) {
+            this.points = preWork(this, this.points);
+        }
         this.points.reduce((prev, curr, i) => {
             let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
             let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
