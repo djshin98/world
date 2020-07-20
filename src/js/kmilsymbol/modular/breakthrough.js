@@ -2,20 +2,21 @@ const { calc } = require("../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {
-        let s = properties.pixelBySize;
+        
         if (index == 0) {
             let p = points;
+            let arrowSize = properties.pixelBySize.arrow;
             let center = calc.mid(p[0], p[1]);
 
             
-            if(p[2]){
+            if(points.length == 3){
                 let len = Math.abs(p[2].x);
                 
                 //let p1 = {x: p[2].x, y : 0};
                 //let p2 = {x: p[2].x, y : p[1].y};
                 p[2] = {x: len, y: center.y};
 
-                let a1 = calc.arrow(turnPlane, p[2], center, properties.pixelBySize.arrow);
+                let a1 = calc.arrow(turnPlane, p[2], center, arrowSize);
 
                 return [
                     {
@@ -48,9 +49,6 @@ module.exports = {
     properties: {
         size: {
             arrow: 70,
-            tail: 70,
         },
-        pixelBySize: {}
     }
-
 };
