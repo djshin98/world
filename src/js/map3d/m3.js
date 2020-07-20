@@ -8,7 +8,7 @@ const { OliveCursor } = require('./cursor');
 const { Dashboard } = require('./dashboard');
 const { dom } = require("../util/comm");
 
-const { LayerDirector } = require("./layer/layerdirector");
+const { LayerDirector3 } = require("./layer/layerdirector");
 const { CTX } = require("./ctx");
 const { MapContent } = require("../app/article");
 const { DrawController3 } = require("./draw/controller");
@@ -172,7 +172,7 @@ class m3 extends MapContent {
             promiseA.then((val) => { mymap.fullscreen(true); });
             */
         }
-        this.layerDirector = new LayerDirector(this, configLayers);
+        this.layerDirector = new LayerDirector3(this, configLayers);
 
         this.drawModel = new DrawController3(this, this.viewOption.baseLayerPicker);
         //this.init(options, () => {
