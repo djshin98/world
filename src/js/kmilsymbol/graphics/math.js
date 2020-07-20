@@ -22,6 +22,23 @@ class calc {
             };
         });
     }
+    static ext(org, dir, len) {
+        let o = { x: dir.x - org.x, y: dir.y - org.y };
+        let rad = Math.atan2(o.y, o.x);
+        return {
+            x: len * Math.cos(rad) + o.x,
+            y: len * Math.sin(rad) + o.y
+        };
+    }
+    static dir(org, dir, deg, len) {
+        let rdeg = deg * Math.PI / 180;
+        let o = { x: dir.x - org.x, y: dir.y - org.y };
+        let rad = Math.atan2(o.y, o.x) + rdeg;
+        return {
+            x: len * Math.cos(rad) + o.x,
+            y: len * Math.sin(rad) + o.y
+        };
+    }
     static arc(sr, er, dist, options) {
         options = Object.assign({}, options);
         let result = [];
@@ -177,22 +194,69 @@ class calc {
         }
         return geo;
     }
-    static arrow(tp, pt1, p2, arrowSize, angle) {
-        let arr = [p2, pt1];
+    static arrow(tp, start, end, arrowSize, angle, bpolygon) {
+        let arr = [end, start];
         return tp.turnStack(arr, 0, 1, (pt) => {
             let temp = { x: 0, y: arrowSize };
             let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
-            return {
-                type: "polyline",
-                geometry: [{
-                    x: (temp.x * Math.cos(radian)) - (temp.y * Math.sin(radian)),
-                    y: (temp.x * Math.sin(radian)) + (temp.y * Math.cos(radian))
-                }, pt[0], {
-                    x: (temp.x * Math.cos(-radian)) - (temp.y * Math.sin(-radian)),
-                    y: (temp.x * Math.sin(-radian)) + (temp.y * Math.cos(-radian))
-                }]
+            let a1 = {
+                x: (temp.x * Math.cos(radian)) - (temp.y * Math.sin(radian)),
+                y: (temp.x * Math.sin(radian)) + (temp.y * Math.cos(radian))
             };
+            let a2 = {
+                x: (temp.x * Math.cos(-radian)) - (temp.y * Math.sin(-radian)),
+                y: (temp.x * Math.sin(-radian)) + (temp.y * Math.cos(-radian))
+            };
+            if (bpolygon === true) {
+                return {
+                    type: "polygon",
+                    geometry: [a1, pt[0], a2, a1]
+                };
+            } else {
+                return {
+                    type: "polyline",
+                    geometry: [a1, pt[0], a2]
+                };
+            }
         });
+    }
+    static x(pt, size) {
+        return [{
+                type: "polyline",
+                geometry: [
+                    { x: pt.x + size, y: pt.y + size },
+                    { x: pt.x - size, y: pt.y - size }
+                ]
+            },
+            {
+                type: "polyline",
+                geometry: [
+                    { x: pt.x - size, y: pt.y + size },
+                    { x: pt.x + size, y: pt.y - size }
+                ]
+            }
+        ];
+    }
+    static xx(pt, size) {
+        return [{
+            type: "polyline",
+            geometry: [
+                { x: pt.x - size, y: pt.y },
+                { x: pt.x - size / 2, y: pt.y + size / 2 },
+                { x: pt.x + size / 2, y: pt.y + size / 2 },
+                { x: pt.x + size, y: pt.y },
+                { x: pt.x + size / 2, y: pt.y - size / 2 },
+                { x: pt.x - size / 2, y: pt.y - size / 2 },
+                { x: pt.x - size, y: pt.y },
+            ]
+        }];
+    }
+    static elx(pt, index, size) {
+        return [
+            { x: pt.x + size / 2, y: pt.y - size / 2 },
+            { x: pt.x - size / 2, y: pt.y },
+            { x: pt.x + size / 2, y: pt.y + size / 2 }
+        ];
     }
 }
 class Rectangle {
@@ -303,8 +367,38 @@ class Rectangle {
     }
 }
 
+class Line {
+    constructor(pt1, pt2) {
+        this.s = pt1;
+        this.e = pt2;
+    }
+    intersect(line) {
+        let t;
+        let s;
+        let under = (line.e.y - line.s.y) * (this.e.x - this.s.x) - (line.e.x - line.s.x) * (this.e.y - this.s.y);
+        if (under == 0) return undefined;
+
+        let _t = (line.e.x - line.s.x) * (this.s.y - line.s.y) - (line.e.y - line.s.y) * (this.s.x - line.s.x);
+        let _s = (this.e.x - this.s.x) * (this.s.y - line.s.y) - (this.e.y - this.s.y) * (this.s.x - line.s.x);
+
+        t = _t / under;
+        s = _s / under;
+
+        //if (t < 0.0 || t > 1.0 || s < 0.0 || s > 1.0) return undefined;
+        //if (_t == 0 && _s == 0) return undefined;
+
+        return {
+            x: this.s.x + t * (this.e.x - this.s.x),
+            y: this.s.y + t * (this.e.y - this.s.y)
+        };
+    }
+}
+
 function rect(x, y, width, height) {
     return new Rectangle(x, y, width, height);
 }
 
-module.exports = { calc: calc, rect: rect };
+function line(p1, p2) {
+    return new Line(p1, p2);
+}
+module.exports = { calc: calc, rect: rect, line: line };

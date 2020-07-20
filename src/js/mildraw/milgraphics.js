@@ -7,7 +7,8 @@ const { Annotation } = require('../draw/annotation');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
-    lineColor: new Cesium.Color(0, 0, 192, 1)
+    lineColor: new Cesium.Color(0, 0, 192, 1),
+    lineWidth: 1
 };
 
 const debugColor = Cesium.Color.RED;
@@ -125,7 +126,7 @@ class MilGraphics extends DrawObject {
             return {
                 position: p,
                 point: {
-                    pixelSize: 4,
+                    pixelSize: 3,
                     color: Template.faceColor,
                     //material: Template.faceColor,
                     //outline: true,
@@ -172,7 +173,7 @@ class MilGraphics extends DrawObject {
                 case "polyline":
                     {
                         let color = (obj.mode === "debug") ? debugColor : viewModel.lineColor;
-                        let lineWidth = (obj.mode === "debug") ? 1 : 5;
+                        let lineWidth = (obj.mode === "debug") ? 1 : Template.lineWidth;
                         this.expansion(obj);
                         return {
                             position: obj.geometry[0],

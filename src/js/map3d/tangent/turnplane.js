@@ -1,6 +1,6 @@
 "use strict";
 const { calc } = require("../../kmilsymbol/graphics/math");
-
+global._verticalizekey = 1;
 class TurnPlane extends Cesium.EllipsoidTangentPlane {
     constructor(origin, points) {
         super(origin);
@@ -38,29 +38,32 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }
     }
     reduce(callback, orders) {
+        let buffer = [];
         this.append(this.points.reduce((prev, curr, i) => {
             if (Q.isValid(prev) && Q.isValid(prev.geometry)) { prev = Object.assign(prev); } else { prev = undefined; }
             let or = (Q.isValid(orders) && orders.length > i - 1) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev);
-            return this.unverticalize(v, callback(v.prev, v.curr, i - 1, this.buffer));
+            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
+            return this.unverticalize(v, callback(v.prev, v.curr, i - 1, v.buffer));
         }));
         return this;
     }
     map(callback, orders) {
+        let buffer = [];
         this.points.reduce((prev, curr, i) => {
             let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev);
-            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, this.buffer));
+            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
+            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, v.buffer));
             this.append(curr);
             return curr;
         });
         return this;
     }
     forEach(callback, orders) {
+        let buffer = [];
         this.points.reduce((prev, curr, i) => {
             let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev);
-            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, this.buffer));
+            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
+            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, v.buffer));
             return curr;
         });
         return this;
@@ -75,28 +78,35 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
             if (Q.isArray(obj)) {
                 return obj.map(r => { return this._verticalize(v, r); })
             } else if (Q.isValid(obj.geometry)) {
-                obj.geometry = obj.geometry.map(p => {
-                    p.x -= v.m.x;
-                    p.y -= v.m.y;
-                    if (Q.isValid(v.r)) {
-                        let temp = { x: p.x, y: p.y };
-                        p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
-                        p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
-                    }
-                    return p;
-                });
+                if (!(obj.v && obj.v.indexOf(v.vkey) >= 0)) {
+                    obj.geometry = obj.geometry.map(p => {
+                        p.x -= v.m.x;
+                        p.y -= v.m.y;
+                        if (Q.isValid(v.r)) {
+                            let temp = { x: p.x, y: p.y };
+                            p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
+                            p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
+                        }
+                        return p;
+                    });
+                    if (!obj.v) { obj.v = []; }
+                    obj.v.push(v.vkey);
+                }
                 return obj;
             }
         }
     }
-    verticalize(points, originIndex, verticalizeIndex, prev) {
-        let v = { m: { x: points[originIndex].x, y: points[originIndex].y } };
+    verticalKey() { if (global._verticalizekey > 1000000) { global._verticalizekey = 1; } return global._verticalizekey++; }
+    verticalize(points, originIndex, verticalizeIndex, prev, buffer) {
+        let v = { m: { x: points[originIndex].x, y: points[originIndex].y }, vkey: this.verticalKey() };
         points = Q.copy(points);
         if (points.length > 1) {
             v.r = Math.atan2(points[verticalizeIndex].x - v.m.x, points[verticalizeIndex].y - v.m.y);
         }
         v.curr = this._verticalize(v, { geometry: points }).geometry;
         v.prev = this._verticalize(v, prev);
+        this._verticalize(v, buffer);
+        v.buffer = buffer;
         return v;
     }
     _unverticalize(v, result) {
@@ -104,19 +114,26 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
             if (Q.isArray(result)) {
                 return result.map(r => { return this._unverticalize(v, r); })
             } else if (Q.isValid(result.geometry)) {
-                result.geometry = result.geometry.map(p => {
-                    if (Q.isValid(v.r)) {
-                        return {
-                            x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
-                            y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
-                        };
+                let vkeyIndex = result.v ? result.v.indexOf(v.vkey) :
+                    ((result.u && result.u.indexOf(v.vkey) >= 0) ? -1 : 0);
+                if (vkeyIndex >= 0) {
+                    result.geometry = result.geometry.map(p => {
+                        if (Q.isValid(v.r)) {
+                            return {
+                                x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
+                                y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
+                            };
+                        }
+                        return { x: p.x + v.m.x, y: p.y + v.m.y };
+                    });
+                    if (Q.isValid(result.rotate)) {
+                        result.rotate += -v.r;
+                    } else {
+                        result.rotate = -v.r;
                     }
-                    return { x: p.x + v.m.x, y: p.y + v.m.y };
-                });
-                if (Q.isValid(result.rotate)) {
-                    result.rotate += -v.r;
-                } else {
-                    result.rotate = -v.r;
+                    if (result.v) { result.v.splice(vkeyIndex, 1); } else {
+                        result.u = [v.vkey];
+                    }
                 }
 
                 return result;
@@ -126,6 +143,7 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
     unverticalize(v, results) {
         v.curr = this._unverticalize(v, v.curr);
         v.prev = this._unverticalize(v, v.prev);
+        this._unverticalize(v, v.buffer);
         return this._unverticalize(v, results);
     }
 }

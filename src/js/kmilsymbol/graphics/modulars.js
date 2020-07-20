@@ -39,7 +39,9 @@ function registryModular(graphicModulars) {
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
     graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
+    graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
+
 }
 module.exports = registryModular;
