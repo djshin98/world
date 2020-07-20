@@ -2,9 +2,9 @@
 
 module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-T-B-----"] = modular["BLOCK"]; //TACGRP.TSK.BLK
-    sidc["G-T-H-----"] = modular["BREACH"]; //TACGRP.TSK.BRH
+    sidc["G-T-H-----"] = modular["BYPASS"]; //TACGRP.TSK.BRH
     sidc["G-T-Y-----"] = modular["BYPASS"]; //TACGRP.TSK.BYS
-    sidc["G-T-C-----"] = modular["CANALIZE"]; //TACGRP.TSK.CNZ
+    sidc["G-T-C-----"] = modular["BYPASS"]; //TACGRP.TSK.CNZ
     sidc["G-T-X-----"] = modular["CLEAR"]; //TACGRP.TSK.CLR
     sidc['G-T-J-----'] = modular["BLOCK"]; //TACGRP.TSK.CNT
     //sidc['G-T-K-----'] = [];//TACGRP.TSK.CATK
