@@ -21,11 +21,13 @@ function route(turnPlane, properties, bcompleted) {
                 type: "annotation", //"annotation",
                 geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.a.width, a.a.height)
                     .move(-width / 2, 0).move(-a.a.height / 2 - (a.a.height * 0.1), 0).geometry(), //.move(a.a.anchor.x, a.a.anchor.y)
-                name: "a"
+                name: "a",
+                debug: true
             }, {
                 type: "annotation", //"annotation",
                 geometry: rect(0, (p[i + 1].y - p[i].y) / 2, a.c.width, a.c.height).geometry(),
-                name: "c"
+                name: "c",
+                debug: true
             }];
         }
     }).end();
@@ -53,7 +55,7 @@ module.exports = {
         },
         variables: { // 사용자가 변경할 수 있다.
             name: "무인항공기비행경로",
-            width: 500,
+            width: 100,
             minAlt: 1000,
             maxAlt: 2000,
             dtgStart: "{DTGSTART}",

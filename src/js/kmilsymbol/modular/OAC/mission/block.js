@@ -42,12 +42,12 @@ function block(turnPlane, properties, bcompleted) {
                         type: "annotation",
                         geometry: r.geometry(),
                         name: "eny",
-                        //debug: true
+                        debug: true
                     }, {
                         type: "annotation",
                         geometry: c.geometry(),
                         name: "c",
-                        //debug: true
+                        debug: true
                     }, ll[0], ll[1], arrow].concat(arc);
                 });
             }
@@ -66,7 +66,7 @@ module.exports = {
         },
         annotations: {
             r: {
-                value: "R",
+                value: "B",
                 anchor: { x: 0, y: 0 }
             },
             eny: {

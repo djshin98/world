@@ -8,7 +8,7 @@ const { Annotation } = require('../draw/annotation');
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
     lineColor: new Cesium.Color(0, 0, 192, 1),
-    lineWidth: 1
+    lineWidth: 3
 };
 
 const debugColor = Cesium.Color.RED;
