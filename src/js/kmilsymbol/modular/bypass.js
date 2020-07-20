@@ -9,8 +9,8 @@ function bypass(turnPlane, properties, bcompleted) {
             p = [];
             p[0] = {x: 0, y: 0};
             p[1] = {x: 0, y: point[1].y};
-            let p1 = {x: -point[2].x, y: point[1].y};
-            let p2 = {x: -point[2].x, y: 0};
+            let p1 = {x: point[2].x, y: point[1].y};
+            let p2 = {x: point[2].x, y: 0};
             p.push(p1);
             p.push(p2);
             

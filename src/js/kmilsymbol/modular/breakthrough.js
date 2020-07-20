@@ -13,7 +13,7 @@ function breakthrough(turnPlane, properties, bcompleted) {
                 
                 //let p1 = {x: p[2].x, y : 0};
                 //let p2 = {x: p[2].x, y : p[1].y};
-                p[2] = {x: -len, y: center.y};
+                p[2] = {x: len, y: center.y};
 
                 let a1 = calc.arrow(turnPlane, p[2], center, properties.pixelBySize.arrow);
 
