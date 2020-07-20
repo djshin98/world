@@ -2,9 +2,9 @@
 
 module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-T-B-----"] = modular["BLOCK"]; //TACGRP.TSK.BLK
-    sidc["G-T-H-----"] = modular["BREACH"]; //TACGRP.TSK.BRH
+    sidc["G-T-H-----"] = modular["BYPASS"]; //TACGRP.TSK.BRH
     sidc["G-T-Y-----"] = modular["BYPASS"]; //TACGRP.TSK.BYS
-    sidc["G-T-C-----"] = modular["CANALIZE"]; //TACGRP.TSK.CNZ
+    sidc["G-T-C-----"] = modular["BYPASS"]; //TACGRP.TSK.CNZ
     sidc["G-T-X-----"] = modular["CLEAR"]; //TACGRP.TSK.CLR
     sidc['G-T-J-----'] = modular["BLOCK"]; //TACGRP.TSK.CNT
     //sidc['G-T-K-----'] = [];//TACGRP.TSK.CATK
@@ -67,8 +67,10 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-G-AAM---'] = [];//TACGRP.C2GM.AVN.ARS.MEZ
     //sidc['G-G-AAML--'] = [];//TACGRP.C2GM.AVN.ARS.MEZ.LAMEZ
     //sidc['G-G-AAMH--'] = [];//TACGRP.C2GM.AVN.ARS.MEZ.HAMEZ
+    sidc['G-G-AAA---'] = modular["항공통제방위호형"];
+    sidc['G-G-AAO---'] = modular["항공통제방위호형"];
     sidc['G-G-AAP---'] = modular["다각형호"]; //TACGRP.C2GM.AVN.ARS.MEZ
-    sidc['G-G-AAT---'] = modular["항공통제 트랙형"]; //TACGRP.C2GM.AVN.ARS.MEZ
+    sidc['G-G-AAT---'] = modular["항공통제트랙형"]; //TACGRP.C2GM.AVN.ARS.MEZ
     //sidc['G-G-AAW---'] = [];//TACGRP.C2GM.AVN.ARS.WFZ
     //sidc['G-G-P-----'] = [];//TACGRP.C2GM.DCPN
     sidc['G-G-PD----'] = modular["기만모조"]; //TACGRP.C2GM.DCPN.DMY

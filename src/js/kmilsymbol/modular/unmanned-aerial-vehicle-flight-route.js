@@ -45,16 +45,16 @@ module.exports = {
         pixelBySize: {},
         annotations: {
             a: {
-                value: "Name : {name}\nWidth : {width}\nMin Alt : {minAlt}\nMax Alt : {maxAlt}\nDTG Start : {dtgStart}\nDTG End : {dtgEnd}",
+                value: "Name : {N}\nWidth : {width}\nMin Alt : {minAlt}\nMax Alt : {maxAlt}\nDTG Start : {dtgStart}\nDTG End : {dtgEnd}",
                 anchor: { x: 0.5, y: 0 }
             },
             c: {
-                value: "UA : {name}",
+                value: "UA : {N}",
                 anchor: { x: 0, y: 0 }
             }
         },
         variables: { // 사용자가 변경할 수 있다.
-            name: "무인항공기비행경로",
+            N: "무인항공기비행경로",
             width: 100,
             minAlt: 1000,
             maxAlt: 2000,
