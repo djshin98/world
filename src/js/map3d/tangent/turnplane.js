@@ -19,7 +19,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
             }
             return obj;
         } else {
-            this.buffer.forEach((obj) => { this.end(obj); });
+            this.buffer.forEach((obj) => {
+                if (Q.isValid(obj)) {
+                    this.end(obj);
+                }
+            });
             return this.buffer;
         }
     }
