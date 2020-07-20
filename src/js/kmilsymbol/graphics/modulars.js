@@ -35,6 +35,7 @@ function registryModular(graphicModulars) {
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
+    graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/barrier.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
@@ -42,6 +43,13 @@ function registryModular(graphicModulars) {
     graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
+<<<<<<< HEAD
 
+=======
+    graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
+    graphicModulars["간격"] = require("../modular/gap.js");
+    graphicModulars["폭파예정"] = require("../modular/blasting-schedule.js");
+    graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
+>>>>>>> c4abc68be2de1bbc9d39cfcbaa1a84d87b38ffc0
 }
 module.exports = registryModular;
