@@ -5,12 +5,12 @@ function registryModular(graphicModulars) {
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough.js");
     graphicModulars["BREACH"] = require("../modular/breach.js");
-    graphicModulars["BYPASS"] = require("../modular/bypass.js");
+    graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
     graphicModulars["CALL FOR FIRE ZONE"] = require("../modular/call-for-fire-zone.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
     graphicModulars["CENSOR ZONE"] = require("../modular/censor-zone.js");
     //graphicModulars.circle = require("../modular/circle.js");
-    graphicModulars["CLEAR"] = require("../modular/clear.js");
+    graphicModulars["CLEAR"] = require("../modular/OAC/mission/clear.js");
     graphicModulars.corridor = require("../modular/corridor.js");
     graphicModulars.cover = require("../modular/cover.js");
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
