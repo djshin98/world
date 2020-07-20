@@ -13,10 +13,15 @@ function breakthrough(turnPlane, properties, bcompleted) {
                     {
                         type: "polyline",
                         geometry: [
-                            p[0], {x: p[0].x, y: center.y}, {x: p[0].x, y: center.y}, {x: p[0].x, y: p[1].y}, p[1]
-                    ]}, {
+                            p[0], p[1], //{x: p[2].x, y: center.y},  
+                    ]},{
+                        type: "polyline", 
+                        geometry: [
+                           center, {x: p[2].x, y:center.y}, center
+                        ]
+                    }, {
                         type: "polyline",
-                        geometry: calc.arrow(turnPlane, {x: p[0].x, y: center.y}, center, arrowSize).geometry
+                        geometry: calc.arrow(turnPlane, {x: p[2].x, y: center.y}, center, arrowSize).geometry
                     }
                 ];
             }
