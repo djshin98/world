@@ -146,6 +146,9 @@ class MilGraphics extends DrawObject {
 
     completeSketch(layer, objs, viewModel) {
         this.removeTemplateEntity(layer);
+        objs = objs.filter(o => {
+            return Q.isValid(obj.type) ? true : false;
+        });
         objs.forEach((obj, i, arr) => {
             if (obj.type == "annotation" && obj.debug === true) {
                 arr.push({
