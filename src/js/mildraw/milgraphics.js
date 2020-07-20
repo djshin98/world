@@ -146,7 +146,7 @@ class MilGraphics extends DrawObject {
 
     completeSketch(layer, objs, viewModel) {
         this.removeTemplateEntity(layer);
-        objs = objs.filter(o => {
+        objs = objs.filter(obj => {
             return Q.isValid(obj.type) ? true : false;
         });
         objs.forEach((obj, i, arr) => {
