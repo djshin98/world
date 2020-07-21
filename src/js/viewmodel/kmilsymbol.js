@@ -301,6 +301,23 @@ class ViewModel_KMilSymbol {
                     children: this._makeModifierTreeJson(id, d.children)
                 });
             } else {
+                let option = {
+                    SIDC: d.type + ((d.affiliation === "*") ? "-" : d.affiliation) +
+                        ((d.battlefield === "*") ? "-" : d.battlefield) +
+                        ((d.status === "*") ? "-" : d.status) +
+                        d.modifier
+                };
+                var graphic = kms.Graphics(option);
+                if (d.type === "G") {
+                    if (Q.isValid(graphic)) {
+                        if (!graphic.isIcon()) {
+                            if (Q.isValid(graphic.modular)) {
+                                d.desc_kor = d.desc_kor + "*";
+                            }
+                        }
+                    }
+                }
+
                 json.push({
                     name: d.desc_kor,
                     id: d.id,
