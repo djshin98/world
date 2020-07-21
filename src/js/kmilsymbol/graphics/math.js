@@ -220,6 +220,14 @@ class calc {
             }
         });
     }
+    static arrowLine(tp, start, end, arrowSize, angle, bpolygon) {
+        return [calc.arrow(tp, start, end, arrowSize, angle, bpolygon),
+            {
+                type: "polyline",
+                geometry: [start, end]
+            }
+        ];
+    }
     static x(pt, size) {
         return [{
                 type: "polyline",

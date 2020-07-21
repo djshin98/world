@@ -44,6 +44,17 @@ function block(turnPlane, properties, bcompleted) {
                 ret.push(calc.arrow(turnPlane, p[3], p[1], arrowSize));
                 return ret;
             }
+        } else if (properties.log == "G-T-X") {
+            if (i == 0) {
+                return { type: "polyline", geometry: [p[0], p[2]] };
+            } else if (i == 1) {
+                let gap = calc.distance(p[0], p[2]) / 3;
+                let ret = calc.annotationOnLine(a, "b", 0.5, p[1], p[3]);
+                ret.push(calc.arrow(turnPlane, p[3], p[1], arrowSize));
+                calc.arrowLine(turnPlane, calc.moveX(p[3], -gap), calc.moveX(p[1], -gap), arrowSize).forEach(g => { ret.push(g); });
+                calc.arrowLine(turnPlane, calc.moveX(p[3], gap), calc.moveX(p[1], gap), arrowSize).forEach(g => { ret.push(g); });
+                return ret;
+            }
         }
 
     }, centerRightAngle, orders).end();
