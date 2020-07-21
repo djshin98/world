@@ -2,10 +2,9 @@ function registryModular(graphicModulars) {
     graphicModulars["AIRSPACE COORDINATION AREA"] = require("../modular/airspace-coordination-area.js");
     graphicModulars["AMBUSH"] = require("../modular/ambush.js");
     graphicModulars["ARTILLERY TARGET INTELLIGENCE ZONE"] = require("../modular/artillery-target-intelligence-zone.js");
-    graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
-    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough.js");
+
     graphicModulars["BREACH"] = require("../modular/breach.js");
-    graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
+
     graphicModulars["CALL FOR FIRE ZONE"] = require("../modular/call-for-fire-zone.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
     graphicModulars["CENSOR ZONE"] = require("../modular/censor-zone.js");
@@ -48,5 +47,9 @@ function registryModular(graphicModulars) {
     graphicModulars["폭파예정"] = require("../modular/blasting-schedule.js");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
+
+    graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
+    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough.js");
+    graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
 }
 module.exports = registryModular;
