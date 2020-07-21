@@ -2,17 +2,15 @@ const { calc, rect } = require("../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
-    
 
     return turnPlane.map((prev, p, i, buffer) => {
         let center = calc.mid(p[0], p[1]);
         if (i == 0) {
             if(p.length == 3){
                 let a = properties.annotations;
-                let c = rect(p[2].x / 2, center.y, a.c.width, a.c.height);
-                let ll = r.linkLine(center, { x: pt[2].x, y: center.y }, true);
-        
-                
+                let b = rect(p[2].x, p[1].y / 2, a.b.width, a.b.height);
+                let ll = b.linkLine({ x: p[2].x, y: 0 }, { x: p[2].x, y: p[1].y });
+  
                 /*ret.push({
                     type: "annotation",
                     geometry: c.geometry(true),
@@ -34,7 +32,7 @@ function breakthrough(turnPlane, properties, bcompleted) {
                         geometry: calc.arrow(turnPlane, {x: p[2].x, y: center.y}, center, arrowSize).geometry
                     },  {
                         type: "annotation",
-                        geometry: c.geometry(),
+                        geometry: b.geometry(),
                         name: "b",
                         debug: true
                     }
@@ -60,7 +58,7 @@ module.exports = {
             arrow: 30,
         },
         annotations: {
-            c: {
+            b: {
                 value: "P",
                 anchor: { x: 0, y: 0 }
             }
