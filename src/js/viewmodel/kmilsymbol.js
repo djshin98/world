@@ -84,7 +84,8 @@ class ViewModel_KMilSymbol {
                     this.makeSIDCTree(this.options.view.FI, "modifier",
                         this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier),
                         (type, tag, obj) => {
-                            if (type == "file") {
+                            /*if (type == "file")*/
+                            {
                                 let id = tag.getAttribute("data-id");
                                 let idf = this.findFunctionIdentifier(id);
                                 if (idf) {
