@@ -1,26 +1,29 @@
 const { calc, rect } = require("../../../graphics/math");
+const { centerRightAngle } = require("../../../graphics/prework");
 
 function block(turnPlane, properties, bcompleted) {
     let dist;
+    let orders = [
+        [0, 2],
+        [1, 3]
+    ];
     return turnPlane.map((prev, p, i, buffer) => {
         if (properties.log == "G-T-B") {
             if (i == 0) {
-                return { type: "polyline", geometry: [p[i], p[i + 1]] };
+                return { type: "polyline", geometry: [p[0], p[2]] };
             } else if (i == 1) {
-                let pp = prev.geometry.concat(p[i + 1]);
                 let a = properties.annotations;
-                return turnPlane.turnStack(pp, 0, 1, (pt) => {
-                    let midpt = calc.mid(pt[0], pt[1]);
-                    let r = rect((pt[2].x) / 2, midpt.y, a.r.width, a.r.height);
-                    let ll = r.linkLine(midpt, { x: pt[2].x, y: midpt.y }, true);
-                    return [{
-                        type: "annotation",
-                        geometry: r.geometry(true),
-                        name: "r",
-                        rotate: Math.PI / 2,
-                        debug: true
-                    }, ll[0], ll[1]];
+                let r = rect(0, p[3].y / 2, a.r.width, a.r.height);
+                let ret = [{
+                    type: "annotation",
+                    geometry: r.geometry(),
+                    name: "r",
+                    debug: true
+                }];
+                r.linkLine(p[1], p[3]).forEach(g => {
+                    ret.push(g);
                 });
+                return ret;
             }
         } else if (properties.log == "G-T-J") {
             if (i == 0) {
@@ -51,9 +54,11 @@ function block(turnPlane, properties, bcompleted) {
                     }, ll[0], ll[1], arrow].concat(arc);
                 });
             }
+        } else if (properties.log == "G-T-P") {
+
         }
 
-    }).end();
+    }, centerRightAngle, orders).end();
 }
 
 module.exports = {
