@@ -25,8 +25,7 @@ function breakthrough(turnPlane, properties, bcompleted) {
     }
     let orders = [
         [0, 2],
-        [0, 2],
-        [1, 0]
+        [0, 2]
     ]
     return turnPlane.reduce((prev, p, i, buffer) => {
         if (i == 0) {
