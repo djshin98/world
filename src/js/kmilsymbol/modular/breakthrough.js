@@ -1,52 +1,80 @@
-const { calc, rect } = require("../graphics/math");
+"use strict";
+const { calc, rect } = require("../../../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
 
-    return turnPlane.map((prev, p, i, buffer) => {
-        let center = calc.mid(p[0], p[1]);
-        if (i == 0) {
-            if(p.length == 3){
-                let a = properties.annotations;
-                let b = rect(p[2].x, p[1].y / 2, a.b.width, a.b.height);
-                let ll = b.linkLine({ x: p[2].x, y: 0 }, { x: p[2].x, y: p[1].y });
-  
-                /*ret.push({
-                    type: "annotation",
-                    geometry: c.geometry(true),
-                    name: "p",
-                    debug: true
-                });*/
-                 return [
-                    {
-                        type: "polyline",
-                        geometry: [
-                            p[0], p[1]
-                    ]},{
-                        type: "polyline", 
-                        geometry: [
-                           center, {x: p[2].x, y:center.y}, center
-                        ]
-                    }, ll[0], ll[1],{
-                        type: "polyline",
-                        geometry: calc.arrow(turnPlane, {x: p[2].x, y: center.y}, center, arrowSize).geometry
-                    },  {
-                        type: "annotation",
-                        geometry: b.geometry(),
-                        name: "b",
-                        debug: true
-                    }
-                ];
-                
-            }
-        
-            
-           // }else if (index == 1){
-      
-            }
+    function preWork(tp, p) {
+        if (p.length > 1) {
+            let mid = calc.mid(p[0], p[1]);
+            p.splice(1, 0, mid);
 
-        
-    }).end();
+            if (p.length > 3) {
+                let gp = tp.turnStack(p, 1, 2, function(vp) {
+                    return {
+                        type: "polyline",
+                        geometry: [{ x: vp[3].x, y: 0 }]
+                    };
+                });
+                p[3] = gp.geometry[0];
+            } else {
+                p[3] = mid;
+            }
+            return p;
+        }
+    }
+    let orders = [
+        [0, 2],
+        [1, 3]
+    ]
+    return turnPlane.reduce((prev, p, i, buffer) => {
+        if (i == 0) {
+            return {
+                type: "polyline",
+                geometry: [
+                    p[0], p[1]
+                ]
+            };
+        } else if (i == 1) {
+            let a = properties.annotations;
+            let aname;
+
+            let ret = [];
+            if (p.length == 3) {
+                ret.push({
+                    type: "polyline",
+                    geometry: calc.arrow(turnPlane, { x: p[0].x, y: p[3].y }, p[0], arrowSize).geometry
+                });
+                
+                aname = "b";
+           
+            }
+            let c = rect(p[3].x, p[3].y, a[aname].width, a[aname].height);
+            ret.push({
+                type: "annotation",
+                geometry: c.geometry(),
+                name: aname,
+                debug: true
+            });
+
+            let ll = c.linkLine({ x: p[0].x, y: p[3].y }, { x: p[2].x, y: p[3].y }, true);
+            if (ll.length == 2) {
+                let d = [p[0]];
+                d = d.concat(ll[0].geometry);
+                let e = ll[1].geometry;
+                e.push(p[2]);
+                ret.push({
+                    type: "polyline",
+                    geometry: d
+                });
+                ret.push({
+                    type: "polyline",
+                    geometry: e
+                });
+            }
+            return ret;
+        }
+    }, preWork, orders).end();
 }
 
 module.exports = {
@@ -55,11 +83,15 @@ module.exports = {
     maxPointCount: 3,
     properties: {
         size: {
-            arrow: 30,
+            arrow: 20,
         },
         annotations: {
             b: {
-                value: "P",
+                value: "B",
+                anchor: { x: 0, y: 0 }
+            },
+            c: {
+                value: "C",
                 anchor: { x: 0, y: 0 }
             }
         }
