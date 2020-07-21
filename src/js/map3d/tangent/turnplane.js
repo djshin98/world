@@ -52,8 +52,8 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }
         this.append(orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
-            return this.unverticalize(v, callback(v.prev, v.curr, curr[0], v.buffer));
-        }));
+            return this.unverticalize(v, callback(v.prev, v.curr, i, v.buffer));
+        }, undefined));
         return this;
     }
     map(callback, preWork, orders) {
@@ -67,10 +67,10 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
-            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), curr[0], v.buffer));
+            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i, v.buffer));
             this.append(curr);
             return curr;
-        });
+        }, undefined);
         return this;
     }
     forEach(callback, preWork, orders) {
@@ -84,8 +84,8 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
-            return this.unverticalize(v, callback(v.prev, Q.copy(v.curr), curr[0], v.buffer));
-        });
+            return this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i, v.buffer));
+        }, undefined);
         return this;
     }
     turnStack(points, originIndex, verticalizeIndex, turningWork) {
