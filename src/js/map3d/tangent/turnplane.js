@@ -46,11 +46,13 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (Q.isValid(preWork)) {
             this.points = preWork(this, this.points);
         }
-        this.append(this.points.reduce((prev, curr, i) => {
-            if (Q.isValid(prev) && Q.isValid(prev.geometry)) { prev = Object.assign(prev); } else { prev = undefined; }
-            let or = (Q.isValid(orders) && orders.length > i - 1) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
-            return this.unverticalize(v, callback(v.prev, v.curr, i - 1, v.buffer));
+        if (!Q.isValid(orders)) {
+            orders = [];
+            this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        }
+        this.append(orders.reduce((prev, curr, i) => {
+            let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
+            return this.unverticalize(v, callback(v.prev, v.curr, curr[0], v.buffer));
         }));
         return this;
     }
@@ -59,10 +61,13 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (Q.isValid(preWork)) {
             this.points = preWork(this, this.points);
         }
-        this.points.reduce((prev, curr, i) => {
-            let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
-            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, v.buffer));
+        if (!Q.isValid(orders)) {
+            orders = [];
+            this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        }
+        orders.reduce((prev, curr, i) => {
+            let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
+            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), curr[0], v.buffer));
             this.append(curr);
             return curr;
         });
@@ -73,11 +78,13 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (Q.isValid(preWork)) {
             this.points = preWork(this, this.points);
         }
-        this.points.reduce((prev, curr, i) => {
-            let or = (Q.isValid(orders) && orders.length > i) ? orders[i - 1] : [i - 1, i];
-            let v = this.verticalize(this.points, or[0], or[1], prev, buffer);
-            curr = this.unverticalize(v, callback(v.prev, Q.copy(v.curr), i - 1, v.buffer));
-            return curr;
+        if (!Q.isValid(orders)) {
+            orders = [];
+            this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        }
+        orders.reduce((prev, curr, i) => {
+            let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
+            return this.unverticalize(v, callback(v.prev, Q.copy(v.curr), curr[0], v.buffer));
         });
         return this;
     }
