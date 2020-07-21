@@ -258,17 +258,15 @@ class calc {
             { x: pt.x + size / 2, y: pt.y + size / 2 }
         ];
     }
-    static annotationOnLine(a, name, ratio, p1, p2) {
-        let r = rect(0, p2.y * ratio, a[name].width, a[name].height);
+    static annotationOnLine(a, name, ratio, p1, p2, bxaxis, callback) {
+        let r = rect((p1.x + p2.x) * ratio, (p1.y + p2.y) * ratio, a[name].width, a[name].height, bxaxis);
         let ret = [{
             type: "annotation",
-            geometry: r.geometry(),
+            geometry: r.geometry(bxaxis),
             name: name,
             debug: true
         }];
-        r.linkLine(p1, p2).forEach(g => {
-            ret.push(g);
-        });
+        r.linkLine(p1, p2, bxaxis, callback).forEach(g => { ret.push(g); });
         return ret;
     }
 }
@@ -323,7 +321,7 @@ class Rectangle {
         }
         return false;
     }
-    linkLine(st, et, bxasix) {
+    linkLine(st, et, bxasix, callback) {
         let ret = [];
         if (bxasix === true) {
             let r1 = this.right(bxasix);
@@ -337,8 +335,20 @@ class Rectangle {
                 if (!((et.x <= r2 && et.x >= r1) || (et.x >= r2 && et.x <= r1))) { er = r1; }
             }
 
-            if (Q.isValid(sr)) { ret.push({ type: "polyline", geometry: [st, { x: sr, y: st.y }] }); }
-            if (Q.isValid(er)) { ret.push({ type: "polyline", geometry: [{ x: er, y: st.y }, et] }); }
+            if (Q.isValid(sr)) {
+                let pt = { type: "polyline", geometry: [st, { x: sr, y: st.y }] };
+                ret.push(pt);
+                if (Q.isValid(callback)) {
+                    callback(0, pt);
+                }
+            }
+            if (Q.isValid(er)) {
+                let pt = { type: "polyline", geometry: [{ x: er, y: st.y }, et] };
+                ret.push(pt);
+                if (Q.isValid(callback)) {
+                    callback(1, pt);
+                }
+            }
             return ret;
         } else {
             let r1 = this.right(bxasix);
@@ -359,8 +369,20 @@ class Rectangle {
                     er = r2;
                 }
             }
-            if (Q.isValid(sr)) { ret.push({ type: "polyline", geometry: [st, { x: st.x, y: sr }] }); }
-            if (Q.isValid(er)) { ret.push({ type: "polyline", geometry: [{ x: et.x, y: er }, et] }); }
+            if (Q.isValid(sr)) {
+                let pt = { type: "polyline", geometry: [st, { x: st.x, y: sr }] };
+                ret.push(pt);
+                if (Q.isValid(callback)) {
+                    callback(0, pt);
+                }
+            }
+            if (Q.isValid(er)) {
+                let pt = { type: "polyline", geometry: [{ x: et.x, y: er }, et] };
+                ret.push(pt);
+                if (Q.isValid(callback)) {
+                    callback(1, pt);
+                }
+            }
             return ret;
         }
 
