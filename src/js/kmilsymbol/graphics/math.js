@@ -258,6 +258,19 @@ class calc {
             { x: pt.x + size / 2, y: pt.y + size / 2 }
         ];
     }
+    static annotationOnLine(a, name, ratio, p1, p2) {
+        let r = rect(0, p2.y * ratio, a[name].width, a[name].height);
+        let ret = [{
+            type: "annotation",
+            geometry: r.geometry(),
+            name: name,
+            debug: true
+        }];
+        r.linkLine(p1, p2).forEach(g => {
+            ret.push(g);
+        });
+        return ret;
+    }
 }
 class Rectangle {
     constructor(x, y, width, height) {

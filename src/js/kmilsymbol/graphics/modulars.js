@@ -49,7 +49,7 @@ function registryModular(graphicModulars) {
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
 
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
-    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough.js");
+    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
 }
 module.exports = registryModular;

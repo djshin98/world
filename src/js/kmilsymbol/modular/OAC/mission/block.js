@@ -3,6 +3,9 @@ const { centerRightAngle } = require("../../../graphics/prework");
 
 function block(turnPlane, properties, bcompleted) {
     let dist;
+    let arrowSize = properties.pixelBySize.arrow;
+    let a = properties.annotations;
+
     let orders = [
         [0, 2],
         [1, 3]
@@ -12,25 +15,14 @@ function block(turnPlane, properties, bcompleted) {
             if (i == 0) {
                 return { type: "polyline", geometry: [p[0], p[2]] };
             } else if (i == 1) {
-                let a = properties.annotations;
-                let r = rect(0, p[3].y / 2, a.r.width, a.r.height);
-                let ret = [{
-                    type: "annotation",
-                    geometry: r.geometry(),
-                    name: "r",
-                    debug: true
-                }];
-                r.linkLine(p[1], p[3]).forEach(g => {
-                    ret.push(g);
-                });
-                return ret;
+                return calc.annotationOnLine(a, "r", 0.5, p[1], p[3]);
             }
         } else if (properties.log == "G-T-J") {
             if (i == 0) {
                 dist = calc.distance(p[0], p[1]) / 2;
                 //return { type: "polyline", geometry: [p[i], p[i + 1]] };
             } else if (i == 1) {
-
+                //return calc.annotationOnLine(a, "r", 0.5, p[1], p[3]);
                 let pp = [p[0], p[1], calc.mid(p[0], p[1]), p[2]];
                 let a = properties.annotations;
                 let s = properties.pixelBySize;
@@ -55,7 +47,13 @@ function block(turnPlane, properties, bcompleted) {
                 });
             }
         } else if (properties.log == "G-T-P") {
-
+            if (i == 0) {
+                return { type: "polyline", geometry: [p[0], p[2]] };
+            } else if (i == 1) {
+                let ret = calc.annotationOnLine(a, "b", 0.5, p[1], p[3]);
+                ret.push(calc.arrow(turnPlane, p[3], p[1], arrowSize));
+                return ret;
+            }
         }
 
     }, centerRightAngle, orders).end();
@@ -80,6 +78,10 @@ module.exports = {
             },
             c: {
                 value: "C",
+                anchor: { x: 0, y: 0 }
+            },
+            b: {
+                value: "P",
                 anchor: { x: 0, y: 0 }
             }
         }
