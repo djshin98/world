@@ -1,5 +1,5 @@
 "use strict";
-const { calc, rect } = require("../../../graphics/math");
+const { calc, rect } = require("../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
@@ -25,30 +25,31 @@ function breakthrough(turnPlane, properties, bcompleted) {
     }
     let orders = [
         [0, 2],
-        [1, 3]
+        [0, 2],
+        [1, 0]
     ]
     return turnPlane.reduce((prev, p, i, buffer) => {
         if (i == 0) {
             return {
                 type: "polyline",
                 geometry: [
-                    p[0], p[1]
+                    p[0], p[2]
                 ]
             };
         } else if (i == 1) {
             let a = properties.annotations;
             let aname;
-
             let ret = [];
-            if (p.length == 3) {
+
+            if (p.length == 2) {
                 ret.push({
                     type: "polyline",
-                    geometry: calc.arrow(turnPlane, { x: p[0].x, y: p[3].y }, p[0], arrowSize).geometry
+                    geometry: calc.arrow(turnPlane, {x: p[3], y:p[1].y}, {x: 0, y: p[1].y}, arrowSize).geometry
                 });
-                
-                aname = "b";
-           
+    
             }
+            aname = "b";
+
             let c = rect(p[3].x, p[3].y, a[aname].width, a[aname].height);
             ret.push({
                 type: "annotation",
@@ -57,7 +58,7 @@ function breakthrough(turnPlane, properties, bcompleted) {
                 debug: true
             });
 
-            let ll = c.linkLine({ x: p[0].x, y: p[3].y }, { x: p[2].x, y: p[3].y }, true);
+            let ll = c.linkLine(p[3], p[1], true);
             if (ll.length == 2) {
                 let d = [p[0]];
                 d = d.concat(ll[0].geometry);
@@ -87,7 +88,7 @@ module.exports = {
         },
         annotations: {
             b: {
-                value: "B",
+                value: "P",
                 anchor: { x: 0, y: 0 }
             },
             c: {
