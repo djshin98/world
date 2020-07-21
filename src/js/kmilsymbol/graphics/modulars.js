@@ -9,7 +9,7 @@ function registryModular(graphicModulars) {
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
     graphicModulars["CENSOR ZONE"] = require("../modular/censor-zone.js");
     //graphicModulars.circle = require("../modular/circle.js");
-    graphicModulars["CLEAR"] = require("../modular/OAC/mission/clear.js");
+
     graphicModulars.corridor = require("../modular/corridor.js");
     graphicModulars.cover = require("../modular/cover.js");
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
