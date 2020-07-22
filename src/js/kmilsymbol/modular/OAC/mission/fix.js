@@ -1,6 +1,7 @@
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../graphics/math");
 
 function fix(turnPlane, properties, bcompleted) {
+    let a = properties.annotations;
     return turnPlane.map((prev, points, index, buffer) => {
         if (index == 0) {
             let s = properties.pixelBySize;
@@ -16,32 +17,25 @@ function fix(turnPlane, properties, bcompleted) {
                 ms = (lineLength * s.sm) / reqMinLength;
                 me = (lineLength * s.em) / reqMinLength;
             }
-            let divs = [points[index]];
+            //let divs = [points[index]];
             let div = zl / 11;
+            let ret = [calc.arrow(turnPlane, { x: 0, y: ms }, points[index], s.arrow)];
+            let divs = [points[index]];
             for (let i = 0; i < 11; i++) {
                 divs.push({ x: 0, y: ms + (div * i) });
                 divs.push({ x: ((i % 2 == 0) ? 1 : -1) * s.width / 2, y: ms + div * i + div / 2 });
             }
-            divs.push({ x: 0, y: ms + zl });
-            divs.push(points[index + 1]);
+            //divs.push({ x: 0, y: ms + zl });
 
-            let fr = s.fontsize / 2;
-            let tc = { x: 0, y: (points[index + 1].y + ms + zl) / 2 };
-            let rect = [
-                calc.move(tc, fr, -fr),
-                calc.move(tc, fr, fr),
-                calc.move(tc, -fr, fr),
-                calc.move(tc, -fr, -fr)
-            ];
-            return [{
-                type: "polyline",
-                geometry: [
-                    calc.move(points[index], -s.arrow, s.arrow), points[index], calc.move(points[index], s.arrow, s.arrow)
-                ]
-            }, {
-                type: "polyline",
-                geometry: divs
-            }];
+            calc.annotationOnLine(a, "f", 0.5, { x: 0, y: ms + zl }, points[index + 1], false, (i, g) => {
+                if (i == 0) {
+                    g.geometry = divs.concat(g.geometry);
+                } else {
+                    //ret.push(g);
+                }
+            }).forEach(g => { ret.push(g); });
+            return ret;
+
         }
     }).end();
 }
@@ -53,13 +47,18 @@ module.exports = {
     properties: {
         size: {
             fontsize: 20,
-            arrow: 10, //화살표 한쪽 선의 길이
+            arrow: 20, //화살표 한쪽 선의 길이
             zigzag: 100, //zigzag 
             sm: 20, // 화살표가 있는 시작점과 zigzag 시작점의 최소 길이
             em: 20,
             width: 40
         },
-        pixelBySize: {}
+        annotations: {
+            f: {
+                value: "F",
+                anchor: { x: 0, y: 0 }
+            }
+        }
     }
 
 };

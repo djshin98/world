@@ -84,7 +84,8 @@ class ViewModel_KMilSymbol {
                     this.makeSIDCTree(this.options.view.FI, "modifier",
                         this.makeModifierTreeJson(this.options.view.FI, this.activeType.standard.identifier),
                         (type, tag, obj) => {
-                            if (type == "file") {
+                            /*if (type == "file")*/
+                            {
                                 let id = tag.getAttribute("data-id");
                                 let idf = this.findFunctionIdentifier(id);
                                 if (idf) {
@@ -301,6 +302,23 @@ class ViewModel_KMilSymbol {
                     children: this._makeModifierTreeJson(id, d.children)
                 });
             } else {
+                let option = {
+                    SIDC: d.type + ((d.affiliation === "*") ? "-" : d.affiliation) +
+                        ((d.battlefield === "*") ? "-" : d.battlefield) +
+                        ((d.status === "*") ? "-" : d.status) +
+                        d.modifier
+                };
+                var graphic = kms.Graphics(option);
+                if (d.type === "G") {
+                    if (Q.isValid(graphic)) {
+                        if (!graphic.isIcon()) {
+                            if (Q.isValid(graphic.modular)) {
+                                d.desc_kor = d.desc_kor + "*";
+                            }
+                        }
+                    }
+                }
+
                 json.push({
                     name: d.desc_kor,
                     id: d.id,

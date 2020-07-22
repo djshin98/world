@@ -48,7 +48,7 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
         [1, 3]
     ];
     return turnPlane.map((prev, p, i, buffer) => {
-        if (properties.log == "G-F-ACSI--") {
+        if (properties.log == "G-F-ACAI--") {
             if (i == 0) {
               p.push(p[0]);
             }  
@@ -60,7 +60,7 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
               ];
               
             
-        } else if (properties.log == "G-T-J") {
+        } else if (properties.log == "G-F-ACAR--") {
             if (i == 0) {
                 dist = calc.distance(p[0], p[1]) / 2;
                 //return { type: "polyline", geometry: [p[i], p[i + 1]] };
@@ -89,7 +89,7 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
                     }, ll[0], ll[1], arrow].concat(arc);
                 });
             }
-        } else if (properties.log == "G-T-P") {
+        } else if (properties.log == "G-F-ACAC--") {
             if (i == 0) {
                 return { type: "polyline", geometry: [p[0], p[2]] };
             } else if (i == 1) {
@@ -115,18 +115,6 @@ module.exports = {
                 value: "B",
                 anchor: { x: 0, y: 0 }
             },
-            eny: {
-                value: "ENY",
-                anchor: { x: 0, y: 0 }
-            },
-            c: {
-                value: "C",
-                anchor: { x: 0, y: 0 }
-            },
-            b: {
-                value: "P",
-                anchor: { x: 0, y: 0 }
-            }
         }
     }
 };

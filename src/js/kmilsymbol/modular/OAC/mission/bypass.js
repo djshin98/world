@@ -4,6 +4,7 @@ const { centerRightAngle } = require("../../../graphics/prework");
 
 function bypass(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
+    let a = properties.annotations;
     let orders = [
         [0, 2],
         [1, 3]
@@ -17,7 +18,7 @@ function bypass(turnPlane, properties, bcompleted) {
                 ]
             };
         } else if (i == 1) {
-            let a = properties.annotations;
+
             let aname;
 
             let ret = [];
@@ -51,6 +52,16 @@ function bypass(turnPlane, properties, bcompleted) {
                 }
                 aname = "c";
             }
+            calc.annotationOnLine(a, aname, 0.5, { x: p[0].x, y: p[3].y }, { x: p[2].x, y: p[3].y }, true, (index, g) => {
+                if (index == 0) {
+                    g.geometry.splice(0, 0, p[0]);
+                } else {
+                    g.geometry.push(p[2]);
+                }
+            }).forEach(g => {
+                ret.push(g);
+            });
+            /*
             let c = rect(p[3].x, p[3].y, a[aname].width, a[aname].height);
             ret.push({
                 type: "annotation",
@@ -73,7 +84,7 @@ function bypass(turnPlane, properties, bcompleted) {
                     type: "polyline",
                     geometry: e
                 });
-            }
+            }*/
             return ret;
         }
     }, centerRightAngle, orders).end();

@@ -9,7 +9,7 @@ function registryModular(graphicModulars) {
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
     graphicModulars["CENSOR ZONE"] = require("../modular/censor-zone.js");
     //graphicModulars.circle = require("../modular/circle.js");
-    graphicModulars["CLEAR"] = require("../modular/OAC/mission/clear.js");
+
     graphicModulars.corridor = require("../modular/corridor.js");
     graphicModulars.cover = require("../modular/cover.js");
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
@@ -17,7 +17,7 @@ function registryModular(graphicModulars) {
     graphicModulars["DELAY"] = require("../modular/delay.js");
 
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
-    graphicModulars["FIX"] = require("../modular/fix.js");
+    graphicModulars["FIX"] = require("../modular/OAC/mission/fix.js");
     graphicModulars["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
     graphicModulars.guard = require("../modular/guard.js");
     graphicModulars["ISOLATE"] = require("../modular/isolate.js");
@@ -40,6 +40,7 @@ function registryModular(graphicModulars) {
     graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
     graphicModulars["목책"] = require("../modular/barrier.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
+    graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
     graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
     graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
@@ -49,7 +50,6 @@ function registryModular(graphicModulars) {
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
 
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
-    graphicModulars["BREAKTHROUGH"] = require("../modular/breakthrough");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
 }
 module.exports = registryModular;
