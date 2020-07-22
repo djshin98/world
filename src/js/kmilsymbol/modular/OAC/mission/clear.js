@@ -1,4 +1,4 @@
-const { calc, rect } = require("../../../graphics/math");
+/*const { calc, rect } = require("../../../graphics/math");
 
 function clear(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {
@@ -90,3 +90,4 @@ module.exports = {
         }
     }
 };
+*/
