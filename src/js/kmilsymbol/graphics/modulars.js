@@ -14,7 +14,7 @@ function registryModular(graphicModulars) {
     graphicModulars.cover = require("../modular/cover.js");
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
-    graphicModulars["DELAY"] = require("../modular/delay.js");
+
 
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/OAC/mission/fix.js");
@@ -50,5 +50,6 @@ function registryModular(graphicModulars) {
 
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
+    graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
 }
 module.exports = registryModular;

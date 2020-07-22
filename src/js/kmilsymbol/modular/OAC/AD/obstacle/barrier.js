@@ -56,7 +56,7 @@ module.exports = {
     minPointCount: 1,
     properties: {
         size: {
-            arrow: 40, //화살표 한쪽 선의 길이
+            arrow: 20, //화살표 한쪽 선의 길이
         },
         pixelBySize: {}
     }
