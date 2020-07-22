@@ -37,8 +37,7 @@ function registryModular(graphicModulars) {
     graphicModulars["간격"] = require("../modular/gap.js");
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
-    graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
-    graphicModulars["목책"] = require("../modular/barrier.js");
+    graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
