@@ -1,6 +1,5 @@
 const { calc, rect } = require("../../../graphics/math");
 const { centerRightAngle } = require("../../../graphics/prework");
-const artilleryTargetIntelligenceZone = require("../../artillery-target-intelligence-zone");
 
 function block(turnPlane, properties, bcompleted) {
     let dist;
