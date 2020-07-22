@@ -22,6 +22,37 @@ class calc {
             };
         });
     }
+
+    static toDot(tp, lines, len) {
+        let ret = [];
+        let restLen = 0;
+        lines.reduce((prev, curr) => {
+            tp.turnStack([prev, curr], 0, 1, (p) => {
+                let y = 0;
+                for (y = p[0].y + restLen; y <= p[1].y - len; y += len) {
+                    if (restLen > 0) {
+                        ret.push({ type: "polyline", ext: true, geometry: [{ x: 0, y: y }] });
+                    }
+                    ret.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: y + len }] });
+                }
+                restLen = len - (p[1].y - y);
+                if (restLen > 0) {
+                    ret.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: p[1].y }] });
+                }
+                return ret;
+            });
+            return curr;
+        });
+        ret.reduce((prev, curr) => {
+            if (curr.ext === true) {
+                curr.forEach((g) => { prev.geometry.push(g); });
+            }
+        });
+        ret = ret.filter((g) => { return g.ext === true ? false : true; });
+        ret = ret.filter((g, i) => { return i % 2 == 0 ? true : false; });
+        return ret;
+    }
+
     static ext(org, dir, len) {
         let o = { x: dir.x - org.x, y: dir.y - org.y };
         let rad = Math.atan2(o.y, o.x);
@@ -276,6 +307,16 @@ class calc {
         }];
         r.linkLine(p1, p2, bxaxis, callback).forEach(g => { ret.push(g); });
         return ret;
+    }
+    static annotation(a, name, p1, bxaxis) {
+        let r = rect(p1.x, p1.y, a[name].width, a[name].height, bxaxis);
+        return {
+            type: "annotation",
+            geometry: r.geometry(bxaxis),
+            name: name,
+            rotate: (bxaxis === true) ? Math.PI / 2 : 0,
+            debug: true
+        }
     }
 }
 class Rectangle {

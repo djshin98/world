@@ -4,7 +4,7 @@ function catk(turnPlane, properties, bcompleted) {
     let dist;
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.annotations;
-    return turnPlane.map((prev, p, i, buffer) => {
+    return turnPlane.reduce((prev, p, i, buffer) => {
         if (properties.log == "G-T-K") {
             if (i == 0) {
                 return { type: "polyline", geometry: [p[0], calc] };
@@ -35,7 +35,7 @@ function catk(turnPlane, properties, bcompleted) {
 }
 
 module.exports = {
-    modular: block,
+    modular: catk,
     minPointCount: 2,
     properties: {
         size: {

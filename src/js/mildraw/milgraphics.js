@@ -4,6 +4,7 @@ const { DrawObject } = require('../map3d/draw/drawobject');
 const { tw } = require('../map3d/tangent/turnplane');
 const { CTX } = require('../map3d/ctx');
 const { Annotation } = require('../draw/annotation');
+const { Slash } = require('../draw/slash');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
@@ -145,6 +146,8 @@ class MilGraphics extends DrawObject {
     }
 
     completeSketch(layer, objs, viewModel) {
+        let slashImage = new Slash();
+        let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(100.0, 100.0) });
         this.removeTemplateEntity(layer);
         objs = objs.filter(obj => {
             return Q.isValid(obj.type) ? true : false;
@@ -198,7 +201,8 @@ class MilGraphics extends DrawObject {
                         return {
                             polygon: {
                                 hierarchy: obj.geometry,
-                                material: viewModel.faceColor
+                                material: slashMaterial
+                                    //material: viewModel.faceColor
                             }
                         };
                     }
