@@ -15,7 +15,7 @@ class Slash extends SvgImage {
     create(svg) {
         svg.append("svg:line").attr("x1", "10").attr("y1", "0")
             .attr("x2", "0").attr("y2", "10")
-            .style("stroke", "rgb(0, 0, 0)");
+            .style("stroke", this.options.color);
     }
 
 }

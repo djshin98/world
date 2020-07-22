@@ -147,7 +147,7 @@ class MilGraphics extends DrawObject {
 
     completeSketch(layer, objs, viewModel) {
         let slashImage = new Slash();
-        let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(100.0, 100.0) });
+        let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(1.0, 1.0) });
         this.removeTemplateEntity(layer);
         objs = objs.filter(obj => {
             return Q.isValid(obj.type) ? true : false;
