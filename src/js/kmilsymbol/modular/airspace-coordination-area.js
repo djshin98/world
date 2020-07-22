@@ -43,22 +43,12 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.annotations;
 
-    let orders = [
-        [0, 2],
-        [1, 3]
-    ];
     return turnPlane.map((prev, p, i, buffer) => {
         if (properties.log == "G-F-ACAI--") {
             if (i == 0) {
               p.push(p[0]);
+              return [{type: "polyline", geometry: p }];
             }  
-                return [{
-                  type: "polyline",
-                  geometry: 
-                      p
-                  }
-              ];
-              
             
         } else if (properties.log == "G-F-ACAR--") {
             if (i == 0) {
