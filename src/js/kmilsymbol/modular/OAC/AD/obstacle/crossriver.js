@@ -20,6 +20,10 @@ function crossriver(turnPlane, properties, bcompleted) {
                 ret.push(calc.arrow(turnPlane, { x: p[2].x, y: p[2].y + 10 }, p[2], a.arrow, 70));
                 ret.push(calc.arrow(turnPlane, { x: p[0].x, y: p[0].y - 10 }, p[0], a.arrow, 70));
                 ret.push({ type: "polyline", geometry: [p[0], p[2]] });
+            } else if (properties.log == "G-M-SW") {
+                ret.push({ type: "polyline", geometry: [p[0], { x: p[0].x + a.arrow, y: p[0].y }] });
+                ret.push({ type: "polyline", geometry: [p[2], { x: p[2].x + a.arrow, y: p[2].y }] });
+                ret.push({ type: "polyline", geometry: [p[0], p[2]] });
             }
             return ret;
 
