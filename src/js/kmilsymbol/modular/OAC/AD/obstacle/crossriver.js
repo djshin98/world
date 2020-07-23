@@ -2,7 +2,7 @@
 const { calc, rect } = require("../../../../graphics/math");
 const { centerRightAngle } = require("../../../../graphics/prework");
 
-function ferry(turnPlane, properties, bcompleted) {
+function crossriver(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.pixelBySize;
     let orders = [
@@ -12,9 +12,13 @@ function ferry(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, p, i, buffer) => {
         if (i == 0) {
             let ret = [];
-            if (properties.log == "G-M-BCF") {
-                ret.push(calc.arrow(turnPlane, p[2], p[0], a.arrow));
-                ret.push(calc.arrow(turnPlane, p[0], p[2], a.arrow));
+            if (properties.log == "G-M-BCL") {
+                ret.push(calc.arrow(turnPlane, { x: p[2].x, y: p[2].y + 10 }, p[2], a.arrow));
+                ret.push(calc.arrow(turnPlane, { x: p[0].x, y: p[0].y - 10 }, p[0], a.arrow));
+                ret.push({ type: "polyline", geometry: [p[0], p[2]] });
+            } else if (properties.log == "G-M-BCR") {
+                ret.push(calc.arrow(turnPlane, { x: p[2].x, y: p[2].y + 10 }, p[2], a.arrow, 70));
+                ret.push(calc.arrow(turnPlane, { x: p[0].x, y: p[0].y - 10 }, p[0], a.arrow, 70));
                 ret.push({ type: "polyline", geometry: [p[0], p[2]] });
             }
             return ret;
@@ -24,7 +28,7 @@ function ferry(turnPlane, properties, bcompleted) {
 }
 
 module.exports = {
-    modular: ferry,
+    modular: crossriver,
     minPointCount: 1,
     maxPointCount: 2,
     properties: {
