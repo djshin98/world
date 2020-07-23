@@ -50,6 +50,7 @@ function registryModular(graphicModulars) {
 
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
+    graphicModulars["우회곤란"] = require("../modular/OAC/AD/obstacle/bypassdifficulty");
     graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
 }
 module.exports = registryModular;
