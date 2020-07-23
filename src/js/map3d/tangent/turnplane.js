@@ -6,6 +6,7 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         super(origin);
         this.points = this.projectPointsToNearestOnPlane(points).map((p) => { return { x: p.x, y: p.y }; });
         this.buffer = [];
+        this.stopovers = [];
     }
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
@@ -24,6 +25,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                     this.end(obj);
                 }
             });
+            if (this.stopovers.length > 0) {
+                this.end(this.stopovers).forEach(obj => {
+                    this.buffer.push(obj);
+                })
+            }
             return this.buffer;
         }
     }
@@ -169,7 +175,25 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         v.curr = this._unverticalize(v, v.curr);
         v.prev = this._unverticalize(v, v.prev);
         this._unverticalize(v, v.buffer);
-        return this._unverticalize(v, results);
+        let res = this._unverticalize(v, results);
+
+        if (Q.isValid(res)) {
+            if (Q.isArray(res)) {
+                res = res.filter(r => {
+                    if (Q.isValid(r) && r.trip === false) {
+                        this.stopovers.push(r);
+                        return false;
+                    }
+                    return true;
+                });
+            } else {
+                if (res.trip === false) {
+                    this.stopovers.push(res);
+                    return undefined;
+                }
+            }
+        }
+        return res;
     }
 }
 
