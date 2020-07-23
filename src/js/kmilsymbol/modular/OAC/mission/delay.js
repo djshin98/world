@@ -11,7 +11,11 @@ function delay(turnPlane, properties, bcompleted) {
             let ret = [];
 
             if (bcompleted === true) {
-                console.log("width=" + a.p.width + " , height=" + a.p.height);
+                console.log("width=" + a.p.width.toFixed(2) +
+                    " , height=" + a.p.height.toFixed(2) + " <===> " +
+                    "px=" + properties.test.px.toFixed(2) +
+                    " , lineLength=" + properties.test.lineLength.toFixed(2) +
+                    "l/p = " + (properties.test.lineLength / properties.test.px).toFixed(2));
             }
 
             calc.annotationOnLine(a, "p", 0.5, p[0], p[1], undefined, (i, g) => {
