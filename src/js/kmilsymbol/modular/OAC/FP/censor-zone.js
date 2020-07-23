@@ -1,5 +1,4 @@
-
-    const { calc, rect } = require("../../../graphics/math");
+ const { calc, rect } = require("../../../graphics/math");
 
     function censorZone(turnPlane, properties, bcompleted) {
        

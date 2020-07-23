@@ -272,16 +272,16 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-F-AZII--"] =
         modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.IRR
     sidc["G-F-AZIR--"] =
-        modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
+        modular["포병표적정보구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ
     sidc["G-F-AZXI--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.IRR
-    sidc["G-F-AZXR--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
+    sidc["G-F-AZXR--"] = modular["화력요청구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CNS
     sidc["G-F-AZCI--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.IRR
-    sidc["G-F-AZCR--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
+    sidc["G-F-AZCR--"] = modular["검열구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFZ
     sidc["G-F-AZFI--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.IRR
-    sidc["G-F-AZFR--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
+    sidc["G-F-AZFR--"] = modular["아군확인구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
     //sidc['G-F-AX----'] = [];//TACGRP.FSUPP.ARS.WPNRF
     //sidc["G-F-AXC---"] = []; //modular.circle;//TACGRP.FSUPP.ARS.WPNRF.CIRCLR
     //sidc['G-F-AXS---'] = [];//TACGRP.FSUPP.ARS.WPNRF.SCR

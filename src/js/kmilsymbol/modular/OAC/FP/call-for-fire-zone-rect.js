@@ -1,9 +1,11 @@
 const { calc, rect } = require("../../../graphics/math");
-   
-    function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
+
+    function callForFireZone(turnPlane, properties, bcompleted) {
         
+        let a = properties.annotations;
+
         return turnPlane.reduce((prev, p, i, buffer) => {
-            if (properties.log == "G-F-ACAR") {
+           if (properties.log == "G-F-AZXR") {
                 if (i == 0) {
                     
                     let a = properties.annotations;
@@ -15,12 +17,6 @@ const { calc, rect } = require("../../../graphics/math");
                     let p3 = {x: -height/2, y: p[1].y};
                     let p4 = {x: height/2, y: p[1].y};
 
-                    /*let sum = p.reduce((prev, curr, i)=> {
-                        return {x : prev.x + curr.x, y: prev.y + curr.y}; 
-                    });
-
-                    let s = {x: sum.x / p.length, y: sum.y / p.length};
-                    */
                     let s = calc.avg(p);
 
                     let ret1 = [];
@@ -44,18 +40,19 @@ const { calc, rect } = require("../../../graphics/math");
                 }
                 
                       
-            }
+              }
+
         }).end();
     }
 
     module.exports = {
-        modular: airspaceCoordinationArea,
+        modular: callForFireZone,
         minPointCount: 1,
         maxPointCount: 2,
         properties: {
             annotations: {
                 k: {
-                    value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
+                    value: "{N}\nCFF ZONE \n{T}",
                     anchor: { x: 0, y: 0 }
                 },
             }
