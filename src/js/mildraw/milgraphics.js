@@ -92,7 +92,7 @@ class MilGraphics extends DrawObject {
         let div = 5;
         let points = [];
         objs.forEach((obj, i) => {
-            if (!Q.isValid(obj.type)) {
+            if (!Q.isValid(obj) || !Q.isValid(obj.type)) {
                 console.log("invalid type : ");
                 console.dir(obj);
                 return;
@@ -150,7 +150,7 @@ class MilGraphics extends DrawObject {
         //let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(10.0, 10.0) });
         this.removeTemplateEntity(layer);
         objs = objs.filter(obj => {
-            return Q.isValid(obj.type) ? true : false;
+            return (Q.isValid(obj) && Q.isValid(obj.type)) ? true : false;
         });
         objs.forEach((obj, i, arr) => {
             if (obj.type == "annotation" && obj.debug === true) {

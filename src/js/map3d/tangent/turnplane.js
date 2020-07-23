@@ -175,13 +175,25 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         v.curr = this._unverticalize(v, v.curr);
         v.prev = this._unverticalize(v, v.prev);
         this._unverticalize(v, v.buffer);
-        return this._unverticalize(v, results).filter(r => {
-            if (r.trip === false) {
-                this.stopovers.push(r);
-                return false;
+        let res = this._unverticalize(v, results);
+
+        if (Q.isValid(res)) {
+            if (Q.isArray(res)) {
+                res = res.filter(r => {
+                    if (Q.isValid(r) && r.trip === false) {
+                        this.stopovers.push(r);
+                        return false;
+                    }
+                    return true;
+                });
+            } else {
+                if (res.trip === false) {
+                    this.stopovers.push(res);
+                    return undefined;
+                }
             }
-            return true;
-        });
+        }
+        return res;
     }
 }
 
