@@ -33,4 +33,8 @@ function rightAngle(tp, p) {
     return p;
 }
 
-module.exports = { centerRightAngle: centerRightAngle, rightAngle: rightAngle };
+function pass(tp, p) {
+    return p;
+}
+
+module.exports = { pass: pass, centerRightAngle: centerRightAngle, rightAngle: rightAngle };

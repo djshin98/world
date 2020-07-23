@@ -16,7 +16,7 @@ function registryModular(graphicModulars) {
     //graphicModulars.circle = require("../modular/circle.js");
 
     graphicModulars.corridor = require("../modular/corridor.js");
-    graphicModulars.cover = require("../modular/cover.js");
+
     graphicModulars["아군확인구역"] = require("../modular/OAC/FP/critical-friendly-zone.js");
     graphicModulars["아군확인구역2"] = require("../modular/OAC/FP/critical-friendly-zone-rect.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
@@ -41,6 +41,7 @@ function registryModular(graphicModulars) {
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
     graphicModulars["ZONE OF RESPONSIBILITY"] = require("../modular/zone-of-responsibility.js");
     graphicModulars["간격"] = require("../modular/gap.js");
+    graphicModulars["경계"] = require("../modular/OAC/mission/cover");
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");

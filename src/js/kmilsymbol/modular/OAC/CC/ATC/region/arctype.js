@@ -1,4 +1,5 @@
 const { calc, rect } = require("../../../../../graphics/math");
+const { pass } = require("../../../../../graphics/prework");
 
 function arctype(turnPlane, properties, bcompleted) {
     let orders = [
@@ -45,7 +46,7 @@ function arctype(turnPlane, properties, bcompleted) {
             }
 
         }
-    }, orders).end();
+    }, pass, orders).end();
 }
 
 module.exports = {
