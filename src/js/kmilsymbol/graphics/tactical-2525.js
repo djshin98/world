@@ -118,7 +118,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-G-OAP---'] = [];//TACGRP.C2GM.OFF.ARS.PBX
     //sidc['G-G-S-----'] = [];//TACGRP.C2GM.SPL
     //sidc['G-G-SL----'] = [];//TACGRP.C2GM.SPL.LNE
-    sidc["G-G-SLA---"] = modular["AMBUSH"]; //TACGRP.C2GM.SPL.LNE.AMB
+    sidc["G-G-SLA---"] = modular["매복"]; //TACGRP.C2GM.SPL.LNE.AMB
     //sidc['G-G-SLH---'] = [];//TACGRP.C2GM.SPL.LNE.HGL
     //sidc['G-G-SLR---'] = [];//TACGRP.C2GM.SPL.LNE.REL
     //sidc['G-G-SLB---'] = [];//TACGRP.C2GM.SPL.LNE.BRGH
@@ -228,8 +228,8 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-F-ACSC--"] = modular["FIRE SUPPORT AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
     //sidc['G-F-ACA---'] = [];//TACGRP.FSUPP.ARS.C2ARS.ACA
     sidc["G-F-ACAI--"] = modular["공역협조지역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.IRR
-    sidc["G-F-ACAR--"] = modular["공역협조지역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.RTG
-    sidc["G-F-ACAC--"] = modular["공역협조지역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.CIRCLR
+    sidc["G-F-ACAR--"] = modular["공역협조지역2"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.RTG
+    sidc["G-F-ACAC--"] = modular["공역협조지역3"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.FFA
     sidc["G-F-ACFI--"] = modular["FREE FIRE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.IRR
     sidc["G-F-ACFR--"] = modular["FREE FIRE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.RTG
@@ -270,18 +270,18 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-F-AZ----'] = [];//TACGRP.FSUPP.ARS.TGTAQZ
     //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ
     sidc["G-F-AZII--"] =
-        modular["ARTILLERY TARGET INTELLIGENCE ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.IRR
+        modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.IRR
     sidc["G-F-AZIR--"] =
-        modular["ARTILLERY TARGET INTELLIGENCE ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
+        modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ
-    sidc["G-F-AZXI--"] = modular["CALL FOR FIRE ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.IRR
-    sidc["G-F-AZXR--"] = modular["CALL FOR FIRE ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
+    sidc["G-F-AZXI--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.IRR
+    sidc["G-F-AZXR--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CNS
-    sidc["G-F-AZCI--"] = modular["CENSOR ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.IRR
-    sidc["G-F-AZCR--"] = modular["CENSOR ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
+    sidc["G-F-AZCI--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.IRR
+    sidc["G-F-AZCR--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFZ
-    sidc["G-F-AZFI--"] = modular["CRITICAL FRIENDLY ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.IRR
-    sidc["G-F-AZFR--"] = modular["CRITICAL FRIENDLY ZONE"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
+    sidc["G-F-AZFI--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.IRR
+    sidc["G-F-AZFR--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
     //sidc['G-F-AX----'] = [];//TACGRP.FSUPP.ARS.WPNRF
     //sidc["G-F-AXC---"] = []; //modular.circle;//TACGRP.FSUPP.ARS.WPNRF.CIRCLR
     //sidc['G-F-AXS---'] = [];//TACGRP.FSUPP.ARS.WPNRF.SCR
