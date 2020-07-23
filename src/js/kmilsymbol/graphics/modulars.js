@@ -1,5 +1,5 @@
 function registryModular(graphicModulars) {
-    graphicModulars["AIRSPACE COORDINATION AREA"] = require("../modular/airspace-coordination-area.js");
+    graphicModulars["공역협조지역"] = require("../modular/airspace-coordination-area.js");
     graphicModulars["AMBUSH"] = require("../modular/ambush.js");
     graphicModulars["ARTILLERY TARGET INTELLIGENCE ZONE"] = require("../modular/artillery-target-intelligence-zone.js");
 

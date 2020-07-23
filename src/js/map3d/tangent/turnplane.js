@@ -109,6 +109,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                         }
                         return p;
                     });
+                    if (Q.isValid(obj.rotate)) {
+                        obj.rotate += v.r;
+                    } else {
+                        obj.rotate = v.r;
+                    }
                     if (!obj.v) { obj.v = []; }
                     obj.v.push(v.vkey);
                 }
