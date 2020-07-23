@@ -132,21 +132,30 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                 return obj.map(r => { return this._verticalize(v, r); })
             } else if (Q.isValid(obj.geometry)) {
                 if (!(obj.v && obj.v.indexOf(v.vkey) >= 0)) {
-                    obj.geometry = obj.geometry.map(p => {
-                        p.x -= v.m.x;
-                        p.y -= v.m.y;
-                        if (Q.isValid(v.r)) {
-                            let temp = { x: p.x, y: p.y };
-                            p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
-                            p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
-                        }
-                        return p;
-                    });
-                    if (Q.isValid(obj.rotate)) {
-                        obj.rotate += v.r;
+                    if (obj.ignoreRotate === true) {
+                        obj.geometry = obj.geometry.map(p => {
+                            p.x -= v.m.x;
+                            p.y -= v.m.y;
+                            return p;
+                        });
                     } else {
-                        obj.rotate = v.r;
+                        obj.geometry = obj.geometry.map(p => {
+                            p.x -= v.m.x;
+                            p.y -= v.m.y;
+                            if (Q.isValid(v.r)) {
+                                let temp = { x: p.x, y: p.y };
+                                p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
+                                p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
+                            }
+                            return p;
+                        });
+                        if (Q.isValid(obj.rotate)) {
+                            obj.rotate += v.r;
+                        } else {
+                            obj.rotate = v.r;
+                        }
                     }
+
                     if (!obj.v) { obj.v = []; }
                     obj.v.push(v.vkey);
                 }
@@ -175,20 +184,28 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                 let vkeyIndex = result.v ? result.v.indexOf(v.vkey) :
                     ((result.u && result.u.indexOf(v.vkey) >= 0) ? -1 : 0);
                 if (vkeyIndex >= 0) {
-                    result.geometry = result.geometry.map(p => {
-                        if (Q.isValid(v.r)) {
-                            return {
-                                x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
-                                y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
-                            };
-                        }
-                        return { x: p.x + v.m.x, y: p.y + v.m.y };
-                    });
-                    if (Q.isValid(result.rotate)) {
-                        result.rotate += -v.r;
+                    if (result.ignoreRotate === true) {
+                        result.geometry = result.geometry.map(p => {
+                            return { x: p.x + v.m.x, y: p.y + v.m.y };
+                        });
                     } else {
-                        result.rotate = -v.r;
+                        result.geometry = result.geometry.map(p => {
+                            if (Q.isValid(v.r)) {
+                                return {
+                                    x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
+                                    y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
+                                };
+                            }
+                            return { x: p.x + v.m.x, y: p.y + v.m.y };
+                        });
+
+                        if (Q.isValid(result.rotate)) {
+                            result.rotate += -v.r;
+                        } else {
+                            result.rotate = -v.r;
+                        }
                     }
+
                     if (result.v) { result.v.splice(vkeyIndex, 1); } else {
                         result.u = [v.vkey];
                     }

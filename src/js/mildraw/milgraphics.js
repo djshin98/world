@@ -5,6 +5,7 @@ const { tw } = require('../map3d/tangent/turnplane');
 const { CTX } = require('../map3d/ctx');
 const { Annotation } = require('../draw/annotation');
 const { Slash } = require('../draw/slash');
+const { Symbol } = require('../kmilsymbol/ms/symbol');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
@@ -15,7 +16,7 @@ const Template = {
 const debugColor = Cesium.Color.RED;
 class MilGraphics extends DrawObject {
     constructor(options) {
-        super(options.minPointCount, options.maxPointCount);
+        super(options instanceof Symbol ? 1 : options.minPointCount, options instanceof Symbol ? undefined : options.maxPointCount);
         this.options = Q.copy(options);
         this.annotations = undefined;
     }
