@@ -1,4 +1,11 @@
 class calc {
+    static avg(p){
+        let sum = p.reduce((prev, curr, i)=> {
+            return {x : prev.x + curr.x, y: prev.y + curr.y}; 
+        });
+
+        return {x: sum.x / p.length, y: sum.y / p.length};
+    }
     static mid(a, b) {
         return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
     }

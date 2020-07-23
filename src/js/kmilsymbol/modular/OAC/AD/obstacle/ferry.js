@@ -2,7 +2,7 @@
 const { calc, rect } = require("../../../../graphics/math");
 const { centerRightAngle } = require("../../../../graphics/prework");
 
-function bypassdifficulty(turnPlane, properties, bcompleted) {
+function ferry(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.pixelBySize;
     let orders = [
@@ -24,7 +24,7 @@ function bypassdifficulty(turnPlane, properties, bcompleted) {
 }
 
 module.exports = {
-    modular: bypassdifficulty,
+    modular: ferry,
     minPointCount: 1,
     maxPointCount: 2,
     properties: {

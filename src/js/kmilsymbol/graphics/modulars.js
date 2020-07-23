@@ -1,18 +1,20 @@
 function registryModular(graphicModulars) {
-    graphicModulars["공역협조지역"] = require("../modular/airspace-coordination-area.js");
-    graphicModulars["AMBUSH"] = require("../modular/ambush.js");
-    graphicModulars["ARTILLERY TARGET INTELLIGENCE ZONE"] = require("../modular/artillery-target-intelligence-zone.js");
+    graphicModulars["공역협조지역"] = require("../modular/OAC/FP/airspace-coordination-area.js");
+    graphicModulars["공역협조지역2"] = require("../modular/OAC/FP/airspace-coordination-area-rect.js");
+    graphicModulars["공역협조지역3"] = require("../modular/OAC/FP/airspace-coordination-area-circle.js");
+    graphicModulars["매복"] = require("../modular/ambush.js");
+    graphicModulars["포병표적정보구역"] = require("../modular/OAC/FP/artillery-target-intelligence-zone.js");
 
     graphicModulars["BREACH"] = require("../modular/breach.js");
 
-    graphicModulars["CALL FOR FIRE ZONE"] = require("../modular/call-for-fire-zone.js");
+    graphicModulars["화력요청구역"] = require("../modular/OAC/FP/call-for-fire-zone.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
-    graphicModulars["CENSOR ZONE"] = require("../modular/censor-zone.js");
+    graphicModulars["검열구역"] = require("../modular/OAC/FP/censor-zone.js");
     //graphicModulars.circle = require("../modular/circle.js");
 
     graphicModulars.corridor = require("../modular/corridor.js");
     graphicModulars.cover = require("../modular/cover.js");
-    graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
+    graphicModulars["아군확인구역"] = require("../modular/OAC/FP/critical-friendly-zone.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
 
 
@@ -53,5 +55,8 @@ function registryModular(graphicModulars) {
     graphicModulars["우회곤란"] = require("../modular/OAC/AD/obstacle/bypassdifficulty");
     graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
     graphicModulars["도선장"] = require("../modular/OAC/AD/obstacle/ferry");
+    graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
+    graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
+    graphicModulars["요새방어선"] = require("../modular/OAC/AD/defence/fortressdefence");
 }
 module.exports = registryModular;
