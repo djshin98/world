@@ -55,6 +55,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         this.append(orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
@@ -70,6 +79,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
@@ -87,6 +105,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);

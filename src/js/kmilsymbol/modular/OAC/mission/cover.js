@@ -3,6 +3,7 @@ const { pass } = require("../../../graphics/prework");
 
 function cover(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
+    let thunder = properties.pixelBySize.thunder;
     let a = properties.annotations;
     let aname = "s"
     if (properties.log == "G-T-US") {
@@ -20,7 +21,21 @@ function cover(turnPlane, properties, bcompleted) {
         [0, 2],
     ];
 
-    return turnPlane.map((prev, points, index, buffer) => {
+    return turnPlane.map((prev, p, i, buffer) => {
+        let pindex = 1;
+        if (i == 0) { pindex = 1; } else if (i == 1) { pindex = 2; }
+        let mid = calc.mid(p[0], p[pindex]);
+        let dist = calc.distance(p[0], p[pindex]);
+        thunder = dist / 10;
+        let line = [p[0], { x: mid.x + thunder, y: mid.y + thunder }, { x: mid.x - thunder, y: mid.y - thunder }, p[pindex]];
+        let ret = calc.annotationOnLine(a, aname, 0.1, line[0], line[1], (i, g) => {
+            if (i == 1) {
+                g.geometry.push(line[2]);
+                g.geometry.push(line[3]);
+            }
+        });
+        ret.push(calc.arrow(turnPlane, line[2], line[3], arrowSize, 30));
+        return ret;
 
     }, pass, orders).end();
 
@@ -34,6 +49,7 @@ module.exports = {
     properties: {
         size: {
             arrow: 20,
+            thunder: 20
         },
         annotations: {
             a: {

@@ -25,7 +25,6 @@ function wade(turnPlane, properties, bcompleted) {
                 }
             }
             return ret;
-
         }
     }, centerRightAngle, orders).end();
 }
