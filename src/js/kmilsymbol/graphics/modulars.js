@@ -14,7 +14,7 @@ function registryModular(graphicModulars) {
     graphicModulars.cover = require("../modular/cover.js");
     graphicModulars["CRITICAL FRIENDLY ZONE"] = require("../modular/critical-friendly-zone.js");
     graphicModulars["DEAD SPACE AREA"] = require("../modular/dead-space-area.js");
-    graphicModulars["DELAY"] = require("../modular/delay.js");
+
 
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/OAC/mission/fix.js");
@@ -37,8 +37,7 @@ function registryModular(graphicModulars) {
     graphicModulars["간격"] = require("../modular/gap.js");
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
-    graphicModulars["대전차구건설중"] = require("../modular/antitank-under-construction.js");
-    graphicModulars["목책"] = require("../modular/barrier.js");
+    graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
     graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
     graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
@@ -52,5 +51,6 @@ function registryModular(graphicModulars) {
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
     graphicModulars["우회곤란"] = require("../modular/OAC/AD/obstacle/bypassdifficulty");
+    graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
 }
 module.exports = registryModular;

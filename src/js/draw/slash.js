@@ -7,15 +7,27 @@ class Slash extends SvgImage {
             fontFamily: "Sans-serif",
             textLineMargin: 5,
             color: "white",
-            width: 10,
-            height: 10
+            width: 100,
+            height: 100,
+            div: 10
         }, options));
 
     }
     create(svg) {
-        svg.append("svg:line").attr("x1", "10").attr("y1", "0")
-            .attr("x2", "0").attr("y2", "10")
-            .style("stroke", this.options.color);
+        let div = this.options.div;
+        let startx = -this.options.width / 2;
+        let starty = this.options.height / 2;
+
+        for (let i = 0; i < this.options.width; i += div) {
+            svg.append("svg:line").attr("x1", startx).attr("y1", starty - (i))
+                .attr("x2", startx + (i)).attr("y2", starty)
+                .style("stroke", this.options.color);
+
+            svg.append("svg:line").attr("x1", -startx).attr("y1", -starty + (i))
+                .attr("x2", -startx - (i)).attr("y2", starty)
+                .style("stroke", this.options.color);
+        }
+
     }
 
 }

@@ -1,5 +1,5 @@
 "use strict";
-const { calc } = require("../../kmilsymbol/graphics/math");
+
 global._verticalizekey = 1;
 class TurnPlane extends Cesium.EllipsoidTangentPlane {
     constructor(origin, points) {
@@ -174,8 +174,8 @@ function tw(points, bcompleted, originIndex, options, annotations) {
         if (Q.isValid(options.properties)) {
             if (points.length > 1) {
                 let px = CTX.pixels(points[0], points[1]);
-                let lineLength = calc.distance(points[0], points[1]);
-
+                let lineLength = CTX.distance(points[0], points[1]);
+                options.properties.test = { px, lineLength };
                 if (Q.isValid(options.properties.size)) {
                     options.properties.pixelBySize = {};
 
