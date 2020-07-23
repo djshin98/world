@@ -76,7 +76,7 @@ module.exports = {
         },
         annotations: {
             k: {
-                value: "ACA",
+                value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIN ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
                 anchor: { x: 0, y: 0 }
             },
         }
