@@ -1,40 +1,4 @@
-/*
-const circleCorridorPolygon = require("../geometry/circlecorridorpolygon");
 
-// Draws a NAI
-module.exports = function(feature) {
-  var annotations = [{}];
-  var geometry;
-
-  annotations[0].geometry = { type: "Point" };
-  annotations[0].properties = {};
-  annotations[0].properties.text = "ACA";
-  if (feature.properties.uniqueDesignation)
-    annotations[0].properties.text +=
-      "\n" + feature.properties.uniqueDesignation;
-  if (feature.properties.altitudeDepth)
-    annotations[0].properties.text +=
-      "\nMIN ALT: " + feature.properties.altitudeDepth;
-  if (feature.properties.altitudeDepth1)
-    annotations[0].properties.text +=
-      "\nMAX ALT: " + feature.properties.altitudeDepth1;
-  if (feature.properties.additionalInformation1)
-    annotations[0].properties.text +=
-      "\nGrids " + feature.properties.additionalInformation1;
-  if (feature.properties.dtg)
-    annotations[0].properties.text += "\nEFF: " + feature.properties.dtg;
-  if (feature.properties.dtg1)
-    annotations[0].properties.text += "\n- " + feature.properties.dtg1;
-
-  var polygon = circleCorridorPolygon(feature);
-  geometry = polygon.geometry;
-  if (polygon.annotation.hasOwnProperty("geometry")) {
-    annotations[0].geometry = polygon.annotation.geometry;
-  }
-
-  return { geometry: geometry, annotations: annotations };
-};
-*/
 const { calc, rect } = require("../graphics/math");
 const { centerRightAngle } = require("../graphics/prework");
 
@@ -43,14 +7,25 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.annotations;
 
-    return turnPlane.map((prev, p, i, buffer) => {
-        if (properties.log == "G-F-ACAI--") {
-            if (i == 0) {
-              p.push(p[0]);
-              return [{type: "polyline", geometry: p }];
-            }  
+    return turnPlane.reduce((prev, p, i, buffer) => {
+        if (properties.log == "G-F-ACAI") {
             
-        } else if (properties.log == "G-F-ACAR--") {
+                p.push(p[0]);
+                let ret = [];
+                
+                let sum = p.reduce((prev, curr, i)=> {
+                    return {x : prev.x + curr.x, y: prev.y + curr.y}; 
+                });
+
+                let s = {x: sum.x / p.length, y: sum.y / p.length};
+
+                ret.push(calc.annotation(a, "k", s));
+                ret.push({type: "polyline", geometry: p });
+
+                return ret;
+            
+        /*  
+        } else if (properties.log == "G-F-ACAR") {
             if (i == 0) {
                 dist = calc.distance(p[0], p[1]) / 2;
                 //return { type: "polyline", geometry: [p[i], p[i + 1]] };
@@ -79,30 +54,29 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
                     }, ll[0], ll[1], arrow].concat(arc);
                 });
             }
-        } else if (properties.log == "G-F-ACAC--") {
+        } else if (properties.log == "G-F-ACAC") {
             if (i == 0) {
                 return { type: "polyline", geometry: [p[0], p[2]] };
             } else if (i == 1) {
                 let ret = calc.annotationOnLine(a, "b", 0.5, p[1], p[3]);
                 ret.push(calc.arrow(turnPlane, p[3], p[1], arrowSize));
                 return ret;
-            }
+            }*/
         }
 
-    }, centerRightAngle, orders).end();
+    }).end();
 }
 
 module.exports = {
     modular: airspaceCoordinationArea,
     minPointCount: 2,
-    maxPointCount: 3,
     properties: {
         size: {
             arrow: 30
         },
         annotations: {
-            r: {
-                value: "B",
+            k: {
+                value: "ACA",
                 anchor: { x: 0, y: 0 }
             },
         }
