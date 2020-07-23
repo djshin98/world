@@ -10,15 +10,7 @@ function delay(turnPlane, properties, bcompleted) {
         if (i == 0) {
             let ret = [];
 
-            if (bcompleted === true) {
-                console.log("width=" + a.p.width.toFixed(2) +
-                    " , height=" + a.p.height.toFixed(2) + " <===> " +
-                    "px=" + properties.test.px.toFixed(2) +
-                    " , lineLength=" + properties.test.lineLength.toFixed(2) +
-                    "l/p = " + (properties.test.lineLength / properties.test.px).toFixed(2));
-            }
-
-            calc.annotationOnLine(a, "p", 0.5, p[0], p[1], undefined, (i, g) => {
+            calc.annotationOnLine(a, "p", 0.5, p[0], p[1], false, (i, g) => {
                 if (i == 0) {
                     ret.push(calc.arrow(turnPlane, g.geometry[1], g.geometry[0], arrowSize));
                 }
