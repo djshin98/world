@@ -54,5 +54,8 @@ function registryModular(graphicModulars) {
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
     graphicModulars["우회곤란"] = require("../modular/OAC/AD/obstacle/bypassdifficulty");
     graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
+    graphicModulars["도선장"] = require("../modular/OAC/AD/obstacle/ferry");
+    graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
+    graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
 }
 module.exports = registryModular;
