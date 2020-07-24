@@ -313,6 +313,7 @@ class calc {
             type: "annotation",
             geometry: r.geometry(bxaxis),
             name: name,
+            rotate: (bxaxis === true) ? Math.PI / 2 : 0,
             debug: true
         }];
         r.linkLine(p1, p2, bxaxis, callback).forEach(g => { ret.push(g); });

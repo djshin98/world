@@ -19,24 +19,37 @@ function delay(turnPlane, properties, bcompleted) {
     if (properties.log == "G-T-T") {
         return turnPlane.map((prev, p, i, buffer) => {
             if (i == 0) {
-                let mp = calc.mid(p[0], p[1]);
+
                 return [{
                     type: "polyline",
                     geometry: [p[0], p[1]]
-                }, {
-                    type: "polyline",
-                    geometry: [mp, calc.moveY(mp, calc.distance(p[0], p[1]) / 3)]
                 }];
             } else {
-                let w = calc.distance(p[0], p[1]);
-                let h = calc.distance(p[1], p[2]);
+                let w = p[1].x - p[0].x;
+                let h = p[2].y - p[1].y;
                 let ret = calc.arrowLine(turnPlane, p[1], p[2], arrowSize, 30);
+                let mp = calc.mid(p[0], p[1]);
+                let hy = -Math.abs(w / 3);
+                ret.push({
+                    type: "polyline",
+                    geometry: [mp, calc.moveY(mp, hy)]
+                });
                 if (h > w) {
-                    calc.arrowLine(turnPlane, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -w / 2), arrowSize, 30).forEach(g => { ret.push(g); });
+                    calc.annotationOnLine(a, "d", 0.5, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -w / 2), false, (i, g) => {
+                        if (i == 1) {
+                            ret.push(calc.arrow(turnPlane, g.geometry[0], g.geometry[1], arrowSize, 30));
+                        }
+                    }).forEach(g => { ret.push(g); });
+                    //calc.arrowLine(turnPlane, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -w / 2), arrowSize, 30).forEach(g => { ret.push(g); });
                     calc.arrowLine(turnPlane, calc.moveX(p[1], -w), calc.move(p[2], -w, -w), arrowSize, 30).forEach(g => { ret.push(g); });
                 } else {
-                    calc.arrowLine(turnPlane, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -h / 2), arrowSize, 30).forEach(g => { ret.push(g); });
-                    calc.arrowLine(turnPlane, calc.moveX(p[1], -w), calc.move(p[2], -w, -h / 3), arrowSize, 30).forEach(g => { ret.push(g); });
+                    calc.annotationOnLine(a, "d", 0.5, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -h / 2), false, (i, g) => {
+                        if (i == 1) {
+                            ret.push(calc.arrow(turnPlane, g.geometry[0], g.geometry[1], arrowSize, 30));
+                        }
+                    }).forEach(g => { ret.push(g); });
+                    //calc.arrowLine(turnPlane, calc.moveX(p[1], -w / 2), calc.move(p[2], -w / 2, -h / 2), arrowSize, 30).forEach(g => { ret.push(g); });
+                    calc.arrowLine(turnPlane, calc.moveX(p[1], -w), calc.move(p[2], -w, -h * 2 / 3), arrowSize, 30).forEach(g => { ret.push(g); });
                 }
                 return ret;
             }
