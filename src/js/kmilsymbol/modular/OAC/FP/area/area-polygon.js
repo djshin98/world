@@ -93,13 +93,27 @@ const { calc, rect } = require("../../../../graphics/math");
                 let ret = [];
                 
                 let s = calc.avg(p);
-                let tmp = calc.annotation(a, "h", s);
+                let tmp = calc.annotation(a, "i", s);
                 tmp.debug = false;
                 ret.push(tmp);
                 ret.push({type: "polyline", geometry: p });
 
                 return ret;
             }
+
+            else if(properties.log == "G-F-ACSI") {
+                p.push(p[0]);
+                let ret = [];
+                
+                let s = calc.avg(p);
+                let tmp = calc.annotation(a, "i", s);
+                tmp.debug = false;
+                ret.push(tmp);
+                ret.push({type: "polyline", geometry: p });
+
+                return ret;
+            }
+  
 
         }).end();
     }
@@ -135,6 +149,10 @@ const { calc, rect } = require("../../../../graphics/math");
                 },
                 h: {
                     value: "{N}\nCF ZONE \n{T}",
+                    anchor: { x: 0, y: 0 }
+                },
+                i: {
+                    value: "{N}\nFSA \n{T}",
                     anchor: { x: 0, y: 0 }
                 },
             }
