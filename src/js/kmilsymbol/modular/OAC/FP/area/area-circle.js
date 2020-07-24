@@ -12,7 +12,7 @@
     
 
     module.exports = {
-        modular: airspaceCoordinationArea,
+        modular: areaCircle,
         minPointCount: 2,
         maxPointCount: 2,
         properties: {

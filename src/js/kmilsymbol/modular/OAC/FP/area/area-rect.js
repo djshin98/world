@@ -284,6 +284,75 @@
                                 return ret;
                             }
                         }
+                        else if(properties.log == "G-F-ACSR") {
+                            if (i == 0) {
+                    
+                                let a = properties.annotations;
+                                p.push(p[0]);
+                                
+                                let height =  a["j"].height;
+                                let p1 = {x: -height/2, y: 0};
+                                let p2 = {x: height/2, y: 0};
+                                let p3 = {x: -height/2, y: p[1].y};
+                                let p4 = {x: height/2, y: p[1].y};
+            
+                                let s = calc.avg(p);
+            
+                                let ret = [];
+                                let t = calc.annotation(a, "j", s);
+                                ret.push(t)
+                                ret.push({ 
+                                    type: "polyline", 
+                                    geometry: [p1, p2]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p3, p4]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p2, p4]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p1, p3]
+                                });
+                                
+                                return ret;
+                            }
+                        }
+
+                        else if(properties.log == "G-F-ACAR") {
+                            if (i == 0) {
+                    
+                                let a = properties.annotations;
+                                p.push(p[0]);
+                                
+                                let height =  a["k"].height;
+                                let p1 = {x: -height/2, y: 0};
+                                let p2 = {x: height/2, y: 0};
+                                let p3 = {x: -height/2, y: p[1].y};
+                                let p4 = {x: height/2, y: p[1].y};
+            
+                                let s = calc.avg(p);
+            
+                                let ret = [];
+                                let t = calc.annotation(a, "k", s);
+                                ret.push(t)
+                                ret.push({ 
+                                    type: "polyline", 
+                                    geometry: [p1, p2]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p3, p4]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p2, p4]
+                                }, {
+                                    type: "polyline", 
+                                    geometry: [p1, p3]
+                                });
+                                
+                                return ret;
+                            }
+                        }
 
             }).end();
         }
@@ -324,6 +393,14 @@
                     },
                     i: {
                         value: "\n{T}",
+                        anchor: { x: 0, y: 0 }
+                    },
+                    j: {
+                        value: "{N}\nFSA \n{T}",
+                        anchor: { x: 0, y: 0 }
+                    },
+                    k: {
+                        value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
                         anchor: { x: 0, y: 0 }
                     },
                 }
