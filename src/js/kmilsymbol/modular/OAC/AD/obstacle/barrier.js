@@ -48,6 +48,28 @@ function barrier(turnPlane, properties, bcompleted) {
                 }];
             }
         }).end();
+    } else if (properties.log == "G-M-OGL") { //장애물라인
+        return turnPlane.map((prev, points, index, buffer) => {
+            let length = points[index + 1].y - points[index].y;
+            if (Math.abs(length) >= (arrowSizeY * 2)) {
+                let pts = [points[index]];
+                let toggle = true;
+                for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                    if (toggle === true) {
+                        pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    } else {
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    }
+                    toggle = !toggle;
+                }
+                pts.push(points[index + 1]);
+                return [{
+                    type: "polyline",
+                    geometry: pts
+                }];
+            }
+        }).end();
     }
 }
 
