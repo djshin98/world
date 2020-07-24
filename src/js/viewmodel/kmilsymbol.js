@@ -312,7 +312,7 @@ class ViewModel_KMilSymbol {
                 if (d.type === "G") {
                     if (Q.isValid(graphic)) {
                         if (!graphic.isIcon()) {
-                            if (Q.isValid(graphic.modular)) {
+                            if (Q.isValid(graphic.modular) && d.desc_kor[d.desc_kor.length - 1] !== "*") {
                                 d.desc_kor = d.desc_kor + "*";
                             }
                         }
@@ -529,10 +529,11 @@ class SymbolTest {
                             graphic.modular.properties = {};
                         }
                         graphic.modular.properties.sidc = new SIDC(option.SIDC[0], option.SIDC);
-                        m.addGraphics(graphic.modular);
+                        m.addGraphics(graphic);
                     }
 
                 } else {
+                    m.addGraphics(graphic);
                     option.code = graphic.toDataURL();
                     return this.template(option);
                 }
