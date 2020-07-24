@@ -1,25 +1,9 @@
 const { calc, rect } = require("../../../graphics/math");
 
-function criticalFriendlyZone(turnPlane, properties, bcompleted) {
-
-    let a = properties.annotations;
+function censorZone(turnPlane, properties, bcompleted) {
 
     return turnPlane.reduce((prev, p, i, buffer) => {
-        if (properties.log == "G-F-AZFI") {
-
-            p.push(p[0]);
-            let ret = [];
-
-            let s = calc.avg(p);
-            let tmp = calc.annotation(a, "k", s);
-            tmp.debug = false;
-            ret.push(tmp);
-            ret.push({ type: "polyline", geometry: p });
-
-            return ret;
-
-
-        } else if (properties.log == "G-F-AZFR") {
+        if (properties.log == "G-F-AZCR") {
             if (i == 0) {
 
                 let a = properties.annotations;
@@ -57,19 +41,20 @@ function criticalFriendlyZone(turnPlane, properties, bcompleted) {
                 return ret1;
             }
 
+
         }
 
     }).end();
 }
 
 module.exports = {
-    modular: criticalFriendlyZone,
-    minPointCount: 3,
-    maxPointCount: 6,
+    modular: censorZone,
+    minPointCount: 2,
+    maxPointCount: 2,
     properties: {
         annotations: {
             k: {
-                value: "{N}\nCF ZONE \n{T} ",
+                value: "{N}\nCENSOR ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
         }

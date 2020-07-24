@@ -123,11 +123,16 @@ class DrawObject {
         this.index = drawIndex++;
         this.minPointCount = minPointCount;
         if (!Q.isValid(this.minPointCount)) {
-            console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
-            return;
+            //console.error(this.constructor.name + "'s minPointCount is invalid in constructor : " + this.minPointCount);
+            //return;
+            this.minPointCount = 1;
         }
         this.maxPointCount = maxPointCount;
-        if (Q.isValid(this.maxPointCount) && this.minPointCount > this.maxPointCount) {
+        if (!Q.isValid(this.maxPointCount)) {
+            //console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
+            //return;
+            this.maxPointCount = 1;
+        } else if (this.minPointCount > this.maxPointCount) {
             console.error(this.constructor.name + "'s minPointCount is bigger than maxPointCount : " + this.minPointCount + "," + this.maxPointCount);
             return;
         }

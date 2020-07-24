@@ -2,9 +2,11 @@
 
 const { DrawObject } = require('../map3d/draw/drawobject');
 const { tw } = require('../map3d/tangent/turnplane');
+const { MilSymbol } = require('./milsymbol');
 const { CTX } = require('../map3d/ctx');
 const { Annotation } = require('../draw/annotation');
 const { Slash } = require('../draw/slash');
+const { Q } = require('../core/e');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
@@ -14,10 +16,15 @@ const Template = {
 
 const debugColor = Cesium.Color.RED;
 class MilGraphics extends DrawObject {
-    constructor(options) {
-        super(options.minPointCount, options.maxPointCount);
-        this.options = Q.copy(options);
-        this.annotations = undefined;
+    constructor(graphic) {
+        super(Q.isValid(graphic.modular) ? graphic.modular.minPointCount : 1,
+            Q.isValid(graphic.modular) ? graphic.modular.maxPointCount : 1);
+        if (graphic.isIcon() === true) {
+            this.symbol = graphic;
+        } else {
+            this.options = Q.copy(graphic.modular);
+            this.annotations = undefined;
+        }
     }
     createAnnotation() {
         let prop = this.options.properties;
@@ -70,29 +77,57 @@ class MilGraphics extends DrawObject {
     }
     create(layer, points, viewModel) {
         this.points = points;
-        if (this.isReadyToCallbackVariable()) {
-            if (!Q.isValid(this.annotations)) {
-                this.annotations = this.createAnnotation();
-            }
-            let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
-            this.sketch(layer, objs);
-        } else {
+        if (Q.isValid(this.symbol)) {
             if (this.isComplete()) {
-                this.annotations = this.createAnnotation();
-                let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
-                let entityOptions = this.completeSketch(layer, objs, viewModel);
+                let entityOptions = this.createSymbol(this.points, this.symbol);
                 return layer.add(entityOptions);
             }
-            return [];
+        } else {
+            if (this.isReadyToCallbackVariable()) {
+                if (!Q.isValid(this.annotations)) {
+                    this.annotations = this.createAnnotation();
+                }
+                let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
+                this.sketch(layer, objs);
+            } else {
+                if (this.isComplete()) {
+                    this.annotations = this.createAnnotation();
+                    let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
+                    let entityOptions = this.completeSketch(layer, objs, viewModel);
+                    return layer.add(entityOptions);
+                }
+                return [];
+            }
         }
     }
-
+    cretePolylineOptions(degree, low, high, width, color) {
+        return {
+            positions: Cesium.Cartesian3.fromDegreesArrayHeights([degree.longitude, degree.latitude, low,
+                degree.longitude, degree.latitude, high
+            ]),
+            width: width,
+            color: color,
+            //classificationType: Cesium.ClassificationType.CESIUM_3D_TILE,
+            //heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            //followSurface : new Cesium.ConstantProperty(false),
+            //clampToGround:true,
+            material: new Cesium.PolylineDashMaterialProperty({
+                color: color,
+                gapColor: Cesium.Color.TRANSPARENT,
+                dashLength: 16
+            })
+        };
+    }
+    createSymbol(points, symbol) {
+        let s = new MilSymbol(symbol);
+        return s.create(points[0]);
+    }
     sketch(layer, objs) {
         this.removeTemplateEntity(layer);
         let div = 5;
         let points = [];
         objs.forEach((obj, i) => {
-            if (!Q.isValid(obj.type)) {
+            if (!Q.isValid(obj) || !Q.isValid(obj.type) || !Q.isValid(obj.geometry)) {
                 console.log("invalid type : ");
                 console.dir(obj);
                 return;
@@ -150,7 +185,7 @@ class MilGraphics extends DrawObject {
         //let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(10.0, 10.0) });
         this.removeTemplateEntity(layer);
         objs = objs.filter(obj => {
-            return Q.isValid(obj.type) ? true : false;
+            return (Q.isValid(obj) && Q.isValid(obj.type)) ? true : false;
         });
         objs.forEach((obj, i, arr) => {
             if (obj.type == "annotation" && obj.debug === true) {

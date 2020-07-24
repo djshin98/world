@@ -53,7 +53,7 @@ function barrier(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: barrier,
-    minPointCount: 1,
+    minPointCount: 2,
     properties: {
         size: {
             arrow: 20, //화살표 한쪽 선의 길이

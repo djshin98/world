@@ -82,7 +82,7 @@ function blasting_schedule(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: blasting_schedule,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 3,
     properties: {
         size: {

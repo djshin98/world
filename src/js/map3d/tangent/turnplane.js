@@ -6,6 +6,7 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         super(origin);
         this.points = this.projectPointsToNearestOnPlane(points).map((p) => { return { x: p.x, y: p.y }; });
         this.buffer = [];
+        this.stopovers = [];
     }
     output(points) {
         return this.projectPointsOntoEllipsoid(points);
@@ -24,6 +25,11 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                     this.end(obj);
                 }
             });
+            if (this.stopovers.length > 0) {
+                this.end(this.stopovers).forEach(obj => {
+                    this.buffer.push(obj);
+                })
+            }
             return this.buffer;
         }
     }
@@ -49,6 +55,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         this.append(orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
@@ -64,6 +79,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
@@ -81,6 +105,15 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         if (!Q.isValid(orders)) {
             orders = [];
             this.points.reduce((prev, curr, i) => { orders.push([i - 1, i]); });
+        } else {
+            let bcut = false;
+            orders = orders.filter(o => {
+                if (!bcut && o[0] < this.points.length && o[1] < this.points.length) {
+                    return true;
+                }
+                bcut = true;
+                return false;
+            });
         }
         orders.reduce((prev, curr, i) => {
             let v = this.verticalize(this.points, curr[0], curr[1], prev, buffer);
@@ -99,21 +132,30 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                 return obj.map(r => { return this._verticalize(v, r); })
             } else if (Q.isValid(obj.geometry)) {
                 if (!(obj.v && obj.v.indexOf(v.vkey) >= 0)) {
-                    obj.geometry = obj.geometry.map(p => {
-                        p.x -= v.m.x;
-                        p.y -= v.m.y;
-                        if (Q.isValid(v.r)) {
-                            let temp = { x: p.x, y: p.y };
-                            p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
-                            p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
-                        }
-                        return p;
-                    });
-                    if (Q.isValid(obj.rotate)) {
-                        obj.rotate += v.r;
+                    if (obj.ignoreRotate === true) {
+                        obj.geometry = obj.geometry.map(p => {
+                            p.x -= v.m.x;
+                            p.y -= v.m.y;
+                            return p;
+                        });
                     } else {
-                        obj.rotate = v.r;
+                        obj.geometry = obj.geometry.map(p => {
+                            p.x -= v.m.x;
+                            p.y -= v.m.y;
+                            if (Q.isValid(v.r)) {
+                                let temp = { x: p.x, y: p.y };
+                                p.x = (temp.x * Math.cos(v.r)) - (temp.y * Math.sin(v.r));
+                                p.y = (temp.x * Math.sin(v.r)) + (temp.y * Math.cos(v.r));
+                            }
+                            return p;
+                        });
+                        if (Q.isValid(obj.rotate)) {
+                            obj.rotate += v.r;
+                        } else {
+                            obj.rotate = v.r;
+                        }
                     }
+
                     if (!obj.v) { obj.v = []; }
                     obj.v.push(v.vkey);
                 }
@@ -142,20 +184,28 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
                 let vkeyIndex = result.v ? result.v.indexOf(v.vkey) :
                     ((result.u && result.u.indexOf(v.vkey) >= 0) ? -1 : 0);
                 if (vkeyIndex >= 0) {
-                    result.geometry = result.geometry.map(p => {
-                        if (Q.isValid(v.r)) {
-                            return {
-                                x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
-                                y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
-                            };
-                        }
-                        return { x: p.x + v.m.x, y: p.y + v.m.y };
-                    });
-                    if (Q.isValid(result.rotate)) {
-                        result.rotate += -v.r;
+                    if (result.ignoreRotate === true) {
+                        result.geometry = result.geometry.map(p => {
+                            return { x: p.x + v.m.x, y: p.y + v.m.y };
+                        });
                     } else {
-                        result.rotate = -v.r;
+                        result.geometry = result.geometry.map(p => {
+                            if (Q.isValid(v.r)) {
+                                return {
+                                    x: (p.x * Math.cos(-v.r)) - (p.y * Math.sin(-v.r)) + v.m.x,
+                                    y: (p.x * Math.sin(-v.r)) + (p.y * Math.cos(-v.r)) + v.m.y
+                                };
+                            }
+                            return { x: p.x + v.m.x, y: p.y + v.m.y };
+                        });
+
+                        if (Q.isValid(result.rotate)) {
+                            result.rotate += -v.r;
+                        } else {
+                            result.rotate = -v.r;
+                        }
                     }
+
                     if (result.v) { result.v.splice(vkeyIndex, 1); } else {
                         result.u = [v.vkey];
                     }
@@ -169,7 +219,25 @@ class TurnPlane extends Cesium.EllipsoidTangentPlane {
         v.curr = this._unverticalize(v, v.curr);
         v.prev = this._unverticalize(v, v.prev);
         this._unverticalize(v, v.buffer);
-        return this._unverticalize(v, results);
+        let res = this._unverticalize(v, results);
+
+        if (Q.isValid(res)) {
+            if (Q.isArray(res)) {
+                res = res.filter(r => {
+                    if (Q.isValid(r) && r.trip === false) {
+                        this.stopovers.push(r);
+                        return false;
+                    }
+                    return true;
+                });
+            } else {
+                if (res.trip === false) {
+                    this.stopovers.push(res);
+                    return undefined;
+                }
+            }
+        }
+        return res;
     }
 }
 

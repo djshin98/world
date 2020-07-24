@@ -22,12 +22,13 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc["G-T-M-----"] = modular.delay; //TACGRP.TSK.RTM
     //sidc['G-T-S-----'] = [];//TACGRP.TSK.SCE
     //sidc['G-T-U-----'] = [];//TACGRP.TSK.SEC
-    //sidc['G-T-US----'] = [];//TACGRP.TSK.SEC.SCN
-    sidc["G-T-UG----"] = modular.guard; //TACGRP.TSK.SEC.GUD
-    sidc["G-T-UC----"] = modular.cover; //TACGRP.TSK.SEC.COV
-    //sidc['G-T-Z-----'] = [];//TACGRP.TSK.SZE
-    //sidc['G-T-W-----'] = [];//TACGRP.TSK.WDR
-    //sidc['G-T-WP----'] = [];//TACGRP.TSK.WDR.WDRUP
+    sidc['G-T-US----'] = modular["경계"]; //TACGRP.TSK.SEC.SCN
+    sidc["G-T-UG----"] = modular["경계"]; //TACGRP.TSK.SEC.GUD
+    sidc["G-T-UC----"] = modular["경계"]; //TACGRP.TSK.SEC.COV
+    sidc["G-T-UP----"] = modular["경계"];
+    sidc['G-T-Z-----'] = modular["탈취"]; //TACGRP.TSK.SZE
+    sidc['G-T-W-----'] = modular["DELAY"]; //TACGRP.TSK.WDR
+    sidc['G-T-WP----'] = modular["DELAY"]; //TACGRP.TSK.WDR.WDRUP
     //sidc['G-G-------'] = [];//TACGRP.C2GM
     //sidc['G-G-G-----'] = [];//TACGRP.C2GM.GNL
     //sidc['G-G-GP----'] = [];//TACGRP.C2GM.GNL.PNT
@@ -274,16 +275,16 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-F-AZII--"] =
         modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.IRR
     sidc["G-F-AZIR--"] =
-        modular["포병표적정보구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
+        modular["포병표적정보구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.ATIZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ
     sidc["G-F-AZXI--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.IRR
-    sidc["G-F-AZXR--"] = modular["화력요청구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
+    sidc["G-F-AZXR--"] = modular["화력요청구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFFZ.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CNS
     sidc["G-F-AZCI--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.IRR
-    sidc["G-F-AZCR--"] = modular["검열구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
+    sidc["G-F-AZCR--"] = modular["검열구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CNS.RTG
     //TACGRP.FSUPP.ARS.TGTAQZ.CFZ
     sidc["G-F-AZFI--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.IRR
-    sidc["G-F-AZFR--"] = modular["아군확인구역"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
+    sidc["G-F-AZFR--"] = modular["아군확인구역2"]; //TACGRP.FSUPP.ARS.TGTAQZ.CFZ.RTG
     //sidc['G-F-AX----'] = [];//TACGRP.FSUPP.ARS.WPNRF
     //sidc["G-F-AXC---"] = []; //modular.circle;//TACGRP.FSUPP.ARS.WPNRF.CIRCLR
     //sidc['G-F-AXS---'] = [];//TACGRP.FSUPP.ARS.WPNRF.SCR

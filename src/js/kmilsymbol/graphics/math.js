@@ -1,10 +1,13 @@
 class calc {
-    static avg(p){
-        let sum = p.reduce((prev, curr, i)=> {
-            return {x : prev.x + curr.x, y: prev.y + curr.y}; 
+    static θ(p) {
+        return Math.atan2(p.x, p.y);
+    }
+    static avg(p) {
+        let sum = p.reduce((prev, curr, i) => {
+            return { x: prev.x + curr.x, y: prev.y + curr.y };
         });
 
-        return {x: sum.x / p.length, y: sum.y / p.length};
+        return { x: sum.x / p.length, y: sum.y / p.length };
     }
     static mid(a, b) {
         return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
@@ -484,6 +487,96 @@ class Line {
         };
     }
 }
+class Road {
+    constructor(line1, line2) {
+        this.mode = 0;
+        if (Q.isValid(line1) && this.line1.length > 1) {
+            this.plusLine = line1;
+            this.mode = 1;
+        }
+        if (Q.isValid(line2) && this.line2.length > 1) {
+            this.minusLine = line2;
+            this.mode = 2;
+        }
+        if (this.mode == 1) {
+            let len = this.plusLine.legnth;
+            this.width = calc.distance(this.plusLine[0], this.plusLine[len - 1]);
+        } else if (this.mode == 2) {
+            this.width = calc.distance(this.plusLine[this.plusLine.legnth - 1], this.minusLine[this.minusLine.legnth - 1]);
+        }
+    }
+    link(line1) {
+        if (line1.length < 2) { return undefined; }
+        if (this.mode == 0) { return undefined; }
+
+        let pl = [
+            { x: line1[0].x + this.width / 2, y: line1[0].y },
+            { x: line1[1].x + this.width / 2, y: line1[1].y }
+        ];
+        let ml = [
+            { x: line1[0].x + this.width / 2, y: line1[0].y },
+            { x: line1[1].x + this.width / 2, y: line1[1].y }
+        ];
+
+        let rad = Math.atan2(line1[1].y, line1[1].x);
+        console.log("degree : " + rad * 180 / Math.PI);
+        if (rad >= 0 && rad < Math.PI / 2) {
+            calc.arc(-Math.PI / 2, rad, this.width / 2);
+        } else if (rad >= Math.PI / 2 && rad <= Math.PI) {
+
+        } else if (rad < 0 && rad > -Math.PI / 2) {
+
+        } else if (rad <= -Math.PI / 2 && rad <= -Math.PI) {
+
+        }
+        if (this.mode == 1) {
+            let length = this.plusLine.length;
+            let pt = this._itx([this.plusLine[1], this.plusLine[0]], pl);
+            let mt = this._itx([this.plusLine[length - 2], this.plusLine[length - 1]], ml);
+        } else if (this.mode == 2) {
+
+        }
+        return this;
+    }
+    _itx(A, B) {
+
+        let t;
+        let s;
+        let under = (line.e.y - line.s.y) * (this.e.x - this.s.x) - (line.e.x - line.s.x) * (this.e.y - this.s.y);
+        if (under == 0) return undefined;
+
+        let _t = (line.e.x - line.s.x) * (this.s.y - line.s.y) - (line.e.y - line.s.y) * (this.s.x - line.s.x);
+        let _s = (this.e.x - this.s.x) * (this.s.y - line.s.y) - (this.e.y - this.s.y) * (this.s.x - line.s.x);
+
+        t = _t / under;
+        s = _s / under;
+
+        //if (t < 0.0 || t > 1.0 || s < 0.0 || s > 1.0) return undefined;
+        //if (_t == 0 && _s == 0) return undefined;
+
+        return {
+            x: this.s.x + t * (this.e.x - this.s.x),
+            y: this.s.y + t * (this.e.y - this.s.y)
+        };
+    }
+
+    end() {
+        if (this.mode == 1) {
+            return [{
+                type: "polyline",
+                geometry: this.plusLine
+            }];
+        } else if (this.mode == 2) {
+            return [{
+                type: "polyline",
+                geometry: this.plusLine
+            }, {
+                type: "polyline",
+                geometry: this.minusLine
+            }];
+        }
+    }
+}
 
 function rect(x, y, width, height) {
     return new Rectangle(x, y, width, height);
@@ -492,4 +585,8 @@ function rect(x, y, width, height) {
 function line(p1, p2) {
     return new Line(p1, p2);
 }
-module.exports = { calc: calc, rect: rect, line: line };
+
+function road(line1, line2) {
+    return new Road(line1, line2);
+}
+module.exports = { calc: calc, rect: rect, line: line, road: road };
