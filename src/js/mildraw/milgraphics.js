@@ -127,7 +127,7 @@ class MilGraphics extends DrawObject {
         let div = 5;
         let points = [];
         objs.forEach((obj, i) => {
-            if (!Q.isValid(obj) || !Q.isValid(obj.type)) {
+            if (!Q.isValid(obj) || !Q.isValid(obj.type) || !Q.isValid(obj.geometry)) {
                 console.log("invalid type : ");
                 console.dir(obj);
                 return;

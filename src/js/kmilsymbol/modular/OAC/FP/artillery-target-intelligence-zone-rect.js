@@ -43,7 +43,7 @@ function artilleryTargetIntelligenceZone(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: artilleryTargetIntelligenceZone,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 2,
     properties: {
         annotations: {

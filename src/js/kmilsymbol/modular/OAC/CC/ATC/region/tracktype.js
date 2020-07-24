@@ -23,4 +23,4 @@ function tracktype(turnPlane, properties, bcompleted) {
 }
 
 
-module.exports = { modular: tracktype, minPointCount: 1 };
+module.exports = { modular: tracktype, minPointCount: 2 };

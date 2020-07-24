@@ -25,7 +25,7 @@ function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: airspaceCoordinationArea,
-    minPointCount: 1,
+    minPointCount: 2,
     properties: {
         annotations: {
             k: {

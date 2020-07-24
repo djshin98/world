@@ -41,7 +41,7 @@ function fortressdefence(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: fortressdefence,
-    minPointCount: 1,
+    minPointCount: 2,
     properties: {
         size: {
             arrow: 20,

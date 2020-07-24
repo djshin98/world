@@ -49,7 +49,7 @@ function criticalFriendlyZone(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: criticalFriendlyZone,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 2,
     properties: {
         annotations: {

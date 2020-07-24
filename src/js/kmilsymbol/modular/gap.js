@@ -34,7 +34,7 @@ function gap(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: gap,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 4,
     properties: {
         size: {

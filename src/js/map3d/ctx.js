@@ -210,24 +210,27 @@ const CTX = {
         },
         polyline: (array, pixels) => {
             let result = [];
-            array.reduce((prev, curr) => {
-                let pointInterval = parseInt(CTX.pixels(prev, curr) / pixels);
-                if (pointInterval > 1) {
-                    for (let i = 0; i < pointInterval; i++) {
-                        let pn = CTX.math.forward(prev, curr, i / pointInterval);
-                        result.push(pn);
+            if (array.length > 0) {
+                array.reduce((prev, curr) => {
+                    let pointInterval = parseInt(CTX.pixels(prev, curr) / pixels);
+                    if (pointInterval > 1) {
+                        for (let i = 0; i < pointInterval; i++) {
+                            let pn = CTX.math.forward(prev, curr, i / pointInterval);
+                            result.push(pn);
 
-                        if (i + 1 == pointInterval) {
-                            if (CTX.pixels(curr, pn) > (pixels / 2)) {
-                                result.push(curr);
+                            if (i + 1 == pointInterval) {
+                                if (CTX.pixels(curr, pn) > (pixels / 2)) {
+                                    result.push(curr);
+                                }
                             }
                         }
+                    } else {
+                        result.push(curr);
                     }
-                } else {
-                    result.push(curr);
-                }
-                return curr;
-            });
+                    return curr;
+                });
+            }
+
             return result;
         }
     }

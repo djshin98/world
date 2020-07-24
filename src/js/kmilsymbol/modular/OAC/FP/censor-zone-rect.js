@@ -49,7 +49,7 @@ function censorZone(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: censorZone,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 2,
     properties: {
         annotations: {

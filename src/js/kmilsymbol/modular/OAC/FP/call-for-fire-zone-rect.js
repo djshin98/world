@@ -47,7 +47,7 @@ function callForFireZone(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: callForFireZone,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 2,
     properties: {
         annotations: {

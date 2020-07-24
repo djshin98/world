@@ -31,7 +31,7 @@ function wade(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: wade,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 3,
     properties: {
         size: {

@@ -21,7 +21,7 @@ function antitank_under_construction(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: antitank_under_construction,
-    minPointCount: 1,
+    minPointCount: 2,
     properties: {
         size: {
             arrow: 50, //화살표 한쪽 선의 길이
