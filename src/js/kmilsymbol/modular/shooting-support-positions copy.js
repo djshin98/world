@@ -34,7 +34,7 @@ function shooting_support_position(turnPlane, properties, bcompleted) {
 
 module.exports = {
     modular: shooting_support_position,
-    minPointCount: 1,
+    minPointCount: 2,
     maxPointCount: 4,
     properties: {
         size: {

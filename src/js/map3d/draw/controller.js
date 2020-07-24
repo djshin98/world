@@ -43,14 +43,7 @@ const { Alert } = require('./alert');
 const { DrawConstruction } = require('./drawconstruction');
 const { Corn } = require('./corn');
 const { Radar2 } = require('./radar2');
-const { MissionObstruction } = require('../../mildraw/missionobstruction');
-const { Delay } = require('../../mildraw/delay');
-
 const { MilGraphics } = require('../../mildraw/milgraphics');
-const { Debacle } = require('../../mildraw/debacle');
-const { Secure } = require('../../mildraw/secure');
-const { Diversion } = require('../../mildraw/diversion');
-const { Fixation } = require('../../mildraw/fixation');
 
 const drawLinker = {
 
@@ -92,13 +85,7 @@ const drawLinker = {
     measureDistance: { name: "길이측정", createFunc: function() { return new MeasureDistance(); } },
     corn: { name: "콘", createFunc: function() { return new Corn(); } },
     radar2: { name: "레이더2", createFunc: function() { return new Radar2(); } },
-    MissionObstruction: { name: "임무저지", createFunc: function() { return new MissionObstruction(); } },
-    delay: { name: "delay", createFunc: function() { return new Delay(); } },
     milgraphics: { name: "군대부호", createFunc: function(modular) { return new MilGraphics(modular); } },
-    debacle: { name: "와해", createFunc: function() { return new Debacle(); } },
-    secure: { name: "secure", createFunc: function() { return new Secure(); } },
-    diversion: { name: "견제", createFunc: function() { return new Diversion(); } },
-    fixation: { name: "fixation", createFunc: function() { return new Fixation(); } },
 }
 
 function registryHandler(key, name, createfunc) {
