@@ -1,6 +1,6 @@
-const { calc, rect } = require("../../../graphics/math");
+const { calc, rect } = require("../../../../graphics/math");
    
-    function airspaceCoordinationArea(turnPlane, properties, bcompleted) {
+    function areaCircle(turnPlane, properties, bcompleted) {
         
         return turnPlane.reduce((prev, p, i, buffer) => {
             if (properties.log == "G-F-ACAC") {
@@ -11,7 +11,7 @@ const { calc, rect } = require("../../../graphics/math");
     }
 
     module.exports = {
-        modular: airspaceCoordinationArea,
+        modular: areaCircle,
         minPointCount: 1,
         maxPointCount: 2,
         properties: {
