@@ -58,5 +58,8 @@ function registryModular(graphicModulars) {
     graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
     graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
     graphicModulars["요새방어선"] = require("../modular/OAC/AD/defence/fortressdefence");
+    graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
+    graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
+
 }
 module.exports = registryModular;

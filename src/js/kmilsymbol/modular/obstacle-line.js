@@ -3,13 +3,39 @@ const { calc } = require("../graphics/math");
 function obstacle_line(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {
         let distance = calc.distance(points[index], points[index + 1]);
+        let a = properties.pixelBySize;
         let result = [];
 
-        for (let i = 1; i < distance / properties.pixelBySize.arrow; i++) {
-            let p1 = { x: 0, y: (i * properties.pixelBySize.arrow) };
-            let p2 = { x: -(properties.pixelBySize.arrow), y: (i * properties.pixelBySize.arrow) };
-            let arrow = calc.arrow(turnPlane, p1, p2, properties.pixelBySize.arrow);
-            result = result.concat(arrow.geometry.reverse());
+        if (properties.log == "G-M-OGL") {
+            result.push(points[index]);
+            for (let i = 1; i < distance / properties.pixelBySize.arrow; i++) {
+                if ((i + 1) * a.arrow < distance) {
+                    if (i % 2 == 0) {
+                        result.push({ x: 0, y: i * a.arrow });
+                        result.push({ x: -a.arrow, y: i * a.arrow + a.arrow / 2 });
+                        result.push({ x: 0, y: (i + 1) * a.arrow });
+                    } else {
+                        result.push({ x: 0, y: i * a.arrow });
+                        result.push({ x: 0, y: (i + 1) * a.arrow });
+                    }
+                }
+            }
+            result.push(points[index + 1]);
+        } else if (properties.log == "G-M-OAW") {
+            result.push(points[index]);
+            for (let i = 1; i < distance / properties.pixelBySize.arrow; i++) {
+                if ((i + 1) * a.arrow < distance) {
+                    if (i % 2 == 0) {
+                        result.push({ x: 0, y: i * a.arrow });
+                        result.push({ x: a.arrow, y: i * a.arrow + a.arrow / 2 });
+                        result.push({ x: 0, y: (i + 1) * a.arrow });
+                    } else {
+                        result.push({ x: 0, y: i * a.arrow });
+                        result.push({ x: 0, y: (i + 1) * a.arrow });
+                    }
+                }
+            }
+            result.push(points[index + 1]);
         }
 
         return {
