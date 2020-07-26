@@ -4,15 +4,15 @@ function registryModular(graphicModulars) {
     graphicModulars["구역3"] = require("../modular/OAC/FP/area/area-circle.js");
 
     graphicModulars["매복"] = require("../modular/ambush.js");
- 
+
     graphicModulars["BREACH"] = require("../modular/breach.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
-    
+
     //graphicModulars.circle = require("../modular/circle.js");
 
     graphicModulars.corridor = require("../modular/corridor.js");
     graphicModulars.cover = require("../modular/cover.js");
-   
+
 
     graphicModulars["FIRE SUPPORT AREA"] = require("../modular/fire-support-area.js");
     graphicModulars["FIX"] = require("../modular/OAC/mission/fix.js");
@@ -32,7 +32,7 @@ function registryModular(graphicModulars) {
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
     graphicModulars["TERMINALLY GUIDED MUNITION FOOTPRINT"] = require("../modular/terminally-guided-munition-footprint.js");
 
-   
+
     graphicModulars["간격"] = require("../modular/gap.js");
     graphicModulars["경계"] = require("../modular/OAC/mission/cover");
     graphicModulars["기만모조"] = require("../modular/fake.js");
@@ -57,6 +57,8 @@ function registryModular(graphicModulars) {
     graphicModulars["요새방어선"] = require("../modular/OAC/AD/defence/fortressdefence");
     graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
     graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
+    graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
+
 
 }
 module.exports = registryModular;

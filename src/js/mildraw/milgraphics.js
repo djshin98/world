@@ -7,6 +7,7 @@ const { CTX } = require('../map3d/ctx');
 const { Annotation } = require('../draw/annotation');
 const { Slash } = require('../draw/slash');
 const { Q } = require('../core/e');
+const { properties } = require('../kmilsymbol/modular/OAC/FP/area/area-polygon');
 
 const Template = {
     faceColor: new Cesium.Color(192, 0, 0, 1),
@@ -30,17 +31,18 @@ class MilGraphics extends DrawObject {
         let prop = this.options.properties;
         if (Q.isValid(prop) && Q.isValid(prop.annotations)) {
             let annotations = [];
-            Q.keys(prop.annotations, (key, value) => {
-                let a = prop.annotations[key];
-                a.text = this.createText(a.value, prop.variables);
-                let text = new Annotation(a);
-                annotations.push({
-                    name: key,
-                    svg: text.image(),
-                    anchor: a.anchor,
-                    width: text.width(),
-                    height: text.height()
-                });
+            Q.keys(prop.annotations, (key, a) => {
+                if (!Q.isValid(a.filter) || a.filter.indexOf(prop.log) >= 0) {
+                    a.text = this.createText(a.value, prop.variables);
+                    let text = new Annotation(a);
+                    annotations.push({
+                        name: key,
+                        svg: text.image(),
+                        anchor: a.anchor,
+                        width: text.width(),
+                        height: text.height()
+                    });
+                }
             });
             return annotations;
         }
@@ -94,7 +96,10 @@ class MilGraphics extends DrawObject {
                     this.annotations = this.createAnnotation();
                     let objs = tw(points, this.isComplete(), 0, this.options, this.annotations);
                     let entityOptions = this.completeSketch(layer, objs, viewModel);
-                    return layer.add(entityOptions);
+                    if (Q.isValid(entityOptions)) {
+                        return layer.add(entityOptions);
+                    }
+
                 }
                 return [];
             }
@@ -126,6 +131,7 @@ class MilGraphics extends DrawObject {
         this.removeTemplateEntity(layer);
         let div = 5;
         let points = [];
+        if (!Q.isValid(objs)) { return; }
         objs.forEach((obj, i) => {
             if (!Q.isValid(obj) || !Q.isValid(obj.type) || !Q.isValid(obj.geometry)) {
                 console.log("invalid type : ");
@@ -184,6 +190,7 @@ class MilGraphics extends DrawObject {
         //let slashImage = new Slash();
         //let slashMaterial = new Cesium.ImageMaterialProperty({ image: slashImage.image().img, repeat: new Cesium.Cartesian2(10.0, 10.0) });
         this.removeTemplateEntity(layer);
+        if (!Q.isValid(objs)) { return; }
         objs = objs.filter(obj => {
             return (Q.isValid(obj) && Q.isValid(obj.type)) ? true : false;
         });

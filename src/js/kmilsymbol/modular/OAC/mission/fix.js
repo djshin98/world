@@ -2,42 +2,45 @@ const { calc } = require("../../../graphics/math");
 
 function fix(turnPlane, properties, bcompleted) {
     let a = properties.annotations;
-    return turnPlane.map((prev, points, index, buffer) => {
-        if (index == 0) {
-            let s = properties.pixelBySize;
-            let reqMinLength = s.zigzag + s.sm + s.em;
-            let lineLength = calc.distance(points[0], points[1]);
-            let zl, ms, me;
-            if (lineLength >= reqMinLength) {
-                zl = s.zigzag;
-                ms = (lineLength - zl) / 2;
-                me = (lineLength - zl) / 2;
-            } else {
-                zl = (lineLength * s.zigzag) / reqMinLength;
-                ms = (lineLength * s.sm) / reqMinLength;
-                me = (lineLength * s.em) / reqMinLength;
-            }
-            //let divs = [points[index]];
-            let div = zl / 11;
-            let ret = [calc.arrow(turnPlane, { x: 0, y: ms }, points[index], s.arrow)];
-            let divs = [points[index]];
-            for (let i = 0; i < 11; i++) {
-                divs.push({ x: 0, y: ms + (div * i) });
-                divs.push({ x: ((i % 2 == 0) ? 1 : -1) * s.width / 2, y: ms + div * i + div / 2 });
-            }
-            //divs.push({ x: 0, y: ms + zl });
-
-            calc.annotationOnLine(a, "f", 0.5, { x: 0, y: ms + zl }, points[index + 1], false, (i, g) => {
-                if (i == 0) {
-                    g.geometry = divs.concat(g.geometry);
+    if (properties.log = "G-T-F") {
+        return turnPlane.map((prev, points, index, buffer) => {
+            if (index == 0) {
+                let s = properties.pixelBySize;
+                let reqMinLength = s.zigzag + s.sm + s.em;
+                let lineLength = calc.distance(points[0], points[1]);
+                let zl, ms, me;
+                if (lineLength >= reqMinLength) {
+                    zl = s.zigzag;
+                    ms = (lineLength - zl) / 2;
+                    me = (lineLength - zl) / 2;
                 } else {
-                    //ret.push(g);
+                    zl = (lineLength * s.zigzag) / reqMinLength;
+                    ms = (lineLength * s.sm) / reqMinLength;
+                    me = (lineLength * s.em) / reqMinLength;
                 }
-            }).forEach(g => { ret.push(g); });
-            return ret;
+                //let divs = [points[index]];
+                let div = zl / 11;
+                let ret = [calc.arrow(turnPlane, { x: 0, y: ms }, points[index], s.arrow)];
+                let divs = [points[index]];
+                for (let i = 0; i < 11; i++) {
+                    divs.push({ x: 0, y: ms + (div * i) });
+                    divs.push({ x: ((i % 2 == 0) ? 1 : -1) * s.width / 2, y: ms + div * i + div / 2 });
+                }
+                calc.annotationOnLine(a, "f", 0.5, { x: 0, y: ms + zl }, points[index + 1], false, (i, g) => {
+                    if (i == 0) {
+                        g.geometry = divs.concat(g.geometry);
+                    }
+                }).forEach(g => { ret.push(g); });
+                return ret;
 
-        }
-    }).end();
+            }
+        }).end();
+    } else if (properties.log == "G-T-A") {
+
+    } else if (properties.log == "G-T-AS") {
+
+    }
+
 }
 
 module.exports = {
