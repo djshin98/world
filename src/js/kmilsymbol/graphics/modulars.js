@@ -38,7 +38,7 @@ function registryModular(graphicModulars) {
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
-    graphicModulars["무인항공기비행경로"] = require("../modular/unmanned-aerial-vehicle-flight-route.js");
+    graphicModulars["비행경로"] = require("../modular/OAC/CC/ATC/line/flightpath");
     graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
     graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
@@ -58,7 +58,7 @@ function registryModular(graphicModulars) {
     graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
     graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
-
+    graphicModulars["항공통제구역"] = require("../modular/OAC/CC/ATC/region/region");
 
 }
 module.exports = registryModular;

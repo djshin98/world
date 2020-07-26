@@ -22,6 +22,7 @@ function mlines(turnPlane, properties, bcompleted) {
             });
             ret.push(calc.annotation(a, "t", calc.moveX(mp, -a.t.height)));
             ret.push(calc.annotation(a, "t1", calc.moveX(mp, a.t1.height)));
+            return ret;
         }).end();
     } else if (properties.log == "G-G-GL2") {
         //gl3_div: 30,
@@ -399,6 +400,7 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
             b: {
+                filter: ["G-G-GLB"],
                 value: "{B}",
                 anchor: { x: 0, y: 0 }
             },
