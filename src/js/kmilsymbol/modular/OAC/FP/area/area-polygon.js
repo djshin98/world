@@ -6,7 +6,7 @@ const { calc, rect } = require("../../../../graphics/math");
 
         return turnPlane.reduce((prev, p, i, buffer) => {
             if (properties.log == "G-F-ACAI") {
-                
+
                     p.push(p[0]);
                     let ret = [];
                     
@@ -93,7 +93,7 @@ const { calc, rect } = require("../../../../graphics/math");
                 let ret = [];
                 
                 let s = calc.avg(p);
-                let tmp = calc.annotation(a, "i", s);
+                let tmp = calc.annotation(a, "h", s);
                 tmp.debug = false;
                 ret.push(tmp);
                 ret.push({type: "polyline", geometry: p });
@@ -113,8 +113,9 @@ const { calc, rect } = require("../../../../graphics/math");
 
                 return ret;
             }
-  
-            else if(properties.log == "G-F-ACAI") {
+
+            else if(properties.log == "G-F-ACFI") {
+
                 p.push(p[0]);
                 let ret = [];
                 
@@ -125,7 +126,6 @@ const { calc, rect } = require("../../../../graphics/math");
                 ret.push({type: "polyline", geometry: p });
 
                 return ret;
-
             }
 
         }).end();
@@ -169,9 +169,9 @@ const { calc, rect } = require("../../../../graphics/math");
                     anchor: { x: 0, y: 0 }
                 },
                 j: {
-                    value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
+                    value: "{N}\nFFA \n{T} \n{W} \n{W1}",
                     anchor: { x: 0, y: 0 }
-                },
+                }
             }
         }
     };
