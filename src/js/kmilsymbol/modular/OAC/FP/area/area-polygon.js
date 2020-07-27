@@ -26,6 +26,17 @@ function areaPolygon(turnPlane, properties, bcompleted) {
             ret.push(tmp);
         }
         ret.push({ type: "polyline", geometry: p });
+
+        if (properties.log == "G-F-ACDI" || properties.log == "G-F-ACBR" ||
+            properties.log == "G-F-ACVR" || properties.log == "G-F-AZXR" ||
+            properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" || properties.log == "G-F-ACSR") {
+            ret.push(calc.annotation(a, "w", { x: -height / 2 + a.w.height / 2, y: -(a.w.width) }));
+            ret.push(calc.annotation(a, "w1", { x: -height / 2 + a.w.height + a.w1.height / 2, y: -(a.w1.width / 2) }));
+            ret.push({
+                type: "polyline",
+                geometry: [{ x: -height / 2 + a.w.height / 2, y: -(a.w.width / 2) }, { x: -height / 2 + a.w.height / 2, y: 0 }]
+            });
+        }
         return ret;
     }).end();
 }
@@ -79,8 +90,10 @@ module.exports = {
             X1: 3000,
             H2: 30,
             W: 10,
-            W1: 20
+            W1: 20,
+            AN: 1000,
+            AM1: 2000,
+            AM: 1000,
         }
     }
 };
-

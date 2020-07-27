@@ -246,7 +246,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //TACGRP.FSUPP.ARS.C2ARS.FSA
     sidc["G-F-ACSI--"] = modular["구역1"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.IRR
     sidc["G-F-ACSR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.RTG
-    sidc["G-F-ACSC--"] = modular["FIRE SUPPORT AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
+    sidc["G-F-ACSC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
     //sidc['G-F-ACA---'] = [];//TACGRP.FSUPP.ARS.C2ARS.ACA
     sidc["G-F-ACAI--"] = modular["구역1"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.IRR
     sidc["G-F-ACAR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.RTG
