@@ -1,19 +1,23 @@
 const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
-    "G-F-ACAR": "b", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACDR": "c", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACZR": "d", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACAR": "acar", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACDR": "acdr", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACZR": "aczr", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-AZIR": "azir", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-ACBR": "acbr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-ACVR": "acvr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-AZXR": "azxr", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-AZCR": "azcr", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
     "G-F-AZFR": "azfr", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ATR": "i", //사각형표적   중심점 , WID
+    "G-F-ATR": "atr", //사각형표적   중심점 , WID
     "G-F-ACSR": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACFR": "k", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACNR": "acnr",
+    "G-F-ACFR": "acfr", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACNR": "acnr", // 화력금지지역(NFA)(사각형)
+    "G-F-ACER": "acer", //센서지역(사각형)
+    "G-F-AKBR": 'akbr', //아군 킬박스(사각형)
+    "G-F-AKPR": 'akpr', //적군 킬박스(사각형)
+    "G-F-ACRR": 'acrr', // 화력제한지역(RFA)(사각형)
 }
 
 function areaRect(turnPlane, properties, bcompleted) {
@@ -47,7 +51,8 @@ function areaRect(turnPlane, properties, bcompleted) {
 
             if (properties.log == "G-F-AZIR" || properties.log == "G-F-ACBR" ||
                 properties.log == "G-F-ACVR" || properties.log == "G-F-AZXR" ||
-                properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" || properties.log == "G-F-ACSR") {
+                properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" || 
+                properties.log == "G-F-ACSR" || properties.log == "G-F-ACER") {
                 ret.push(calc.annotation(a, "w", { x: -height / 2 + a.w.height / 2, y: -(a.w.width) }));
                 ret.push(calc.annotation(a, "w1", { x: -height / 2 + a.w.height + a.w1.height / 2, y: -(a.w1.width / 2) }));
                 ret.push({
@@ -56,7 +61,8 @@ function areaRect(turnPlane, properties, bcompleted) {
                 });
             }
 
-            if (properties.log == "G-F-ACNR") {
+            if (properties.log == "G-F-ACNR" || properties.log == "G-F-AKBR" || 
+                properties.log =="G-F-AKPR" ) {
                 style = "hatching";
             }
         }
@@ -80,17 +86,17 @@ module.exports = {
     maxPointCount: 2,
     properties: {
         annotations: {
-            b: {
+            acar: {
                 filter: ["G-F-ACAR"],
                 value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
                 anchor: { x: 0, y: 0 }
             },
-            c: {
+            acdr: {
                 filter: ["G-F-ACDR"],
                 value: "{N}\nDA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            d: {
+            aczr: {
                 filter: ["G-F-ACZR"],
                 value: "{N}\nZOR \n{T}",
                 anchor: { x: 0, y: 0 }
@@ -125,7 +131,7 @@ module.exports = {
                 value: "CF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            i: {
+            atr: {
                 filter: ["G-F-ATR"],
                 value: "\n{T}",
                 anchor: { x: 0, y: 0 }
@@ -135,7 +141,7 @@ module.exports = {
                 value: "FSA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            k: {
+            acfr: {
                 filter: ["G-F-ACFR"],
                 value: "FFA \n{T} \n{W}-{W1}",
                 anchor: { x: 0, y: 0 }
@@ -146,13 +152,37 @@ module.exports = {
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
+            acer: {
+                filter: ["G-F-ACER"],
+                value: "SENSOR ZONE\n{T} ",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            akbr: {
+                filter: ["G-F-AKBR"],
+                value: "BKB\n{T}\n{W}-{W1}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            akpr: {
+                filter: ["G-F-AKPR"],
+                value: "BKB\n{T}\n{W}-{W1}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            acrr: {
+                filter: ["G-F-ACRR"],
+                value: "RFA\n{T}\n{W}-{W1}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
             w: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR"],
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR" ],
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
             },
             w1: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR"],
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR"],
                 value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }
