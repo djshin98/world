@@ -1,97 +1,76 @@
 const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
-    "G-F-ACAR": "b", //공역협조지역
-    "G-F-ACDR": "c",
-    "G-F-ACZR": "d",
-    "G-F-AZIR": "e",
-    "G-F-AZXR": "f",
-    "G-F-AZCR": "g",
-    "G-F-AZFR": "h", //
-    "G-F-ATR": "i", //사각형표적
-    "G-F-ACSR": "j", //화력지원지역
-    "G-F-ACFR": "k", //자유사격지역
-
+    "G-F-ACAR": "b", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACDR": "c", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACZR": "d", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZIR": "azir", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACBR": "acbr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACVR": "acvr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZXR": "azxr", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZCR": "azcr", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZFR": "azfr", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ATR": "i", //사각형표적   중심점 , WID
+    "G-F-ACSR": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACFR": "k", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACNR": "acnr",
 }
 
 function areaRect(turnPlane, properties, bcompleted) {
     let a = properties.annotations;
     let aname = akey[properties.log];
+    let style;
     return turnPlane.map((prev, p, i, buffer) => {
-        if (i == 0) {
-            p.push(p[0]);
-            let ret = [];
+        p.push(p[0]);
+        let ret = [];
+        let geo = [];
+        if (properties.log == "G-F-ATR") {
+            let distance = properties.variables.AM1;
+            let height = properties.variables.AN;
 
-            let height = a[aname].height;
-            let p1 = { x: -height / 2, y: 0 };
-            let p2 = { x: height / 2, y: 0 };
-            let p3 = { x: -height / 2, y: p[1].y };
-            let p4 = { x: height / 2, y: p[1].y };
+            if (distance < 200 && height < 200) {
+                distance = 200;
+                height = 200;
+            }
+            geo.push({ x: -height / 2, y: -p[1].y });
+            geo.push({ x: height / 2, y: -p[1].y });
+            geo.push({ x: height / 2, y: p[1].y });
+            geo.push({ x: -height / 2, y: p[1].y });
+            geo.push({ x: -height / 2, y: -p[1].y });
+        } else {
+            let height = properties.variables.AM;
+            geo.push({ x: -height / 2, y: 0 });
+            geo.push({ x: height / 2, y: 0 });
+            geo.push({ x: height / 2, y: p[1].y });
+            geo.push({ x: -height / 2, y: p[1].y });
+            geo.push({ x: -height / 2, y: 0 });
 
-            let s = calc.avg(p);
-
-            let t = calc.annotation(a, aname, s);
-            ret.push(t)
-
-            ret.push({
-                type: "polyline",
-                geometry: [p1, p2]
-            }, {
-                type: "polyline",
-                geometry: [p3, p4]
-            }, {
-                type: "polyline",
-                geometry: [p2, p4]
-            }, {
-                type: "polyline",
-                geometry: [p1, p3]
-            });
-
-            return ret;
-        } else if (properties.log == "G-F-ATR") {
-            if (i == 0) {
-                let a = properties.annotations;
-                p.push(p[0]);
-
-      
-                //let distance = calc.distance(p[0], p[1]);
-                let distance = properties.variables.AN;
-                let height = properties.variables.AM1;
-
-                if (distance < 200 && height < 200) {
-                    distance = 200;
-                    height = 200;
-                }
-
-                let p1 = { x: -height / 2, y: 0 };
-                let p2 = { x: height / 2, y: 0 };
-                let p3 = { x: -height / 2, y: p[1].y };
-                let p4 = { x: height / 2, y: p[1].y };
-
-                let s = calc.avg(p);
-
-                let ret = [];
-                let t = calc.annotation(a, aname, s);
-                ret.push(t)
+            if (properties.log == "G-F-AZIR" || properties.log == "G-F-ACBR" ||
+                properties.log == "G-F-ACVR" || properties.log == "G-F-AZXR" ||
+                properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" || properties.log == "G-F-ACSR") {
+                ret.push(calc.annotation(a, "w", { x: -height / 2 + a.w.height / 2, y: -(a.w.width) }));
+                ret.push(calc.annotation(a, "w1", { x: -height / 2 + a.w.height + a.w1.height / 2, y: -(a.w1.width / 2) }));
                 ret.push({
                     type: "polyline",
-                    geometry: [p1, p2]
-                }, {
-                    type: "polyline",
-                    geometry: [p3, p4]
-                }, {
-                    type: "polyline",
-                    geometry: [p2, p4]
-                }, {
-                    type: "polyline",
-                    geometry: [p1, p3]
+                    geometry: [{ x: -height / 2 + a.w.height / 2, y: -(a.w.width / 2) }, { x: -height / 2 + a.w.height / 2, y: 0 }]
                 });
-
-                return ret;
             }
 
-
+            if (properties.log == "G-F-ACNR") {
+                style = "hatching";
+            }
         }
+        let s = calc.center(geo);
+        let t = calc.annotation(a, aname, s);
+        ret.push(t)
+
+        ret.push({
+            type: "polygon",
+            style: style,
+            geometry: geo
+        });
+
+        return ret;
 
     }).end();
 }
@@ -107,33 +86,43 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
             c: {
-                filter: ["G-F-ACZR"],
+                filter: ["G-F-ACDR"],
                 value: "{N}\nDA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             d: {
-                filter: ["G-F-AZIR"],
+                filter: ["G-F-ACZR"],
                 value: "{N}\nZOR \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            e: {
-                filter: ["G-F-ACAR"],
-                value: "{N}\nATI ZONE \n{T}",
+            azir: {
+                filter: ["G-F-AZIR"],
+                value: "ATI ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            f: {
+            acbr: {
+                filter: ["G-F-ACBR"],
+                value: "TBA ZONE \n{T}",
+                anchor: { x: 0, y: 0 }
+            },
+            acvr: {
+                filter: ["G-F-ACVR"],
+                value: "TVAR\n{T}",
+                anchor: { x: 0, y: 0 }
+            },
+            azxr: {
                 filter: ["G-F-AZXR"],
-                value: "{N}\nCFF ZONE \n{T}",
+                value: "CFF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            g: {
+            azcr: {
                 filter: ["G-F-AZCR"],
-                value: "{N}\nCENSOR ZONE \n{T}",
+                value: "CENSOR ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            h: {
+            azfr: {
                 filter: ["G-F-AZFR"],
-                value: "{N}\nCF ZONE \n{T}",
+                value: "CF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             i: {
@@ -141,14 +130,30 @@ module.exports = {
                 value: "\n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            j: {
+            acsr: {
                 filter: ["G-F-ACSR"],
-                value: "{N}\nFSA \n{T}",
+                value: "FSA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             k: {
                 filter: ["G-F-ACFR"],
-                value: "{N}\nFFA \n{T} \n{W} \n{W1}",
+                value: "FFA \n{T} \n{W}-{W1}",
+                anchor: { x: 0, y: 0 }
+            },
+            acnr: {
+                filter: ["G-F-ACNR"],
+                value: "NFA\n{T}\n{W}-{W1}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            w: {
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR"],
+                value: "{W}",
+                anchor: { x: 0, y: 0 }
+            },
+            w1: {
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR"],
+                value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }
 
@@ -163,7 +168,7 @@ module.exports = {
             W1: 20,
             AN: 1000,
             AM1: 2000,
-
+            AM: 1000,
         }
     }
 };

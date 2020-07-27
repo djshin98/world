@@ -1,6 +1,6 @@
 function registryModular(graphicModulars) {
     graphicModulars["구역1"] = require("../modular/OAC/FP/area/area-polygon.js");
-    graphicModulars["구역2"] = require("../modular/OAC/FP/area/area-rect.js");
+
     graphicModulars["구역3"] = require("../modular/OAC/FP/area/area-circle.js");
 
     graphicModulars["매복"] = require("../modular/ambush.js");
@@ -41,6 +41,7 @@ function registryModular(graphicModulars) {
     graphicModulars["비행경로"] = require("../modular/OAC/CC/ATC/line/flightpath");
     graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
+    graphicModulars["사각구역"] = require("../modular/OAC/FP/area/area-rect");
     graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
     graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
     graphicModulars["폭파예정"] = require("../modular/OAC/AD/obstacle/blasting-schedule.js");

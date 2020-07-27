@@ -20,7 +20,7 @@
         <select class="ui dropdown" id="mission"></select>
     </div>
     <div class="ui sub header" id="function-indentifier-text">기능 조정자</div>
-    <ul id="function-indentifier" class="filetree" style="height:180px;">
+    <ul id="function-indentifier" class="filetree" style="height:380px;">
 
     </ul>
 
@@ -76,25 +76,25 @@
 
 <script>
     /*
-                app.onReady(function(_app, _map_) {
-                    let m = _app.articles.getMap(3);
-                    if (Q.isValid(m)) {
-                        var ctrl = new ViewModel_KMilSymbol({
-                            selector: "#viewmodel-milsymbol"
-                        });
-                        m.connectViewModel('viewmodel-milsymbol', {
-                            type: 'color',
-                            text: 'A',
-                            size: 48,
-                            height: 0,
-                            color: "#da2970",
-                            icon: 'hospital',
-                            url: "img/flag/KR.png",
-                        }, function(viewer, viewModel) {
-                            ctrl.update(viewModel);
-                        });
-                    }
-                });*/
+                    app.onReady(function(_app, _map_) {
+                        let m = _app.articles.getMap(3);
+                        if (Q.isValid(m)) {
+                            var ctrl = new ViewModel_KMilSymbol({
+                                selector: "#viewmodel-milsymbol"
+                            });
+                            m.connectViewModel('viewmodel-milsymbol', {
+                                type: 'color',
+                                text: 'A',
+                                size: 48,
+                                height: 0,
+                                color: "#da2970",
+                                icon: 'hospital',
+                                url: "img/flag/KR.png",
+                            }, function(viewer, viewModel) {
+                                ctrl.update(viewModel);
+                            });
+                        }
+                    });*/
     var selectedCodeTypeObj = new ViewModel_KMilSymbol({
         id: "viewmodel-milsymbol",
         view: {
