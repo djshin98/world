@@ -286,36 +286,30 @@ class calc {
             }
         ];
     }
-    static triangle(tp, start, end, dir, bpolygon) {
-        let arr = [start, end];
-        return tp.turnStack(arr, 0, 1, (pt) => {
-            //let temp = { x: 0, y: arrowSize };
-            //let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
-            let distance = this.distance(start, end);
-            let a1 = {
-                x: 0,
-                y: 0
-            };
-            let a2 = {
-                x: -1 * dir * distance / 2,
-                y: distance / 2
-            };
-            let a3 = {
-                x: 0,
-                y: distance
-            };
-            if (bpolygon === true) {
-                return {
-                    type: "polygon",
-                    geometry: [a1, a2, a3, a1]
-                };
-            } else {
-                return {
-                    type: "polyline",
-                    geometry: [a1, a2, a3]
-                };
+    static triLine(pt1, pt2, arrowSizeY, arrowSize) {
+        let length = pt2.y - pt1.y;
+        if (Math.abs(length) >= (arrowSizeY * 2)) {
+            let pts = [pt1];
+            let toggle = true;
+            for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                if (toggle === true) {
+                    pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                    pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                } else {
+                    pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                }
+                toggle = !toggle;
             }
-        });
+            pts.push(pt2);
+            return [{
+                type: "polyline",
+                geometry: pts
+            }];
+        }
+        return [{
+            type: "polyline",
+            geometry: [pt1, pt2]
+        }];
     }
     static x(pt, size) {
         return [{

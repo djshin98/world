@@ -43,7 +43,7 @@ function registryModular(graphicModulars) {
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");
     graphicModulars["사격지원진지"] = require("../modular/shooting-support-positions.js");
     graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
-    graphicModulars["폭파예정"] = require("../modular/blasting-schedule.js");
+    graphicModulars["폭파예정"] = require("../modular/OAC/AD/obstacle/blasting-schedule.js");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
 
