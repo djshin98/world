@@ -286,6 +286,37 @@ class calc {
             }
         ];
     }
+    static triangle(tp, start, end, dir, bpolygon) {
+        let arr = [start, end];
+        return tp.turnStack(arr, 0, 1, (pt) => {
+            //let temp = { x: 0, y: arrowSize };
+            //let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
+            let distance = this.distance(start, end);
+            let a1 = {
+                x: 0,
+                y: 0
+            };
+            let a2 = {
+                x: -1 * dir * distance / 2,
+                y: distance / 2
+            };
+            let a3 = {
+                x: 0,
+                y: distance
+            };
+            if (bpolygon === true) {
+                return {
+                    type: "polygon",
+                    geometry: [a1, a2, a3, a1]
+                };
+            } else {
+                return {
+                    type: "polyline",
+                    geometry: [a1, a2, a3]
+                };
+            }
+        });
+    }
     static x(pt, size) {
         return [{
                 type: "polyline",
