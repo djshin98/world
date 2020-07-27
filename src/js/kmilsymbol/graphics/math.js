@@ -36,27 +36,30 @@ class calc {
     static toDot(tp, lines, len) {
         let ret = [];
         let restLen = 0;
-        lines.reduce((prev, curr) => {
+        lines.reduce((prev, curr, i) => {
             tp.turnStack([prev, curr], 0, 1, (p) => {
+                let dots = [];
                 let y = 0;
                 for (y = p[0].y + restLen; y <= p[1].y - len; y += len) {
                     if (restLen > 0) {
-                        ret.push({ type: "polyline", ext: true, geometry: [{ x: 0, y: y }] });
+                        dots.push({ type: "polyline", ext: true, geometry: [{ x: 0, y: y }] });
                     }
-                    ret.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: y + len }] });
+                    dots.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: y + len }] });
                 }
                 restLen = len - (p[1].y - y);
                 if (restLen > 0) {
-                    ret.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: p[1].y }] });
+                    dots.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: p[1].y }] });
                 }
-                return ret;
-            });
+                return dots;
+            }).forEach(g => { ret.push(g) });
             return curr;
         });
         ret.reduce((prev, curr) => {
             if (curr.ext === true) {
-                curr.forEach((g) => { prev.geometry.push(g); });
+                curr.geometry.forEach((g) => { prev.geometry.push(g); });
+                return prev;
             }
+            return curr;
         });
         ret = ret.filter((g) => { return g.ext === true ? false : true; });
         ret = ret.filter((g, i) => { return i % 2 == 0 ? true : false; });
@@ -313,19 +316,31 @@ class calc {
             type: "annotation",
             geometry: r.geometry(bxaxis),
             name: name,
+            rotate: (bxaxis === true) ? Math.PI / 2 : 0,
             debug: true
         }];
         r.linkLine(p1, p2, bxaxis, callback).forEach(g => { ret.push(g); });
         return ret;
     }
-    static annotation(a, name, p1, bxaxis) {
+    static annotation(a, name, p1, bxaxis, options) {
         let r = rect(p1.x, p1.y, a[name].width, a[name].height, bxaxis);
-        return {
+        return Object.assign({
             type: "annotation",
             geometry: r.geometry(bxaxis),
             name: name,
-            rotate: (bxaxis === true) ? Math.PI / 2 : 0,
-            debug: true
+            rotate: (bxaxis === true) ? Math.PI / 2 : 0
+        }, options);
+    }
+    static sinline(p1, p2, height) {
+        let ret = [];
+        let cnt = 20;
+        let div = (p2.y - p1.y) / cnt;
+        for (let i = 1; i < cnt; i++) {
+            ret.push({ x: (Math.sin(Math.PI * (i / cnt)) * height) - p1.x, y: p1.y + (i * div) });
+        }
+        return {
+            type: "polyline",
+            geometry: ret
         }
     }
 }
@@ -451,6 +466,22 @@ class Rectangle {
         let y = this.center.y;
         let width = bxaxis === true ? this.width : this.height;
         let height = bxaxis === true ? this.height : this.width;
+        return [
+            { x: x - width / 2, y: y - height / 2 },
+            { x: x - width / 2, y: y + height / 2 },
+            { x: x + width / 2, y: y + height / 2 },
+            { x: x + width / 2, y: y - height / 2 },
+            { x: x - width / 2, y: y - height / 2 }
+        ];
+    }
+
+    capsule(bxaxis) {
+        let x = this.center.x;
+        let y = this.center.y;
+        let width = bxaxis === true ? this.width : this.height;
+        let height = bxaxis === true ? this.height : this.width;
+        //let l = calc.arc( 0 , -Math.PI, height/2, {translate:this.center});
+
         return [
             { x: x - width / 2, y: y - height / 2 },
             { x: x - width / 2, y: y + height / 2 },

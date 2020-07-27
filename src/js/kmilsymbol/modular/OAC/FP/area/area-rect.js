@@ -1,7 +1,7 @@
     const { calc, rect } = require("../../../../graphics/math");    
             function areaRect(turnPlane, properties, bcompleted) {
                 
-                return turnPlane.reduce((prev, p, i, buffer) => {
+                return turnPlane.map((prev, p, i, buffer) => {
                     if (properties.log == "G-F-ACAR") {
                         if (i == 0) {
                             
@@ -16,10 +16,10 @@
 
                             let s = calc.avg(p);
 
-                            let ret1 = [];
+                            let ret = [];
                             let t = calc.annotation(a, "b", s);
-                            ret1.push(t)
-                            ret1.push({ 
+                            ret.push(t)
+                            ret.push({ 
                                 type: "polyline", 
                                 geometry: [p1, p2]
                             }, {
@@ -33,7 +33,7 @@
                                 geometry: [p1, p3]
                             });
                             
-                            return ret1;
+                            return ret;
                         }
                     }
                         

@@ -3,7 +3,7 @@ class Annotation extends SvgImage {
     constructor(options) {
         super(Object.assign({
             outlineWidth: 0,
-            fontSize: 30,
+            fontSize: 20,
             fontFamily: "Sans-serif",
             textLineMargin: 5,
             color: "white"
