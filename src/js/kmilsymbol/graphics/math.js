@@ -9,6 +9,20 @@ class calc {
 
         return { x: sum.x / p.length, y: sum.y / p.length };
     }
+    static center(p) {
+        let minX = p[0].x;
+        let minY = p[0].y;
+        let maxX = p[0].x;
+        let maxY = p[0].y;
+        p.forEach(c => {
+            minX = Math.min(c.x, minX);
+            minY = Math.min(c.y, minY);
+            maxX = Math.max(c.x, maxX);
+            maxY = Math.max(c.y, maxY);
+        });
+
+        return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
+    }
     static mid(a, b) {
         return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
     }
@@ -330,6 +344,20 @@ class calc {
             name: name,
             rotate: (bxaxis === true) ? Math.PI / 2 : 0
         }, options);
+    }
+    static annotationToNorth(a, name, p1) {
+
+        //, undefined, { ignoreRotate: true, rotate: Math.PI / 2 }
+
+        let r = rect(p1.x, p1.y, a[name].height, a[name].width);
+        return {
+            type: "annotation",
+            geometry: r.geometry(),
+            name: name,
+            ignoreRotate: true,
+            rotate: -Math.PI / 2,
+            debug: true
+        };
     }
     static sinline(p1, p2, height) {
         let ret = [];
