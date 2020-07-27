@@ -59,6 +59,7 @@ function registryModular(graphicModulars) {
     graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
     graphicModulars["항공통제구역"] = require("../modular/OAC/CC/ATC/region/region");
+    graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
 
 }
 module.exports = registryModular;
