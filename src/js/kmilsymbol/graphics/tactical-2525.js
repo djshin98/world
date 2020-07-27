@@ -158,6 +158,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-M-OAD---'] = [];//TACGRP.MOBSU.OBST.ATO.ATD
     sidc['G-M-OADU--'] = modular["목책"]; //TACGRP.MOBSU.OBST.ATO.ATD.ATDUC
     sidc['G-M-OADC--'] = modular["목책"]; //TACGRP.MOBSU.OBST.ATO.ATD.ATDC
+    sidc['G-M-OAW--'] = modular["장애물라인"]; //TACGRP.MOBSU.OBST.ATO.ATD.ATDC
     //sidc['G-M-OAR---'] = [];//TACGRP.MOBSU.OBST.ATO.ATDATM
     //sidc['G-M-OAO---'] = [];//TACGRP.MOBSU.OBST.ATO.TDTSM
     sidc['G-M-OAW---'] = modular["장애물라인"]; //TACGRP.MOBSU.OBST.ATO.ATW
