@@ -2,22 +2,21 @@ const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
     "G-F-ACAI": "acar", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACDR": "acdr", //사강지역(DA) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACZR": "aczr", //책임구역(ZOR) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZIR": "azir", //포병표적정보구역(ATI) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACBR": "acbr", //표적식별구역(ATI) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACVR": "acvr", //표적식별구역(ATI) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZXR": "azxr", //화력요청구역(CFFZ)LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZCR": "azcr", //검열구역 LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZFR": "azfr", //아군확인구역(CFZ) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ATR": "atr", //사각형표적   중심점 , WID
-    "G-F-ACSR": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACFR": "acfr", // 자유사격지역(FFA) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACNR": "acnr", // 화력금지지역(NFA)
-    "G-F-ACER": "acer", //센서지역
-    "G-F-AKBR": 'akbr', //아군 킬박스
-    "G-F-AKPR": 'akpr', //적군 킬박스
-    "G-F-ACRR": 'acrr', // 화력제한지역(RFA)
+    "G-F-ACDI": "acdr", //사강지역(DA) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACZI": "aczr", //책임구역(ZOR) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZII": "azir", //포병표적정보구역(ATI) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACBI": "acbr", //표적식별구역(ATI) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACVI": "acvr", //표적식별구역(ATI) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZXI": "azxr", //화력요청구역(CFFZ)LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZCI": "azcr", //검열구역 LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZFI": "azfr", //아군확인구역(CFZ) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACSI": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACFI": "acfr", // 자유사격지역(FFA) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACNI": "acnr", // 화력금지지역(NFA)
+    "G-F-ACEI": "acer", //센서지역
+    "G-F-AKBI": 'akbr', //아군 킬박스
+    "G-F-AKPI": 'akpr', //적군 킬박스
+    "G-F-ACRI": 'acrr', // 화력제한지역(RFA)
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
