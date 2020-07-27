@@ -1,6 +1,6 @@
 const d3 = require('d3');
 const b64start = 'data:image/svg+xml;base64,';
-const svgImages = {};
+//const svgImages = {};
 
 function svg2Image(svg) {
     return b64start + new Buffer(new XMLSerializer().serializeToString(svg)).toString('base64');
@@ -25,11 +25,11 @@ class SvgImage {
         } else {
             key = this.constructor.name;
         }
-        svgImages[key] = {
+        this.output = {
             width: this.options.width,
             height: this.options.height,
             img: svg2Image(svg.node())
-        }
+        };
         template.remove();
     }
     image() {
@@ -39,7 +39,7 @@ class SvgImage {
         } else {
             key = this.constructor.name;
         }
-        return svgImages[key];
+        return this.output;
     }
     textWidth(text, font) {
         // re-use canvas object for better performance
@@ -57,4 +57,4 @@ class SvgImage {
     }
 }
 
-module.exports = { SvgImage: SvgImage, images: svgImages };
+module.exports = { SvgImage: SvgImage };

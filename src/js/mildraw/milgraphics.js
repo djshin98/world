@@ -251,6 +251,10 @@ class MilGraphics extends DrawObject {
                 case "annotation":
                     {
                         let svg = this.getAnnotation(obj.name).svg;
+                        if (!Q.isValid(svg)) {
+                            console.warn(obj.name + "'s  svg invalid");
+                            return;
+                        }
                         return {
                             polygon: {
                                 hierarchy: obj.geometry,

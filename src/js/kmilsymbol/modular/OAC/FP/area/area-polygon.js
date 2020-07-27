@@ -1,23 +1,23 @@
 const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
-    "G-F-ACAR": "acar", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACDR": "acdr", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACZR": "aczr", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZIR": "azir", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACBR": "acbr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACVR": "acvr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZXR": "azxr", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZCR": "azcr", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZFR": "azfr", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ATR": "atr", //사각형표적   중심점 , WID
-    "G-F-ACSR": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACFR": "acfr", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACNR": "acnr", // 화력금지지역(NFA)(사각형)
-    "G-F-ACER": "acer", //센서지역(사각형)
-    "G-F-AKBR": 'akbr', //아군 킬박스(사각형)
-    "G-F-AKPR": 'akpr', //적군 킬박스(사각형)
-    "G-F-ACRR": 'acrr', // 화력제한지역(RFA)(사각형)
+    "G-F-ACAI": "acar", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACDI": "acdr", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACZI": "aczr", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZII": "azir", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACBI": "acbr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACVI": "acvr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZXI": "azxr", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZCI": "azcr", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZFI": "azfr", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ATI": "atr", //사각형표적   중심점 , WID
+    "G-F-ACSI": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACFI": "acfr", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACNI": "acnr", // 화력금지지역(NFA)(사각형)
+    "G-F-ACEI": "acer", //센서지역(사각형)
+    "G-F-AKBI": 'akbr', //아군 킬박스(사각형)
+    "G-F-AKPI": 'akpr', //적군 킬박스(사각형)
+    "G-F-ACRI": 'acrr', // 화력제한지역(RFA)(사각형)
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
@@ -35,9 +35,9 @@ function areaPolygon(turnPlane, properties, bcompleted) {
         }
         ret.push({ type: "polyline", geometry: p });
 
-        if (properties.log == "G-F-ACDI" || properties.log == "G-F-ACBR" ||
-            properties.log == "G-F-ACVR" || properties.log == "G-F-AZXR" ||
-            properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" || properties.log == "G-F-ACSR") {
+        if (properties.log == "G-F-ACDI" || properties.log == "G-F-ACBI" ||
+            properties.log == "G-F-ACVI" || properties.log == "G-F-AZXI" ||
+            properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI" || properties.log == "G-F-ACSI") {
             ret.push(calc.annotation(a, "w", { x: -height / 2 + a.w.height / 2, y: -(a.w.width) }));
             ret.push(calc.annotation(a, "w1", { x: -height / 2 + a.w.height + a.w1.height / 2, y: -(a.w1.width / 2) }));
             ret.push({
@@ -55,102 +55,102 @@ module.exports = {
     properties: {
         annotations: {
             acar: {
-                filter: ["G-F-ACAR"],
+                filter: ["G-F-ACAI"],
                 value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
                 anchor: { x: 0, y: 0 }
             },
             acdr: {
-                filter: ["G-F-ACDR"],
+                filter: ["G-F-ACDI"],
                 value: "{N}\nDA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             aczr: {
-                filter: ["G-F-ACZR"],
+                filter: ["G-F-ACZI"],
                 value: "{N}\nZOR \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             azir: {
-                filter: ["G-F-AZIR"],
+                filter: ["G-F-AZII"],
                 value: "ATI ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             acbr: {
-                filter: ["G-F-ACBR"],
+                filter: ["G-F-ACBI"],
                 value: "TBA ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             acvr: {
-                filter: ["G-F-ACVR"],
+                filter: ["G-F-ACVI"],
                 value: "TVAR\n{T}",
                 anchor: { x: 0, y: 0 }
             },
             azxr: {
-                filter: ["G-F-AZXR"],
+                filter: ["G-F-AZXI"],
                 value: "CFF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             azcr: {
-                filter: ["G-F-AZCR"],
+                filter: ["G-F-AZCI"],
                 value: "CENSOR ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             azfr: {
-                filter: ["G-F-AZFR"],
+                filter: ["G-F-AZFI"],
                 value: "CF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             atr: {
-                filter: ["G-F-ATR"],
+                filter: ["G-F-ATI"],
                 value: "\n{T}",
                 anchor: { x: 0, y: 0 }
             },
             acsr: {
-                filter: ["G-F-ACSR"],
+                filter: ["G-F-ACSI"],
                 value: "FSA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             acfr: {
-                filter: ["G-F-ACFR"],
+                filter: ["G-F-ACFI"],
                 value: "FFA \n{T} \n{W}-{W1}",
                 anchor: { x: 0, y: 0 }
             },
             acnr: {
-                filter: ["G-F-ACNR"],
+                filter: ["G-F-ACNI"],
                 value: "NFA\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             acer: {
-                filter: ["G-F-ACER"],
+                filter: ["G-F-ACEI"],
                 value: "SENSOR ZONE\n{T} ",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             akbr: {
-                filter: ["G-F-AKBR"],
+                filter: ["G-F-AKBI"],
                 value: "BKB\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             akpr: {
-                filter: ["G-F-AKPR"],
+                filter: ["G-F-AKPI"],
                 value: "BKB\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             acrr: {
-                filter: ["G-F-ACRR"],
+                filter: ["G-F-ACRI"],
                 value: "RFA\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             w: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR"],
+                filter: ["G-F-AZII", "G-F-ACBI", "G-F-ACVI", "G-F-AZXI", "G-F-AZCI", "G-F-AZFI", "G-F-ACSI", "G-F-ACEI", "G-F-ACRI"],
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
             },
             w1: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR"],
+                filter: ["G-F-AZII", "G-F-ACBI", "G-F-ACVI", "G-F-AZXI", "G-F-AZCI", "G-F-AZFI", "G-F-ACSI", "G-F-ACEI", "G-F-ACRI"],
                 value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }
