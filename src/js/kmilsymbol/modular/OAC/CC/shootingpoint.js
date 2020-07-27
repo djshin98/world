@@ -1,4 +1,4 @@
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../graphics/math");
 
 function shootingpoint(turnPlane, properties, bcompleted) {
     return turnPlane.reduce((prev, p, i, buffer) => {

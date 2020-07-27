@@ -25,7 +25,7 @@ function registryModular(graphicModulars) {
     graphicModulars["RESTRICTIVE FIRE AREA"] = require("../modular/restrictive-fire-area.js");
     graphicModulars.searchArea = require("../modular/search-area.js");
     graphicModulars["SENSOR ZONE"] = require("../modular/sensor-zone.js");
-    graphicModulars["SHOOTING POINT"] = require("../modular/shootingpoint.js");
+    graphicModulars["사격선"] = require("../modular/OAC/CC/shootingpoint.js");
     graphicModulars["SUPPORTING ATTACK"] = require("../modular/supporting-attack.js");
     graphicModulars["TARGET BUILD-UP AREA"] = require("../modular/target-build-up-area.js");
     graphicModulars["TARGET VALUE AREA"] = require("../modular/target-value-area.js");
@@ -59,7 +59,6 @@ function registryModular(graphicModulars) {
     graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
     graphicModulars["항공통제구역"] = require("../modular/OAC/CC/ATC/region/region");
-    graphicModulars["장애물라인"] = require("../modular/obstacle-line.js");
 
 }
 module.exports = registryModular;
