@@ -25,8 +25,10 @@ function region(turnPlane, properties, bcompleted) {
 
     return turnPlane.reduce((prev, p, i, buffer) => {
         if (bcompleted === true && (p.length - 2) == i) {
+            //let c = calc.avg(p);
+            //let center = { x: c.y, y: c.x };
             p.push(p[0]);
-            let ret = [calc.annotation(a, aname, calc.avg(p))];
+            let ret = [calc.annotationToNorth(a, aname, calc.center(p))];
             if (Q.isValid(style)) {
                 ret.push({ type: "polygon", style: style, geometry: p });
             } else {
