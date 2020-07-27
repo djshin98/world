@@ -245,7 +245,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-F-AC----'] = [];//TACGRP.FSUPP.ARS.C2ARS
     //TACGRP.FSUPP.ARS.C2ARS.FSA
     sidc["G-F-ACSI--"] = modular["구역1"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.IRR
-    sidc["G-F-ACSR--"] = modular["FIRE SUPPORT AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.RTG
+    sidc["G-F-ACSR--"] = modular["구역2"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.RTG
     sidc["G-F-ACSC--"] = modular["FIRE SUPPORT AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
     //sidc['G-F-ACA---'] = [];//TACGRP.FSUPP.ARS.C2ARS.ACA
     sidc["G-F-ACAI--"] = modular["구역1"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.IRR
@@ -276,7 +276,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-F-ACDC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.DA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.ZOR
     sidc["G-F-ACZI--"] = modular["구역1"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.IRR
-    sidc["G-F-ACZR--"] = modular["구역2"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.RTG
+    sidc["G-F-ACFR--"] = modular["구역2"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.RTG
     sidc["G-F-ACZC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.TBA
     sidc["G-F-ACBI--"] = modular["TARGET BUILD-UP AREA"]; //TACGRP.FSUPP.ARS.C2ARS.TBA.IRR

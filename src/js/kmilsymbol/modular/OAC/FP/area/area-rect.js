@@ -1,16 +1,16 @@
 const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
-    "G-F-ACAR": "b",
+    "G-F-ACAR": "b", //공역협조지역
     "G-F-ACDR": "c",
     "G-F-ACZR": "d",
     "G-F-AZIR": "e",
     "G-F-AZXR": "f",
     "G-F-AZCR": "g",
-    "G-F-AZFR": "h",
-    "G-F-ACSR": "i",
-    "G-F-AZFR": "j",
-    "G-F-AZFR": "k",
+    "G-F-AZFR": "h", //
+    "G-F-ATR": "i", //사각형표적
+    "G-F-ACSR": "j", //화력지원지역
+    "G-F-ACFR": "k", //자유사격지역
 
 }
 
@@ -53,23 +53,25 @@ function areaRect(turnPlane, properties, bcompleted) {
                 let a = properties.annotations;
                 p.push(p[0]);
 
-                let height = a["i"].height;
-                let p1 = { x: -height / 2, y: 0 };
-                let p2 = { x: height / 2, y: 0 };
-                let p3 = { x: -height / 2, y: p[1].y };
-                let p4 = { x: height / 2, y: p[1].y };
-
-                let distance = calc.distance(p[0], p[1]);
+      
+                //let distance = calc.distance(p[0], p[1]);
+                let distance = properties.variables.AN;
+                let height = properties.variables.AM1;
 
                 if (distance < 200 && height < 200) {
                     distance = 200;
                     height = 200;
                 }
 
+                let p1 = { x: -height / 2, y: 0 };
+                let p2 = { x: height / 2, y: 0 };
+                let p3 = { x: -height / 2, y: p[1].y };
+                let p4 = { x: height / 2, y: p[1].y };
+
                 let s = calc.avg(p);
 
                 let ret = [];
-                let t = calc.annotation(a, "i", s);
+                let t = calc.annotation(a, aname, s);
                 ret.push(t)
                 ret.push({
                     type: "polyline",
@@ -135,17 +137,17 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
             i: {
-                filter: ["G-F-ACSR"],
+                filter: ["G-F-ATR"],
                 value: "\n{T}",
                 anchor: { x: 0, y: 0 }
             },
             j: {
-                filter: ["G-F-AZFR"],
+                filter: ["G-F-ACSR"],
                 value: "{N}\nFSA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
             k: {
-                filter: ["G-F-ACAR"],
+                filter: ["G-F-ACFR"],
                 value: "{N}\nFFA \n{T} \n{W} \n{W1}",
                 anchor: { x: 0, y: 0 }
             }
@@ -158,7 +160,10 @@ module.exports = {
             X1: 3000,
             H2: 30,
             W: 10,
-            W1: 20
+            W1: 20,
+            AN: 1000,
+            AM1: 2000,
+
         }
     }
 };
