@@ -46,9 +46,9 @@ function areaPolygon(turnPlane, properties, bcompleted) {
                     properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI") {
                     
                     let mid = calc.mid(p[0], p[1]);
-                    ret.push(calc.annotation(a, "w", calc.mid(p[0], p[1]) ));
+                    ret.push(calc.annotation(a, "w", mid ));
                     let m2 = calc.mid(p[0], mid);
-                    ret.push(calc.annotation(a, "w1", { x: p[0].x, y: m2.y} ));
+                    ret.push(calc.annotation(a, "w1", m2 ));
                 
                     //ret.push(calc.annotation(a, "w", mid ));
                     //ret.push(calc.annotation(a, "w1", { x: p[0].x, y: m2.y}));
