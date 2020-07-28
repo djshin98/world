@@ -18,6 +18,12 @@ function route(turnPlane, properties, bcompleted) {
     let a = properties.annotations;
 
     return turnPlane.map((prev, p, i, buffer) => {
+        if (properties.log == "G-O-HN") {
+            return {
+                type: "polyline",
+                geometry: [calc.move(p[0], -s.arrow, s.arrow), p[0], p[1], calc.move(p[1], s.arrow, -s.arrow)]
+            };
+        }
         return calc.annotationOnLine(a, aname, 0.5, p[0], p[1]);
     }).end();
 }
@@ -27,7 +33,9 @@ module.exports = {
     minPointCount: 2,
     maxPointCount: 2,
     properties: {
-
+        size: {
+            arrow: 10
+        },
         annotations: {
             b: {
                 filter: ["G-O-B"],
