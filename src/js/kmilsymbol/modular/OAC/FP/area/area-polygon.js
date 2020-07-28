@@ -20,11 +20,11 @@ const akey = {
     "G-F-AZFI": "azfi", //아군확인구역
     "G-F-AKBI": 'akbi', //아군 킬박스  style    
     "G-F-AKPI": 'akpi', //적군 킬박스  style
-    
+
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
-
+    let ps = properties.pixelBySize;
     let a = properties.annotations;
     let aname = akey[properties.log];
 
@@ -36,33 +36,34 @@ function areaPolygon(turnPlane, properties, bcompleted) {
         let tmp = calc.annotation(a, aname, s);
         tmp.debug = false;
         ret.push(tmp);
-        
-        if (bcompleted === true) {
-            
-                if (properties.log == "G-F-ACSI" || properties.log == "G-F-ACEI" ||
-                    properties.log == "G-F-ACDI" || properties.log == "G-F-ACZI" ||
-                    properties.log == "G-F-ACBI" || properties.log == "G-F-ACVI" || 
-                    properties.log == "G-F-AZII" || properties.log == "G-F-AZXI" || 
-                    properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI") {
-                    
-                    let mid = calc.mid(p[0], p[1]);
-                    ret.push(calc.annotation(a, "w", mid ));
-                    let m2 = calc.mid(p[0], mid);
-                    ret.push(calc.annotation(a, "w1", m2 ));
-                
-                    //ret.push(calc.annotation(a, "w", mid ));
-                    //ret.push(calc.annotation(a, "w1", { x: p[0].x, y: m2.y}));
-                    
-                    ret.push({
+        if (bcompleted === true && i == 0) {
+            if (properties.log == "G-F-ACSI" || properties.log == "G-F-ACEI" ||
+                properties.log == "G-F-ACDI" || properties.log == "G-F-ACZI" ||
+                properties.log == "G-F-ACBI" || properties.log == "G-F-ACVI" ||
+                properties.log == "G-F-AZII" || properties.log == "G-F-AZXI" ||
+                properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI") {
+                let mid = calc.mid(p[0], p[1]);
+                let ann = calc.annotation(a, "w", p[0], true);
+                ann.geometry = ann.geometry.map(h => { return calc.move(h, ps.gap + a.w.width / 2, ps.gap); });
+                ann.trip = false;
+                ret.push(ann);
+                let m2 = calc.mid(p[0], mid);
+                ann = calc.annotation(a, "w1", calc.moveY(p[0], a.w.height * 5 / 4), true);
+                ann.geometry = ann.geometry.map(h => { return calc.move(h, ps.gap + a.w1.width / 2, ps.gap); });
+                ann.trip = false;
+                ret.push(ann);
+
+                //ret.push(calc.annotation(a, "w", mid ));
+                //ret.push(calc.annotation(a, "w1", { x: p[0].x, y: m2.y}));
+
+                ret.push({
                     type: "polyline",
-                    geometry: [m2, {x: p[0].x, y: m2.y}]
+                    trip: false,
+                    geometry: [calc.moveY(p[0], ps.gap), { x: ps.gap, y: ps.gap }]
                 });
-
             }
-
-                    
         }
-        ret.push({ type: "polyline", geometry: p });
+        ret.push({ type: "polygon", geometry: p });
 
         return ret;
     }).end();
@@ -72,6 +73,9 @@ module.exports = {
     modular: areaPolygon,
     minPointCount: 2,
     properties: {
+        size: {
+            gap: 10
+        },
         annotations: {
             acsi: {
                 filter: ["G-F-ACSI"],
@@ -89,7 +93,7 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
 
-            acnr: {
+            acni: {
                 filter: ["G-F-ACNI"],
                 value: "NFA\n{T}\n{W}-{W1}",
                 transparent: 0.5,
@@ -181,15 +185,11 @@ module.exports = {
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
-
-  
             w: {
-                filter: ["G-F-ACFI", "G-F-ACNI", "G-F-ACRI", "G-F-ACCI", "G-F-ACGI", "G-F-AKBI", "G-F-AKPI"],
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
             },
             w1: {
-                filter: ["G-F-ACFI", "G-F-ACNI", "G-F-ACRI", "G-F-AKBI", "G-F-AKPI"],
                 value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }
