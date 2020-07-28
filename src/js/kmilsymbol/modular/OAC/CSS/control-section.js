@@ -16,13 +16,13 @@ function route(turnPlane, properties, bcompleted) {
             geometry: [{ x: -s.line * 3 / 4, y: p[1].y }, { x: s.line / 4, y: p[1].y }]
         });
 
-        calc.annotationOnLine(a, "c", 0.5, { x: -s.line * 2 / 4, y: 0 }, { x: -s.line * 2 / 4, y: p[1].y }).forEach((i, g) => {
+        calc.annotationOnLine(a, "c", 0.5, { x: -s.line * 2 / 4, y: 0 }, { x: -s.line * 2 / 4, y: p[1].y }, undefined, (i, g) => {
             if (i == 0) {
-                grp.push(calc.arrow(turnPlane, g.geometry[0], g.geometry[1], s.arrow, 30));
+                ret.push(calc.arrow(turnPlane, g.geometry[0], g.geometry[1], s.arrow, 30));
             } else {
-                grp.push(calc.arrow(turnPlane, g.geometry[1], g.geometry[0], s.arrow, 30));
+                ret.push(calc.arrow(turnPlane, g.geometry[1], g.geometry[0], s.arrow, 30));
             }
-        });
+        }).forEach(g => { ret.push(g); });
         return ret;
     }).end();
 }
