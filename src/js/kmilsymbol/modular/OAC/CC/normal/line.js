@@ -333,6 +333,22 @@ function mlines(turnPlane, properties, bcompleted) {
             });
             return ret;
         }).end();
+    } else if (properties.log == "G-G-OLF") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
+                ret.push(calc.annotation(a, "olf", { x: 0, y: -a.olf.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            //p[index + 1].y = i - pbs.glfdist * 2;
+            if (bcompleted === true && (p.length - 2) == index) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
+                ret.push(calc.annotation(a, "olf", { x: 0, y: p[index + 1].y + (a.olf.width / 2) }));
+            }
+            return ret;
+
+        }).end();
     }
 }
 
@@ -465,6 +481,11 @@ module.exports = {
             dlb: {
                 filter: ["G-G-DLB"],
                 value: "차단선 {T}",
+                anchor: { x: 0, y: 0 }
+            },
+            olf: {
+                filter: ["G-G-OLF"],
+                value: "FINAL CL\n(PL {T})",
                 anchor: { x: 0, y: 0 }
             }
         },

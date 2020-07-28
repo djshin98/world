@@ -108,13 +108,13 @@ module.exports = {
             },
 
             acei: {
-                filter: ["G-F-ACDI"],
+                filter: ["G-F-ACEI"],
                 value: "SENSOR ZONE\n{T}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             acdi: {
-                filter: ["G-F-ACEI"],
+                filter: ["G-F-ACDI"],
                 value: "DA\n{T}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
