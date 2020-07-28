@@ -38,6 +38,7 @@ function registryModular(graphicModulars) {
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
+    graphicModulars["방향선"] = require("../modular/OAC/etc/direction-line");
     graphicModulars["비행경로"] = require("../modular/OAC/CC/ATC/line/flightpath");
     graphicModulars["반격"] = require("../modular/OAC/mission/catk");
     graphicModulars["비치매트"] = require("../modular/OAC/CC/normal/region/mat");

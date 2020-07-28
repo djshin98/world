@@ -588,8 +588,8 @@ class Road {
     link(p) {
         let ml = [p[0], p[1]];
         let pl = [p[p.length - 1], p[p.length - 2]];
-        let rad = Math.atan2(p[0].y, p[0].x);
 
+        /*
         if (rad >= 0 && rad < Math.PI / 2) {
 
         } else if (rad >= Math.PI / 2 && rad <= Math.PI) {
@@ -598,7 +598,7 @@ class Road {
 
         } else if (rad <= -Math.PI / 2 && rad <= -Math.PI) {
 
-        }
+        }*/
         //console.log("degree : " + rad * 180 / Math.PI);
 
         let mt = this._itx(this.mLines, ml);
@@ -608,7 +608,10 @@ class Road {
                 p.splice(0, 1, mt);
                 p.splice(0, 0, this.mLines[0]);
             } else {
-                p.splice(0, 0, mt);
+                //let rad = Math.atan2(p[0].y, p[0].x);
+                //let res = calc.arc((Math.PI / 2) - rad, -Math.PI / 2, this.width);
+                //p = res[0].geometry.concat(p);
+                //p.splice(0, 0, mt);
                 p.splice(0, 0, this.mLines[1]);
                 p.splice(0, 0, this.mLines[0]);
             }
@@ -621,7 +624,7 @@ class Road {
                 p.splice(p.length - 1, 1, pt);
                 p.push(this.pLines[0]);
             } else {
-                p.push(pt);
+                //p.push(pt);
                 p.push(this.pLines[1]);
                 p.push(this.pLines[0]);
             }
