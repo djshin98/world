@@ -47,36 +47,42 @@ class calc {
         });
     }
 
-    static toDot(tp, lines, len) {
+    static toDot(tp, lines, len, ratio) {
         let ret = [];
-        let restLen = 0;
+        let _len = 0;
+        if (!Q.isValid(ratio)) { ratio = 3; }
         lines.reduce((prev, curr, i) => {
+
             tp.turnStack([prev, curr], 0, 1, (p) => {
                 let dots = [];
                 let y = 0;
-                for (y = p[0].y + restLen; y <= p[1].y - len; y += len) {
-                    if (restLen > 0) {
-                        dots.push({ type: "polyline", ext: true, geometry: [{ x: 0, y: y }] });
-                    }
+
+                if (_len > 0) {
+                    dots.push({ type: "polyline", geometry: [{ x: 0, y: _len }] });
+                }
+                for (y = _len; y <= p[1].y - len; y += len) {
                     dots.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: y + len }] });
                 }
-                restLen = len - (p[1].y - y);
-                if (restLen > 0) {
+                _len = p[1].y - y;
+                if (_len > 0.0000001) {
                     dots.push({ type: "polyline", geometry: [{ x: 0, y: y }, { x: 0, y: p[1].y }] });
-                }
+                } else { _len = 0; }
                 return dots;
-            }).forEach(g => { ret.push(g) });
+            }).forEach(g => { ret.push(g); });
+
             return curr;
         });
+
         ret.reduce((prev, curr) => {
-            if (curr.ext === true) {
-                curr.geometry.forEach((g) => { prev.geometry.push(g); });
+            if (curr.geometry.length == 1) {
+                prev.geometry.push(curr.geometry[0]);
                 return prev;
             }
             return curr;
         });
-        ret = ret.filter((g) => { return g.ext === true ? false : true; });
-        ret = ret.filter((g, i) => { return i % 2 == 0 ? true : false; });
+        ret = ret.filter((g) => { return g.geometry.length == 1 ? false : true; });
+        ret = ret.filter((g, i) => { return (i + 1) % ratio == 0 ? false : true; });
+
         return ret;
     }
 
@@ -572,65 +578,72 @@ class Line {
     }
 }
 class Road {
-    constructor(line1, line2) {
-        this.mode = 0;
-        if (Q.isValid(line1) && this.line1.length > 1) {
-            this.plusLine = line1;
-            this.mode = 1;
-        }
-        if (Q.isValid(line2) && this.line2.length > 1) {
-            this.minusLine = line2;
-            this.mode = 2;
-        }
-        if (this.mode == 1) {
-            let len = this.plusLine.legnth;
-            this.width = calc.distance(this.plusLine[0], this.plusLine[len - 1]);
-        } else if (this.mode == 2) {
-            this.width = calc.distance(this.plusLine[this.plusLine.legnth - 1], this.minusLine[this.minusLine.legnth - 1]);
-        }
+    constructor(p1, p2, width) {
+        this.line = [p1, p2];
+        this.mLines = [calc.moveX(p1, -width), calc.moveX(p2, -width)];
+        this.pLines = [calc.moveX(p1, width), calc.moveX(p2, width)];
+        this.width = width;
+        this.buffer = [];
     }
-    link(line1) {
-        if (line1.length < 2) { return undefined; }
-        if (this.mode == 0) { return undefined; }
+    link(p) {
+        let ml = [p[0], p[1]];
+        let pl = [p[p.length - 1], p[p.length - 2]];
 
-        let pl = [
-            { x: line1[0].x + this.width / 2, y: line1[0].y },
-            { x: line1[1].x + this.width / 2, y: line1[1].y }
-        ];
-        let ml = [
-            { x: line1[0].x + this.width / 2, y: line1[0].y },
-            { x: line1[1].x + this.width / 2, y: line1[1].y }
-        ];
-
-        let rad = Math.atan2(line1[1].y, line1[1].x);
-        console.log("degree : " + rad * 180 / Math.PI);
+        /*
         if (rad >= 0 && rad < Math.PI / 2) {
-            calc.arc(-Math.PI / 2, rad, this.width / 2);
+
         } else if (rad >= Math.PI / 2 && rad <= Math.PI) {
 
         } else if (rad < 0 && rad > -Math.PI / 2) {
 
         } else if (rad <= -Math.PI / 2 && rad <= -Math.PI) {
 
-        }
-        if (this.mode == 1) {
-            let length = this.plusLine.length;
-            let pt = this._itx([this.plusLine[1], this.plusLine[0]], pl);
-            let mt = this._itx([this.plusLine[length - 2], this.plusLine[length - 1]], ml);
-        } else if (this.mode == 2) {
+        }*/
+        //console.log("degree : " + rad * 180 / Math.PI);
 
+        let mt = this._itx(this.mLines, ml);
+        let pt = this._itx(this.pLines, pl);
+        if (Q.isValid(mt)) {
+            if (mt.y > 0) {
+                p.splice(0, 1, mt);
+                p.splice(0, 0, this.mLines[0]);
+            } else {
+                //let rad = Math.atan2(p[0].y, p[0].x);
+                //let res = calc.arc((Math.PI / 2) - rad, -Math.PI / 2, this.width);
+                //p = res[0].geometry.concat(p);
+                //p.splice(0, 0, mt);
+                p.splice(0, 0, this.mLines[1]);
+                p.splice(0, 0, this.mLines[0]);
+            }
+        } else {
+            p.splice(0, 0, this.mLines[0]);
         }
+
+        if (Q.isValid(pt)) {
+            if (pt.y > 0) {
+                p.splice(p.length - 1, 1, pt);
+                p.push(this.pLines[0]);
+            } else {
+                //p.push(pt);
+                p.push(this.pLines[1]);
+                p.push(this.pLines[0]);
+            }
+        } else {
+            p.push(this.pLines[0]);
+        }
+        this.buffer = p;
         return this;
     }
     _itx(A, B) {
-
+        let a = { e: A[0], s: A[1] };
+        let b = { e: B[0], s: B[1] };
         let t;
         let s;
-        let under = (line.e.y - line.s.y) * (this.e.x - this.s.x) - (line.e.x - line.s.x) * (this.e.y - this.s.y);
+        let under = (b.e.y - b.s.y) * (a.e.x - a.s.x) - (b.e.x - b.s.x) * (a.e.y - a.s.y);
         if (under == 0) return undefined;
 
-        let _t = (line.e.x - line.s.x) * (this.s.y - line.s.y) - (line.e.y - line.s.y) * (this.s.x - line.s.x);
-        let _s = (this.e.x - this.s.x) * (this.s.y - line.s.y) - (this.e.y - this.s.y) * (this.s.x - line.s.x);
+        let _t = (b.e.x - b.s.x) * (a.s.y - b.s.y) - (b.e.y - b.s.y) * (a.s.x - b.s.x);
+        let _s = (a.e.x - a.s.x) * (a.s.y - b.s.y) - (a.e.y - a.s.y) * (a.s.x - b.s.x);
 
         t = _t / under;
         s = _s / under;
@@ -639,26 +652,15 @@ class Road {
         //if (_t == 0 && _s == 0) return undefined;
 
         return {
-            x: this.s.x + t * (this.e.x - this.s.x),
-            y: this.s.y + t * (this.e.y - this.s.y)
+            x: a.s.x + t * (a.e.x - a.s.x),
+            y: a.s.y + t * (a.e.y - a.s.y)
         };
     }
-
     end() {
-        if (this.mode == 1) {
-            return [{
-                type: "polyline",
-                geometry: this.plusLine
-            }];
-        } else if (this.mode == 2) {
-            return [{
-                type: "polyline",
-                geometry: this.plusLine
-            }, {
-                type: "polyline",
-                geometry: this.minusLine
-            }];
-        }
+        return [{
+            type: "polyline",
+            geometry: this.buffer
+        }];
     }
 }
 
@@ -670,7 +672,7 @@ function line(p1, p2) {
     return new Line(p1, p2);
 }
 
-function road(line1, line2) {
-    return new Road(line1, line2);
+function road(p1, p2, width) {
+    return new Road(p1, p2, width);
 }
 module.exports = { calc: calc, rect: rect, line: line, road: road };
