@@ -1,23 +1,23 @@
 const { calc, rect } = require("../../../../graphics/math");
 
 const akey = {
-    "G-F-ACAC": "acar", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACDC": "acdr", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACZC": "aczr", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZIC": "azir", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACBC": "acbr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACVC": "acvr", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZXC": "azxr", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZCC": "azcr", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-AZFC": "azfr", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ATC": "atr", //사각형표적   중심점 , WID
-    "G-F-ACSC": "acsr", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACFC": "acfr", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
-    "G-F-ACNC": "acnr", // 화력금지지역(NFA)(사각형)
-    "G-F-ACEC": "acer", //센서지역(사각형)
-    "G-F-AKBC": 'akbr', //아군 킬박스(사각형)
-    "G-F-AKPC": 'akpr', //적군 킬박스(사각형)
-    "G-F-ACRC": 'acrr', // 화력제한지역(RFA)(사각형)
+    "G-F-ACAC": "acac", //공역협조지역  LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACDC": "acdc", //사강지역(DA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACZC": "aczc", //책임구역(ZOR)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZIC": "azic", //포병표적정보구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACBC": "acbc", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACVC": "acvc", //표적식별구역(ATI)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZXC": "azxc", //화력요청구역(CFFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZCC": "azcc", //검열구역(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-AZFC": "azfc", //아군확인구역(CFZ)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ATC": "atc", //사각형표적   중심점 , WID
+    "G-F-ACSC": "acsc", //화력지원지역 LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACFC": "acfc", // 자유사격지역(FFA)(사각형) LEFT , RIGHT , HEIGHT = AM
+    "G-F-ACNC": "acnc", // 화력금지지역(NFA)(사각형)
+    "G-F-ACEC": "acec", //센서지역(사각형)
+    "G-F-AKBC": 'akbc', //아군 킬박스(사각형)
+    "G-F-AKPC": 'akpc', //적군 킬박스(사각형)
+    "G-F-ACRC": 'acrc', // 화력제한지역(RFA)(사각형)
 }
 
 function areaCircle(turnPlane, properties, bcompleted) {
@@ -29,13 +29,35 @@ function areaCircle(turnPlane, properties, bcompleted) {
         let s = p[0];
         let aname = akey[properties.log];
         if (properties.log == "G-F-ACAC") {
-
-
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
         } else if (properties.log == "G-F-ACSC") {
-
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ATC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACFC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACNC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACRC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACEC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACDC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACZC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACBC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-ACVC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-AKBC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
+        } else if (properties.log == "G-F-AKPC") {
+            ret.push(calc.annotation(a, aname, { x: 0, y: 0 }));
         }
 
-        if (properties.log == "G-F-ACSC") {
+        if (properties.log == "G-F-ACSC" || properties.log == "G-F-ACEC" || properties.log == "G-F-ACDC" ||
+            properties.log == "G-F-ACZC" || properties.log == "G-F-ACBC" || properties.log == "G-F-ACVC") {
             ret.push(calc.annotation(a, "w", { x: 0, y: -(a.w.width) - pVar.AM }));
             ret.push(calc.annotation(a, "w1", { x: a.w.height / 2 + a.w1.height / 2, y: -(a.w1.width / 2) - pVar.AM }));
             ret.push({
@@ -58,103 +80,103 @@ module.exports = {
     maxPointCount: 2,
     properties: {
         annotations: {
-            acar: {
+            acac: {
                 filter: ["G-F-ACAC"],
-                value: "{N}\nACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
+                value: "ACA \n{T} \nMIN ALT: {X}  \nMIX ALT: {X1} \nGrids : {H2} \nEFF: {W} \n{W1}",
                 anchor: { x: 0, y: 0 }
             },
-            acdr: {
+            acdc: {
                 filter: ["G-F-ACDC"],
-                value: "{N}\nDA \n{T}",
+                value: "DA\n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            aczr: {
+            aczc: {
                 filter: ["G-F-ACZC"],
                 value: "{N}\nZOR \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            azir: {
+            azic: {
                 filter: ["G-F-AZIC"],
                 value: "ATI ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            acbr: {
+            acbc: {
                 filter: ["G-F-ACBC"],
-                value: "TBA ZONE \n{T}",
+                value: "TBA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            acvr: {
+            acvc: {
                 filter: ["G-F-ACVC"],
                 value: "TVAR\n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            azxr: {
+            azxc: {
                 filter: ["G-F-AZXC"],
                 value: "CFF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            azcr: {
+            azcc: {
                 filter: ["G-F-AZCC"],
                 value: "CENSOR ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            azfr: {
+            azfc: {
                 filter: ["G-F-AZFC"],
                 value: "CF ZONE \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            atr: {
+            atc: {
                 filter: ["G-F-ATC"],
                 value: "\n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            acsr: {
+            acsc: {
                 filter: ["G-F-ACSC"],
                 value: "FSA \n{T}",
                 anchor: { x: 0, y: 0 }
             },
-            acfr: {
+            acfc: {
                 filter: ["G-F-ACFC"],
                 value: "FFA \n{T} \n{W}-{W1}",
                 anchor: { x: 0, y: 0 }
             },
-            acnr: {
+            acnc: {
                 filter: ["G-F-ACNC"],
                 value: "NFA\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
-            acer: {
+            acec: {
                 filter: ["G-F-ACEC"],
                 value: "SENSOR ZONE\n{T} ",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
-            akbr: {
+            akbc: {
                 filter: ["G-F-AKBC"],
                 value: "BKB\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
-            akpr: {
+            akpc: {
                 filter: ["G-F-AKPC"],
-                value: "BKB\n{T}\n{W}-{W1}",
+                value: "BKB\n{T}\n{W}-{W1}\n{X}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
-            acrr: {
+            acrc: {
                 filter: ["G-F-ACRC"],
                 value: "RFA\n{T}\n{W}-{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
             w: {
-                filter: ["G-F-AZIC", "G-F-ACBC", "G-F-ACVC", "G-F-AZXC", "G-F-AZCC", "G-F-AZFC", "G-F-ACSC", "G-F-ACEC", "G-F-ACRC"],
+                filter: ["G-F-AZIC", "G-F-ACBC", "G-F-ACVC", "G-F-AZXC", "G-F-AZCC", "G-F-AZFC", "G-F-ACSC", "G-F-ACEC", "G-F-ACRC", "G-F-ACDC", "G-F-ACZC"],
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
             },
             w1: {
-                filter: ["G-F-AZIC", "G-F-ACBC", "G-F-ACVC", "G-F-AZXC", "G-F-AZCC", "G-F-AZFC", "G-F-ACSC", "G-F-ACEC", "G-F-ACRC"],
+                filter: ["G-F-AZIC", "G-F-ACBC", "G-F-ACVC", "G-F-AZXC", "G-F-AZCC", "G-F-AZFC", "G-F-ACSC", "G-F-ACEC", "G-F-ACRC", "G-F-ACDC", "G-F-ACZC"],
                 value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }
