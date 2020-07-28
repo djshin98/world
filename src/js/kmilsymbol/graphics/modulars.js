@@ -1,5 +1,5 @@
 function registryModular(graphicModulars) {
-    
+
 
     graphicModulars["구역3"] = require("../modular/OAC/FP/area/area-circle.js");
 
@@ -22,7 +22,6 @@ function registryModular(graphicModulars) {
     graphicModulars["MAIN ATTACK"] = require("../modular/main-attack.js");
     graphicModulars["NAMED AREA OF INTEREST"] = require("../modular/named-area-of-interest.js");
     graphicModulars.occupy = require("../modular/occupy.js");
-    graphicModulars["RESTRICTIVE FIRE AREA"] = require("../modular/restrictive-fire-area.js");
     graphicModulars.searchArea = require("../modular/search-area.js");
     graphicModulars["SENSOR ZONE"] = require("../modular/sensor-zone.js");
     graphicModulars["사격선"] = require("../modular/OAC/CC/shootingpoint.js");
