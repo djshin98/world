@@ -246,49 +246,49 @@ module.exports = function tacticalPoints(sidc, modular) {
     //TACGRP.FSUPP.ARS.C2ARS.FSA
     sidc["G-F-ACSI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.IRR
     sidc["G-F-ACSR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.RTG
-    sidc["G-F-ACSC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
+    sidc["G-F-ACSC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.FSA.CIRCLR
     //sidc['G-F-ACA---'] = [];//TACGRP.FSUPP.ARS.C2ARS.ACA
     sidc["G-F-ACAI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.IRR
     sidc["G-F-ACAR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.RTG
-    sidc["G-F-ACAC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.CIRCLR
+    sidc["G-F-ACAC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.ACA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.FFA
     sidc["G-F-ACFI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.IRR
     sidc["G-F-ACFR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.RTG
-    sidc["G-F-ACFC--"] = modular["FREE FIRE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.CIRCLR
+    sidc["G-F-ACFC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.FFA.CIRCLR
     //sidc['G-F-ACN---'] = [];//TACGRP.FSUPP.ARS.C2ARS.NFA
-    sidc['G-F-ACNI--'] = modular["다각형구역"];//TACGRP.FSUPP.ARS.C2ARS.NFA.IRR
-    sidc['G-F-ACNR--'] = modular["사각구역"];//TACGRP.FSUPP.ARS.C2ARS.NFA.RTG
-    //sidc["G-F-ACNC--"] = []; //TACGRP.FSUPP.ARS.C2ARS.NFA.CIRCLR
+    sidc['G-F-ACNI--'] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.NFA.IRR
+    sidc['G-F-ACNR--'] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.NFA.RTG
+    sidc["G-F-ACNC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.NFA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.RFA
     sidc["G-F-ACRI--"] = modular["RESTRICTIVE FIRE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.IRR
     sidc["G-F-ACRR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.RTG
-    sidc["G-F-ACRC--"] = modular["RESTRICTIVE FIRE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.CIRCLR
+    sidc["G-F-ACRC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.CIRCLR
     //sidc['G-F-ACP---'] = [];//TACGRP.FSUPP.ARS.C2ARS.PAA
     //sidc['G-F-ACPR--'] = [];//TACGRP.FSUPP.ARS.C2ARS.PAA.RTG
-    //sidc["G-F-ACPC--"] = []; //TACGRP.FSUPP.ARS.C2ARS.PAA.CIRCLR
+    sidc["G-F-ACPC--"] = modular["포진지구역"]; //TACGRP.FSUPP.ARS.C2ARS.PAA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.SNSZ
     sidc["G-F-ACEI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.SNSZ.IRR
     sidc["G-F-ACER--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.SNSZ.RTG
-    sidc["G-F-ACEC--"] = modular["SENSOR ZONE"]; //TACGRP.FSUPP.ARS.C2ARS.SNSZ.CIRCLR
+    sidc["G-F-ACEC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.SNSZ.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.DA
     sidc["G-F-ACDI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.DA.IRR
     sidc["G-F-ACDR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.DA.RTG
-    sidc["G-F-ACDC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.DA.CIRCLR
+    sidc["G-F-ACDC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.DA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.ZOR
     sidc["G-F-ACZI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.IRR
     sidc["G-F-ACFR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.RTG
-    sidc["G-F-ACZC--"] = modular["구역3"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.CIRCLR
+    sidc["G-F-ACZC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.ZOR.CIRCLR
     sidc["G-F-ACZR--"] = modular["사각구역"];
     //TACGRP.FSUPP.ARS.C2ARS.TBA
     sidc["G-F-ACBI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.TBA.IRR
     sidc["G-F-ACBR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.TBA.RTG
-    sidc["G-F-ACBC--"] = modular["TARGET BUILD-UP AREA"]; //TACGRP.FSUPP.ARS.C2ARS.TBA.CIRCLR
+    sidc["G-F-ACBC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.TBA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.TVAR
     sidc["G-F-ACCI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.IRR
     sidc["G-F-ACGI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.IRR
     sidc["G-F-ACVI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.IRR
     sidc["G-F-ACVR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.RTG
-    sidc["G-F-ACVC--"] = modular["TARGET VALUE AREA"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.CIRCLR
+    sidc["G-F-ACVC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.TVAR.CIRCLR
     sidc["G-F-ACT---"] =
         modular["TERMINALLY GUIDED MUNITION FOOTPRINT"]; //TACGRP.FSUPP.ARS.C2ARS.TGMF
     //sidc['G-F-AZ----'] = [];//TACGRP.FSUPP.ARS.TGTAQZ
@@ -309,11 +309,11 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-F-AXS---'] = [];//TACGRP.FSUPP.ARS.WPNRF.SCR
     //sidc['G-F-AK----'] = [];//TACGRP.FSUPP.ARS.KLBOX
     //sidc['G-F-AKB---'] = [];//TACGRP.FSUPP.ARS.KLBOX.BLUE
-    //sidc["G-F-AKBC--"] = []; //modular.circle;//TACGRP.FSUPP.ARS.KLBOX.BLUE.CIRCLR
+    sidc["G-F-AKBC--"] = modular["원구역"]; //modular.circle;//TACGRP.FSUPP.ARS.KLBOX.BLUE.CIRCLR
     //sidc['G-F-AKBI--'] = [];//TACGRP.FSUPP.ARS.KLBOX.BLUE.IRR
     sidc['G-F-AKBR--'] = modular["사각구역"]; //TACGRP.FSUPP.ARS.KLBOX.BLUE.RTG
     //sidc['G-F-AKP---'] = [];//TACGRP.FSUPP.ARS.KLBOX.PURPLE
-    //sidc["G-F-AKPC--"] = []; //modular.circle;//TACGRP.FSUPP.ARS.KLBOX.PURPLE.CIRCLR
+    sidc["G-F-AKPC--"] = modular["원구역"]; //modular.circle;//TACGRP.FSUPP.ARS.KLBOX.PURPLE.CIRCLR
     //sidc['G-F-AKPI--'] = [];//TACGRP.FSUPP.ARS.KLBOX.PURPLE.IRR
     sidc['G-F-AKPR--'] = modular["사각구역"]; //TACGRP.FSUPP.ARS.KLBOX.PURPLE.RTG
     //sidc['G-S-------'] = [];//TACGRP.CSS
