@@ -1,8 +1,5 @@
 function registryModular(graphicModulars) {
 
-
-    graphicModulars["구역3"] = require("../modular/OAC/FP/area/area-circle.js");
-
     graphicModulars["매복"] = require("../modular/ambush.js");
 
     graphicModulars["BREACH"] = require("../modular/breach.js");
@@ -38,6 +35,7 @@ function registryModular(graphicModulars) {
     graphicModulars["다각형구역"] = require("../modular/OAC/FP/area/area-polygon.js");
     graphicModulars["다각형호"] = require("../modular/polygon.js");
     graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
+    graphicModulars["원구역"] = require("../modular/OAC/FP/area/area-circle.js");
     graphicModulars["방향선"] = require("../modular/OAC/etc/direction-line");
     graphicModulars["보급로"] = require("../modular/OAC/CSS/aline");
     graphicModulars["비행경로"] = require("../modular/OAC/CC/ATC/line/flightpath");
@@ -48,6 +46,7 @@ function registryModular(graphicModulars) {
     graphicModulars["철조망"] = require("../modular/OAC/AD/obstacle/wirenet");
     graphicModulars["통제선"] = require("../modular/OAC/CSS/control-section");
     graphicModulars["폭파예정"] = require("../modular/OAC/AD/obstacle/blasting-schedule.js");
+    graphicModulars["포진지구역"] = require("../modular/OAC/FP/area/acircle.js");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
 
