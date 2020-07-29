@@ -20,7 +20,20 @@ const akey = {
     "G-F-AZFI": "azfi", //아군확인구역
     "G-F-AKBI": 'akbi', //아군 킬박스  style    
     "G-F-AKPI": 'akpi', //적군 킬박스  style
-
+    "G-G-OAA": 'oaa', // 지휘통제 및 일반작전 - 돌격진지
+    "G-G-OAK": 'oak', //지휘통제 및 일반작전 - 공격대기지역
+    "G-G-OAO": 'oao', //지휘통제 및 일반작전 - 목표
+    "G-G-SAO": 'sao', //지휘통제 및 일반작전 - 작전구역
+    "G-G-SAN": 'san', //지휘통제 및 일반작전 - 중요관심지역 
+    "G-G-SAT": 'sat', //지휘통제 및 일반작전 - 관심타격지역
+    "G-S-AD": 'ad', //전투근무지원 - 억류자수용지역
+    "G-S-AE": 'ae', //전투근무지원 - 포로수용소
+    "G-S-AR": 'ar', //전투근무지원 - 전방재무장및재급유지역 
+    "G-S-AH": 'ah', //전투근무지원 - 피난민수용지역
+    "G-S-ASB": 'asb', //전투근무지원 - 여단지원지역
+    "G-S-ASD": 'asd', //전투근무지원 - 사단지원지역
+    "G-S-ASR": 'asr', //전투근무지원 - 연대지원지역
+    "G-S-ASA": 'asa', //전투근무지원 - 군수지원지역
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
@@ -181,10 +194,95 @@ module.exports = {
             },
             akpi: {
                 filter: ["G-F-AKPI"],
-                value: "BKB\n{T}\n{W}-{W1}",
+                value: "BKB\n{T}\n{W}-{W1}\n{X}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
+            oaa: {
+                filter: ["G-G-OAA"],
+                value: "ASLT\nPSN\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            oak: {
+                filter: ["G-G-OAK"],
+                value: "ATK\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            oao: {
+                filter: ["G-G-OAO"],
+                value: "OBJ\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            sao: {
+                filter: ["G-G-SAO"],
+                value: "AO\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            san: {
+                filter: ["G-G-SAN"],
+                value: "NAI\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            sat: {
+                filter: ["G-G-SAT"],
+                value: "TAI\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            ad: {
+                filter: ["G-S-AD"],
+                value: "DETAINEE\nHOLDING\nAREA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            ae: {
+                filter: ["G-S-AE"],
+                value: "EPW\nHOLDING\nAREA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            ar: {
+                filter: ["G-S-AR"],
+                value: "FARP\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            ah: {
+                filter: ["G-S-AH"],
+                value: "REFUGEE\nHOLDING\nAREA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            asb: {
+                filter: ["G-S-ASB"],
+                value: "BSA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            asd: {
+                filter: ["G-S-ASD"],
+                value: "DSA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            asr: {
+                filter: ["G-S-ASR"],
+                value: "RSA\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            asa: {
+                filter: ["G-S-ASA"],
+                value: "군수지원\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+           
             w: {
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
