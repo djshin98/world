@@ -28,12 +28,18 @@ const akey = {
     "G-G-SAT": 'sat', //지휘통제 및 일반작전 - 관심타격지역
     "G-S-AD": 'ad', //전투근무지원 - 억류자수용지역
     "G-S-AE": 'ae', //전투근무지원 - 포로수용소
-    "G-S-AR": 'ar', //전투근무지원 - 전방재무장및재급유지역 
+    "G-S-AR": 'ar', //전투근무지원 - 전방 재무장 및 재급 유지역 
     "G-S-AH": 'ah', //전투근무지원 - 피난민수용지역
     "G-S-ASB": 'asb', //전투근무지원 - 여단지원지역
     "G-S-ASD": 'asd', //전투근무지원 - 사단지원지역
     "G-S-ASR": 'asr', //전투근무지원 - 연대지원지역
     "G-S-ASA": 'asa', //전투근무지원 - 군수지원지역
+    "G-F-AT": 'at', //화력지원 - 영역표적지역
+    "G-F-ATS": 'ats', //화력지원 - 연막차장지역
+    "G-F-ATB": 'atb', //화력지원 - 폭격지역
+    "G-F-ACT": 'act', //화력지원 - 단말유도 군수품 수신구역 
+    "G-G-AAW": 'aaw', //지휘통제 및 일반작전 - 자유무기사격지대  style
+    
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
@@ -74,6 +80,7 @@ function areaPolygon(turnPlane, properties, bcompleted) {
                     trip: false,
                     geometry: [calc.moveY(p[0], ps.gap), { x: ps.gap, y: ps.gap }]
                 });
+                
             }
         }
         ret.push({ type: "polygon", geometry: p });
@@ -279,6 +286,36 @@ module.exports = {
             asa: {
                 filter: ["G-S-ASA"],
                 value: "군수지원\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            at: {
+                filter: ["G-F-AT"],
+                value: "\n{T}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            ats: {
+                filter: ["G-F-ATS"],
+                value: "SMOKE\n{W}-{W1}",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            atb: {
+                filter: ["G-F-ATB"],
+                value: "BOMB",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            act: {
+                filter: ["G-F-ACT"],
+                value: "TGMF",
+                transparent: 0.5,
+                anchor: { x: 0, y: 0 }
+            },
+            aaw: {
+                filter: ["G-G-AAW"],
+                value: "WFZ\n{T}\nTIME FROM:{W}\nTIME TO:{W1}",
                 transparent: 0.5,
                 anchor: { x: 0, y: 0 }
             },
