@@ -25,6 +25,7 @@ function registryModular(graphicModulars) {
     graphicModulars["포진지구역"] = require("../modular/OAC/FP/area/acircle.js");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
+    graphicModulars["호위"] = require("../modular/OAC/CSS/escort");
 
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
