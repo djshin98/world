@@ -1,4 +1,4 @@
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../graphics/math");
 
 function bypass(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, point, i, buffer) => {

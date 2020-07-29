@@ -1,6 +1,6 @@
 function registryModular(graphicModulars) {
 
-    graphicModulars["매복"] = require("../modular/ambush.js");
+    //graphicModulars["매복"] = require("../modular/ambush.js");
 
     graphicModulars["BREACH"] = require("../modular/breach.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
@@ -33,7 +33,7 @@ function registryModular(graphicModulars) {
     graphicModulars["경계"] = require("../modular/OAC/mission/cover");
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형구역"] = require("../modular/OAC/FP/area/area-polygon");
-    graphicModulars["다각형호"] = require("../modular/polygon.js");
+    graphicModulars["다각형호"] = require("../modular/OAC/CC/polygon.js");
     graphicModulars["목책"] = require("../modular/OAC/AD/obstacle/barrier.js");
     graphicModulars["원구역"] = require("../modular/OAC/FP/area/area-circle.js");
     graphicModulars["방향선"] = require("../modular/OAC/etc/direction-line");
