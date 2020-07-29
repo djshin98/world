@@ -1,5 +1,5 @@
 "use strict";
-const { calc, rect } = require("../graphics/math");
+const { calc, rect } = require("../../../graphics/math");
 
 function breakthrough(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
