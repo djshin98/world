@@ -258,37 +258,51 @@ class calc {
         }
         return geo;
     }
-    static arrow(tp, start, end, arrowSize, angle, bpolygon) {
+    static arrow(tp, start, end, arrowSize, angle, bpolygon, width) {
+        let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
+        let xwidth = width * Math.tan(radian);
+        let aflight = { x: arrowSize * Math.sin(radian), y: arrowSize * Math.cos(radian) };
         let arr = [end, start];
         return tp.turnStack(arr, 0, 1, (pt) => {
-            let temp = { x: 0, y: arrowSize };
-            let radian = (Q.isValid(angle) ? angle : 40) * Math.PI / 180;
-            let a1 = {
-                x: (temp.x * Math.cos(radian)) - (temp.y * Math.sin(radian)),
-                y: (temp.x * Math.sin(radian)) + (temp.y * Math.cos(radian))
-            };
-            let a2 = {
-                x: (temp.x * Math.cos(-radian)) - (temp.y * Math.sin(-radian)),
-                y: (temp.x * Math.sin(-radian)) + (temp.y * Math.cos(-radian))
-            };
-            if (bpolygon === true) {
-                return {
-                    type: "polygon",
-                    geometry: [a1, pt[0], a2, a1]
-                };
-            } else {
-                return {
-                    type: "polyline",
-                    geometry: [a1, pt[0], a2]
-                };
-            }
+            let apt = [pt[0], pt[1], { x: -aflight.x, y: aflight.y }, { x: aflight.x, y: aflight.y }];
+            return tp.turnStack(apt, 3, 2, (aapt) => {
+                if (Q.isValid(width) && width > 0) {
+                    let mid = { x: aapt[0].x + width, y: aapt[0].y };
+                    if (bpolygon === true) {
+                        return {
+                            type: "polygon",
+                            geometry: [mid, calc.moveY(aapt[2], -xwidth), aapt[2], aapt[0], aapt[3], calc.moveY(aapt[3], xwidth), mid]
+                        };
+                    } else {
+                        return {
+                            type: "polyline",
+                            geometry: [mid, calc.moveY(aapt[2], -xwidth), aapt[2], aapt[0], aapt[3], calc.moveY(aapt[3], xwidth), mid]
+                        };
+                    }
+                } else {
+                    let mid = { x: 0, y: aapt[0].y };
+                    if (bpolygon === true) {
+                        return {
+                            type: "polygon",
+                            geometry: [mid, aapt[2], aapt[0], aapt[3], mid]
+                        };
+                    } else {
+                        return {
+                            type: "polyline",
+                            geometry: [aapt[0], aapt[2], aapt[0], aapt[3]]
+                        };
+                    }
+                }
+
+            });
         });
     }
-    static arrowLine(tp, start, end, arrowSize, angle, bpolygon) {
-        return [calc.arrow(tp, start, end, arrowSize, angle, bpolygon),
+    static arrowLine(tp, start, end, arrowSize, angle, bpolygon, width) {
+        let a = calc.arrow(tp, start, end, arrowSize, angle, bpolygon, width);
+        return [a,
             {
                 type: "polyline",
-                geometry: [start, end]
+                geometry: [start, a.geometry[0]]
             }
         ];
     }
@@ -375,6 +389,20 @@ class calc {
             name: name,
             rotate: (bxaxis === true) ? Math.PI / 2 : 0
         }, options);
+    }
+    static tAnnotationOnLine(tp, a, name, ratio, p1, p2, bxaxis, callback) {
+        return tp.turnStack([p1, p2], 0, 1, (p) => {
+            let r = rect((p[0].x + p[1].x) * ratio, (p[0].y + p[1].y) * ratio, a[name].width, a[name].height, bxaxis);
+            let ret = [{
+                type: "annotation",
+                geometry: r.geometry(bxaxis),
+                name: name,
+                rotate: (bxaxis === true) ? Math.PI / 2 : 0,
+                debug: true
+            }];
+            r.linkLine(p[0], p[1], bxaxis, callback).forEach(g => { ret.push(g); });
+            return ret;
+        });
     }
     static annotationToNorth(a, name, p1) {
 
@@ -576,6 +604,12 @@ class Line {
             y: this.s.y + t * (this.e.y - this.s.y)
         };
     }
+    end() {
+        return {
+            type: "polyline",
+            geometry: [this.s, this.e]
+        };
+    }
 }
 class Road {
     constructor(p1, p2, width) {
@@ -588,19 +622,6 @@ class Road {
     link(p) {
         let ml = [p[0], p[1]];
         let pl = [p[p.length - 1], p[p.length - 2]];
-
-        /*
-        if (rad >= 0 && rad < Math.PI / 2) {
-
-        } else if (rad >= Math.PI / 2 && rad <= Math.PI) {
-
-        } else if (rad < 0 && rad > -Math.PI / 2) {
-
-        } else if (rad <= -Math.PI / 2 && rad <= -Math.PI) {
-
-        }*/
-        //console.log("degree : " + rad * 180 / Math.PI);
-
         let mt = this._itx(this.mLines, ml);
         let pt = this._itx(this.pLines, pl);
         if (Q.isValid(mt)) {
@@ -608,10 +629,6 @@ class Road {
                 p.splice(0, 1, mt);
                 p.splice(0, 0, this.mLines[0]);
             } else {
-                //let rad = Math.atan2(p[0].y, p[0].x);
-                //let res = calc.arc((Math.PI / 2) - rad, -Math.PI / 2, this.width);
-                //p = res[0].geometry.concat(p);
-                //p.splice(0, 0, mt);
                 p.splice(0, 0, this.mLines[1]);
                 p.splice(0, 0, this.mLines[0]);
             }
@@ -624,7 +641,6 @@ class Road {
                 p.splice(p.length - 1, 1, pt);
                 p.push(this.pLines[0]);
             } else {
-                //p.push(pt);
                 p.push(this.pLines[1]);
                 p.push(this.pLines[0]);
             }

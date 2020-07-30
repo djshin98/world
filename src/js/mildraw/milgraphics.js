@@ -241,9 +241,14 @@ class MilGraphics extends DrawObject {
                 case "polygon":
                     {
                         return {
+                            polyline: {
+                                positions: obj.geometry,
+                                clampToGround: true,
+                                width: 2,
+                                material: Cesium.Color.YELLOW
+                            },
                             polygon: {
                                 hierarchy: obj.geometry,
-                                //material: slashMaterial
                                 material: viewModel.faceColor
                             }
                         };

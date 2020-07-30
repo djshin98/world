@@ -16,13 +16,11 @@ function registryModular(graphicModulars) {
     graphicModulars["FREE FIRE AREA"] = require("../modular/free-fire-area.js");
     graphicModulars.guard = require("../modular/guard.js");
     graphicModulars["ISOLATE"] = require("../modular/isolate.js");
-    graphicModulars["MAIN ATTACK"] = require("../modular/main-attack.js");
     graphicModulars["NAMED AREA OF INTEREST"] = require("../modular/named-area-of-interest.js");
     graphicModulars.occupy = require("../modular/occupy.js");
     graphicModulars.searchArea = require("../modular/search-area.js");
     graphicModulars["SENSOR ZONE"] = require("../modular/sensor-zone.js");
     graphicModulars["사격선"] = require("../modular/OAC/CC/shootingpoint.js");
-    graphicModulars["SUPPORTING ATTACK"] = require("../modular/supporting-attack.js");
     graphicModulars["TARGET BUILD-UP AREA"] = require("../modular/target-build-up-area.js");
     graphicModulars["TARGET VALUE AREA"] = require("../modular/target-value-area.js");
     graphicModulars["TARGETED AREA OF INTEREST"] = require("../modular/targeted-area-of-interest.js");
@@ -31,6 +29,7 @@ function registryModular(graphicModulars) {
 
     graphicModulars["간격"] = require("../modular/gap.js");
     graphicModulars["경계"] = require("../modular/OAC/mission/cover");
+    graphicModulars["공격방향"] = require("../modular/OAC/CC/ATC/line/atackdir");
     graphicModulars["기만모조"] = require("../modular/fake.js");
     graphicModulars["다각형구역"] = require("../modular/OAC/FP/area/area-polygon");
     graphicModulars["다각형호"] = require("../modular/polygon.js");

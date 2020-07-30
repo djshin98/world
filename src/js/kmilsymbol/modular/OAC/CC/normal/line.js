@@ -349,7 +349,72 @@ function mlines(turnPlane, properties, bcompleted) {
             return ret;
 
         }).end();
+    } else if (properties.log == "G-G-OLL") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
+                ret.push(calc.annotation(a, "oll", { x: 0, y: -a.oll.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            //p[index + 1].y = i - pbs.glfdist * 2;
+            if (bcompleted === true && (p.length - 2) == index) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
+                ret.push(calc.annotation(a, "oll", { x: 0, y: p[index + 1].y + (a.oll.width / 2) }));
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-OLT") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
+                ret.push(calc.annotation(a, "olt", { x: 0, y: -a.olt.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            //p[index + 1].y = i - pbs.glfdist * 2;
+            if (bcompleted === true && (p.length - 2) == index) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
+                ret.push(calc.annotation(a, "olt", { x: 0, y: p[index + 1].y + (a.olt.width / 2) }));
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-OLC") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
+                ret.push(calc.annotation(a, "olc", { x: 0, y: -a.olc.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            //p[index + 1].y = i - pbs.glfdist * 2;
+            if (bcompleted === true && (p.length - 2) == index) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
+                ret.push(calc.annotation(a, "olc", { x: 0, y: p[index + 1].y + (a.olc.width / 2) }));
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-OLP") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
+                ret.push(calc.annotation(a, "olp", { x: 0, y: -a.olp.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            //p[index + 1].y = i - pbs.glfdist * 2;
+            if (bcompleted === true && (p.length - 2) == index) {
+                //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
+                ret.push(calc.annotation(a, "olp", { x: 0, y: p[index + 1].y + (a.olp.width / 2) }));
+            }
+            return ret;
+
+        }).end();
     }
+
 }
 
 module.exports = {
@@ -486,6 +551,26 @@ module.exports = {
             olf: {
                 filter: ["G-G-OLF"],
                 value: "FINAL CL\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            oll: {
+                filter: ["G-G-OLL"],
+                value: "LOA\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            olt: {
+                filter: ["G-G-OLT"],
+                value: "LD\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            olc: {
+                filter: ["G-G-OLC"],
+                value: "LD/LC\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            olp: {
+                filter: ["G-G-OLP"],
+                value: "PLD\n(PL {T})",
                 anchor: { x: 0, y: 0 }
             }
         },
