@@ -264,7 +264,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["G-F-ACRR--"] = modular["사각구역"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.RTG
     sidc["G-F-ACRC--"] = modular["원구역"]; //TACGRP.FSUPP.ARS.C2ARS.RFA.CIRCLR
     //sidc['G-F-ACP---'] = [];//TACGRP.FSUPP.ARS.C2ARS.PAA
-    //sidc['G-F-ACPR--'] = [];//TACGRP.FSUPP.ARS.C2ARS.PAA.RTG
+    sidc['G-F-ACPR--'] = modular["포진지구역(사각형)"];//TACGRP.FSUPP.ARS.C2ARS.PAA.RTG
     sidc["G-F-ACPC--"] = modular["포진지구역"]; //TACGRP.FSUPP.ARS.C2ARS.PAA.CIRCLR
     //TACGRP.FSUPP.ARS.C2ARS.SNSZ
     sidc["G-F-ACEI--"] = modular["다각형구역"]; //TACGRP.FSUPP.ARS.C2ARS.SNSZ.IRR
@@ -350,7 +350,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     //sidc['G-O-F-----'] = [];//TACGRP.OTH.FIX
 
     //2525B compatibility
-    //sidc["G-F-ATC---"] = []; //modular.circle;
+    sidc["G-F-ATC---"] = modular["원구역"]; //modular.circle;
     //sidc["G-F-AZIC--"] = []; //modular.circle;
 
     /*

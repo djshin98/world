@@ -28,6 +28,7 @@ function registryModular(graphicModulars) {
     graphicModulars["통제선"] = require("../modular/OAC/CSS/control-section");
     graphicModulars["폭파예정"] = require("../modular/OAC/AD/obstacle/blasting-schedule.js");
     graphicModulars["포진지구역"] = require("../modular/OAC/FP/area/acircle.js");
+    graphicModulars["포진지구역(사각형)"] = require("../modular/OAC/FP/area/arect");
     graphicModulars["항공통제구역"] = require("../modular/OAC/CC/ATC/region/region");
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
@@ -36,16 +37,13 @@ function registryModular(graphicModulars) {
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
     graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
-<<<<<<< HEAD
-=======
-    graphicModulars["도선장"] = require("../modular/OAC/AD/obstacle/ferry");
-    graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
-    graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
-    graphicModulars["요새방어선"] = require("../modular/OAC/AD/defence/fortressdefence");
-    graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
-    graphicModulars["침투로"] = require("../modular/OAC/CC/ATC/line/penetration");
-    graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
->>>>>>> be7435284f0926487a7ecdbe8bb7f1ea564061e2
+    //graphicModulars["도선장"] = require("../modular/OAC/AD/obstacle/ferry");
+    //graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
+    //graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
+    //graphicModulars["요새방어선"] = require("../modular/OAC/AD/defence/fortressdefence");
+    //graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
+    //graphicModulars["침투로"] = require("../modular/OAC/CC/ATC/line/penetration");
+    //graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
     
 

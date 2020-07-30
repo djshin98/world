@@ -14,7 +14,7 @@ const akey = {
     "G-F-ACVI": "acvi", //표적평가지역
     "G-F-ACCI": "acci", //화생방정찰지역
     "G-F-ACGI": "acgi", //화생방제독지역
-    "G-F-AZII": "azir", //포병표적정보구역
+    "G-F-AZII": "azii", //포병표적정보구역
     "G-F-AZXI": "azxi", //화력요청구역
     "G-F-AZCI": "azci", //검열구역
     "G-F-AZFI": "azfi", //아군확인구역
