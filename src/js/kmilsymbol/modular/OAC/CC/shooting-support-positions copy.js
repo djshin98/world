@@ -1,4 +1,4 @@
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../graphics/math");
 
 function shooting_support_position(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, points, index, buffer) => {

@@ -53,7 +53,8 @@ function areaRect(turnPlane, properties, bcompleted) {
             if (properties.log == "G-F-AZIR" || properties.log == "G-F-ACBR" ||
                 properties.log == "G-F-ACVR" || properties.log == "G-F-AZXR" ||
                 properties.log == "G-F-AZCR" || properties.log == "G-F-AZFR" ||
-                properties.log == "G-F-ACSR" || properties.log == "G-F-ACER") {
+                properties.log == "G-F-ACSR" || properties.log == "G-F-ACER" || 
+                properties.log == "G-F-ACDR" || properties.log == "G-F-ACZR") {
                 ret.push(calc.annotation(a, "w", { x: -height / 2 + a.w.height / 2, y: -(a.w.width) }));
                 ret.push(calc.annotation(a, "w1", { x: -height / 2 + a.w.height + a.w1.height / 2, y: -(a.w1.width / 2) }));
                 ret.push({
@@ -179,12 +180,14 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
             w: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR"],
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", 
+                "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR", "G-F-ACDR", "G-F-ACZR"],
                 value: "{W}",
                 anchor: { x: 0, y: 0 }
             },
             w1: {
-                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR"],
+                filter: ["G-F-AZIR", "G-F-ACBR", "G-F-ACVR", "G-F-AZXR", "G-F-AZCR", 
+                "G-F-AZFR", "G-F-ACSR", "G-F-ACER", "G-F-ACRR", "G-F-ACDR", "G-F-ACZR"],
                 value: "{W1}",
                 anchor: { x: 0, y: 0 }
             }

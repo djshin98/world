@@ -1,6 +1,6 @@
 "use strict";
 
-const { calc } = require("../graphics/math");
+const { calc } = require("../../../graphics/math");
 
 function fake(turnPlane, properties, bcompleted) {
     return turnPlane.map((prev, p, i, buffer) => {
