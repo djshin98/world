@@ -36,8 +36,6 @@ function registryModular(graphicModulars) {
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
     graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
-<<<<<<< HEAD
-=======
     graphicModulars["도선장"] = require("../modular/OAC/AD/obstacle/ferry");
     graphicModulars["도섭"] = require("../modular/OAC/AD/obstacle/wade");
     graphicModulars["도하"] = require("../modular/OAC/AD/obstacle/crossriver");
@@ -45,9 +43,8 @@ function registryModular(graphicModulars) {
     graphicModulars["장애물"] = require("../modular/OAC/AD/obstacle/obstacle");
     graphicModulars["침투로"] = require("../modular/OAC/CC/ATC/line/penetration");
     graphicModulars["최소안전지대"] = require("../modular/OAC/AD/CBRN/safetyzone");
->>>>>>> be7435284f0926487a7ecdbe8bb7f1ea564061e2
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
-    
+
 
 }
 module.exports = registryModular;

@@ -100,11 +100,164 @@ function barrier(turnPlane, properties, bcompleted) {
             }
         }).end();
     } else if (properties.log == "G-M-OGZ") {
+        return turnPlane.reduce((prev, points, index, buffer) => {
+            let length = points[index + 1].y - points[index].y;
+            let pts = [points[index]];
+            //arrowSize = (arrowSize > 0) ? arrowSize * -1 : arrowSize;
+            if (Math.abs(length) >= (arrowSizeY * 2)) {
+                let toggle = true;
+                for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                    if (toggle === true) {
+                        pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    } else {
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    }
+                    toggle = !toggle;
+                }
 
+                if (Q.isValid(prev)) {
+                    pts = prev[0].geometry.concat(pts);
+                }
+
+
+            }
+
+            if (index == points.length - 2) {
+                let tmp = turnPlane.turnStack(points, points.length - 1, 0, (ps) => {
+                    let pts = [];
+                    let toggle = true;
+                    let length = ps[0].y - ps[ps.length - 1].y;
+
+                    for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                        if (toggle === true) {
+                            pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        } else {
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        }
+                        toggle = !toggle;
+                    }
+                    return { type: "polyline", geometry: pts };
+                });
+                pts = pts.concat(tmp.geometry);
+            }
+
+            let ret = [{
+                type: "polygon",
+                geometry: pts
+            }];
+            if (bcompleted) {
+                ret.push(calc.annotationToNorth(a, "ogz", calc.center(points)));
+            }
+            return ret;
+        }).end();
     } else if (properties.log == "G-M-OGF") {
+        return turnPlane.reduce((prev, points, index, buffer) => {
+            let length = points[index + 1].y - points[index].y;
+            let pts = [points[index]];
+            arrowSize = (arrowSize > 0) ? arrowSize * -1 : arrowSize;
+            if (Math.abs(length) >= (arrowSizeY * 2)) {
+                let toggle = true;
+                for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                    if (toggle === true) {
+                        pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    } else {
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    }
+                    toggle = !toggle;
+                }
 
+                if (Q.isValid(prev)) {
+                    pts = prev[0].geometry.concat(pts);
+                }
+
+
+            }
+
+            if (index == points.length - 2) {
+                let tmp = turnPlane.turnStack(points, points.length - 1, 0, (ps) => {
+                    let pts = [];
+                    let toggle = true;
+                    let length = ps[0].y - ps[ps.length - 1].y;
+
+                    for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                        if (toggle === true) {
+                            pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        } else {
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        }
+                        toggle = !toggle;
+                    }
+                    return { type: "polyline", geometry: pts };
+                });
+                pts = pts.concat(tmp.geometry);
+            }
+
+            let ret = [{
+                type: "polygon",
+                geometry: pts
+            }];
+            if (bcompleted) {
+                ret.push(calc.annotationToNorth(a, "ogf", calc.center(points)));
+            }
+            return ret;
+        }).end();
     } else if (properties.log == "G-M-OGR") {
+        return turnPlane.reduce((prev, points, index, buffer) => {
+            let length = points[index + 1].y - points[index].y;
+            let pts = [points[index]];
+            arrowSize = (arrowSize > 0) ? arrowSize * -1 : arrowSize;
+            if (Math.abs(length) >= (arrowSizeY * 2)) {
+                let toggle = true;
+                for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                    if (toggle === true) {
+                        pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    } else {
+                        pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    }
+                    toggle = !toggle;
+                }
 
+                if (Q.isValid(prev)) {
+                    pts = prev[0].geometry.concat(pts);
+                }
+
+
+            }
+
+            if (index == points.length - 2) {
+                let tmp = turnPlane.turnStack(points, points.length - 1, 0, (ps) => {
+                    let pts = [];
+                    let toggle = true;
+                    let length = ps[0].y - ps[ps.length - 1].y;
+
+                    for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
+                        if (toggle === true) {
+                            pts.push({ x: -arrowSize, y: i + arrowSizeY });
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        } else {
+                            pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                        }
+                        toggle = !toggle;
+                    }
+                    return { type: "polyline", geometry: pts };
+                });
+                pts = pts.concat(tmp.geometry);
+            }
+
+            let ret = [{
+                type: "polygon",
+                geometry: pts
+            }];
+            if (bcompleted) {
+                ret.push(calc.annotationToNorth(a, "ogf", calc.center(points)));
+            }
+            return ret;
+        }).end();
     }
 }
 
@@ -119,12 +272,21 @@ module.exports = {
             ogb: {
                 value: "{T}\n{T1}",
                 anchor: { x: 0, y: 0 }
+            },
+            ogz: {
+                value: "{T}",
+                anchor: { x: 0, y: 0 }
+            },
+            ogf: {
+                value: "FREE\n{T}\n{W}\n{W1}",
+                anchor: { x: 0, y: 0 }
             }
-
         },
         variables: {
             T: "3/27 AD",
-            T1: "A1"
+            T1: "A1",
+            W: "200900-",
+            W1: "272100Z SEP"
         }
     }
 };
