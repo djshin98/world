@@ -404,11 +404,53 @@ function mlines(turnPlane, properties, bcompleted) {
                 //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: -(a.dlb.width / 2) }, undefined, { trip: false }));
                 ret.push(calc.annotation(a, "olp", { x: 0, y: -a.olp.width / 2 }, undefined, { trip: false }));
             }
-            ret.push({ type: "polyline", geometry: p });
+
             //p[index + 1].y = i - pbs.glfdist * 2;
             if (bcompleted === true && (p.length - 2) == index) {
                 //ret.push(calc.annotation(a, "w", { x: a.dlb.height, y: p[index + 1].y + (a.dlb.width / 2) }));
                 ret.push(calc.annotation(a, "olp", { x: 0, y: p[index + 1].y + (a.olp.width / 2) }));
+                calc.toDot(turnPlane, p, pbs.div, 3).forEach(g => { ret.push(g); });
+            } else {
+                ret.push({ type: "polyline", geometry: p });
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-SLH") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                ret.push(calc.annotation(a, "slh", { x: 0, y: -a.slh.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            if (bcompleted === true && (p.length - 2) == index) {
+                ret.push(calc.annotation(a, "slh", { x: 0, y: p[index + 1].y + (a.slh.width / 2) }));
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-SLR") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                ret.push(calc.annotation(a, "slr", { x: 0, y: -a.slr.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            if (bcompleted === true && (p.length - 2) == index) {
+                ret.push(calc.annotation(a, "slr", { x: 0, y: p[index + 1].y + (a.slr.width / 2) }));
+            }
+            return ret;
+
+        }).end();
+    } else if (properties.log == "G-G-SLB") {
+        return turnPlane.reduce((prev, p, index, buffer) => {
+            let ret = [];
+            if (index == 0) {
+                ret.push(calc.annotation(a, "slb", { x: 0, y: -a.slb.width / 2 }, undefined, { trip: false }));
+            }
+            ret.push({ type: "polyline", geometry: p });
+            if (bcompleted === true && (p.length - 2) == index) {
+                ret.push(calc.annotation(a, "slb", { x: 0, y: p[index + 1].y + (a.slb.width / 2) }));
             }
             return ret;
 
@@ -571,6 +613,21 @@ module.exports = {
             olp: {
                 filter: ["G-G-OLP"],
                 value: "PLD\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            slh: {
+                filter: ["G-G-SLH"],
+                value: "HOLDING LINE\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            slh: {
+                filter: ["G-G-SLR"],
+                value: "RL\n(PL {T})",
+                anchor: { x: 0, y: 0 }
+            },
+            slh: {
+                filter: ["G-G-SLB"],
+                value: "BRIDGEHEAD LINE\n(PL {T})",
                 anchor: { x: 0, y: 0 }
             }
         },

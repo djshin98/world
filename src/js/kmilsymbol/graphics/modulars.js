@@ -1,7 +1,7 @@
 function registryModular(graphicModulars) {
 
-    graphicModulars["매복"] = require("../modular/ambush.js");
-
+    graphicModulars["매복"] = require("../modular/OAC/CC/ambush");
+    graphicModulars["매복2"] = require("../modular/OAC/CC/ambush2");
     graphicModulars["BREACH"] = require("../modular/breach.js");
     graphicModulars["CANALIZE"] = require("../modular/canalize.js");
 

@@ -260,12 +260,23 @@ function catk(turnPlane, properties, bcompleted) {
                             g.geometry[index - 1] = g.geometry[index + 1];
                             g.geometry[index + 1] = temp;
 
-                            let itx = line(g.geometry[index - 2], g.geometry[index - 1]).intersect(
-                                line(g.geometry[index + 2], g.geometry[index + 1])
+                            let itx = line(g.geometry[index - 2], g.geometry[index - 3]).intersect(
+                                line(g.geometry[index + 2], g.geometry[index + 3])
                             );
-                            turnPlane.turnStack([itx, g.geometry[index]], 0, 1, (xp) => {
+                            let ppp = calc.extension(turnPlane, itx, g.geometry[index + 2], width * 2).geometry[1];
+                            /*
+                            ret.push({
+                                type: "polyline",
+                                geometry: [itx, g.geometry[index]]
+                            });*/
+                            turnPlane.turnStack([itx, g.geometry[index], ppp], 0, 1, (xp) => {
                                 let ark = calc.arrowLine(turnPlane, { x: -width, y: 0 }, { x: width, y: 0 }, s.arrow2, 30);
-                                ark.push(line(calc.moveY({ x: -width, y: 0 }, -s.arrow2), calc.moveY({ x: -width, y: 0 }, s.arrow2)).end());
+                                ark.push({
+                                    type: "polyline",
+                                    geometry: [calc.moveY({ x: -width, y: 0 }, -s.arrow2), calc.moveY({ x: -width, y: 0 }, s.arrow2)]
+                                });
+                                ark.push({ type: "polyline", geometry: [{ x: xp[2].x, y: xp[2].y }, { x: -xp[2].x, y: xp[2].y }] });
+                                ark.push({ type: "polyline", geometry: [{ x: xp[2].x, y: -xp[2].y }, { x: -xp[2].x, y: -xp[2].y }] });
                                 return ark;
                             }).forEach(g => {
                                 g.trip = false;

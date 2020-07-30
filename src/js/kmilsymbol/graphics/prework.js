@@ -33,8 +33,22 @@ function rightAngle(tp, p) {
     return p;
 }
 
+function rightAngleCenter(tp, p) {
+    if (p.length > 2) {
+        let gp = tp.turnStack(p, 1, 0, function(vp) {
+            let h = vp[2].x;
+            return {
+                type: "polyline",
+                geometry: [vp[0], vp[1], { x: -h, y: 0 }, { x: h, y: 0 }, { x: 0, y: -vp[0].y }]
+            };
+        });
+        return gp.geometry;
+    }
+    return p;
+}
+
 function pass(tp, p) {
     return p;
 }
 
-module.exports = { pass: pass, centerRightAngle: centerRightAngle, rightAngle: rightAngle };
+module.exports = { pass: pass, centerRightAngle: centerRightAngle, rightAngle: rightAngle, rightAngleCenter: rightAngleCenter };
