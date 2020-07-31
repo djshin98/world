@@ -33,6 +33,17 @@ function circle(turnPlane, properties, bcompleted) {
                 name: aname
             });
 
+        } else if (properties.log == "G-T-S") {
+            let c = rect(0, -dist, a.o.width, a.o.height);
+            let arc = calc.arc(0, Math.PI * 2 - Math.PI / 6, dist, { div: 10, annotation: c }).forEach(g => {
+                ret.push(g);
+            });
+            ret.push({
+                type: "annotation",
+                geometry: c.geometry(),
+                name: aname
+            });
+
         } else if (properties.log == "G-T-Q") {
             let c = rect(0, -dist, a.q.width, a.q.height);
             let arc = calc.arc(0, Math.PI * 2 - Math.PI / 6, dist, { div: 10, annotation: c, hair: { freq: 10, length: 0.2 } });
