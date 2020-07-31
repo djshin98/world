@@ -9,6 +9,8 @@ function delay(turnPlane, properties, bcompleted) {
     let aname = "d"
     if (properties.log == "G-T-L") {
         aname = "d"
+    } else if (properties.log == "G-T-M") {
+        aname = "r"
     } else if (properties.log == "G-T-T") {
         aname = "d"
     } else if (properties.log == "G-T-W") {
@@ -89,6 +91,10 @@ module.exports = {
         annotations: {
             d: {
                 value: "D",
+                anchor: { x: 0, y: 0 }
+            },
+            r: {
+                value: "R",
                 anchor: { x: 0, y: 0 }
             },
             w: {

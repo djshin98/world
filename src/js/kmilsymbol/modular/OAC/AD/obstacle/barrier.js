@@ -1,4 +1,4 @@
-const { calc } = require("../../../../graphics/math");
+const { calc, line } = require("../../../../graphics/math");
 
 function barrier(turnPlane, properties, bcompleted) {
     let a = properties.annotations;
@@ -258,6 +258,48 @@ function barrier(turnPlane, properties, bcompleted) {
             }
             return ret;
         }).end();
+    } else if (properties.log == "G-M-OAR") {
+        let result = [];
+        return turnPlane.map((prev, points, index, buffer) => {
+            return calc.triLine(points[index], points[index + 1], arrowSizeY, -arrowSize, {
+                type: "polygon",
+                a: a,
+                aname: "o"
+            });
+        }).end();
+    } else if (properties.log == "G-M-OMC") {
+
+        return turnPlane.map((prev, points, index, buffer) => {
+            let result = [];
+            let dist = calc.distance(points[index], points[index + 1]);
+            calc.arc(0, -Math.PI, dist / 2, { translate: { x: 0, y: dist / 2 } }).forEach(g => {
+                calc.toDot(turnPlane, g.geometry, arrowSize / 2, 2).forEach(gd => { result.push(gd); });
+            });
+            calc.toDot(turnPlane, [points[index], points[index + 1]], arrowSize / 2, 2).forEach(gd => { result.push(gd); });
+            return result;
+        }).end();
+    } else if (properties.log == "G-M-OMTA") {
+        return turnPlane.map((prev, points, index, buffer) => {
+            let result = [];
+            result.push(line(points[index], points[index + 1]).end());
+            for (let y = a.o.width; y < points[index + 1].y; y += a.o.width * 2) {
+                result.push(calc.annotation(a, "o", { x: 0, y: y }));
+            }
+            return result;
+        }).end();
+    } else if (properties.log == "G-M-OMPA") {
+        return turnPlane.map((prev, points, index, buffer) => {
+            let result = [];
+            result.push(line(points[index], points[index + 1]).end());
+            for (let y = a.o.width; y < points[index + 1].y; y += a.o.width * 2) {
+                result.push(calc.annotation(a, "o", { x: 0, y: y }));
+                result.push({
+                    type: "polyline",
+                    geometry: [{ x: -a.o.width, y: y - (a.o.width / 2) }, { x: 0, y: y }, { x: -a.o.width, y: y + (a.o.width / 2) }]
+                });
+            }
+            return result;
+        }).end();
     }
 }
 
@@ -280,7 +322,12 @@ module.exports = {
             ogf: {
                 value: "FREE\n{T}\n{W}\n{W1}",
                 anchor: { x: 0, y: 0 }
-            }
+            },
+            o: {
+                filter: ["G-M-OAR", "G-M-OMTA", "G-M-OMPA"],
+                value: "●",
+                anchor: { x: 0, y: 0 }
+            },
         },
         variables: {
             T: "3/27 AD",

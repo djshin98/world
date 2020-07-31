@@ -35,10 +35,12 @@ function registryModular(graphicModulars) {
     graphicModulars["항공통제방위호형"] = require("../modular/OAC/CC/ATC/region/arctype");
     graphicModulars["항공통제트랙형"] = require("../modular/OAC/CC/ATC/region/tracktype.js");
     graphicModulars["호위"] = require("../modular/OAC/CSS/escort");
-
+    graphicModulars["원"] = require("../modular/OAC/mission/circle");
+    graphicModulars["POLYGON"] = require("../modular/OAC/mission/polygon");
     graphicModulars["BLOCK"] = require("../modular/OAC/mission/block.js");
     graphicModulars["BYPASS"] = require("../modular/OAC/mission/bypass.js");
-    graphicModulars["DELAY"] = require("../modular/OAC/mission/delay.js");
+    graphicModulars["DELAY"] = require("../modular/OAC/mission/delay");
+    graphicModulars["DELAY2"] = require("../modular/OAC/mission/delay2");
     //graphicModulars["침투로"] = require("../modular/OAC/CC/ATC/line/penetration");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
 

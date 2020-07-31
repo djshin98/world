@@ -7,11 +7,17 @@
         let a = properties.annotations;
 
         let orders = [
-            [0, 2], 
+            [0, 2],
             [1, 3],
         ];
         return turnPlane.map((prev, p, i, buffer) => {
-            if (properties.log == "G-T-B") {
+            if (properties.log == "G-M-OEB") {
+                if (i == 0) {
+                    return { type: "polyline", geometry: [p[0], p[2]] };
+                } else {
+                    return { type: "polyline", geometry: [p[1], p[3]] };
+                }
+            } else if (properties.log == "G-T-B") {
                 if (i == 0) {
                     return { type: "polyline", geometry: [p[0], p[2]] };
                 } else if (i == 1) {
@@ -55,8 +61,8 @@
                     return ret;
                 }
             }
-        
-                    /*
+
+            /*
                     let p1 = { x: p[2].x + gap, y: 0 };
                     let p3 = { x: p[0].x - gap, y: 0}; 
             
@@ -135,7 +141,7 @@
                     value: "P",
                     anchor: { x: 0, y: 0 }
                 }
-                
+
             }
         }
     };

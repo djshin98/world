@@ -6,51 +6,139 @@ function ambush(turnPlane, properties, bcompleted) {
     let arrowSize = properties.pixelBySize.arrow;
     let a = properties.annotations;
 
-    let orders = [
-        [0, 1],
-        [4, 1]
-    ];
     return turnPlane.reduce((prev, p, i, buffer) => {
-        if (i == 0) {
-            return calc.arrowLine(turnPlane, p[1], p[0], arrowSize, 30);
-        } else if (i == 1) {
+        if (properties.log == "G-G-SLAA") {
             let ret = [];
-            let dist = calc.distance(p[2], p[0]);
-            let dy = Math.abs(p[4].y - p[1].y);
-            let dx = Math.abs(p[2].x - p[1].x);
-
-            let rad = Math.atan2(dx, dy);
-            let my = Math.abs(Math.sin(rad) * dist);
-
-            calc.arc(rad, -rad, dist, { div: 10 }).forEach(g => {
-                ret.push(g);
-                g.geometry.forEach(l => {
-                    ret.push({
-                        type: "polyline",
-                        geometry: [l, calc.moveY(l, -arrowSize)]
-                    })
+            if (i == 0) {
+                calc.annotationOnLine(a, "b", 0.5, p[0], p[1]).forEach(g => {
+                    if (g.type == "polyline") {
+                        buffer.push(g);
+                    }
+                    g.trip = false;
+                    ret.push(g);
                 });
+            }
+            let geo = [];
+            let pre = [];
+            let post = [];
+            buffer.forEach((g, gi) => {
+                if (gi == 0) {
+                    geo.push(g.geometry[1]);
+                    let m = p.filter((e, i) => { return i > 1 ? true : false; }).forEach(mg => {
+                        geo.push(mg);
+                    });
+                } else {
+                    geo.push(g.geometry[0]);
+                }
             });
-            //ret.push(line(p[2], p[3]).end());
-            let ex = calc.extension(turnPlane, p[1], p[0], my);
-            calc.arrowLine(turnPlane, { x: 0, y: dist }, p[0], arrowSize, 30).forEach(g => {
-                ret.push(g);
+
+            ret.push({
+                type: "polyline",
+                geometry: geo
             });
-            //calc.arrowLine(turnPlane, { x: 0, y: dist- moveY }, p[0], arrowSize, 30).forEach(g => { ret.push(g); });
+            return ret;
+        } else if (properties.log == "G-G-SLAB") {
+            let ret = [];
+            if (i == 0) {
+                calc.annotationOnLine(a, "s", 0.5, p[0], p[1]).forEach(g => {
+                    if (g.type == "polyline") {
+                        buffer.push(g);
+                    }
+                    g.trip = false;
+                    ret.push(g);
+                });
+            }
+            let geo = [];
+            let pre = [];
+            let post = [];
+            buffer.forEach((g, gi) => {
+                if (gi == 0) {
+                    geo.push(g.geometry[1]);
+                    let m = p.filter((e, i) => { return i > 1 ? true : false; }).forEach(mg => {
+                        geo.push(mg);
+                    });
+                } else {
+                    geo.push(g.geometry[0]);
+                }
+            });
+
+            ret.push({
+                type: "polyline",
+                geometry: geo
+            });
+            return ret;
+        } else if (properties.log == "G-G-SLAD") {
+            let ret = [];
+            if (i == 0) {
+                let d = calc.distance(p[0], p[1]);
+                let mid = calc.mid(p[0], p[1]);
+                calc.arrowLine(turnPlane, mid, calc.moveX(mid, -arrowSize * 5), arrowSize, 30).forEach(g => {
+                    g.trip = false;
+                    ret.push(g);
+                });
+                if (d < arrowSize * 5) {
+                    buffer.push({
+                        type: "polyline",
+                        geometry: [p[0]]
+                    });
+                    buffer.push({
+                        type: "polyline",
+                        geometry: [p[1]]
+                    });
+                } else {
+                    buffer.push({
+                        type: "polyline",
+                        geometry: [p[0], { x: 0, y: arrowSize * 5 }]
+                    });
+                    buffer.push({
+                        type: "polyline",
+                        geometry: [{ x: 0, y: p[1].y - (arrowSize * 5) }, p[1]]
+                    });
+                }
+                return ret;
+            }
+            let geo = [];
+            let pre = [];
+            let post = [];
+            buffer.forEach((g, gi) => {
+                if (gi == 0) {
+                    geo.push(g.geometry[1]);
+                    let m = p.filter((e, i) => { return i > 1 ? true : false; }).forEach(mg => {
+                        geo.push(mg);
+                    });
+                } else {
+                    geo.push(g.geometry[0]);
+                }
+            });
+
+            ret.push({
+                type: "polyline",
+                geometry: geo
+            });
             return ret;
         }
 
-    }, rightAngleCenter, orders).end();
+    }).end();
 }
 
 
 module.exports = {
     modular: ambush,
     minPointCount: 2,
-    maxPointCount: 3,
     properties: {
         size: {
-            arrow: 30
+            arrow: 20
+        },
+        annotations: {
+            b: {
+                value: " ● ",
+                anchor: { x: 0, y: 0 }
+            },
+            s: {
+                value: " ●●● ",
+                anchor: { x: 0, y: 0 }
+            }
         }
-    }
+    },
+
 };

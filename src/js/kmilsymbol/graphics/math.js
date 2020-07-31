@@ -94,14 +94,16 @@ class calc {
             y: len * Math.sin(rad) + o.y
         };
     }
-    static dir(org, dir, deg, len) {
-        let rdeg = deg * Math.PI / 180;
-        let o = { x: dir.x - org.x, y: dir.y - org.y };
-        let rad = Math.atan2(o.y, o.x) + rdeg;
-        return {
-            x: len * Math.cos(rad) + o.x,
-            y: len * Math.sin(rad) + o.y
-        };
+    static dir(tp, org, dir, deg, len) {
+        let rad = deg * Math.PI / 180;
+        let y = len * Math.cos(rad);
+        let x = len * Math.sin(rad);
+        return tp.turnStack([org, dir], 0, 1, (p) => {
+            return {
+                type: "polyline",
+                geometry: [p[0], { x: x, y: y }]
+            }
+        });
     }
     static arc(sr, er, dist, options) {
         options = Object.assign({}, options);
@@ -113,17 +115,21 @@ class calc {
         let hairLength = 0;
         let hairFreq = 0;
         let hasAnnotation = false;
+        let hairType = 0;
         let geo = [];
         if (Q.isValid(options.hair)) {
             mode = 1;
             hairFreq = (Q.isValid(options.hair.freq) ? options.hair.freq : 15) * Math.PI / 180;
             hairLength = (1 + options.hair.length) * dist;
+            if (options.hair.type === "tri") {
+                hairType = 2;
+            }
         }
         if (Q.isValid(options.annotation)) {
             hasAnnotation = true;
         }
         if (sr < er) {
-            if (mode == 1) {
+            if (mode == 1 && hairType != 2) {
                 result.push({
                     x: hairLength * Math.sin(sr) + mp.x,
                     y: hairLength * Math.cos(sr) + mp.y
@@ -156,7 +162,7 @@ class calc {
                 }
             }
 
-            if (mode == 1) {
+            if (mode == 1 && hairType != 2) {
                 result.push({
                     x: hairLength * Math.sin(er) + mp.x,
                     y: hairLength * Math.cos(er) + mp.y
@@ -185,7 +191,7 @@ class calc {
                 }
             }
         } else {
-            if (mode == 1) {
+            if (mode == 1 && hairType != 2) {
                 result.push({
                     x: hairLength * Math.sin(sr) + mp.x,
                     y: hairLength * Math.cos(sr) + mp.y
@@ -217,7 +223,7 @@ class calc {
                     });
                 }
             }
-            if (mode == 1) {
+            if (mode == 1 && hairType != 2) {
                 result.push({
                     x: hairLength * Math.sin(er) + mp.x,
                     y: hairLength * Math.cos(er) + mp.y
@@ -249,12 +255,25 @@ class calc {
         geo.push({ type: "polyline", geometry: result });
 
         if (Q.isValid(options.hair)) {
-            resultHair.forEach(h => {
-                geo.push({
-                    type: "polyline",
-                    geometry: h
+            if (hairType == 2) {
+                resultHair.reduce((prev, curr, i) => {
+                    if (i % 2 == 0) {
+                        geo.push({
+                            type: "polyline",
+                            geometry: [prev[0], calc.mid(prev[1], curr[1]), curr[0]]
+                        });
+                    }
+                    return curr;
                 });
-            })
+            } else {
+                resultHair.forEach(h => {
+                    geo.push({
+                        type: "polyline",
+                        geometry: h
+                    });
+                });
+            }
+
         }
         return geo;
     }
@@ -306,9 +325,11 @@ class calc {
             }
         ];
     }
-    static triLine(pt1, pt2, arrowSizeY, arrowSize) {
+    static triLine(pt1, pt2, arrowSizeY, arrowSize, options) {
+        let opt = Object.assign({ type: "polyline" }, options);
         let length = pt2.y - pt1.y;
         if (Math.abs(length) >= (arrowSizeY * 2)) {
+            let ret = [];
             let pts = [pt1];
             let toggle = true;
             for (let i = 0; i < length - arrowSizeY * 2; i += arrowSizeY * 2) {
@@ -317,14 +338,19 @@ class calc {
                     pts.push({ x: 0, y: (i + arrowSizeY * 2) });
                 } else {
                     pts.push({ x: 0, y: (i + arrowSizeY * 2) });
+                    if (Q.isValid(opt.a)) {
+                        ret.push(calc.annotation(opt.a, opt.aname, { x: opt.a[opt.aname].height, y: (i + arrowSizeY) }));
+                    }
                 }
                 toggle = !toggle;
             }
             pts.push(pt2);
-            return [{
-                type: "polyline",
+            if (opt.type == "polygon") { pts.push(pt1); }
+            ret.push({
+                type: opt.type,
                 geometry: pts
-            }];
+            });
+            return ret;
         }
         return [{
             type: "polyline",
