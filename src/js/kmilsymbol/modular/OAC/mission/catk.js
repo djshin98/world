@@ -104,16 +104,21 @@ function catk(turnPlane, properties, bcompleted) {
                 width = ((p[1].y - p[0].y) * 0.2) / 2;
                 arrow = ((p[1].y - p[0].y) * 0.4) / 2;
 
-                ret = calc.toDot(turnPlane, [{ x: -(arrow + (arrow / 6)), y: arrow + (arrow / 6) }, p[0],
+                calc.toDot(turnPlane, [{ x: -(arrow + (arrow / 6)), y: arrow + (arrow / 6) }, p[0],
                     { x: arrow + (arrow / 6), y: arrow + (arrow / 6) }
-                ], div, 3);
+                ], div, 2).forEach(g => {
+                    g.trip = false;
+                    ret.push(g);
+                });
+                /*
                 ret.push({
                     type: "polyline",
+                    trip: false,
                     geometry: [{ x: -(arrow + (arrow / 6)), y: arrow + (arrow / 6) }, p[0],
                         { x: arrow + (arrow / 6), y: arrow + (arrow / 6) }
                     ]
                 });
-
+                */
                 let lines = [
                     { x: -width, y: p[1].y },
                     { x: -width, y: arrow },
@@ -129,7 +134,7 @@ function catk(turnPlane, properties, bcompleted) {
                     geometry: lines
                 });
 
-                let ann = calc.annotation(a, "catk", { x: 0, y: p[1].y / 2 });
+                let ann = calc.annotation(a, "t", { x: 0, y: p[1].y / 2 });
                 ann.trip = false;
                 ret.push(ann);
 
@@ -141,6 +146,40 @@ function catk(turnPlane, properties, bcompleted) {
                 //}
             }
             return ret;
+        } else if (properties.log == "G-G-PF") {
+            let ret = [];
+            if (i == 0) {
+                width = ((p[1].y - p[0].y) * 0.2) / 2;
+                arrow = ((p[1].y - p[0].y) * 0.4) / 2;
+
+                calc.toDot(turnPlane, [{ x: -(arrow + (arrow / 6)), y: arrow + (arrow / 6) }, p[0],
+                    { x: arrow + (arrow / 6), y: arrow + (arrow / 6) }
+                ], div, 2).forEach(g => {
+                    g.trip = false;
+                    ret.push(g);
+                });
+
+                ret.push({
+                    type: "polyline",
+                    trip: false,
+                    geometry: [{ x: -(arrow + (arrow / 6)), y: arrow + (arrow / 6) }, p[0],
+                        { x: arrow + (arrow / 6), y: arrow + (arrow / 6) }
+                    ].map(d => { return calc.moveY(d, arrow / 6) })
+                });
+
+                let ann = calc.annotation(a, "t", { x: -a.t.width * 2 / 3, y: p[1].y / 2 });
+                ann.trip = false;
+                ret.push(ann);
+
+                ret.push({
+                    type: "polyline",
+                    geometry: [calc.moveY(p[0], arrow / 6), p[1]]
+                });
+                return ret;
+            } else {
+                prev[0].geometry.push(p[i + 1]);
+                return prev;
+            }
         } else if (properties.log == "G-G-OLAV") {
             let ret = [];
             let lines = [];
@@ -357,10 +396,17 @@ module.exports = {
                 value: "CATK",
                 anchor: { x: 0, y: 0 }
             },
+            t: {
+                value: "{T}",
+                anchor: { x: 0, y: 0 }
+            },
             olaa: {
                 value: "A",
                 anchor: { x: 0, y: 0 }
             }
+        },
+        variables: {
+            T: "GREEN"
         }
     }
 };

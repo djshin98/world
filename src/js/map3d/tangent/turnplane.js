@@ -277,7 +277,12 @@ function tw(points, bcompleted, originIndex, options, annotations) {
         }
 
         if (!Q.isValid(bcompleted)) { bcompleted = false; }
-        return options.modular(new TurnPlane(origin, points), options.properties, bcompleted);
+        try {
+            return options.modular(new TurnPlane(origin, points), options.properties, bcompleted);
+        } catch (e) {
+            console.log("error modular :" + e.message);
+        }
+
     }
 }
 

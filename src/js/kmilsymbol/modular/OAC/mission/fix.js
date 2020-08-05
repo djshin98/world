@@ -2,7 +2,7 @@ const { calc } = require("../../../graphics/math");
 
 function fix(turnPlane, properties, bcompleted) {
     let a = properties.annotations;
-    if (properties.log = "G-T-F") {
+    if (properties.log == "G-T-F") {
         return turnPlane.map((prev, points, index, buffer) => {
             if (index == 0) {
                 let s = properties.pixelBySize;
@@ -36,9 +36,46 @@ function fix(turnPlane, properties, bcompleted) {
             }
         }).end();
     } else if (properties.log == "G-T-A") {
+        return turnPlane.map((prev, p, index, buffer) => {
+            let ret = [];
+            let s = properties.pixelBySize;
 
+            ret.push(calc.arrow(turnPlane, p[1], p[0], s.width, 30, false, s.width / 4));
+            ret.push(calc.annotation(a, "t", calc.moveY(p[1], -a.t.width * 2)));
+            let pt = calc.moveY(p[1], -a.t.width * 4);
+            ret.push({
+                type: "polyline",
+                geometry: [pt,
+                    calc.move(pt, a.t.width, a.t.width),
+                    calc.moveX(p[1], a.t.width),
+                    calc.moveX(p[1], -a.t.width),
+                    calc.move(pt, -a.t.width, a.t.width),
+                    pt, calc.moveY(p[0], s.width / 4)
+                ]
+            })
+            return ret;
+        }).end();
     } else if (properties.log == "G-T-AS") {
+        return turnPlane.map((prev, p, index, buffer) => {
+            let ret = [];
+            let s = properties.pixelBySize;
 
+            ret.push(calc.arrow(turnPlane, p[1], p[0], s.width, 30, true));
+            ret.push(calc.annotation(a, "t", calc.moveY(p[1], -a.t.width * 2)));
+            let pt = calc.moveY(p[1], -a.t.width * 4);
+            ret.push({
+                type: "polyline",
+                geometry: [pt,
+                    calc.move(pt, a.t.width, a.t.width),
+                    calc.moveX(p[1], a.t.width),
+                    calc.moveY(p[1], -a.t.width),
+                    calc.moveX(p[1], -a.t.width),
+                    calc.move(pt, -a.t.width, a.t.width),
+                    pt, calc.moveY(p[0], s.width * Math.cos(Math.PI / 6))
+                ]
+            })
+            return ret;
+        }).end();
     }
 
 }
@@ -60,7 +97,15 @@ module.exports = {
             f: {
                 value: "F",
                 anchor: { x: 0, y: 0 }
+            },
+            t: {
+                filter: ["G-T-A", "G-T-AS"],
+                value: "{T}",
+                anchor: { x: 0, y: 0 }
             }
+        },
+        variables: {
+            T: "T"
         }
     }
 

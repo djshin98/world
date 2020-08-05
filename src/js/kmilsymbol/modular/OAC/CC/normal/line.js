@@ -486,7 +486,7 @@ module.exports = {
                 anchor: { x: 0, y: 0 }
             },
             gl5c: {
-                filter: ["G-G-GL5C", "G-G-GL5C"],
+                filter: ["G-G-GL5C", "G-G-GL5D"],
                 value: "{T} {H}({C}){T}",
                 anchor: { x: 0.5, y: 0 }
             },

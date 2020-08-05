@@ -20,6 +20,10 @@ function safetyzone(turnPlane, properties, bcompleted) {
 module.exports = {
     modular: safetyzone,
     minPointCount: 2,
-    maxPointCount: 5,
-    properties: {}
+    maxPointCount: 4,
+    properties: {
+        size: {
+            arrow: 10
+        }
+    }
 };

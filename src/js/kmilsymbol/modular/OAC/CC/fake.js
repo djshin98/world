@@ -2,51 +2,38 @@
 
 const { calc } = require("../../../graphics/math");
 
+let orders = [
+    [0, 1],
+    [0, 2]
+];
+
 function fake(turnPlane, properties, bcompleted) {
-    return turnPlane.map((prev, p, i, buffer) => {
-        let s = properties.pixelBySize;
+    if (properties.log == "G-G-PD") {
+        let div = properties.pixelBySize.div;
+        return turnPlane.map((prev, p, i, buffer) => {
+            let s = properties.pixelBySize;
+            return calc.toDot(turnPlane, orders[i].map(io => { return p[io]; }), div, 2);
+        }, undefined, orders).end();
+    } else if (properties.log == "G-G-DLP") {
+        let arrow = properties.pixelBySize.arrow;
+        return turnPlane.map((prev, p, i, buffer) => {
+            let a = p[orders[i][0]];
+            let b = p[orders[i][1]];
 
-        if (i == 0) {
-            let pa = [];
-            let count = calc.distance(p[0], p[1]) / s.div;
-            let pk = [];
-            for (let index = 0; index < count; index++) {
-                if (index % 2 == 0) {
-                    pa.push({ x: 0, y: (s.div * index) });
-                    pa.push({ x: 0, y: (s.div * index) + s.div });
-
-                    pk.push({
-                        type: "polyline",
-                        geometry: pa,
-                    });
-                    pa = [];
-                }
+            let ret = [];
+            if (i == 0) {
+                let dist = calc.distance(a, b);
+                let c = calc.moveY(a, dist / 4);
+                let d = calc.moveY(b, -dist / 4);
+                ret.push({
+                    type: "polygon",
+                    geometry: [c, d, calc.moveX(d, -dist / 100), calc.moveX(c, -dist / 100), c]
+                });
             }
-            return pk;
-        } else if (i == 1) {
-            let pts = turnPlane.turnStack(p, 0, 2, (pt) => {
-                let pa = [];
-                let count = calc.distance(pt[0], pt[2]) / s.div;
-                let pk = [];
-                for (let i = 0; i < count; i++) {
-                    if (i % 2 == 0) {
-                        pa.push({ x: 0, y: (s.div * i) });
-                        pa.push({ x: 0, y: (s.div * i) + s.div });
-
-                        pk.push({
-                            type: "polyline",
-                            geometry: pa,
-                        });
-                        pa = [];
-
-                    }
-
-                }
-                return pk;
-            });
-            return pts;
-        }
-    }).end();
+            calc.arrowLine(turnPlane, a, b, arrow, 30).forEach(g => { ret.push(g); });
+            return ret;
+        }, undefined, orders).end();
+    }
 }
 
 
@@ -57,8 +44,8 @@ module.exports = {
     properties: {
         size: {
             div: 10,
-        },
-        pixelBySize: {}
+            arrow: 20
+        }
     }
 
 };

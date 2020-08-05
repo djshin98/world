@@ -29,6 +29,8 @@ function cover(turnPlane, properties, bcompleted) {
         aname = "c"
     } else if (properties.log == "G-T-UP") {
         aname = "p"
+    } else if (properties.log == "G-G-GAS") {
+        aname = undefined;
     }
 
     let orders = [
@@ -42,7 +44,7 @@ function cover(turnPlane, properties, bcompleted) {
         if (i == 0) {
             return arrowThunder(turnPlane, p[0], p[1], arrowSize);
         } else if (i == 1) {
-            let braceLen = marker + a[aname].width * 2;
+            let braceLen = marker + Q.isValid(aname) ? (a[aname].width * 2) : 0;
             let θ = calc.θ(p[1]);
             let alpha = (Math.PI - θ) / 2;
             let lineLen = (braceLen / 2) / Math.cos(alpha);
@@ -55,11 +57,13 @@ function cover(turnPlane, properties, bcompleted) {
                 y: lineLen * Math.cos(θ)
             }
             let arr = [p[2], pa, pb, p[1]];
-            turnPlane.turnStack(arr, 2, 1, (t) => {
-                return [calc.annotation(a, aname, { x: 0, y: a[aname].width / 2 }),
-                    calc.annotation(a, aname, { x: 0, y: t[1].y - a[aname].width / 2 })
-                ];
-            }).forEach(g => { ret.push(g); });
+            if (Q.isValid(aname)) {
+                turnPlane.turnStack(arr, 2, 1, (t) => {
+                    return [calc.annotation(a, aname, { x: 0, y: a[aname].width / 2 }),
+                        calc.annotation(a, aname, { x: 0, y: t[1].y - a[aname].width / 2 })
+                    ];
+                }).forEach(g => { ret.push(g); });
+            }
             turnPlane.turnStack(arr, 1, 0, (t) => {
                 return arrowThunder(turnPlane, t[1], t[0], arrowSize);
             }).forEach(g => { ret.push(g); });
@@ -67,7 +71,6 @@ function cover(turnPlane, properties, bcompleted) {
                 return arrowThunder(turnPlane, t[2], t[3], arrowSize);
             }).forEach(g => { ret.push(g); });
         }
-
         return ret;
     }, pass, orders).end();
 }
