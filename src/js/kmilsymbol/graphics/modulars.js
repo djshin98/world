@@ -46,5 +46,6 @@ function registryModular(graphicModulars) {
 
     //기상
     graphicModulars["전선"] = require("../modular/W/line");
+    graphicModulars["전선"] = require("../modular/W/polygon");
 }
 module.exports = registryModular;

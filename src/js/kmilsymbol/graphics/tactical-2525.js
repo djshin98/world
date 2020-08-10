@@ -354,6 +354,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc['G-O-BO----'] = modular["방향선"]; //TACGRP.OTH.BERLNE.EOPI
     //sidc['G-O-F-----'] = [];//TACGRP.OTH.FIX
 
+
     //2525B compatibility
     sidc["G-F-ATC---"] = modular["원구역"]; //modular.circle;
     //sidc["G-F-AZIC--"] = []; //modular.circle;
@@ -367,4 +368,6 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc["X---I-----"] = ms.geometry.circle;
     sidc["X---A-----"] = modular["SUPPORTING ATTACK"];
     */
+
+    sidc["WA-DPFCU---L---"] = modular["전선"];
 };
