@@ -26,21 +26,27 @@ class Camera extends Eventable {
         this.camera.setView({ destination: obj });
     }
     load() {
-        let _this = this;
-        this.camera.moveEnd.addEventListener(function() {
-            _this.db.set("scene", "camera", {
-                position: _this.camera.position,
-                heading: _this.camera.heading,
-                pitch: _this.camera.pitch,
-                roll: _this.camera.roll
+        this.camera.moveEnd.addEventListener(() => {
+            this.db.set("scene", "camera", {
+                position: this.camera.position,
+                heading: this.camera.heading,
+                pitch: this.camera.pitch,
+                roll: this.camera.roll
             });
-            _this.fireEvent("changed", _this.camera);
+            this.fireEvent("changed", this.camera);
         });
 
-        this.db.get("scene", "camera", function(result) {
+        this.restore();
+
+        this.camera.changed.addEventListener(() => {
+            this.fireEvent("changed", this.camera);
+        });
+    }
+    restore() {
+        this.db.get("scene", "camera", (result) => {
             if (result && result.value) {
                 let obj = result.value;
-                _this.camera.flyTo({
+                this.camera.flyTo({
                     destination: obj.position,
                     orientation: {
                         heading: obj.heading,
@@ -49,10 +55,6 @@ class Camera extends Eventable {
                     }
                 });
             }
-        });
-
-        this.camera.changed.addEventListener(function() {
-            _this.fireEvent("changed", _this.camera);
         });
     }
     position() {
@@ -65,7 +67,6 @@ class Camera extends Eventable {
                 this.distance = Cesium.Cartesian3.distance(this.camera.positionWC, center);
                 this.camera.lookAt(center, new Cesium.HeadingPitchRange(this.camera.heading, radian, this.distance));
             }
-
         } else {
             return this.camera.pitch;
         }

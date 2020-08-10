@@ -76,7 +76,7 @@ class MapContent extends ArticleContent {
 };
 
 class Setting extends ArticleContent {
-    constructor(name, options) {
+    constructor(director, name, options) {
         super(name, options);
         if (Q.isValid(this.options.page)) {
             get({

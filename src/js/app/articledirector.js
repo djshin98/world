@@ -21,9 +21,9 @@ class ArticleDirector {
             closed: [],
             updated: []
         };
-        if (Q.isValid(options.map3)) { this.createArticle(new m3("m3", options.map3)); }
-        if (Q.isValid(options.map2)) { this.createArticle(new m2("m2", options.map2)); }
-        if (Q.isValid(options.setting)) { this.createArticle(new Setting("setting", options.setting)); }
+        if (Q.isValid(options.map3)) { this.createArticle(new m3(this, "m3", options.map3)); }
+        if (Q.isValid(options.map2)) { this.createArticle(new m2(this, "m2", options.map2)); }
+        if (Q.isValid(options.setting)) { this.createArticle(new Setting(this, "setting", options.setting)); }
 
         if (Q.isValid(options.map3) && options.map3.show === true) {
             this.switch("m3");

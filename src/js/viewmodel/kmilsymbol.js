@@ -18,6 +18,7 @@ var codeTypes = [
     { code: "E", desc: "E:비상관리부호", standard: emergency }
 ];
 
+global.statistics = {}
 
 //{ id: "1.6.4", type: "S", affiliation: "*", battlefield: "F", status: "*", modifier: "B-----", desc_kor: "특수작전지원부대", desc_eng: "Sof,unit,support" },
 
@@ -308,15 +309,42 @@ class ViewModel_KMilSymbol {
                         ((d.status === "*") ? "-" : d.status) +
                         d.modifier
                 };
+                if (!Q.isValid(statistics[d.type])) {
+                    statistics[d.type] = {
+                        Line: {
+                            complete: 0,
+                            uncomplete: 0
+                        },
+                        Icon: {
+                            complete: 0,
+                            uncomplete: 0
+                        },
+                        Unknown: 0
+                    };
+                }
+                if (option.SIDC.indexOf("WAS-TL") == 0) {
+                    console.log("llll");
+                }
                 var graphic = kms.Graphics(option);
-                if (d.type === "G") {
-                    if (Q.isValid(graphic)) {
-                        if (!graphic.isIcon()) {
-                            if (Q.isValid(graphic.modular) && d.desc_kor[d.desc_kor.length - 1] !== "*") {
-                                d.desc_kor = d.desc_kor + "*";
-                            }
+                if (Q.isValid(graphic)) {
+                    if (!graphic.isIcon()) {
+                        if (Q.isValid(graphic.modular) && d.desc_kor[d.desc_kor.length - 1] !== "*") {
+                            d.desc_kor = d.desc_kor + "*";
+                            statistics[d.type].Line.complete++;
+                        } else {
+                            statistics[d.type].Line.uncomplete++;
                         }
+                    } else {
+
+                        if (graphic.toDataURL().indexOf("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMiIgYmFzZVByb2ZpbGU9InRpbnkiIHdpZHRoPSIxMDgiIGhlaWdodD0iMTA4IiB2aWV3Qm94PSI0NiA0NiAxMDggMTA4Ij48cGF0aCBkPSJtIDk0LjgyMDYsNzguMTM3MiBjIC0wLjQ1NDIsNi44OTgzIDAuNjUzMiwxNC4zMjMgNS4zNDI0LDE5LjY5ODUgNC41MDksNS42OTMzIDExLjMwOSw5LjM1NzMgMTQuOTgsMTUuNzI4MyAzLjE2NCw2LjM1MyAtMC4wOSwxNC4yNDUgLTUuOTAzLDE3LjgyMiAtNy4yNjgsNC44MTcgLTE4LjYyMTksMi43ODUgLTIyLjczMjgsLTUuMjQ5IC0xLjU1MTEsLTIuNzk2IC0yLjM4MjgsLTUuOTMxIC0yLjg4MTUsLTkuMDcxIC0zLjUwNDgsMC40MTYgLTcuMDA5MywwLjgzNSAtMTAuNTE0MiwxLjI1MiAwLjgyMzksOC41NTUgNS4yMjYzLDE3LjI4NyAxMy4yNTQ0LDIxLjExMSA3LjgyMzIsMy43MzYgMTcuMTg5MSwzLjc4MyAyNS4zMjkxLDEuMDUyIDguODQ2LC0zLjEwMyAxNS43MzcsLTExLjk1OCAxNS4xNzEsLTIxLjUzNyAwLjA1LC02Ljk1MSAtNC4yNzIsLTEyLjg1IC05LjEzNCwtMTcuNDAzIC00LjUyNiwtNC42OTQ5IC0xMS4wNDgsLTguMzg2MiAtMTIuNDAxLC0xNS4yNzQ4IC0xLjIxNSwtMi4zNjM5IC0wLjg4OSwtOC4xMjkgLTAuODg5LC04LjEyOSB6IG0gLTAuNjI1MywtMjAuNTE3NyAwLDExLjY1MDkgMTEuNjUyNywwIDAsLTExLjY1MDkgeiIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2U9Im5vbmUiID48L3BhdGg+PC9zdmc+") == 0) {
+                            statistics[d.type].Icon.uncomplete++;
+                        } else {
+                            statistics[d.type].Icon.complete++;
+                        }
+
                     }
+                } else {
+                    statistics[d.type].Unknown++;
                 }
 
                 json.push({

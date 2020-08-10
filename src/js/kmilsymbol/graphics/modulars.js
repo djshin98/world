@@ -44,6 +44,7 @@ function registryModular(graphicModulars) {
     //graphicModulars["침투로"] = require("../modular/OAC/CC/ATC/line/penetration");
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
 
-
+    //기상
+    graphicModulars["전선"] = require("../modular/W/line");
 }
 module.exports = registryModular;

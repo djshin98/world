@@ -25,7 +25,7 @@ var clock = new Cesium.Clock({
 });
 
 class m3 extends MapContent {
-    constructor(name, options) {
+    constructor(articleDirector, name, options) {
         super(name, options);
 
         this.mode = "3D";
@@ -197,6 +197,10 @@ class m3 extends MapContent {
             cssLink.type = "text/css";
             this.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
         }
+
+        articleDirector.on("opened", (json) => {
+            this.oliveCamera.restore();
+        }, false);
     }
     json() {
         return this.getLayerDirector().json();

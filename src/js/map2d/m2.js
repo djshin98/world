@@ -1,4 +1,5 @@
 "use strict";
+const { IxDatabase } = require('../indexeddb/db');
 const L = require('leaflet');
 require("./leaflet/korean");
 const { MapContent } = require("../app/article");
@@ -6,7 +7,7 @@ const { LayerDirector2 } = require("./layer/layerdirector");
 const configLayers = require("../../conf/layers2d.json");
 
 class m2 extends MapContent {
-    constructor(name, options) {
+    constructor(articleDirector, name, options) {
         super(name, options);
         /*
         Object.assign({
@@ -18,6 +19,7 @@ class m2 extends MapContent {
             openDoor: true
         }, options);
         */
+        this.db = new IxDatabase(1);
         this.viewer2d = L.map(this.getId(), {
             /* crs: L.CRS.EPSG4326, */
             crs: L.Proj.CRS.VWorld,
@@ -81,6 +83,27 @@ class m2 extends MapContent {
         //new L.Proj.TileLayer.TMS.Provider('NaverMap.Street').addTo(this.viewer2d);
 
         this.layerDirector = new LayerDirector2(this, configLayers);
+
+        articleDirector.on("opened", (json) => {
+            this.db.get("scene", "camera", (result) => {
+                if (result && result.value) {
+                    let obj = result.value;
+                    let d = CTX.c2d(obj.position);
+                    this.viewer2d.setView({ lng: d.longitude, lat: d.latitude }, this.viewer2d.getZoom());
+                    /*
+                    flyToBounds
+                    let obj = result.value;
+                    _this.camera.flyTo({
+                        destination: obj.position,
+                        orientation: {
+                            heading: obj.heading,
+                            pitch: obj.pitch,
+                            roll: obj.roll
+                        }
+                    });*/
+                }
+            });
+        }, false);
     }
     synchronizeMap(syncMap) {
         this.syncMap = syncMap;
