@@ -1,4 +1,4 @@
-const { calc, rect } = require("../../../../graphics/math");
+const { calc, rect } = require("../../graphics/math");
 
 const akey = {
 
