@@ -1414,7 +1414,7 @@ var functionIdentifier_Weather = [{
     ]
 }];
 
-
+global.weather = functionIdentifier_Weather;
 
 module.exports = {
     code: "W",
