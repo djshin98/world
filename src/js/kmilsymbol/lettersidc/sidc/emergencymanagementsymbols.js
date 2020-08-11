@@ -89,6 +89,8 @@ module.exports = {
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
         sId["W-S-WSDSLM"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO MODERATE"]];
+        sId["W-S-WSDSS-"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO STRONG"]];
+        sId["W-S-WSDD--"] = [icn["ATMOSPHERIC.IC.TORNADO"]];
         sId["W-S-WSS-LI"] = [icn["ATMOSPHERIC.IC.SNOW.INTERMITTENT LIGHT"]];
         sId["W-S-WSTMH-"] = [
             icn["ATMOSPHERIC.IC.STORMS.THUNDERSTORM LIGHT TO MODERATE - WITH HAIL"]
@@ -96,9 +98,9 @@ module.exports = {
         sId["W-S-WST-FC"] = [
             icn["ATMOSPHERIC.IC.STORMS.FUNNEL CLOUD (TORNADO/WATERSPOUT)"]
         ];
-        sId["W-S-WSTSS-"] = [
-            icn["ATMOSPHERIC.IC.TROPICAL STORM SYSTEMS.TROPICAL STORM"]
-        ];
+        sId["W-S-WSTSS-"] = [icn["열대폭풍"]];
+        sId["W-S-WSTSH-"] = [icn["허리케인"]];
+        sId["W-S-WSVA--"] = [icn["화산재"]];
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
         sId["E-N-CA----"] = [icn["AC.IC.BIRD"]];

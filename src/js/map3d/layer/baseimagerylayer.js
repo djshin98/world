@@ -34,6 +34,12 @@ class BaseImageryLayer extends Layer {
             imageryLayers.remove(this.layerOnMap, true);
             this.layerOnMap = null;
         }
+
+        imageryLayers._layers.forEach(layer => {
+            if (layer.isBaseLayer()) {
+                imageryLayers.remove(layer, true);
+            }
+        })
     }
 }
 module.exports = { BaseImageryLayer: BaseImageryLayer };

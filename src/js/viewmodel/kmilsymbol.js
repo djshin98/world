@@ -303,7 +303,13 @@ class ViewModel_KMilSymbol {
                     children: this._makeModifierTreeJson(id, d.children)
                 });
             } else {
-                let option = {
+
+                let option = d.type == "W" ? {
+                    SIDC: d.type + ((d.pos === "*") ? "-" : d.pos) +
+                        ((d.fix === "*") ? "--" : d.fix) +
+                        d.modifier +
+                        ((d.graphic === "*") ? "---" : d.graphic) + "--"
+                } : {
                     SIDC: d.type + ((d.affiliation === "*") ? "-" : d.affiliation) +
                         ((d.battlefield === "*") ? "-" : d.battlefield) +
                         ((d.status === "*") ? "-" : d.status) +

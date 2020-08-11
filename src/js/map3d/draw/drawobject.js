@@ -191,10 +191,6 @@ class DrawObject {
     removeTemplateEntity(layer) {
         if (Q.isValid(this.templateEntity)) {
             layer.remove(this.templateEntity);
-            /*
-            this.templateEntity.forEach(ent => {
-                layer.remove(ent);
-            });*/
             this.templateEntity = null;
         }
     }

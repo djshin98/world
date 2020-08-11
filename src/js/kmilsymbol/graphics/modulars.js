@@ -45,7 +45,7 @@ function registryModular(graphicModulars) {
     graphicModulars["LINE"] = require("../modular/OAC/CC/normal/line");
 
     //기상
-    graphicModulars["전선"] = require("../modular/W/line");
-    graphicModulars["전선"] = require("../modular/W/polygon");
+    graphicModulars["기후전선"] = require("../modular/W/line");
+    graphicModulars["기후영역"] = require("../modular/W/polygon");
 }
 module.exports = registryModular;
