@@ -140,7 +140,7 @@ class Section {
         if (bshow) {
             $(".section-head>a>b").show();
             //$(".section-head>a>img").attr("src", "img/logo.png");
-            $(".section-head>a").html("<img src='img/logo.png' style='width:50px'/> 올리브 맵(Olive Map) ");
+            $(".section-head>a").html("<img src='img/logo.png' style='width:50px'/> MapX Client 5.0 API");
             if ($(".section-view").is(":visible")) {
                 $(".section-view").transition('pulse');
             } else {

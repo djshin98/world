@@ -59,7 +59,7 @@ class m3 extends MapContent {
             distanceDisplayCondition: false,
             terrainProvider: Cesium.createWorldTerrain({
                 requestVertexNormals: true,
-                requestWaterMask: true
+                requestWaterMask: false
             }),
             //showRenderLoopErrors : false,
             //shouldAnimate : false,
