@@ -198,7 +198,7 @@ class m3 extends MapContent {
             this.viewer3d.infoBox.frame.contentDocument.head.appendChild(cssLink);
         }
 
-        articleDirector.on("opened", (json) => {
+        articleDirector.on("opened", this, (json) => {
             this.oliveCamera.restore();
         }, false);
     }

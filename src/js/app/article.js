@@ -73,6 +73,11 @@ class MapContent extends ArticleContent {
     addGraphics(options) {
         console.warn("unsupported addGraphics() : " + this.constructor.name);
     }
+    isMeasuring() { return false; }
+    isDrawing() { return false; }
+    isSpaceSearching() { return false; }
+    isInitializing() { return false; }
+    isPrinting() { return false; }
 };
 
 class Setting extends ArticleContent {

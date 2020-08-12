@@ -74,11 +74,15 @@ class ArticleDirector {
         }
     }
     fire(event, article) {
-        if (Q.isValid(this.eventList[event]) && Q.isValid(article)) {
-            this.eventList[event].forEach(callback => {
-                if (Q.isValid(callback)) {
-                    callback(article.json());
-                    return callback;
+        if (Q.isValid(this.eventList[event])) {
+            this.eventList[event].forEach(c => {
+                if (Q.isValid(c.callback)) {
+                    if (Q.isValid(article) && Q.isValid(c.obj) && c.obj === article) {
+                        c.callback(article.json());
+                    } else if (!Q.isValid(article)) {
+                        c.callback(article.json());
+                    }
+                    return c.callback;
                 }
             });
         }
@@ -86,26 +90,26 @@ class ArticleDirector {
     off(event, callback) {
         if (Q.isValid(this.eventList[event])) {
             this.eventList[event] = this.eventList[event].filter(c => {
-                if (c == callback) {
+                if (c.callback == callback) {
                     return false;
                 }
                 return true;
             });
         }
     }
-    on(events, callback, bfirst) {
+    on(events, obj, callback, bfirst) {
         let ret;
         let fired = [];
         Q.splits(events, "|", event => {
             if (Q.isValid(this.eventList[event])) {
-                if (!this.eventList[event].some(c => { return (c == callback) ? true : false; })) {
-                    this.eventList[event].push(callback);
+                if (!this.eventList[event].some(c => { return (c.callback == callback) ? true : false; })) {
+                    this.eventList[event].push({ obj, callback });
                     let article = this.current();
                     if (bfirst === true) {
                         if (article.isVisible() && (event === ARTICLE_EVENT_OPENED || event === ARTICLE_EVENT_UPDATED)) {
-                            if (!fired.some(c => { return (c == callback) ? true : false; })) { fired.push(this.fire(event, article)); }
+                            if (!fired.some(c => { return (c.callback == callback) ? true : false; })) { fired.push(this.fire(event, article)); }
                         } else if (!article.isVisible() && event === ARTICLE_EVENT_CLOSED) {
-                            if (!fired.some(c => { return (c == callback) ? true : false; })) { fired.push(this.fire(event, article)); }
+                            if (!fired.some(c => { return (c.callback == callback) ? true : false; })) { fired.push(this.fire(event, article)); }
                         }
                     }
                     ret = callback;
