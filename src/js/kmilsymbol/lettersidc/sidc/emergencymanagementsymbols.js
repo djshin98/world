@@ -85,6 +85,8 @@ module.exports = {
         sId["W-S-WSFGSO"] = [icn["ATMOSPHERIC.IC.FOG.SKY OBSCURED"]];
         sId["W-S-WSGRL-"] = [icn["ATMOSPHERIC.IC.HAIL.LIGHT NOT ASSOCIATED WITH THUNDER"]];
         sId["W-S-WSGRMH"] = [icn["우박(중/강)"]];
+        sId["W-S-WSSSL-"] = [icn["소낙눈(약)"]];
+        sId["W-S-WSSSMH"] = [icn["소낙눈(중/강)"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
@@ -95,6 +97,7 @@ module.exports = {
         sId["W-S-WSTMH-"] = [
             icn["ATMOSPHERIC.IC.STORMS.THUNDERSTORM LIGHT TO MODERATE - WITH HAIL"]
         ];
+
         sId["W-S-WST-FC"] = [
             icn["ATMOSPHERIC.IC.STORMS.FUNNEL CLOUD (TORNADO/WATERSPOUT)"]
         ];
