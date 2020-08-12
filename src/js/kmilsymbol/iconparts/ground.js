@@ -49,6 +49,12 @@ function icons(
     //var numberSIDC = metadata.numberSIDC;
     var icn = {};
 
+    icn["저기압중심"] = {
+        type: "path", 
+        d: "m 91 75 l 15 0 l 0 0 l 0 0 l 0 -3 l 0 0 l 0 0 l 0 0 l 0 0 h -12 l 0 0 v -7 l 0 0 l 0 0 l 0 0 l 0 -10 l -3 0 l 3 0 l -3 0 l 0 0 l 0 0 l 0 20 l 0 0 z z",
+        fill: red
+    },
+
     icn["GR.IC.MILITARY"] = text("MIL");
     icn["GR.I.GOVERNMENT"] = text("GOV");
     icn["GR.IC.SUBMARINE NUCLEAR PROPULSION"] = {
