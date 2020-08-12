@@ -370,7 +370,11 @@ module.exports = function tacticalPoints(sidc, modular) {
     */
 
     sidc["WA-DPFCU---L---"] = modular["전선"];
+<<<<<<< HEAD
 
+=======
+    /*
+>>>>>>> 97b4c2ce6110d8944a5c3238bd19ade8efd47b30
     sidc['WAS-PC----P--'] = modular['싸이클론중심'];
     sidc['WAS-PLT---P--'] = modular['대류권계면 저고도'];
     sidc['WAS-PA----P--'] = modular['고기압중심'];
@@ -408,8 +412,13 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc['WAS-IML---P--'] = modular['혼빙(약)'];
     sidc['WAS-IMM---P--'] = modular['혼빙(중)'];
     sidc['WAS-IMS---P--'] = modular['혼빙(강)'];
+<<<<<<< HEAD
     sidc['WAS-WC----P--'] = modular['기후선'];
     sidc['WAS-WP----P--'] = modular['기후면'];
+=======
+    sidc['WAS-WC----P--'] = modular['무풍'];
+    sidc['WAS-WP----P--'] = modular['바람기호'];
+>>>>>>> 97b4c2ce6110d8944a5c3238bd19ade8efd47b30
     sidc['WA-DWJ-----L-'] = modular['제트기류'];
     sidc['WA-DWS-----L-'] = modular['기류선'];
     sidc['WAS-CCCSCSP--'] = modular['맑음'];
@@ -704,5 +713,9 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc['WO-DMPA----L-'] = modular['송유관'];
     sidc['WOS-MPA---P--'] = modular['말뚝/기둥'];
     sidc['WS-----------'] = modular['우주'];
+<<<<<<< HEAD
 
+=======
+    */
+>>>>>>> 97b4c2ce6110d8944a5c3238bd19ade8efd47b30
 };
