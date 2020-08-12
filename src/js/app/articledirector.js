@@ -79,7 +79,7 @@ class ArticleDirector {
                 if (Q.isValid(c.callback)) {
                     if (Q.isValid(article) && Q.isValid(c.obj) && c.obj === article) {
                         c.callback(article.json());
-                    } else if (!Q.isValid(article)) {
+                    } else if (!Q.isValid(c.obj)) {
                         c.callback(article.json());
                     }
                     return c.callback;
@@ -103,7 +103,7 @@ class ArticleDirector {
         Q.splits(events, "|", event => {
             if (Q.isValid(this.eventList[event])) {
                 if (!this.eventList[event].some(c => { return (c.callback == callback) ? true : false; })) {
-                    this.eventList[event].push({ obj, callback });
+                    this.eventList[event].push({ obj: obj, callback: callback });
                     let article = this.current();
                     if (bfirst === true) {
                         if (article.isVisible() && (event === ARTICLE_EVENT_OPENED || event === ARTICLE_EVENT_UPDATED)) {
