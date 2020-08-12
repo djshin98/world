@@ -1,7 +1,8 @@
 const { calc, rect } = require("../../graphics/math");
 
 const akey = {
-    "WA-DBAIF----A": "dbaif", //계기비행지역
+    "WA-DBAIF----A": "dbaif", //계기비행지역"
+    "WA-DBALPNC--A--": "dbalpnc", //액체형태강수(비대류성, 연속 또는 간헐) 지역
     
 }
 
@@ -19,7 +20,7 @@ function areaPolygon(turnPlane, properties, bcompleted) {
         tmp.debug = false;
         ret.push(tmp);
         if (bcompleted === true && i == 0) {
-            if (properties.log == "WA-DBAIF----A" || properties.log == "G-F-ACEI" ||
+            if (properties.log == "WA-DBAIF----A" || properties.log == "WA-DBALPNC--A--" ||
                 properties.log == "G-F-ACDI" || properties.log == "G-F-ACZI" ||
                 properties.log == "G-F-ACBI" || properties.log == "G-F-ACVI" ||
                 properties.log == "G-F-AZII" || properties.log == "G-F-AZXI" ||
