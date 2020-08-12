@@ -49,11 +49,43 @@ function icons(
     //var numberSIDC = metadata.numberSIDC;
     var icn = {};
 
-    icn["저기압중심"] = {
+    icn["고기압중심"] = [{
         type: "path", 
-        d: "m 91 75 l 15 0 l 0 0 l 0 0 l 0 -3 l 0 0 l 0 0 l 0 0 l 0 0 h -12 l 0 0 v -7 l 0 0 l 0 0 l 0 0 l 0 -10 l -3 0 l 3 0 l -3 0 l 0 0 l 0 0 l 0 20 l 0 0 z z",
-        fill: red
-    },
+        d: "m 3 2 l 0 0 l -3 6 l 1 0 l 1 0 l 2 -5 l 2 0 l 2 5 l 2 0 l -3 -6 m -2 -4 l -2 4 l 1 0 l 1 -2 l 1 2 l 1 0 l -2 -4",
+        fill: false,
+        stroke: false,
+    }];
+
+    icn["싸이클론중심"] = [{
+        type: "path", 
+        d: "m 7 2 c -7 0 -7 15 0 15 c 2 0 4 -1 4 -4 l -2 0 c 0 2 -2 2 -2 2 c -4 0 -4 -11 0 -11 c 0 0 2 0 2 2 l 2 0 c 0 -3 -2 -4 -4 -4",
+        fill: false,
+        stroke: false,
+    }];
+    icn["대류권계면저고도"] = [{
+        type: "path", 
+        d: "m 0 0 l 6 0 l 0 3 l -6 0 l 0 0 m 3 2 l -3 -2 l 6 0 l -3 2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["대류권계면고고도"] = [{
+        type: "path", 
+        d: "m 0 0 l 4 2 l 0 4 l -8 0 l 0 -4 l 4 -2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["난기류(약)"] = [{
+        type: "path", 
+        d: "m 0 0 l 0 0 l 0 0 l -2 2 m 4 0 l -2 -2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["난기류(중)"] = [{
+        type: "path", 
+        d: "m 0 0 l 0 0 l 0 0 l -2 2 m -1 0 l 1 0 m 4 0 l -2 -2 m 3 2 l -1 0",
+        fill: false,
+        stroke: false,
+    }];
 
     icn["GR.IC.MILITARY"] = text("MIL");
     icn["GR.I.GOVERNMENT"] = text("GOV");
