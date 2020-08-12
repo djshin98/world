@@ -114,16 +114,21 @@ class m2 extends MapContent {
                     let zoom = this.calcuateZoom(obj.distance)[0].level;
                     this.viewer2d.setZoom(zoom);
                     this.viewer2d.setView({ lng: d.longitude, lat: d.latitude });
+                    //console.log(" recenter : (" + d.longitude + " , " + d.latitude + ")");
                 }
             });
         }, false);
 
         this.viewer2d.on("moveend", (e) => {
-            this.changedView(e);
+            //let latlng = this.viewer2d.getCenter();
+            //console.log(" save center : (" + latlng.lng + " , " + latlng.lat + ")");
+            //this.changedView(e);
         });
 
         this.viewer2d.on('zoomend', (e) => {
-            this.changedView(e);
+            //let latlng = this.viewer2d.getCenter();
+            //console.log(" save center : (" + latlng.lng + " , " + latlng.lat + ")");
+            //this.changedView(e);
         });
 
         this.viewer2d.on("click", (e) => {
@@ -144,11 +149,14 @@ class m2 extends MapContent {
     }
     changedView(e) {
         let latlng = this.viewer2d.getCenter();
-        let d = CTX.d2c(obj.position);
+        let levels = this.calcuateDist(this.viewer2d.getZoom());
+        let d = CTX.degree(latlng.lng, latlng.lat, levels[0].dist);
+        let c = CTX.d2c(d);
         this.db.set("camera", "center", {
-            position: w,
-            distance: dist
+            position: c,
+            distance: levels[0].dist
         });
+        console.log(" save center : (" + latlng.lng + " , " + latlng.lat + ")");
     }
     calcuateZoom(dist) {
         return distanceToZoomLevel.filter((d, i) => {
@@ -159,6 +167,18 @@ class m2 extends MapContent {
             }
             return false;
         });
+    }
+    calcuateDist(zoom) {
+        let out = distanceToZoomLevel.filter((d, i) => {
+            if (zoom == d.level) {
+                return true;
+            }
+            return false;
+        });
+        if (out.length == 0) {
+            return this.calcuateDist(13);
+        }
+        return out;
     }
     synchronizeMap(syncMap) {
         this.syncMap = syncMap;

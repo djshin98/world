@@ -8,7 +8,7 @@
     app.onReady(function(_app, _map) {
         //getOpenedMap().getLayerDirector().addUpdateCallback
         //_app.articles.off(handler);
-        _app.articles.on("opened|updated", (layers) => {
+        _app.articles.on("opened|updated", undefined, (layers) => {
             new OliveTree("#layer-view", layers, {
                 onQueryChecked(inputtype, d) {
                     if (d.group == "baseImagery") {

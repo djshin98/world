@@ -199,7 +199,7 @@ class m3 extends MapContent {
         }
 
         articleDirector.on("opened", this, (json) => {
-            this.oliveCamera.restore();
+            //this.oliveCamera.restore();
         }, false);
     }
     json() {

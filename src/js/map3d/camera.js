@@ -38,6 +38,8 @@ class Camera extends Eventable {
                         position: w,
                         distance: dist
                     });
+                    let d = CTX.c2d(w);
+                    console.log(" 3d save center : (" + d.longitude + " , " + d.latitude + ")");
                 }
             }
 
@@ -75,7 +77,8 @@ class Camera extends Eventable {
             if (result && result.value) {
                 let obj = result.value;
                 let d = CTX.c2d(obj.position);
-                this.flyOver(d.longitude, d.latitude, d.dist);
+                this.flyOver(d.longitude, d.latitude, obj.distance);
+
             }
         });
     }
