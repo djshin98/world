@@ -1,10 +1,18 @@
 "use strict";
 const { IxDatabase } = require('../indexeddb/db');
 const L = require('leaflet');
+require('leaflet-measure');
+require('leaflet-measure/dist/leaflet-measure.css');
 require("./leaflet/korean");
 const { MapContent } = require("../app/article");
 const { LayerDirector2 } = require("./layer/layerdirector");
 const configLayers = require("../../conf/layers2d.json");
+
+const LEVEL20 = 200;
+const LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].reverse();
+const distanceToZoomLevel = LEVELS.map((level, i) => {
+    return { level: level, dist: LEVEL20 * Math.pow(2, i) };
+});
 
 class m2 extends MapContent {
     constructor(articleDirector, name, options) {
@@ -45,7 +53,7 @@ class m2 extends MapContent {
         });
         this.attributionControl.onAdd = (map) => {
             var div = L.DomUtil.create("div", "leaflet-control-attribution " + this.getId() + "-attribution");
-            div.innerHTML = "<span class='hidden-xs'>Olive 2D Map<a href='http://www.u3cnc.com/'> | www.u3cnc.com</a></span>";
+            div.innerHTML = "<span class='hidden-xs'>MapX 5.0<a href='http://www.u3cnc.com/'> | www.u3cnc.com</a></span>";
             return div;
         };
         this.viewer2d.addControl(this.attributionControl);
@@ -80,30 +88,77 @@ class m2 extends MapContent {
 
         L.control.scale({ imperial: false, position: 'bottomright' }).addTo(this.viewer2d);
 
+        this.lineMeasure = L.control.measure({
+            position: 'topleft',
+            keyboard: true,
+            activeKeyCode: 'M'.charCodeAt(0),
+            cancelKeyCode: 27,
+            lineColor: 'red',
+            lineWeight: 2,
+            lineDashArray: '6, 6',
+            lineOpacity: 1,
+            onFinish: function(type, latlngs) {
+
+            }
+        }).addTo(this.viewer2d);
+
         //new L.Proj.TileLayer.TMS.Provider('NaverMap.Street').addTo(this.viewer2d);
 
         this.layerDirector = new LayerDirector2(this, configLayers);
 
-        articleDirector.on("opened", (json) => {
-            this.db.get("scene", "camera", (result) => {
+        articleDirector.on("opened", this, (json) => {
+            this.db.get("camera", "center", (result) => {
                 if (result && result.value) {
                     let obj = result.value;
                     let d = CTX.c2d(obj.position);
-                    this.viewer2d.setView({ lng: d.longitude, lat: d.latitude }, this.viewer2d.getZoom());
-                    /*
-                    flyToBounds
-                    let obj = result.value;
-                    _this.camera.flyTo({
-                        destination: obj.position,
-                        orientation: {
-                            heading: obj.heading,
-                            pitch: obj.pitch,
-                            roll: obj.roll
-                        }
-                    });*/
+                    let zoom = this.calcuateZoom(obj.distance)[0].level;
+                    this.viewer2d.setZoom(zoom);
+                    this.viewer2d.setView({ lng: d.longitude, lat: d.latitude });
                 }
             });
         }, false);
+
+        this.viewer2d.on("moveend", (e) => {
+            this.changedView(e);
+        });
+
+        this.viewer2d.on('zoomend', (e) => {
+            this.changedView(e);
+        });
+
+        this.viewer2d.on("click", (e) => {
+            /*
+            if (!_this.isMeasuring() && !_this.isDrawing() && !_this.isSpaceSearching() && !_this.isInitializing() && !_this.isPrinting()) {
+                if (!qU(_this.applicationLayer) && !qU(_this.applicationLayer.click)) {
+                    _this.applicationLayer.click(e);
+                }
+                if (!qU(_this.extraBaseLayer) && !qU(e.latlng)) {
+                    _this.extraBaseLayer.click(e);
+                }
+            }
+
+            if (!qU(application)) {
+                application.alive();
+            }*/
+        });
+    }
+    changedView(e) {
+        let latlng = this.viewer2d.getCenter();
+        let d = CTX.d2c(obj.position);
+        this.db.set("camera", "center", {
+            position: w,
+            distance: dist
+        });
+    }
+    calcuateZoom(dist) {
+        return distanceToZoomLevel.filter((d, i) => {
+            if (dist < d.dist) {
+                return true;
+            } else if (distanceToZoomLevel.length == (i + 1)) {
+                return true;
+            }
+            return false;
+        });
     }
     synchronizeMap(syncMap) {
         this.syncMap = syncMap;

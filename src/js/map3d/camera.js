@@ -8,7 +8,7 @@ class Camera extends Eventable {
         this.viewer = map.viewer3d;
         this.camera = this.viewer.scene.camera;
 
-        this.db = new IxDatabase(1, "camera");
+        this.db = new IxDatabase(1);
         this.distance = 3000;
         this.load();
     }
@@ -27,7 +27,21 @@ class Camera extends Eventable {
     }
     load() {
         this.camera.moveEnd.addEventListener(() => {
-            this.db.set("scene", "camera", {
+
+            let d = CTX.c2d(this.camera.position);
+            let wc = this.map.center();
+            if (wc.x > 0 && wc.y > 0) {
+                let w = CTX.w2c(wc.x, wc.y);
+                if (w) {
+                    let dist = CTX.distance(this.camera.position, w);
+                    this.db.set("camera", "center", {
+                        position: w,
+                        distance: dist
+                    });
+                }
+            }
+
+            this.db.set("camera", "basic", {
                 position: this.camera.position,
                 heading: this.camera.heading,
                 pitch: this.camera.pitch,
@@ -43,7 +57,7 @@ class Camera extends Eventable {
         });
     }
     restore() {
-        this.db.get("scene", "camera", (result) => {
+        this.db.get("camera", "basic", (result) => {
             if (result && result.value) {
                 let obj = result.value;
                 this.camera.flyTo({
@@ -54,6 +68,14 @@ class Camera extends Eventable {
                         roll: obj.roll
                     }
                 });
+            }
+        });
+
+        this.db.get("camera", "center", (result) => {
+            if (result && result.value) {
+                let obj = result.value;
+                let d = CTX.c2d(obj.position);
+                this.flyOver(d.longitude, d.latitude, d.dist);
             }
         });
     }
@@ -183,8 +205,8 @@ class Camera extends Eventable {
         }
     }
     cameraFocus(lon, lat) {
-        let headingDegree = map.viewer3d.camera.heading * Cesium.Math.DEGREES_PER_RADIAN;
-        let pitTangent = Math.tan(-(map.viewer3d.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180));
+        let headingDegree = this.camera.heading * Cesium.Math.DEGREES_PER_RADIAN;
+        let pitTangent = Math.tan(-(this.camera.pitch * Cesium.Math.DEGREES_PER_RADIAN) * (Math.PI / 180));
 
 
         let cameraHeight = this.distance;

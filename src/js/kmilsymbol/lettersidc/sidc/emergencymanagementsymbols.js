@@ -83,9 +83,9 @@ module.exports = {
         sId["E-N-BB----"] = [icn["AC.IC.DROUGHT"]];
         sId["E-N-BC----"] = [icn["AC.IC.FLOOD"]];
         sId["W-S-WSFGSO"] = [icn["ATMOSPHERIC.IC.FOG.SKY OBSCURED"]];
-        sId["W-S-WSGRL-"] = [
-            icn["ATMOSPHERIC.IC.HAIL.LIGHT NOT ASSOCIATED WITH THUNDER"]
-        ];
+        sId["W-S-WSGRL-"] = [icn["ATMOSPHERIC.IC.HAIL.LIGHT NOT ASSOCIATED WITH THUNDER"]];
+        sId["W-S-WSGRMH"] = [icn["우박(중/강)"]];
+
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
         sId["W-S-WSDSLM"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO MODERATE"]];

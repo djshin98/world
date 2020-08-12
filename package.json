@@ -44,6 +44,7 @@
         "iconv": "^2.3.5",
         "jquery": "^3.5.1",
         "leaflet": "^1.6.0",
+        "leaflet-measure": "^3.1.0",
         "mocha": "^7.2.0",
         "proj4": "^2.6.2",
         "proj4leaflet": "^1.0.2",
