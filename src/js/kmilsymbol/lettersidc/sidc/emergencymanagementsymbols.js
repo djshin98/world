@@ -95,6 +95,7 @@ module.exports = {
         sId["W-S-TCCW--"] = [icn["난류"]];
         sId["W-S-BFQ-C-"] = [icn["거친"]];
         sId["W-S-BFQ-M-"] = [icn["보통"]];
+        sId["W-S-BFQ-F-"] = [icn["좋음"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];

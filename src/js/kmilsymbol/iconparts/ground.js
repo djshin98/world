@@ -3334,6 +3334,12 @@ function icons(
         fill: "rgb(0, 0, 0)",
         d: "m 61 130 l 8 0 c 0 -16 -2 -48 7 -48 c 8 0 7 32 7 48 l 8 0 c 0 -16 -1 -48 7 -48 c 8 0 6 32 6 48 l 8 0 c 0 -16 3 -56 -14 -56 c -6 0 -9 5 -11 11 c -2 -6 -5 -11 -11 -11 c -3 0 -6 2 -7 4 l 0 -4 l -8 0 z"
     }];
+    icn["좋음"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 71 144 l 0 -54 l -10 0 l 0 -8 l 10 0 c 0 -10 2 -14 18 -14 l 0 7 c -9 0 -10 3 -10 7 l 10 0 l 0 8 l -10 0 l 0 54 z"
+    }];
 
 
     icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"] = [{
