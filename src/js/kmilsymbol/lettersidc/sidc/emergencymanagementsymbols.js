@@ -87,6 +87,10 @@ module.exports = {
         sId["W-S-WSGRMH"] = [icn["우박(중/강)"]];
         sId["W-S-WSSSL-"] = [icn["소낙눈(약)"]];
         sId["W-S-WSSSMH"] = [icn["소낙눈(중/강)"]];
+        sId["W-S-MPA---"] = [icn["말뚝/기둥"]];
+        sId["W-S-MOA---"] = [icn["석유/가스"]];
+        sId["W-S-MF----"] = [icn["여울"]];
+        sId["W-S-TCCTG-"] = [icn["검조기"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
