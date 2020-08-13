@@ -96,6 +96,9 @@ module.exports = {
         sId["W-S-BFQ-C-"] = [icn["거친"]];
         sId["W-S-BFQ-M-"] = [icn["보통"]];
         sId["W-S-BFQ-F-"] = [icn["좋음"]];
+        sId["W-S-BFC-SH"] = [icn["패각"]];
+        sId["W-S-BFC-CO"] = [icn["산호"]];
+        sId["W-S-BFC-R-"] = [icn["바위"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
