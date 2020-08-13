@@ -3465,8 +3465,8 @@ function icons(
 
     icn["결빙(약)"] = [{
         type: "path", 
-        d: "m 110 98 a 1 1 0 0 0 -48 0 m 54 0 a 1 1 0 0 0 -61 0 l 61 0 m -33 -42 l 0 52 l 6 0 l 0 -57 l -6 0 l 0 5",
-        fill: "rgb(198, 16, 33)",
+        d: "m 108 97 a 1 1 0 0 0 -51 0 l 6 0 a 1 1 0 0 1 38 0 z",
+        fill: "rgb(0, 0, 0)",
         stroke: true,
     }];
     
