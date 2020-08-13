@@ -94,6 +94,7 @@ module.exports = {
         sId["W-S-TCCTD-"] = [icn["조류자료수집점"]];
         sId["W-S-TCCW--"] = [icn["난류"]];
         sId["W-S-BFQ-C-"] = [icn["거친"]];
+        sId["W-S-BFQ-M-"] = [icn["보통"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
