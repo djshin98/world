@@ -109,10 +109,16 @@ module.exports = {
 
         sId["W-S-PA----"] = [icn["고기압중심"]];
         sId["W-S-PC----"] = [icn["싸이클론중심"]];
-        sId["W-S-PLT----"] = [icn["대류권계면저고도"]];
-        sId["W-S-PHT----"] = [icn["대류권계면고고도"]];
+        sId["W-S-PLT---"] = [icn["대류권계면저고도"]];
+        sId["W-S-PHT---"] = [icn["대류권계면고고도"]];
+        
         sId["W-S-TL----"] = [icn["난기류(약)"]];
         sId["W-S-TM----"] = [icn["난기류(중)"]];
+        sId["W-S-TS----"] = [icn["난기류(상)"]];
+        sId["W-S-TE----"] = [icn["난기류(매우강)"]];
+        sId["W-S-T-MW--"] = [icn["산악파"]];
+
+        sId["W-S-ICL---"] = [icn["결빙(약)"]];
 
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
