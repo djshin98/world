@@ -49,6 +49,44 @@ function icons(
     //var numberSIDC = metadata.numberSIDC;
     var icn = {};
 
+    icn["고기압중심"] = [{
+        type: "path", 
+        d: "m 3 2 l 0 0 l -3 6 l 1 0 l 1 0 l 2 -5 l 2 0 l 2 5 l 2 0 l -3 -6 m -2 -4 l -2 4 l 1 0 l 1 -2 l 1 2 l 1 0 l -2 -4",
+        fill: false,
+        stroke: false,
+    }];
+
+    icn["싸이클론중심"] = [{
+        type: "path", 
+        d: "m 7 2 c -7 0 -7 15 0 15 c 2 0 4 -1 4 -4 l -2 0 c 0 2 -2 2 -2 2 c -4 0 -4 -11 0 -11 c 0 0 2 0 2 2 l 2 0 c 0 -3 -2 -4 -4 -4",
+        fill: false,
+        stroke: false,
+    }];
+    icn["대류권계면저고도"] = [{
+        type: "path", 
+        d: "m 0 0 l 6 0 l 0 3 l -6 0 l 0 0 m 3 2 l -3 -2 l 6 0 l -3 2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["대류권계면고고도"] = [{
+        type: "path", 
+        d: "m 0 0 l 4 2 l 0 4 l -8 0 l 0 -4 l 4 -2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["난기류(약)"] = [{
+        type: "path", 
+        d: "m 0 0 l 0 0 l 0 0 l -2 2 m 4 0 l -2 -2",
+        fill: false,
+        stroke: false,
+    }];
+    icn["난기류(중)"] = [{
+        type: "path", 
+        d: "m 0 0 l 0 0 l 0 0 l -2 2 m -1 0 l 1 0 m 4 0 l -2 -2 m 3 2 l -1 0",
+        fill: false,
+        stroke: false,
+    }];
+
     icn["GR.IC.MILITARY"] = text("MIL");
     icn["GR.I.GOVERNMENT"] = text("GOV");
     icn["GR.IC.SUBMARINE NUCLEAR PROPULSION"] = {
@@ -3364,6 +3402,80 @@ function icons(
         fill: "rgb(0, 0, 0)",
         d: "m 92 79 c -29 0 -29 51 -1 51 c 8 0 17 -7 18 -19 l -8 0 c 0 4 -4 12 -10 12 c -17 0 -18 -36 1 -36 c 5 0 9 7 9 13 l 8 0 c 0 -8 -5 -21 -17 -21 m 20 51 l 0 -51 l 7 0 l 0 28 c 32 -21 31 34 0 25 l 0 -6 c 24 15 20 -38 0 -13 l 0 19 z"
     }];
+
+
+
+
+    icn["고기압중심"] = [{
+        type: "path", 
+        d: "m 107 99 l -15 42 l 9 2 l 12 -37 l 20 0 l 12 36 l 8 -1 l -13 -42 l -33 0 m 23 -39 l -11 0 l -12 39 l 8 0 l 10 -33 l 7 33 l 8 0 l -10 -39 l 0 0 l -11 0",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["싸이클론중심"] = [{
+        type: "path", 
+        d: "M 7 2 c -11 0 -11 26 -1 26 c 5 0 8 -2 8 -5 l -2 0 c -1 2 -3 3 -6 3 c -7 -1 -7 -18 1 -22 c 1 0 5 0 6 6 l 2 0 c 0 -2 -1 -8 -8 -8",
+        fill: false,
+        stroke: true,
+    }];
+
+    icn["대류권계면저고도"] = [{
+        type: "path", 
+        d: "m 92 77 l 0 34 l 29 16 l 30 -16 l 0 -34 l -59 0",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["대류권계면고고도"] = [{
+        type: "path", 
+        d: "m 124 72 l -24 16 l 0 24 l 47 0 l 0 -24 l -23 -16",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["난기류(약)"] = [{
+        type: "path", 
+        d: "m 96 108 l -31 27 l 6 4 l 26 -26 l 12 0 l 21 27 l 4 -5 l -24 -27 l -14 0",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["난기류(중)"] = [{
+        type: "path", 
+        d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["난기류(상)"] = [{
+        type: "path", 
+        d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0 m -31 14 l 2 5 l 27 -22 l 13 0 l 24 23 l 4 -4 l -27 -24 l -15 0 l -28 22",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["난기류(매우강)"] = [{
+        type: "path", 
+        d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0 m -31 14 l 2 5 l 27 -22 l 13 0 l 24 23 l 4 -4 l -27 -24 l -15 0 l -28 22 m -2 -10 l 2 5 l 27 -20 l 17 0 l 27 23 l 4 -4 l -30 -25 l -19 0 l -28 21",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+    
+    icn["산악파"] = [{
+        type: "path", 
+        d: "m 96 83 c -10 0 -22 0 -30 6 c -5 5 -5 14 3 21 c 17 7 36 8 55 -2 c 3 -5 6 -15 0 -19 c -6 -5 -17 -6 -28 -6",
+        fill: "rgb(198, 16, 33)",
+        stroke: true,
+    }];
+
+    icn["결빙(약)"] = [{
+        type: "path", 
+        d: "m 108 97 a 1 1 0 0 0 -51 0 l 6 0 a 1 1 0 0 1 38 0 z",
+        fill: "rgb(0, 0, 0)",
+        stroke: true,
+    }];
+    
 
 
     icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"] = [{

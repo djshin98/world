@@ -1,8 +1,12 @@
 const { calc, rect } = require("../../graphics/math");
 
 const akey = {
-    "WA-DBAIF----A": "dbaif", //계기비행지역
-    
+    "WA-DBAIF----A": "dbaif", //계기비행지역   //색상 : 빨간색
+    "WA-DBALPNC--A--": "dbalpnc", //액체형태강수(비대류성, 연속 또는 간헐) 지역   //색상 : 녹색
+    "WA-DBAFP----A--": "dbafp", //결빙형태 강수 지역   //색상 : 빨간색
+    "WA-DBAFG----A--": "dbafg", //안개지역   색상 : 노란색
+    "WA-DBAD-----A--": "dbad", //풍진지역   색상 : 갈색
+    "WA-DBAFF----A--": "dbaff", //임의지정지역   색상 : 사용자 정의
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
@@ -19,9 +23,9 @@ function areaPolygon(turnPlane, properties, bcompleted) {
         tmp.debug = false;
         ret.push(tmp);
         if (bcompleted === true && i == 0) {
-            if (properties.log == "WA-DBAIF----A" || properties.log == "G-F-ACEI" ||
-                properties.log == "G-F-ACDI" || properties.log == "G-F-ACZI" ||
-                properties.log == "G-F-ACBI" || properties.log == "G-F-ACVI" ||
+            if (properties.log == "WA-DBAIF----A" || properties.log == "WA-DBALPNC--A--" ||
+                properties.log == "WA-DBAFP----A--" || properties.log == "WA-DBAFG----A--" ||
+                properties.log == "WA-DBAD-----A--" || properties.log == "WA-DBAFF----A--" ||
                 properties.log == "G-F-AZII" || properties.log == "G-F-AZXI" ||
                 properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI") {
                 let mid = calc.mid(p[0], p[1]);
