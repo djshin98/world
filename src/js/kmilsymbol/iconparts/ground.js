@@ -3358,6 +3358,12 @@ function icons(
         fill: "rgb(0, 0, 0)",
         d: "m 58 131 l 0 -68 c 59 -8 57 40 8 34 l 0 -7 c 38 5 37 -25 0 -20 l 0 61 m 17 -35 l 15 35 l 8 0 l -16 -37 z"
     }];
+    icn["굵은자갈"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 92 79 c -29 0 -29 51 -1 51 c 8 0 17 -7 18 -19 l -8 0 c 0 4 -4 12 -10 12 c -17 0 -18 -36 1 -36 c 5 0 9 7 9 13 l 8 0 c 0 -8 -5 -21 -17 -21 m 20 51 l 0 -51 l 7 0 l 0 28 c 32 -21 31 34 0 25 l 0 -6 c 24 15 20 -38 0 -13 l 0 19 z"
+    }];
 
 
     icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"] = [{
