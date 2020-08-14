@@ -99,6 +99,16 @@ module.exports = {
         sId["W-S-BFC-SH"] = [icn["패각"]];
         sId["W-S-BFC-CO"] = [icn["산호"]];
         sId["W-S-BFC-R-"] = [icn["바위"]];
+        sId["W-S-BFC-CB"] = [icn["굵은자갈"]];
+        sId["W-S-BFC-P-"] = [icn["조약돌"]];
+        sId["W-S-BFC-G-"] = [icn["자갈자"]];
+        sId["W-S-BFC-ST"] = [icn["돌"]];
+        sId["W-S-BFC-SI"] = [icn["유사"]];
+        sId["W-S-BFC-CL"] = [icn["점토"]];
+        sId["W-S-BFC-M-"] = [icn["진흙"]];
+        sId["W-S-BFC-S-"] = [icn["모래"]];
+        sId["W-S-HHDE--"] = [icn["회오리/단조/격조"]];
+        sId["W-S-HHDWB-"] = [icn["난파선(침수)"]];
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
@@ -114,7 +124,7 @@ module.exports = {
             icn["ATMOSPHERIC.IC.STORMS.FUNNEL CLOUD (TORNADO/WATERSPOUT)"]
         ];
 
-        
+
         sId["W-S-WSTSS-"] = [icn["열대폭풍"]];
         sId["W-S-WSTSH-"] = [icn["허리케인"]];
         sId["W-S-WSVA--"] = [icn["화산재"]];
@@ -123,7 +133,7 @@ module.exports = {
         sId["W-S-PC----"] = [icn["싸이클론중심"]];
         sId["W-S-PLT---"] = [icn["대류권계면저고도"]];
         sId["W-S-PHT---"] = [icn["대류권계면고고도"]];
-        
+
         sId["W-S-TL----"] = [icn["난기류(약)"]];
         sId["W-S-TM----"] = [icn["난기류(중)"]];
         sId["W-S-TS----"] = [icn["난기류(상)"]];

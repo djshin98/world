@@ -50,38 +50,38 @@ function icons(
     var icn = {};
 
     icn["고기압중심"] = [{
-        type: "path", 
+        type: "path",
         d: "m 3 2 l 0 0 l -3 6 l 1 0 l 1 0 l 2 -5 l 2 0 l 2 5 l 2 0 l -3 -6 m -2 -4 l -2 4 l 1 0 l 1 -2 l 1 2 l 1 0 l -2 -4",
         fill: false,
         stroke: false,
     }];
 
     icn["싸이클론중심"] = [{
-        type: "path", 
+        type: "path",
         d: "m 7 2 c -7 0 -7 15 0 15 c 2 0 4 -1 4 -4 l -2 0 c 0 2 -2 2 -2 2 c -4 0 -4 -11 0 -11 c 0 0 2 0 2 2 l 2 0 c 0 -3 -2 -4 -4 -4",
         fill: false,
         stroke: false,
     }];
     icn["대류권계면저고도"] = [{
-        type: "path", 
+        type: "path",
         d: "m 0 0 l 6 0 l 0 3 l -6 0 l 0 0 m 3 2 l -3 -2 l 6 0 l -3 2",
         fill: false,
         stroke: false,
     }];
     icn["대류권계면고고도"] = [{
-        type: "path", 
+        type: "path",
         d: "m 0 0 l 4 2 l 0 4 l -8 0 l 0 -4 l 4 -2",
         fill: false,
         stroke: false,
     }];
     icn["난기류(약)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 0 0 l 0 0 l 0 0 l -2 2 m 4 0 l -2 -2",
         fill: false,
         stroke: false,
     }];
     icn["난기류(중)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 0 0 l 0 0 l 0 0 l -2 2 m -1 0 l 1 0 m 4 0 l -2 -2 m 3 2 l -1 0",
         fill: false,
         stroke: false,
@@ -3402,80 +3402,134 @@ function icons(
         fill: "rgb(0, 0, 0)",
         d: "m 92 79 c -29 0 -29 51 -1 51 c 8 0 17 -7 18 -19 l -8 0 c 0 4 -4 12 -10 12 c -17 0 -18 -36 1 -36 c 5 0 9 7 9 13 l 8 0 c 0 -8 -5 -21 -17 -21 m 20 51 l 0 -51 l 7 0 l 0 28 c 32 -21 31 34 0 25 l 0 -6 c 24 15 20 -38 0 -13 l 0 19 z"
     }];
+    icn["조약돌"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 58 131 l 0 -68 c 59 -8 57 40 8 34 l 0 -7 c 38 5 37 -25 0 -20 l 0 61"
+    }];
+    icn["자갈자"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 113 89 c -10 -17 -38 -14 -47 0 c -9 14 -6 31 1 39 c 7 8 28 16 46 1 l 0 -25 l -22 0 l 0 7 l 15 0 l 0 14 c -8 7 -26 6 -33 -1 c -6 -7 -7 -20 -1 -30 c 7 -12 28 -12 34 0 z"
+    }];
+    icn["돌"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 84 c -3 -7 -7 -11 -15 -12 c -27 -4 -38 30 -4 37 c 26 8 11 32 -7 25 c -5 -2 -7 -5 -8 -8 l -8 0 c 0 6 6 13 15 16 c 28 8 47 -31 7 -41 c -26 -7 -3 -33 12 -17 z m 15 0 l 0 11 l -10 0 l 0 9 l 10 0 l 0 33 c 0 15 19 6 24 -2 c -5 2 -16 7 -16 0 l 0 -31 l 10 0 l 0 -9 l -10 0 l 0 -11 z"
+    }];
+    icn["유사"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 84 c -3 -7 -7 -11 -15 -12 c -27 -4 -38 30 -4 37 c 26 8 11 32 -7 25 c -5 -2 -7 -5 -8 -8 l -8 0 c 0 6 6 13 15 16 c 28 8 47 -31 7 -41 c -26 -7 -3 -33 12 -17 z m 14 59 l 0 -57 l 7 0 l 0 57 z m 0 -63 l 7 0 l 0 -8 l -7 0 z"
+    }];
+    icn["점토"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 92 70 c -29 0 -29 51 -1 51 c 8 0 17 -7 18 -19 l -8 0 c 0 4 -4 12 -10 12 c -17 0 -18 -36 1 -36 c 5 0 9 7 9 13 l 8 0 c 0 -8 -5 -21 -17 -21 m 21 66 l 13 0 l 21 -56 l -7 0 l -12 31 l -12 -31 l -7 0 l 16 41 l -4 10 l -8 0 z"
+    }];
+    icn["진흙"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 58 142 l 0 -74 l 8 0 l 38 66 l 38 -66 l 8 0 l 0 74 l -8 0 l 0 -57 l -32 57 l -12 0 l -32 -55 l 0 55 z"
+    }];
+    icn["모래"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 84 c -3 -7 -7 -11 -15 -12 c -27 -4 -38 30 -4 37 c 26 8 11 32 -7 25 c -5 -2 -7 -5 -8 -8 l -8 0 c 0 6 6 13 15 16 c 28 8 47 -31 7 -41 c -26 -7 -3 -33 12 -17 z"
+    }];
+    icn["회오리/단조/격조"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "M 50 134 c 8 -16 6 -34 21 -60 l 7 3 c -9 16 -13 26 -11 33 l 18 24 l -6 0 l -12 -16 c -5 -6 -6 -11 -4 -18 c -1 13 -1 23 -7 34 z m 29 0 c 8 -16 6 -34 21 -60 l 7 3 c -9 16 -13 26 -11 33 l 18 24 l -6 0 l -12 -16 c -5 -6 -6 -11 -4 -18 c -1 13 -1 23 -7 34 z m 29 0 c 8 -16 6 -34 21 -60 l 7 3 c -9 16 -13 26 -11 33 l 18 24 l -6 0 l -12 -16 c -5 -6 -6 -11 -4 -18 c -1 13 -1 23 -7 34 z"
+    }];
+    icn["난파선(침수)"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 52 101 c 11 -41 75 -41 83 0 c -6 41 -74 41 -83 0 l 5 0 c 10 37 68 32 73 0 c -9 -35 -61 -34 -73 0 m 4 -3 l 0 6 l 10 0 l 0 14 l 6 0 l 0 -14 l 15 0 l 0 20 l 6 0 l 0 -20 l 15 0 l 0 14 l 6 0 l 0 -14 l 8 0 l 0 -6 l -8 0 l 0 -12 l -6 0 l 0 12 l -15 0 l 0 -20 l -6 0 l 0 20 l -15 0 l 0 -12 l -6 0 l 0 12 z"
+    }];
 
 
 
 
     icn["고기압중심"] = [{
-        type: "path", 
+        type: "path",
         d: "m 107 99 l -15 42 l 9 2 l 12 -37 l 20 0 l 12 36 l 8 -1 l -13 -42 l -33 0 m 23 -39 l -11 0 l -12 39 l 8 0 l 10 -33 l 7 33 l 8 0 l -10 -39 l 0 0 l -11 0",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["싸이클론중심"] = [{
-        type: "path", 
+        type: "path",
         d: "M 7 2 c -11 0 -11 26 -1 26 c 5 0 8 -2 8 -5 l -2 0 c -1 2 -3 3 -6 3 c -7 -1 -7 -18 1 -22 c 1 0 5 0 6 6 l 2 0 c 0 -2 -1 -8 -8 -8",
         fill: false,
         stroke: true,
     }];
 
     icn["대류권계면저고도"] = [{
-        type: "path", 
+        type: "path",
         d: "m 92 77 l 0 34 l 29 16 l 30 -16 l 0 -34 l -59 0",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["대류권계면고고도"] = [{
-        type: "path", 
+        type: "path",
         d: "m 124 72 l -24 16 l 0 24 l 47 0 l 0 -24 l -23 -16",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["난기류(약)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 96 108 l -31 27 l 6 4 l 26 -26 l 12 0 l 21 27 l 4 -5 l -24 -27 l -14 0",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["난기류(중)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["난기류(상)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0 m -31 14 l 2 5 l 27 -22 l 13 0 l 24 23 l 4 -4 l -27 -24 l -15 0 l -28 22",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["난기류(매우강)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 94 107 l -28 23 l -10 0 l 0 5 l 12 0 l 27 -23 l 9 0 l 21 23 l 15 0 l 0 -5 l -13 0 l -23 -23 l -10 0 m -31 14 l 2 5 l 27 -22 l 13 0 l 24 23 l 4 -4 l -27 -24 l -15 0 l -28 22 m -2 -10 l 2 5 l 27 -20 l 17 0 l 27 23 l 4 -4 l -30 -25 l -19 0 l -28 21",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
-    
+
     icn["산악파"] = [{
-        type: "path", 
+        type: "path",
         d: "m 96 83 c -10 0 -22 0 -30 6 c -5 5 -5 14 3 21 c 17 7 36 8 55 -2 c 3 -5 6 -15 0 -19 c -6 -5 -17 -6 -28 -6",
         fill: "rgb(198, 16, 33)",
         stroke: true,
     }];
 
     icn["결빙(약)"] = [{
-        type: "path", 
+        type: "path",
         d: "m 108 97 a 1 1 0 0 0 -51 0 l 6 0 a 1 1 0 0 1 38 0 z",
         fill: "rgb(0, 0, 0)",
         stroke: true,
     }];
-    
+
 
 
     icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"] = [{
