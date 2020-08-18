@@ -141,7 +141,23 @@ module.exports = {
         sId["W-S-T-MW--"] = [icn["산악파"]];
 
         sId["W-S-ICL---"] = [icn["결빙(약)"]];
+        sId["W-S-ICM---"] = [icn["결빙(중)"]];
+        sId["W-S-ICS---"] = [icn["결빙(강)"]];
 
+        sId["W-S-IRL---"] = [icn["무빙(약)"]];
+        sId["W-S-IRM---"] = [icn["무빙(중)"]];
+        sId["W-S-IRS---"] = [icn["무빙(강)"]];
+
+        sId["W-S-IML---"] = [icn["혼빙(약)"]];
+        sId["W-S-IMM---"] = [icn["혼빙(중)"]];
+        sId["W-S-IMS---"] = [icn["혼빙(강)"]];
+
+        sId["W-S-WC----"] = [icn["무풍"]];
+        sId["W-S-WP----"] = [icn["바람기호"]];
+
+        sId["W-S-CCCSCS"] = [icn["맑음"]];
+        sId["W-S-CCCSFC"] = [icn["구름조금"]];
+        sId["W-S-CCCSSC"] = [icn["구름다소"]];
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
