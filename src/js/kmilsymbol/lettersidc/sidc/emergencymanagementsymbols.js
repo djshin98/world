@@ -109,6 +109,18 @@ module.exports = {
         sId["W-S-BFC-S-"] = [icn["모래"]];
         sId["W-S-HHDE--"] = [icn["회오리/단조/격조"]];
         sId["W-S-HHDWB-"] = [icn["난파선(침수)"]];
+        sId["W-S-HHDWA-"] = [icn["난파선(돌출)"]];
+        sId["W-S-HHDS--"] = [icn["암초"]];
+        sId["W-S-HHDMDF"] = [icn["기뢰(명확)"]];
+        sId["W-S-HHDMDB"] = [icn["기뢰(의심)"]];
+        sId["W-S-HHDF--"] = [icn["해저암초(위치)"]];
+        sId["W-S-HHRA--"] = [icn["암반(침세)"]];
+        sId["W-S-HHRS--"] = [icn["암반(침수)"]];
+        sId["W-S-HALV--"] = [icn["등대선"]];
+        sId["W-S-HAL---"] = [icn["말뚝"]];
+        sId["W-S-HABP--"] = [icn["말뚝(위치)"]];
+        sId["W-S-HABM--"] = [icn["표시"]];
+
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
         sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
