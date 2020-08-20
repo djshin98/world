@@ -123,7 +123,7 @@ module.exports = {
 
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
-        sId["W-S-WSR-LI"] = [icn["ATMOSPHERIC.IC.RAIN.INTERMITTENT LIGHT"]];
+        
         sId["W-S-WSDSLM"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO MODERATE"]];
         sId["W-S-WSDSS-"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO STRONG"]];
         sId["W-S-WSDD--"] = [icn["ATMOSPHERIC.IC.TORNADO"]];
@@ -170,6 +170,27 @@ module.exports = {
         sId["W-S-CCCSCS"] = [icn["맑음"]];
         sId["W-S-CCCSFC"] = [icn["구름조금"]];
         sId["W-S-CCCSSC"] = [icn["구름다소"]];
+        sId["W-S-CCCSBC"] = [icn["약간흐림"]];
+        sId["W-S-CCCSOC"] = [icn["흐림"]];
+        sId["W-S-CCCSOB"] = [icn["하늘덮임"]];
+
+        sId["W-S-WSR-LI"] = [icn["비(간헐-약)"]];
+        sId["W-S-WSR-LC"] = [icn["비(지속-약)"]];
+        sId["W-S-WSR-MI"] = [icn["비(간헐-중)"]];
+        sId["W-S-WSR-MC"] = [icn["비(지속-중)"]];
+        sId["W-S-WSR-HI"] = [icn["비(간헐-강)"]];
+        sId["W-S-WSR-HC"] = [icn["비(지속-강)"]];
+
+
+        sId["W-S-WSRSL-"] = [icn["소나기(약)"]];
+        sId["W-S-WSRSMH"] = [icn["소나기(중/강)"]];
+        sId["W-S-WSRST-"] = [icn["소나기(폭우)"]];
+
+        sId["W-S-WSD-LC"] = [icn["가랑비(간헐-약)"]];
+        sId["W-S-WSD-MC"] = [icn["가랑비(간헐-중)"]];
+        sId["W-S-WSD-HC"] = [icn["가랑비(간헐-강)"]];
+
+
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
