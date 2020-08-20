@@ -120,6 +120,13 @@ module.exports = {
         sId["W-S-HAL---"] = [icn["말뚝"]];
         sId["W-S-HABP--"] = [icn["말뚝(위치)"]];
         sId["W-S-HABM--"] = [icn["표시"]];
+        sId["W-S-HABB--"] = [icn["부표(기본)"]];
+        sId["W-S-HABA--"] = [icn["신호등"]];
+        sId["W-S-HPD---"] = [icn["돌고래"]];
+        sId["W-S-HPM-CC"] = [icn["연락선(케이블)"]];
+        sId["W-S-HPM-FC"] = [icn["연락선"]];
+        sId["W-S-HPM-R-"] = [icn["상륙고리"]];
+        sId["W---HPMO--"] = [icn["연안화물적재시설(위치)"]];
 
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
