@@ -194,8 +194,16 @@ module.exports = {
         sId["W-S-WSRST-"] = [icn["소나기(폭우)"]];
 
         sId["W-S-WSD-LC"] = [icn["가랑비(간헐-약)"]];
+        sId["W-S-WSD-LC"] = [icn["가랑비(지속-약)"]];
         sId["W-S-WSD-MC"] = [icn["가랑비(간헐-중)"]];
+        sId["W-S-WSD-LC"] = [icn["가랑비(지속-중)"]];
         sId["W-S-WSD-HC"] = [icn["가랑비(간헐-강)"]];
+        sId["W-S-WSD-LC"] = [icn["가랑비(지속-약)"]];
+
+        sId["W-S-WSM-L-"] = [icn["비/가랑비/눈(약)"]];
+        sId["W-S-WSM-MH"] = [icn["비/가랑비/눈(중/강)"]];
+        sId["W-S-WSMSL-"] = [icn["소나기/소낙눈(약)"]];
+        sId["W-S-WSMSMH"] = [icn["소나기/소낙눈(중/강)"]];
 
 
 
