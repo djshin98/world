@@ -127,6 +127,27 @@ module.exports = {
         sId["W-S-HPM-FC"] = [icn["연락선"]];
         sId["W-S-HPM-R-"] = [icn["상륙고리"]];
         sId["W---HPMO--"] = [icn["연안화물적재시설(위치)"]];
+        sId["W-S-HPML--"] = [icn["상륙장"]];
+        sId["W-S-HPFS--"] = [icn["둑(경계)"]]; //WOS-HPFS---L---
+        sId["W-S-HPFS--"] = [icn["둑(위치)"]]; //WOS-HPFS--P----
+        sId["W-S-HPFH--"] = [icn["어항"]];
+        sId["W-S-HPCP--"] = [icn["호출지점"]];
+        sId["W-S-HPBA--"] = [icn["정박지(위치)"]];
+        sId["W-S-HPB-A-"] = [icn["정박지(닻)"]];
+        sId["W-S-HPB-O-"] = [icn["정박지(육지)"]];
+        sId["W-S-ITR---"] = [icn["급류"]];
+        sId["W-S-ITRH--"] = [icn["산마루/작은언덕"]];
+        sId["W-S-IIP---"] = [icn["홍수얼음"]];
+        sId["W-S-IITE--"] = [icn["해빙두께(추정)"]];
+        sId["W-S-IITM--"] = [icn["해빙두께(관측)"]];
+        sId["W-S-II----"] = [icn["해빙(바다얼음)"]];
+        sId["W---IDID--"] = [icn["눈더미(방향)"]];
+        sId["W-S-IDS---"] = [icn["측밀림지역"]];
+        sId["W-S-IDD---"] = [icn["발산"]];
+        sId["W-S-IDC---"] = [icn["수렴"]];
+        sId["W-S-ICIF--"] = [icn["빙산없음"]];
+        sId["W-S-ICWR--"] = [icn["레이다에포착되는빙산"]];
+        sId["W-S-ICWB--"] = [icn["빙산많음"]];
 
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
