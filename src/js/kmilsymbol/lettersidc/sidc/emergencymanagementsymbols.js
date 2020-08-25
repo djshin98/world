@@ -205,7 +205,25 @@ module.exports = {
         sId["W-S-WSMSL-"] = [icn["소나기/소낙눈(약)"]];
         sId["W-S-WSMSMH"] = [icn["소나기/소낙눈(중/강)"]];
 
+        //sId["W-S-WSS-LC"] = [icn["눈(간헐-약)"]];
+        sId["W-S-WSS-LC"] = [icn["눈(지속-약)"]];
+        //sId["W-S-WSS-MC"] = [icn["눈(간헐-중)"]];
+        sId["W-S-WSS-MC"] = [icn["눈(지속-중)"]];
 
+        sId["W-S-WSS-HC"] = [icn["눈(간헐-강)"]];
+        //sId["W-S-WSS-HC"] = [icn["눈(지속-강)"]];
+
+        sId["W-S-WSSBLM"] = [icn["눈보라(풍설)(약/중)"]];
+        sId["W-S-WSSBH-"] = [icn["눈보라(강)"]];
+
+        sId["W-S-WSSG--"] = [icn["싸락눈"]];
+        sId["W-S-WSIC--"] = [icn["얼음결정"]];
+
+        sId["W-S-WSPLL-"] = [icn["싸락우박(약)"]];
+        sId["W-S-WSPLM-"] = [icn["싸락우박(중)"]];
+        sId["W-S-WSPLH-"] = [icn["싸락우박(강)"]];
+
+        sId["W-S-WST-NP"] = [icn["뇌우"]];
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
