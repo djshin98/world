@@ -148,10 +148,20 @@ module.exports = {
         sId["W-S-ICIF--"] = [icn["빙산없음"]];
         sId["W-S-ICWR--"] = [icn["레이다에포착되는빙산"]];
         sId["W-S-ICWB--"] = [icn["빙산많음"]];
+        sId["W-S-IBF---"] = [icn["부빙"]];
+        sId["W-S-IBGLM-"] = [icn["작은빙산(다수)"]];
+        sId["W-S-IBGL--"] = [icn["작은빙산"]];
+        sId["W-S-IBBBM-"] = [icn["많은부빙편"]];
+        sId["W-S-IBBBM-"] = [icn["부빙편"]];
+        sId["W-S-IBMG--"] = [icn["많은빙산(일반)"]];
+        sId["W-S-IBG---"] = [icn["빙산(일반)"]];
+        sId["W-S-IBBS--"] = [icn["빙산띠"]];
+        sId["W-S-IBM---"] = [icn["많은빙산군"]];
+        sId["W-S-IB----"] = [icn["빙산군"]];
 
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
-        
+
         sId["W-S-WSDSLM"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO MODERATE"]];
         sId["W-S-WSDSS-"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO STRONG"]];
         sId["W-S-WSDD--"] = [icn["ATMOSPHERIC.IC.TORNADO"]];

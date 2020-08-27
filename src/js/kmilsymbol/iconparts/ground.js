@@ -3695,7 +3695,66 @@ function icons(
         fill: "rgb(0, 0, 0)",
         d: "m 96 90 l 0 6 l -35 0 l 0 -6 z m -46 -10 l 29 0 l 0 -5 l -29 0 z m 28 28 l -28 0 l 0 6 l 28 0 z m 19 7 l 53 0 l -26 -41 l 0 9 l 17 27 l -34 0 l 17 -27 l 0 -9 z"
     }];
-
+    icn["부빙"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 60 l -13 29 l -22 0 l 0 5 l 70 0 l 0 -5 l -22 0 z m 0 0 l -35 78 l 70 0 l -21 -44 l -5 0 l 18 39 l -54 0 l 17 -39 l -5 0 z"
+    }];
+    icn["작은빙산(다수)"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 85 94 l -20 44 l 70 0 l -21 -44 l -5 0 l 0 0 l -19 0 l 0 0 l -5 0 z"
+    }];
+    icn["작은빙산"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 85 94 l -20 44 l 70 0 l -21 -44 l -5 0 l 18 39 l -54 0 l 15 -34 l 24 0 l -3 -5 l -24 0 z"
+    }];
+    icn["많은부빙편"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 85 94 l -20 44 l 70 0 l -21 -44 l -5 0 l 0 0 l -19 0 l 0 0 l -5 0 z m -20 49 l 70 0 l 0 6 l -70 0 z"
+    }];
+    icn["부빙편"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 85 94 l -20 44 l 70 0 l -21 -44 l -5 0 l 18 39 l -54 0 l 15 -34 l 24 0 l -3 -5 l -24 0 z m -20 49 l 70 0 l 0 6 l -70 0 z"
+    }];
+    icn["많은빙산(일반)"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 73 l -30 50 l 58 0 z"
+    }];
+    icn["빙산(일반)"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 73 l -30 50 l 58 0 l -28 -50 l 0 9 l 20 36 l -41 0 l 21 -36 z"
+    }];
+    icn["빙산띠"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 55 90 c 28 -29 59 30 85 0 l 4 4 c -29 33 -58 -23 -85 0 z"
+    }];
+    icn["많은빙산군"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 91 82 l -32 45 l 59 0 z m 35 45 l 9 0 l 0 -8 l -9 0 z"
+    }];
+    icn["빙산군"] = [{
+        type: "path",
+        stroke: true,
+        fill: "rgb(0, 0, 0)",
+        d: "m 100 73 l -30 50 l 58 0 l -28 -50 l 0 9 l 20 36 l -41 0 l 21 -36 z"
+    }];
 
 
 
@@ -3924,7 +3983,7 @@ function icons(
         fill: "rgb(0, 128, 0)",
         d: "m 59 100 a 1 1 0 0 0 27 0 a 1 1 0 0 0 -27 0 m 55 0 a 1 1 0 0 0 29 -1 a 1 1 0 0 0 -29 1 m -28 31 a 1 1 0 0 0 29 -1 a 1 1 0 0 0 -29 1 m -2 -61 a 1 1 0 0 0 29 -1 a 1 1 0 0 0 -29 1"
     }];
-    
+
 
     icn["소나기(약)"] = [{
         type: "path",
