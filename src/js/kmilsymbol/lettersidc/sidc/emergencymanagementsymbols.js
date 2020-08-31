@@ -173,7 +173,7 @@ module.exports = {
 
         sId["W-S-TL----"] = [icn["난기류(약)"]];
         sId["W-S-TM----"] = [icn["난기류(중)"]];
-        sId["W-S-TS----"] = [icn["난기류(상)"]];
+        sId["W-S-TS----"] = [icn["난기류(강)"]];
         sId["W-S-TE----"] = [icn["난기류(매우강)"]];
         sId["W-S-T-MW--"] = [icn["산악파"]];
 
