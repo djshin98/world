@@ -82,7 +82,6 @@ module.exports = {
         sId["E-N-B-----"] = []; // N/A
         sId["E-N-BB----"] = [icn["AC.IC.DROUGHT"]];
         sId["E-N-BC----"] = [icn["AC.IC.FLOOD"]];
-        sId["W-S-WSFGSO"] = [icn["ATMOSPHERIC.IC.FOG.SKY OBSCURED"]];
         sId["W-S-WSGRL-"] = [icn["ATMOSPHERIC.IC.HAIL.LIGHT NOT ASSOCIATED WITH THUNDER"]];
         sId["W-S-WSGRMH"] = [icn["우박(중/강)"]];
         sId["W-S-WSSSL-"] = [icn["소낙눈(약)"]];
@@ -172,24 +171,12 @@ module.exports = {
         sId["W-S-WSDD--"] = [icn["회오리바람"]];
         sId["W-S-GNG-TI"] = [icn["지표우빙"]];
 
-
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
 
         sId["W-S-WSDSLM"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO MODERATE"]];
         sId["W-S-WSDSS-"] = [icn["ATMOSPHERIC.IC.DUST OR SAND.LIGHT TO STRONG"]];
         sId["W-S-WSDD--"] = [icn["ATMOSPHERIC.IC.TORNADO"]];
         sId["W-S-WSS-LI"] = [icn["ATMOSPHERIC.IC.SNOW.INTERMITTENT LIGHT"]];
-        sId["W-S-WSTMH-"] = [
-            icn["ATMOSPHERIC.IC.STORMS.THUNDERSTORM LIGHT TO MODERATE - WITH HAIL"]
-        ];
-
-        sId["W-S-WST-FC"] = [
-            icn["ATMOSPHERIC.IC.STORMS.FUNNEL CLOUD (TORNADO/WATERSPOUT)"]
-        ];
-
-
-        sId["W-S-WSTSS-"] = [icn["열대폭풍"]];
-        sId["W-S-WSTSH-"] = [icn["허리케인"]];
         sId["W-S-WSVA--"] = [icn["화산재"]];
 
         sId["W-S-PA----"] = [icn["고기압중심"]];
@@ -199,7 +186,7 @@ module.exports = {
 
         sId["W-S-TL----"] = [icn["난기류(약)"]];
         sId["W-S-TM----"] = [icn["난기류(중)"]];
-        sId["W-S-TS----"] = [icn["난기류(상)"]];
+        sId["W-S-TS----"] = [icn["난기류(강)"]];
         sId["W-S-TE----"] = [icn["난기류(매우강)"]];
         sId["W-S-T-MW--"] = [icn["산악파"]];
 
@@ -268,6 +255,48 @@ module.exports = {
         sId["W-S-WSPLH-"] = [icn["싸락우박(강)"]];
 
         sId["W-S-WST-NP"] = [icn["뇌우"]];
+        sId["W-S-WSTMR-"] = [icn["뇌우(약~중)(비/눈)"]];
+        sId["W-S-WSTHR-"] = [icn["뇌우(강)(비/눈)"]];
+        sId["W-S-WSTMH-"] = [icn["뇌우(약~중)(우박)"]];
+        sId["W-S-WSTHH-"] = [icn["뇌우(강)(우박)"]];
+        sId["W-S-WST-FC"] = [icn["토네이도"]];
+        sId["W-S-WST-SQ"] = [icn["돌풍"]];
+        sId["W-S-WST-LG"] = [icn["번개"]];
+
+        sId["W-S-WSFGPS"] = [icn["안개(옅은, 부분적)"]];
+        sId["W-S-WSFGCS"] = [icn["안개(옅은, 지속적)"]];
+        sId["W-S-WSFGP-"] = [icn["안개(부분적)"]];
+        sId["W-S-WSFGSV"] = [icn["안개(하늘보임)"]];
+        sId["W-S-WSFGSO"] = [icn["안개(하늘가림)"]];
+        sId["W-S-WSFGFV"] = [icn["얼안개(빙무)(하늘보임)"]];
+        sId["W-S-WSFGFO"] = [icn["얼안개(빙무)(하늘가림)"]];
+
+        sId["W-S-WSBR--"] = [icn["박무"]];
+
+        sId["W-S-WSDSLM"] = [icn["풍진(약~중)"]];
+        sId["W-S-WSDSS-"] = [icn["풍진(강)"]];
+        sId["W-S-WSDD--"] = [icn["회오리바람"]];
+        sId["W-S-WSDB--"] = [icn["먼지/모래바람"]];
+
+        sId["W-S-WSTSD-"] = [icn["열대성저기압"]];
+        sId["W-S-WSTSS-"] = [icn["열대폭풍"]];
+        sId["W-S-WSTSH-"] = [icn["허리케인"]];
+        sId["W-S-WSTSH-"] = [icn["열대태풍영역/일시"]];
+
+        sId["W-S-WST-LV"] = [icn["대류권계면고도"]];
+        sId["W-S-WSF-LV"] = [icn["결빙고도"]];
+        sId["W-S-WSUKP-"] = [icn["강수미상(형태/밀도)"]];
+
+        sId["W-S-GND-NC"] = [icn["지표건조(균열,주목할만한먼지,성긴모래등이없음"]];
+        sId["W-S-GNM---"] = [icn["지표습기"]];
+        sId["W-S-GNW-SW"] = [icn["지표물기(크고작은물웅덩이)"]];
+        sId["W-S-GNFL--"] = [icn["지표홍수"]];
+        sId["W-S-GNFZ--"] = [icn["지표결빙"]];
+        sId["W-S-GNG-TI"] = [icn["지표우빙"]];
+        sId["W-S-GNLDN-"] = [icn["지표를완전히덮지않는성긴먼지/모래"]];
+        sId["W-S-GNLDTC"] = [icn["지표를얇게덮는성긴먼지/모래"]];
+        sId["W-S-GNLDMC"] = [icn["지표를두껍게덮는성긴먼지/모래"]];
+        sId["W-S-GNLDMC"] = [icn["지표매우건조및갈라짐"]];
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
