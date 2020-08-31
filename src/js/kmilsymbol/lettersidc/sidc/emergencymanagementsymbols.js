@@ -271,7 +271,19 @@ module.exports = {
         sId["W-S-WSTSH-"] = [icn["열대태풍영역/일시"]];
 
         sId["W-S-WST-LV"] = [icn["대류권계면고도"]];
+        sId["W-S-WSF-LV"] = [icn["결빙고도"]];
+        sId["W-S-WSUKP-"] = [icn["강수미상(형태/밀도)"]];
 
+        sId["W-S-GND-NC"] = [icn["지표건조(균열,주목할만한먼지,성긴모래등이없음"]];
+        sId["W-S-GNM---"] = [icn["지표습기"]];
+        sId["W-S-GNW-SW"] = [icn["지표물기(크고작은물웅덩이)"]];
+        sId["W-S-GNFL--"] = [icn["지표홍수"]];
+        sId["W-S-GNFZ--"] = [icn["지표결빙"]];
+        sId["W-S-GNG-TI"] = [icn["지표우빙"]];
+        sId["W-S-GNLDN-"] = [icn["지표를완전히덮지않는성긴먼지/모래"]];
+        sId["W-S-GNLDTC"] = [icn["지표를얇게덮는성긴먼지/모래"]];
+        sId["W-S-GNLDMC"] = [icn["지표를두껍게덮는성긴먼지/모래"]];
+        sId["W-S-GNLDMC"] = [icn["지표매우건조및갈라짐"]];
 
         sId["E-N-BM----"] = [icn["AC.IC.TSUNAMI"]];
         sId["E-N-C-----"] = []; // N/A
