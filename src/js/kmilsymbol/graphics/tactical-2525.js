@@ -370,7 +370,7 @@ module.exports = function tacticalPoints(sidc, modular) {
     */
 
     sidc["WA-DPFCU---L---"] = modular["전선"];
-    /*
+    
     sidc['WAS-PC----P--'] = modular['싸이클론중심'];
     sidc['WAS-PLT---P--'] = modular['대류권계면 저고도'];
     sidc['WAS-PA----P--'] = modular['고기압중심'];
@@ -567,5 +567,5 @@ module.exports = function tacticalPoints(sidc, modular) {
     sidc['WO-DMOA-----A'] = modular['석유/가스 굴착장치(지역)'];
     sidc['WO-DMPA----L-'] = modular['송유관'];
     sidc['WS-----------'] = modular['우주'];
-    */
+    
 };

@@ -1,12 +1,15 @@
 const { calc, rect } = require("../../graphics/math");
 
 const akey = {
-    "WO-DOBVA----A": "dbaif", //계기비행지역   //색상 : 빨간색
-    "WA-DBALPNC--A--": "dbalpnc", //액체형태강수(비대류성, 연속 또는 간헐) 지역   //색상 : 녹색
-    "WA-DBAFP----A--": "dbafp", //결빙형태 강수 지역   //색상 : 빨간색
-    "WA-DBAFG----A--": "dbafg", //안개지역   색상 : 노란색
-    "WA-DBAD-----A--": "dbad", //풍진지역   색상 : 갈색
-    "WA-DBAFF----A--": "dbaff", //임의지정지역   색상 : 사용자 정의
+    "WO-DOBVA----A": "dobva", // VDR 레벨 1~2
+    "WO-DOBVB----A": "dobvb", // VDR 레벨 2~3
+    "WO-DOBVC----A": "dobvc", // VDR 레벨 3~4
+    "WO-DOBVD----A": "dobvd", // VDR 레벨 4~5
+    "WO-DOBVE----A": "dobve", // VDR 레벨 5~6
+    "WO-DOBVF----A": "dobvf", // VDR 레벨 6~7
+    "WO-DOBVG----A": "dobvg", // VDR 레벨 7~8
+    "WO-DOBVH----A": "dobvh", // VDR 레벨 8~9
+    "WO-DOBVI----A": "dobvi", // VDR 레벨 9~10
 }
 
 function areaPolygon(turnPlane, properties, bcompleted) {
@@ -23,11 +26,11 @@ function areaPolygon(turnPlane, properties, bcompleted) {
         tmp.debug = false;
         ret.push(tmp);
         if (bcompleted === true && i == 0) {
-            if (properties.log == "WA-DBAIF----A" || properties.log == "WA-DBALPNC--A--" ||
-                properties.log == "WA-DBAFP----A--" || properties.log == "WA-DBAFG----A--" ||
-                properties.log == "WA-DBAD-----A--" || properties.log == "WA-DBAFF----A--" ||
-                properties.log == "G-F-AZII" || properties.log == "G-F-AZXI" ||
-                properties.log == "G-F-AZCI" || properties.log == "G-F-AZFI") {
+            if (properties.log == "WO-DOBVA----A" || properties.log == "WO-DOBVB----A" ||
+                properties.log == "WO-DOBVC----A" || properties.log == "WO-DOBVD----A" ||
+                properties.log == "WO-DOBVE----A" || properties.log == "WO-DOBVF----A" ||
+                properties.log == "WO-DOBVG----A" || properties.log == "WO-DOBVH----A" ||
+                properties.log == "WO-DOBVI----A" ) {
                 let mid = calc.mid(p[0], p[1]);
                 let ann = calc.annotation(a, "w", p[0], true);
                 ann.geometry = ann.geometry.map(h => { return calc.move(h, ps.gap + a.w.width / 2, ps.gap); });
