@@ -158,6 +158,19 @@ module.exports = {
         sId["W-S-IBBS--"] = [icn["빙산띠"]];
         sId["W-S-IBM---"] = [icn["많은빙산군"]];
         sId["W-S-IB----"] = [icn["빙산군"]];
+        sId["W-S-GSSDC-"] = [icn["지표완전눈덮임(두꺼운눈더미)"]];
+        sId["W-S-GSSLCU"] = [icn["지표전체불규칙하게성기고마른눈덮임"]];
+        sId["W-S-GSSLH-"] = [icn["지표반이상성기고마른눈덮임"]];
+        sId["W-S-GSSLL-"] = [icn["지표반이하성기고마른눈덮임"]];
+        sId["W-S-GSSCCU"] = [icn["지표전체불규칙하게단단한눈또는젖은눈덮임"]];
+        sId["W-S-WSRFL-"] = [icn["동우(약)"]];
+        sId["W-S-WSRFMH"] = [icn["동우(중/강)"]];
+        sId["W-S-WSRFMH"] = [icn["진눈깨비(약)"]];
+        sId["W-S-WSDFMH"] = [icn["진눈깨비(중/강)"]];
+        sId["W-S-WSFU--"] = [icn["연기"]];
+        sId["W-S-WSHZ--"] = [icn["연무"]];
+        sId["W-S-WSDD--"] = [icn["회오리바람"]];
+        sId["W-S-GNG-TI"] = [icn["지표우빙"]];
 
 
         sId["E-N-BF----"] = [icn["AC.IC.INVERSION"]];
